@@ -1,0 +1,63 @@
+//信用卡卡號輸入框
+.card-number-input{
+    width: 52px;
+    @include md {
+        width: 64px;
+    }
+    &::placeholder{
+        font-size: 11px;
+        text-align: center;
+        vertical-align: center;
+        @include md{
+            font-size: 16px;
+        }
+    }
+}
+
+.card-number-input-8{
+    width: 104px;
+    @include md {
+        width: 128px;
+    }
+    &::placeholder{
+        font-size: 11px;
+        text-align: center;
+        vertical-align: center;
+        @include md{
+            font-size: 16px;
+        }
+    }
+}
+
+.card-number-input-7{
+    width: 91px;
+    @include md {
+        width: 112px;
+    }
+    &::placeholder{
+        font-size: 11px;
+        text-align: center;
+        vertical-align: center;
+        @include md{
+            font-size: 16px;
+        }
+    }
+}
+
+.checkout-card-list{
+    display: none;
+    @include tiny{
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+}
+
+.checkout-card-list-tiny{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    @include tiny{
+        display: none;
+    }
+}

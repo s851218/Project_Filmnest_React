@@ -1,0 +1,33 @@
+.nav-link {
+  display: inline-block;
+  position: relative;
+  border-bottom: 2px solid transparent;
+  &::after {
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+  }
+
+  @media screen and (min-width: 992px) {
+    &:hover::after {
+      width: 100%;
+      background-color: $white;
+      transition: width 0.3s;
+    }
+  }
+}
+
+.heart-hover {
+  background: transparent;
+  &:hover {
+    background: $primary-400;
+  }
+}
+
+// 收藏 & 立即贊助按鈕
+.bg-collect-support {
+  background: rgba(54, 54, 54, 0.9);
+}

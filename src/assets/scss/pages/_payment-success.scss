@@ -1,0 +1,123 @@
+//背景圖
+.payment-success-banner{
+    height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    &::before{
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: url(/assets/images/payment-success-banner-md.png);
+        background-position: center top;
+        background-size: cover;
+        background-repeat: no-repeat;
+        opacity: 0.7;
+        // background-attachment: fixed;
+        // @include md{
+        //     background-image: url(/assets/images/payment-success-banner-md-2.png);
+        // }
+        @include lg{
+            background-image: url(/assets/images/payment-success-banner-lg-2.png);
+        }
+    }
+}
+
+//內容背景
+.thanks-wrapper{
+    position: relative;
+    padding: 16px;
+    margin: 0 auto;
+    &::before{
+        content: '';
+        position: absolute;
+        background: black;
+        border-radius: 12px;
+        inset: 0px;
+        opacity: 0.7;
+    }
+}
+
+.thanks-content{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    height: 100%;
+    text-align: center;
+    position: relative;
+}
+
+//進度條動畫
+// .thanks-content .progress-bar{
+//     animation: load 1s ease-in-out;
+// }
+
+// @keyframes load {
+//     0%{
+//         width: 0;
+//     }
+//     100%{
+//         width: 75%;
+//     }
+// }
+
+.thanks-progress-wrapper .progress{
+    flex-grow: 1;
+    margin-right: 10px;
+    overflow: hidden;
+    height: 8px;
+    border-radius: 50px;
+}
+
+.thanks-progress-wrapper .progress-bar{
+    width: 0;
+    height: 100%;
+    border-radius: 30px;
+    transition: width 1.5s linear, background-color 1.5s ease;
+    animation: progress-animation 1.5s linear forwards;
+}
+
+.progress-text {
+    min-width: 50px;
+    font-size: 20px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.progress-text::after {
+    content: counter(progress) ' %';
+    //設置一個名為 progress 的計數器，並在數字後面加上 %
+    animation: progress-text-animation 1.5s linear forwards;
+    //progress-text-animation 1.5s linear forwards infinite; 無限循環
+    counter-reset: progress var(--progress); 
+    //以變數 var(--progress) 重置 progress 計數器
+}
+
+@keyframes progress-animation {
+    0% {
+        width: 0;
+        background-color: rgba(255, 255, 255, 0.5);
+      }
+    33.33% {
+        width: 25%;
+        background-color: rgba(255, 255, 255, 0.6);
+      }
+    66.67% {
+        width: 50%;
+        background-color: rgba(255, 255, 255, 0.7);
+      }
+    100% {
+        width: 75%;
+        background-color: rgba(255, 255, 255, 0.8);
+      }
+}
+
+@keyframes progress-text-animation {
+    @for $i from 0 through 75 {
+      #{calc($i / 75 * 100%)} {
+        --progress: #{$i}; //#{}為scss插值寫法
+      }
+    }
+  }

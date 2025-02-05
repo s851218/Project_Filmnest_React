@@ -1,0 +1,36 @@
+// 手機優先；主要斷點與 bootstrap 一樣
+@mixin xs{
+  @media (min-width: 375px) {
+    @content;   
+  }
+}
+
+@mixin tiny{
+   @media (min-width: 420px){
+     @content;
+   }
+ }
+
+@mixin xs-sm-1{
+  @media (min-width: 503px) {
+    @content;
+  }
+}
+
+@mixin sm{
+    @media (min-width: 576px){
+      @content;
+    }
+  }
+  
+  @mixin md{
+    @media (min-width: 768px){
+      @content;
+    }
+  }
+  
+  @mixin lg{
+    @media (min-width: 992px){
+      @content;
+    }
+  }

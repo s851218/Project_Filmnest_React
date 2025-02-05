@@ -1,0 +1,148 @@
+
+.swiper-button-prev.custom-style-prev,.custom-style-next.swiper-button-next{
+    position: static;
+    width: 28px;
+    height: 28px;
+    border:1px solid;
+    border-color: $primary-600;
+    border-radius: 60px;
+    margin-top: 0;
+}
+.swiper-pagination.custom-style-pagination{
+    position: static;
+    margin-right: 16px;
+    margin-left: 16px;
+}
+.custom-style-prev.swiper-button-prev:after{
+    content: "\e5cb";
+    color: #FFFFFF;
+    font-size: 20px;
+    font-family: "Material Symbols Outlined";
+}
+.custom-style-next.swiper-button-next:after{
+    content: "\e5cc";
+    color: #FFFFFF;
+    font-size: 20px;
+    font-family: "Material Symbols Outlined";
+}
+.custom-style-pagination>.swiper-pagination-bullet-active{
+    background: #FFFFFF;
+}
+
+// project-intro
+// 劇照 swiper
+.projectIntroSwiper .swiper-slide {
+  opacity: 0.4;
+}
+
+.projectIntroSwiper .swiper-slide-thumb-active {
+  opacity: 1;
+}
+
+//手機版 劇照 Swiper
+.swiper-button-prev.projectIntroSwiper-button-prev {
+  &::after {
+    content: "";
+    @media (max-width: 768px) {
+      content: "\e5cb";
+      font-family: "Material Symbols Outlined";
+      font-size: 20px;
+      color: $white;
+      padding: 0.25rem;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+    }
+  }
+  &:hover::after {
+    background: rgba(255, 255, 255, 0.6);
+  }
+  &:active::after {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+
+.swiper-button-next.projectIntroSwiper-button-next {
+  &::after {
+    content: "";
+    @media (max-width: 768px) {
+      content: "\e5cc";
+      font-family: "Material Symbols Outlined";
+      font-size: 20px;
+      padding: 0.25rem;
+      color: $white;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 50%;
+    }
+  }
+  &:hover::after {
+    background: rgba(255, 255, 255, 0.6);
+  }
+  &:active::after {
+    background: rgba(255, 255, 255, 0.5);
+  }
+}
+// 第一張左邊按鈕隱藏；最後一張右邊按鈕隱藏
+.swiper-button-prev.projectIntroSwiper-button-prev.swiper-button-disabled,
+.swiper-button-next.projectIntroSwiper-button-next.swiper-button-disabled {
+  opacity: 0;
+}
+
+// 贊助方案 分頁器
+.swiper-pagination.feedbackChoiceSwiper-pagination{
+  position: static;
+  margin-bottom: 2px;
+}
+
+.swiper-pagination-bullet.feedbackChoiceSwiper-pagination-bullet{
+  width: 8px;
+  height: 8px;
+  margin: 0 4px;
+}
+
+.feedbackChoiceSwiper-pagination>.swiper-pagination-bullet,.feedbackChoiceSwiper-pagination>.swiper-pagination-bullet{
+  background:  rgba(255, 255, 255, 0.2) ;
+}
+
+.feedbackChoiceSwiper-pagination>.swiper-pagination-bullet-active,.feedbackChoiceSwiper-pagination>.swiper-pagination-bullet-active{
+  background: $white;
+}
+
+//贊助方案 左右箭頭
+// .swiper-button-prev.feedbackChoiceSwiper-button-prev::after{
+//     content: '\e5cb';
+//      font-family: "Material Symbols Outlined";
+//      font-size: 20px;
+//      color: $white;
+//      width: 28px;
+//      height: 28px;
+//      border: 1px solid rgba(255, 255, 255, 0.4);
+//      border-radius: 60%;
+//      background: transparent;
+// }
+
+// .swiper-button-next.feedbackChoiceSwiper-button-next::after{
+//     content: '\e5cc';
+//       font-family: "Material Symbols Outlined";
+//       font-size: 20px;
+//       color: $white;
+//       width: 28px;
+//       height: 28px;
+//       border: 1px solid rgba(255, 255, 255, 0.4);
+//       border-radius: 60%;
+//       background: transparent;
+// }
+
+// .swiper-button-prev.feedbackChoiceSwiper-button-prev, .swiper-button-next.feedbackChoiceSwiper-button-next {
+//   position: static;
+//   margin-top: 0; 
+// }
+
+// .swiper-button-prev.feedbackChoiceSwiper-button-prev{
+//   margin-right: 12px;
+// }
+
+// .swiper-button-next.feedbackChoiceSwiper-button-next{
+//   margin-left: 12px;
+// }

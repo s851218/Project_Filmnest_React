@@ -1,0 +1,38 @@
+
+
+//付款表單群組
+.payment-fieldset{
+    border: 1px solid #606060;
+    border-radius: 8px;
+    padding: 16px;
+}
+.payment-lengend{
+    float: none; //讓 legend 變成酷酷的東西
+    width: auto;
+    padding: 0 8px;
+    font-weight: 500;
+}
+
+//延伸 label 選取範圍
+//運用 bootstrap 延伸連結概念：https://bootstrap5.hexschool.com/docs/5.1/helpers/stretched-link/
+.accordion-button {
+    position: relative;
+  }
+
+.accordion-button label::before { //將 ::after 改成 ::before，因為前者會跟「必填星號」衝突
+    content: '';
+    position: absolute;
+    inset: 0;
+}
+
+.checkout-info-sidebar{
+    position: sticky;
+    top: 100px;
+}
+
+.d-xs1-block {
+    display: none;
+    @include xs-sm-1 {
+        display: block;
+    }
+}

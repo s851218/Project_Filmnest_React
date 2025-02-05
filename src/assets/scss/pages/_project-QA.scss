@@ -1,0 +1,17 @@
+// accordion 下拉後標題背景顏色
+.accordion-button:not(.collapsed) {
+  color: $white;
+  background: $primary-800;
+  box-shadow: none;
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: var(--bs-accordion-btn-icon);
+  // 原本是 background-image: var(--bs-accordion-btn-active-icon);
+}
+
+// accordion 下拉後 box-shadow
+button:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: 2px 2px 20px 2px #ffffff33;
+}

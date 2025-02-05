@@ -1,0 +1,96 @@
+body {
+  font-family: "Noto Sans TC", sans-serif;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color:white;
+  text-decoration: none;
+}
+
+textarea {
+  resize: none;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.icon-fill {
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
+.lh-1 {
+  line-height: 1;
+}
+
+//文字斷行時會平均分配
+.text-balance {
+  text-wrap: balance;
+}
+
+//依照內容寬度伸縮
+.fit-content{
+  width: fit-content;
+}
+
+//必填星號
+.required::after {
+  content: "*";
+  color: red;
+  margin-left: 4px;
+}
+
+//modal遮罩
+
+.modal-backdrop {
+  --bs-backdrop-opacity: .7;
+}
+
+.bg-ligth-deco {
+  position: relative;
+  &::before {
+    content: "";
+    width: 200px;
+    height: 180px;
+    border-radius: 100%;
+    position: absolute;
+    top: 305px;
+    left: -72px;
+    background-color: #686868;
+    z-index: -1;
+    filter: blur(250px);
+    @media (min-width:768px) {
+      width: 350px;
+      height: 330px;
+    }
+    @media (min-width:992px) {
+      width: 420px;
+      height: 400px;
+    }
+  }
+  &::after {
+    content: "";
+    width: 300px;
+    height: 300px;
+    border-radius: 100%;
+    position: absolute;
+    top: 600px;
+    right: 50px;
+    background-color: #686868;
+    z-index: -1;
+    filter: blur(250px);
+    @media (min-width:768px) {
+      width: 350px;
+      height: 330px;
+    }
+    @media (min-width:992px) {
+      width: 420px;
+      height: 400px;
+    }
+  }
+}

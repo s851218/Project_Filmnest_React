@@ -1,0 +1,83 @@
+//專案分類
+.project-select {
+  text-wrap: wrap;
+  @media screen and (min-width: 768px) {
+    text-wrap: nowrap;
+  }
+}
+
+// pagination
+.pagination-item {
+  display: block;
+  text-align: center;
+  width: 32px;
+  height: 32px;
+  padding: 4px 0;
+  color: $white;
+  border: 1px solid #606060;
+  @media screen and (min-width: 768px) {
+    width: 48px;
+    height: 48px;
+    padding: 12px 0;
+  }
+  &:hover {
+    box-shadow: 2px 2px 20px 2px rgba(255, 255, 255, 0.2);
+  }
+}
+
+.pagination-item-active {
+  background: $primary-800;
+  box-shadow: 2px 2px 20px 2px rgba(255, 255, 255, 0.2);
+}
+
+.pagination-item-disabled {
+  color: $primary-600;
+  pointer-events: none;
+}
+
+.project-spacing {
+  @media screen and (min-width: 375px) {
+    justify-content: flex-start;
+    gap: 16px;
+  }
+  @media screen and (max-width: 375px) {
+    justify-content: space-between;
+  }
+}
+
+// 光暈裝飾
+.bg-layer-blur-explore::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 300px;
+  right: 0;
+  width: 399px;
+  height: 395px;
+  background: rgba(255, 255, 255, 0.6);
+  filter: blur(250px);
+
+  @media screen and (max-width: 1200px) {
+    width: 199px;
+    height: 195px;
+    filter: blur(150px);
+  }
+}
+
+.bg-layer-blur-explore::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 1200px;
+  left: 0;
+  width: 399px;
+  height: 395px;
+  background: rgba(255, 255, 255, 0.6);
+  filter: blur(300px);
+
+  @media screen and (max-width: 1200px) {
+    width: 199px;
+    height: 195px;
+    filter: blur(150px);
+  }
+}

@@ -1,0 +1,12 @@
+.daterange {
+  position: relative;
+  &::before {
+    position: absolute;
+    content: "~";
+    left: 49%;
+    bottom: 10%;
+    @media (min-width:992px) {
+      left: 49.5%;
+    }
+  }
+}

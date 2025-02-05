@@ -1,0 +1,178 @@
+.bg-transparent {
+  background-color: transparent;
+}
+
+.navbar-dark {
+  .nav-link {
+    color: #FFF;
+  }
+}
+
+.navbar-toggler-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.login-btn {
+  border-color: transparent;
+  &:hover {
+    border-color: #FFF;
+  }
+}
+
+.nav-btn-deco::before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 1px;
+  opacity: 40%;
+  background: #FFF;
+  // left: -32px;
+  right: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.nav-btn-deco:hover::before {
+  opacity: 0%;
+}
+
+.DropdownDeco {
+  width: 24px;
+  height: 24px;
+  &::before {
+    font-family: "Material Symbols Outlined";
+    font-size: 24px;
+    line-height: 1;
+    font-weight: 400;
+    content: "\e313";
+  }
+}
+
+.Dropdown.show {
+  .DropdownDeco::before {
+    content: "\e316";
+  }
+}
+
+.dropdown-menu[data-bs-popper] {
+  margin-top: .5rem;
+}
+
+.navbar > .container {
+  justify-content:start;
+  @media (min-width: 992px) {
+    justify-content: space-between;
+  }
+}
+
+.navbar {
+  position: fixed;
+  background-color: transparent;
+  top: 0;
+  left: 0;
+  right: 0;
+  transition: all 0.3s ease-in-out;
+  z-index: 100;
+
+  &.active {
+    background-color: #040404;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  }
+}
+
+
+//search
+// 參考 - AI製作範例：https://codepen.io/zxlee/pen/bGXWgOG?editors=1100
+.search-container {
+  position: relative;
+  display: inline-block;
+}
+.search-input {
+  width: 80px;
+  height: 40px;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  padding: 8px 12px;
+  padding-left: 40px;
+  transition: all 0.3s ease;
+  background-color: transparent;
+}
+
+.search-input::placeholder {
+  color: transparent;
+}
+
+.search-input:focus {
+  width: 365px;
+  background-color: white;
+  color: black;
+}
+
+.search-input:focus::placeholder {
+  color: #6c757d;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 80px;
+  height: 40px;
+  background-color: transparent;
+  border: none;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.search-icon span {
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.search-input:focus + .search-icon {
+  display: none;
+}
+
+.search-input-search-icon {
+  display: none;
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  color: #040404;
+  transition: width 0.3s ease;
+}
+
+.search-input-close-icon {
+  display: none;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  color: #040404;
+  transition: width 0.3s ease;
+}
+
+.search-input:focus ~ span {
+  display: block;
+}
+
+.mobile-search-input {
+  height: 40px;
+  padding: 8px 44px;
+}
+
+.mobile-search-icon {
+  position: absolute;
+  left: 24px;
+  top: 20px;
+  color: #040404;
+}
+
+.mobile-close-icon {
+  position: absolute;
+  right: 24px;
+  top: 20px;
+  color: #040404;
+}

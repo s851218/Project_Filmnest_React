@@ -1,0 +1,81 @@
+.tag-hover-1:hover {
+  color: $primary-1000;
+}
+
+.tag-hover-2:hover {
+  color: $primary-800;
+}
+
+// 提案人-info
+.bg-primary-9-transparent {
+  background: #ffffff1a;
+}
+
+.title-hover {
+  display: inline-block;
+  position: relative;
+
+  &::after {
+    position: absolute;
+    bottom: 0;
+    content: "";
+    display: block;
+    width: 0;
+    height: 2px;
+    background: $white;
+    transition: width 0.3s;
+    right: 0;
+    left: initial;
+  }
+
+  &:hover::after {
+    width: 100%;
+    right: initial;
+    left: 0;
+    //transition: width .3s;
+  }
+}
+// 參考資料：https://codepen.io/Kawaizombi/pen/GwVWRb?editors=1100
+
+// 3個專案、周先生
+.icon-text-hover {
+  color: $white;
+  &:hover {
+    color: $primary-500;
+    transition: 0.25s;
+  }
+}
+
+.img-director {
+  max-width: 160px;
+  height: 120px;
+  @media screen and (max-width: 768px) {
+    max-width: 125px;
+  }
+}
+
+.social-media-hover {
+  color: $primary-200;
+  &:hover {
+    color: $primary-500;
+    transition: 0.15s;
+  }
+}
+
+.bg-layer-blur::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  width: 499px;
+  height: 495px;
+  background: rgba(255, 255, 255, 0.6);
+  filter: blur(250px);
+
+  @media screen and (max-width: 1400px) {
+    width: 299px;
+    height: 295px;
+    filter: blur(150px);
+  }
+}
