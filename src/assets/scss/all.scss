@@ -1,8 +1,8 @@
-@import "../../node_modules/bootstrap/scss/functions";
+@import "bootstrap/scss/functions";
 @import "./utils/variables";
 @import "./utils/utilities";
 @import "./mixins/buttons";
-@import "../../node_modules/bootstrap";
+@import "bootstrap/scss/bootstrap";
 
 // 字體
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap");
