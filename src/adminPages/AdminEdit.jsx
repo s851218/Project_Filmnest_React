@@ -17,7 +17,7 @@ export default function AdminEdit() {
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" style={getActiveStyle} to="/admin/adminEdit/news">
+            <NavLink className="nav-link" style={getActiveStyle} to="/admin/adminEdit/post">
               最新消息
             </NavLink>
           </li>

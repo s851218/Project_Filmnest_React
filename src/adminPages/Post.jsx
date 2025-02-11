@@ -2,44 +2,50 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 const apiBase = import.meta.env.VITE_API_BASE;
-export default function Faq() {
-  const [faqsData, setFaqsData] = useState([]);
+export default function Post() {
+  const [postsData, setPostsData] = useState([]);
   const [isEdit, setIsEdit] = useState(null);
   const [isAdd, setIsAdd] = useState(false);
 
-  // 新增問答
+  // 新增最新消息
   const {
     register,
     handleSubmit,
+    watch,
+    setValue,
     reset,
     formState: { errors },
-  } = useForm({ mode: "onChange" });
+  } = useForm({ mode: "onChange", defaultValues: { schedule: "" } });
+
+  const schedule = watch("date");
 
   const onSubmit = async (data) => {
-    const faqData = {
+    const postData = {
       projectId: 1,
       title: data.title,
       content: data.content,
-      date: "date",
+      date: data.date === "now" ? new Date().toISOString() : data.schedule,
     };
-    const now = new Date();
-    const formatDate = now.toISOString().slice(0, 16).replace("T", " ");
-    const newFaq = {
-      ...faqData,
-      date: formatDate, // 設定為當前時間
+    console.log(data);
+
+    const formatDate = postData.date.slice(0, 16).replace("T", " ");
+    const newPost = {
+      ...postData,
+      date: formatDate,
     };
+
     try {
-      await axios.post(`${apiBase}/faqs`, newFaq);
+      await axios.post(`${apiBase}/posts`, newPost);
       setIsAdd(false);
       alert("新增成功");
-      getFaqData();
+      getPostsData();
       reset();
     } catch (error) {
       alert("新增失敗");
     }
   };
 
-  // 編輯問答
+  // 編輯最新消息
   const {
     register: updateRegister,
     handleSubmit: updateHandleSubmit,
@@ -50,45 +56,45 @@ export default function Faq() {
   const onPutSubmit = async (data, id) => {
     const now = new Date();
     const formatDate = now.toISOString().slice(0, 16).replace("T", " ");
-    const updataFaq = {
+    const updataPost = {
       projectId: 1,
       title: data.title,
       content: data.content,
       date: formatDate, // 設定為當前時間
     };
     try {
-      await axios.put(`${apiBase}/faqs/${id}`, updataFaq);
+      await axios.put(`${apiBase}/posts/${id}`, updataPost);
       setIsEdit(null);
       alert("編輯成功");
-      getFaqData();
+      getPostsData();
     } catch (error) {
       alert("編輯失敗");
     }
   };
 
-  // 刪除問答
-  const handleDelFaqData = async (id) => {
+  // 刪除最新消息
+  const handleDelPostData = async (id) => {
     try {
-      await axios.delete(`${apiBase}/faqs/${id}`);
+      await axios.delete(`${apiBase}/posts/${id}`);
       alert("刪除成功");
-      getFaqData();
+      getPostsData();
     } catch (error) {
       console.log("刪除失敗");
     }
   };
 
-  // 取得問答
-  const getFaqData = async () => {
+  // 取得最新消息
+  const getPostsData = async () => {
     try {
-      const response = await axios.get(`${apiBase}/faqs`);
-      setFaqsData(response.data);
+      const response = await axios.get(`${apiBase}/posts`);
+      setPostsData(response.data);
     } catch (error) {
       console.log("取得資料失敗");
     }
   };
 
   useEffect(() => {
-    getFaqData();
+    getPostsData();
   }, []);
 
   return (
@@ -129,6 +135,33 @@ export default function Faq() {
             ></textarea>
             <div className="invalid-feedback text-danger">{errors?.content?.message}</div>
           </div>
+          <div className="mb-3">
+            <label className="form-label me-2">時間</label>
+            <div className="form-check form-check-inline">
+              <input
+                type="radio"
+                value="now"
+                className="form-check-input"
+                {...register("date", {
+                  onChange: () => setValue("schedule", ""),
+                })}
+              />
+              <label className="form-check-label">立即發布</label>
+            </div>
+            <div className="form-check form-check-inline">
+              <input type="radio" value="schedule" className="form-check-input" {...register("date")} />
+              <label className="form-check-label">排程：</label>
+            </div>
+            <input
+              type="datetime-local"
+              className="form-control d-inline w-auto ms-2"
+              disabled={schedule !== "schedule"}
+              {...register("schedule", {
+                validate: (value) => (schedule === "schedule" ? value !== "" || "請選擇排程時間" : true),
+              })}
+            />
+            {errors.schedule && <div className="text-danger">{errors.schedule.message}</div>}
+          </div>
           <div className="d-flex justify-content-end">
             <button type="submit" className="btn btn-primary rounded-2 px-4 py-2 me-3">
               確認送出
@@ -143,19 +176,18 @@ export default function Faq() {
           <i type="button" className="btn btn-primary bi bi-plus-lg fs-1 lh-1 p-1 rounded-2" onClick={() => setIsAdd(true)}></i>
         </div>
       )}
-      {faqsData.map((faq, index) => {
-        const isEditIng = isEdit === faq.id;
+      {postsData.map((post, index) => {
+        const isEditIng = isEdit === post.id;
 
         return (
-          <form className="bg-primary-2 p-5 rounded-3 mb-5" key={faq.id}>
+          <form className="bg-primary-2 p-5 rounded-3 mb-5" key={post.id}>
             <div className="mb-3">
               {!isEditIng && (
                 <div className="d-flex justify-content-between align-items-center">
                   <label htmlFor="title" className="form-label fs-5">
-                    <span className="me-3">{!isEditIng && `Q${parseInt(index) + 1}:`}</span>
-                    {faq.title}
+                    {post.title}
                   </label>
-                  <p className="fs-sm">更新日期:{faq.date}</p>
+                  <p className="fs-sm">更新日期:{post.date}</p>
                 </div>
               )}
               {isEditIng && (
@@ -163,7 +195,7 @@ export default function Faq() {
                   type="text"
                   className={`form-control text-dark bg-white ${updateErrors.title && "is-invalid"}`}
                   id="title"
-                  defaultValue={faq.title}
+                  defaultValue={post.title}
                   {...updateRegister("title", {
                     required: {
                       value: true,
@@ -177,7 +209,7 @@ export default function Faq() {
             <div className="mb-3">
               {!isEditIng && (
                 <label htmlFor="content" className="form-label fs-7">
-                  {faq.content}
+                  {post.content}
                 </label>
               )}
               {isEditIng && (
@@ -185,7 +217,7 @@ export default function Faq() {
                   className={`form-control text-dark bg-white ${updateErrors.content && "is-invalid"}`}
                   id="content"
                   rows="3"
-                  defaultValue={faq.content}
+                  defaultValue={post.content}
                   {...updateRegister("content", {
                     required: {
                       value: true,
@@ -199,7 +231,7 @@ export default function Faq() {
             <div className="d-flex justify-content-end">
               {isEditIng ? (
                 <>
-                  <button type="submit" className="btn btn-primary rounded-2 px-4 py-2 me-3" onClick={updateHandleSubmit((data) => onPutSubmit(data, faq.id))}>
+                  <button type="submit" className="btn btn-primary rounded-2 px-4 py-2 me-3" onClick={updateHandleSubmit((data) => onPutSubmit(data, post.id))}>
                     確認
                   </button>
                   <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => setIsEdit(null)}>
@@ -213,16 +245,16 @@ export default function Faq() {
                     className="btn btn-primary rounded-2 px-4 py-2 me-3"
                     onClick={(e) => {
                       e.preventDefault();
-                      setIsEdit(faq.id);
+                      setIsEdit(post.id);
                       updateReset({
-                        title: faq.title,
-                        content: faq.content,
+                        title: post.title,
+                        content: post.content,
                       });
                     }}
                   >
                     編輯
                   </button>
-                  <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => handleDelFaqData(faq.id)}>
+                  <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => handleDelPostData(post.id)}>
                     刪除
                   </button>
                 </>
