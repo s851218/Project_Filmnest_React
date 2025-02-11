@@ -5,6 +5,7 @@ const apiBase = import.meta.env.VITE_API_BASE;
 export default function Faq() {
   const [faqsData, setFaqsData] = useState([]);
   const [isEdit, setIsEdit] = useState(null);
+  const [isAdd, setIsAdd] = useState(false);
 
   // 新增問答
   const {
@@ -12,7 +13,7 @@ export default function Faq() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({ mode: "onBlur" });
+  } = useForm({ mode: "onChange" });
 
   const onSubmit = async (data) => {
     const faqData = {
@@ -29,6 +30,7 @@ export default function Faq() {
     };
     try {
       await axios.post(`${apiBase}/faqs`, newFaq);
+      setIsAdd(false);
       alert("新增成功");
       getFaqData();
       reset();
@@ -43,7 +45,7 @@ export default function Faq() {
     handleSubmit: updateHandleSubmit,
     reset: updateReset,
     formState: { errors: updateErrors },
-  } = useForm({ mode: "onBlur" });
+  } = useForm({ mode: "onChange" });
 
   const onPutSubmit = async (data, id) => {
     const now = new Date();
@@ -91,50 +93,56 @@ export default function Faq() {
 
   return (
     <>
-      <form className="bg-primary-2 p-5 rounded-3 mb-5" onSubmit={handleSubmit(onSubmit)}>
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">
-            標題
-          </label>
-          <input
-            type="text"
-            className={`form-control bg-white ${errors.title && "is-invalid"}`}
-            id="title"
-            {...register("title", {
-              required: {
-                value: true,
-                message: "標題 為必填!",
-              },
-            })}
-          />
-          <div className="invalid-feedback text-danger">{errors?.title?.message}</div>
+      {isAdd ? (
+        <form className="bg-primary-2 p-5 rounded-3 mb-5" onSubmit={handleSubmit(onSubmit)}>
+          <div className="mb-3">
+            <label htmlFor="title" className="form-label">
+              標題
+            </label>
+            <input
+              type="text"
+              className={`form-control text-dark bg-white ${errors.title && "is-invalid"}`}
+              id="title"
+              {...register("title", {
+                required: {
+                  value: true,
+                  message: "標題 為必填!",
+                },
+              })}
+            />
+            <div className="invalid-feedback text-danger">{errors?.title?.message}</div>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="content" className="form-label">
+              內容
+            </label>
+            <textarea
+              className={`form-control text-dark bg-white ${errors.content && "is-invalid"}`}
+              id="content"
+              rows="3"
+              {...register("content", {
+                required: {
+                  value: true,
+                  message: "內容 為必填!",
+                },
+              })}
+            ></textarea>
+            <div className="invalid-feedback text-danger">{errors?.content?.message}</div>
+          </div>
+          <div className="d-flex justify-content-end">
+            <button type="submit" className="btn btn-primary rounded-2 px-4 py-2 me-3">
+              確認送出
+            </button>
+            <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => setIsAdd(false)}>
+              取消
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div className="d-flex justify-content-end mb-2">
+          <i type="button" class="btn btn-primary bi bi-plus-lg fs-1 lh-1 p-1 rounded-2" onClick={() => setIsAdd(true)}></i>
         </div>
-        <div className="mb-3">
-          <label htmlFor="content" className="form-label">
-            內容
-          </label>
-          <textarea
-            className={`form-control bg-white ${errors.content && "is-invalid"}`}
-            id="content"
-            rows="3"
-            {...register("content", {
-              required: {
-                value: true,
-                message: "內容 為必填!",
-              },
-            })}
-          ></textarea>
-          <div className="invalid-feedback text-danger">{errors?.content?.message}</div>
-        </div>
-        <div className="d-flex justify-content-end">
-          <button type="submit" className="btn btn-primary rounded-2 px-4 py-2 me-3">
-            確認送出
-          </button>
-          <button type="button" className="btn btn-primary rounded-2 px-4 py-2">
-            取消
-          </button>
-        </div>
-      </form>
+      )}
       {faqsData.map((faq, index) => {
         const isEditIng = isEdit === faq.id;
 
@@ -153,7 +161,7 @@ export default function Faq() {
               {isEditIng && (
                 <input
                   type="text"
-                  className={`form-control bg-white ${updateErrors.title && "is-invalid"}`}
+                  className={`form-control text-dark bg-white ${updateErrors.title && "is-invalid"}`}
                   id="title"
                   defaultValue={faq.title}
                   {...updateRegister("title", {
@@ -174,7 +182,7 @@ export default function Faq() {
               )}
               {isEditIng && (
                 <textarea
-                  className={`form-control bg-white ${updateErrors.content && "is-invalid"}`}
+                  className={`form-control text-dark bg-white ${updateErrors.content && "is-invalid"}`}
                   id="content"
                   rows="3"
                   defaultValue={faq.content}
