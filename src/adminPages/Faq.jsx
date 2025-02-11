@@ -33,7 +33,7 @@ export default function Faq() {
       getFaqData();
       reset();
     } catch (error) {
-      console.log(error);
+      alert("新增失敗");
     }
   };
 
