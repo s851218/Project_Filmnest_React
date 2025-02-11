@@ -1,11 +1,15 @@
-import { useState } from "react";
-import axios from "axios";
-import { Modal } from "bootstrap";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import { Outlet } from "react-router";
 
 function App() {
   return (
     <>
-      <h1>你好</h1>
+      <Header />
+      <div className="container mt-20">
+        <Outlet />
+      </div>
+      <Footer />
     </>
   );
 }
