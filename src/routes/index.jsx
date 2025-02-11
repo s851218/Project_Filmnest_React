@@ -12,7 +12,7 @@ import AdminEdit from "../adminPages/AdminEdit";
 import AdminMedia from "../adminPages/AdminMedia";
 import AdminUpload from "../adminPages/AdminUpload";
 import AdminChart from "../adminPages/AdminChart";
-import News from "../adminPages/News";
+import Post from "../adminPages/Post";
 import Intro from "../adminPages/Intro";
 import Faq from "../adminPages/Faq";
 import Feedback from "../adminPages/Feedback";
@@ -64,8 +64,8 @@ const routes = [
                 element: <Intro />,
               },
               {
-                path: "news",
-                element: <News />,
+                path: "post",
+                element: <Post />,
               },
               {
                 path: "faq",
