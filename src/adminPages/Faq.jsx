@@ -26,7 +26,7 @@ export default function Faq() {
     const formatDate = now.toISOString().slice(0, 16).replace("T", " ");
     const newFaq = {
       ...faqData,
-      date: formatDate, // 設定為當前時間
+      date: formatDate,
     };
     try {
       await axios.post(`${apiBase}/faqs`, newFaq);
