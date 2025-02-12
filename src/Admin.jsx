@@ -1,4 +1,4 @@
-import AdminHeader from "./components/AdminHeader";
+import AdminHeader from "./AdminComponents/AdminHeader";
 import Footer from "./components/Footer";
 import { Outlet } from "react-router";
 
