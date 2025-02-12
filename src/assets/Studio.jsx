@@ -8,8 +8,5 @@ import StudioProfile from "./StudioProfile";
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <StudioProfile />
-    <StudioProfile />
-    <StudioProfile />
-    <StudioProfile />
   </StrictMode>
 );
