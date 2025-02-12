@@ -9,5 +9,6 @@ createRoot(document.getElementById("root")).render(
   <StrictMode>
     <StudioProfile />
     <StudioProfile />
+    123
   </StrictMode>
 );
