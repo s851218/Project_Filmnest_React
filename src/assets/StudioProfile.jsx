@@ -30,14 +30,55 @@ function StudioProfile() {
       }
     }
   });
+  const [fileData, setFileData] = useState(null);
 
-  const handleFileChange = async(e) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("file-to-upload",file);
+  const handleUpload = async () => {
+    if (!fileData) {
+      alert("請選擇一張圖片");
+      return;
+    }
+
+    const data = {
+      image: fileData, // Base64 格式的圖片
+    };
 
     try {
-      const res = await axios.post("api_path" , formData)
+      // const response = await axios.post("https://json-server-vercel-tdcc.onrender.com/uploadImages", data);
+      // console.log("成功上傳：", response.data);
+      // alert("圖片上傳成功！");
+
+      setFormValue({
+        ...formValue,
+        studioImageUrl: fileData
+      })
+    } catch (error) {
+      console.error("上傳失敗：", error);
+      alert("圖片上傳失敗");
+    }
+
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0]; //取目標files的內容
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file); // 轉換為 Base64，會進入onload狀態
+      reader.onloadend = () => {  //事件處理器，於每一次讀取結束之後觸發（不論成功或失敗）
+        setFileData(reader.result); // 存 Base64 字串
+      };
+    }
+    
+    handleUpload()
+  };
+
+
+  const handleFileChange2 = async(e) => {
+    // const file = e.target.files[0];
+    // const formData = new FormData();
+    // formData.append("file-to-upload", file);
+
+    try {
+      const res = await axios.post("https://json-server-vercel-tdcc.onrender.com/uploadImages" , formData)
       const imageUrl = res.data.imageUrl
 
       setFormValue({
@@ -108,9 +149,9 @@ function StudioProfile() {
               <div className="mb-5">
                 <label htmlFor="" className="form-label">服務時間</label>
                 <input
-                    type="datetime-local" className="form-control" id=""
-                    // {...register("startTime")}
-                  />
+                  type="datetime-local" className="form-control" id=""
+                  // {...register("startTime")}
+                />
               </div>
 
               <div className="d-flex flex-column mb-5">
