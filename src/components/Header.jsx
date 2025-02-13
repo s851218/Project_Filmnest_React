@@ -6,7 +6,7 @@ export default function Header() {
       <nav className="navbar navbar-expand-md navbar-dark py-5">
         <div className="container">
           <NavLink className="p-0 me-12" to="/">
-            首頁
+            <img src="https://github.com/s851218/Project-FilmNest/blob/main/assets/images/logo.png?raw=true" alt="logo" />
           </NavLink>
           <NavLink className="p-0 me-12" to="/projectExplore">
             探索
