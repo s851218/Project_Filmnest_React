@@ -2,6 +2,7 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./assets/scss/all.scss";
 import "bootstrap";
+import "swiper/css/bundle";
 import { RouterProvider } from "react-router";
 import router from "./routes";
 
