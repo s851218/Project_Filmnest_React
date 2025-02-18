@@ -15,8 +15,6 @@ export default function AboutStudio() {
     }
   }
 
-  console.log(studioProfile)
-
   // 元件初始化
   useEffect(() => {
     getStudioProfile()
@@ -63,7 +61,7 @@ export default function AboutStudio() {
                 <div className="col-8">
                   <div className="d-flex flex-column h-100">
                     <h3 className="fs-4 mb-3">{groupName}</h3>
-                    <p className="fs-sm"><i class="bi bi-person" /> {personResponsible}</p>
+                    <p className="fs-sm"><i className="bi bi-person" />{personResponsible}</p>
                     <div id="connectUs" className="rounded-1 p-4 mt-auto" style={{background: "#FFFFFF1A",border: "1px solid #606060"}}>
                       <div className="d-flex justify-content-between mb-2">
                         <h3 className="fs-sm mb-0">聯絡我們</h3>
@@ -76,9 +74,9 @@ export default function AboutStudio() {
                     
                       <div className="d-flex justify-content-between">
                         <ul className="list-unstyled mb-0">
-                          <li className="fs-sm mb-1"><a href={`tel:${phone}`}><i class="bi bi-telephone" /> {phone}</a></li>
-                          <li className="fs-sm mb-1"><a href={email}><i class="bi bi-envelope" /> {email}</a></li>
-                          <li className="fs-sm"><i class="bi bi-clock" /> {startTime}~{endTime}</li>
+                          <li className="fs-sm mb-1"><a href={`tel:${phone}`}><i className="bi bi-telephone" /> {phone}</a></li>
+                          <li className="fs-sm mb-1"><a href={email}><i className="bi bi-envelope" /> {email}</a></li>
+                          <li className="fs-sm"><i className="bi bi-clock" /> {startTime}~{endTime}</li>
                         </ul>
                       </div>
                     </div>

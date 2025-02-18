@@ -40,7 +40,7 @@ export default function AboutProposal() {
   
   return (
     <>
-      <div class="banner-bg-mask"
+      <div className="banner-bg-mask"
         style={{
           background: `url(${bannerImageUrl})`,
           backgroundSize: "cover",
@@ -48,18 +48,18 @@ export default function AboutProposal() {
           backgroundPosition: "center 0",
         }}
       >
-      <div class="aboutProposal-banner-wrap container position-relative z-3">
-        <h1 class="text-center slogn-position mb-0">{slogan}</h1>
-        <div class="aboutProposal-slogan-card-position container px-md-0">
-          <div class="position-relative">
-            <ul class="list-unstyled d-flex justify-content-center mb-0 w-100 w-md-75 w-xl-50 mx-auto banner-deco">
-              <li class="slogan-card-bg text-center w-50 py-3 py-md-5 me-3 me-md-10">
-                <p class="fs-sm fs-md-base mb-2">累積金額</p>
-                <h2 class="fs-6 fs-md-1 lh-base mb-0">{totalFundsRaised.toLocaleString()}</h2>
+      <div className="aboutProposal-banner-wrap container position-relative z-3">
+        <h1 className="text-center slogn-position mb-0">{slogan}</h1>
+        <div className="aboutProposal-slogan-card-position container px-md-0">
+          <div className="position-relative">
+            <ul className="list-unstyled d-flex justify-content-center mb-0 w-100 w-md-75 w-xl-50 mx-auto banner-deco">
+              <li className="slogan-card-bg text-center w-50 py-3 py-md-5 me-3 me-md-10">
+                <p className="fs-sm fs-md-base mb-2">累積金額</p>
+                <h2 className="fs-6 fs-md-1 lh-base mb-0">{totalFundsRaised.toLocaleString()}</h2>
               </li>
-              <li class="slogan-card-bg text-center w-50 py-3 py-md-5">
-                <p class="fs-sm fs-md-base mb-2">贊助人數</p>
-                <h2 class="fs-6 fs-md-1 lh-base mb-0">{sponsors.toLocaleString()}</h2>
+              <li className="slogan-card-bg text-center w-50 py-3 py-md-5">
+                <p className="fs-sm fs-md-base mb-2">贊助人數</p>
+                <h2 className="fs-6 fs-md-1 lh-base mb-0">{sponsors.toLocaleString()}</h2>
               </li>
             </ul>
           </div>
@@ -67,15 +67,15 @@ export default function AboutProposal() {
       </div>
     </div>
 
-    <div class="process-wrap pb-18 pb-md-30">
-      <div class="process container py-0 py-md-20 text-center">
-        <h2 class="mb-8 mb-md-20">{step.title}</h2>
-        <ul class="list-unstyled text-start row row-cols-1 row-cols-lg-3 mb-8 mb-lg-20">
+    <div className="process-wrap pb-18 pb-md-30">
+      <div className="process container py-0 py-md-20 text-center">
+        <h2 className="mb-8 mb-md-20">{step.title}</h2>
+        <ul className="list-unstyled text-start row row-cols-1 row-cols-lg-3 mb-8 mb-lg-20">
           {
             step.steps.map(({id,name,content,image},index) => (
-              <li key={index} class="col mb-lg-0">
+              <li key={index} className="col mb-lg-0">
                 <div 
-                  class="process-card-mask mb-5 border border-white-1"
+                  className="process-card-mask mb-5 border border-white-1"
                   style={{
                     backgroundImage:`url(${image})`,
                     backgroundSize: "cover",
@@ -83,12 +83,12 @@ export default function AboutProposal() {
                     backgroundPosition: "center center",
                   }}
                 >
-                  <div class="process-card position-relative z-2 p-3 p-lg-10 d-flex flex-column">
-                    <h3 class="fs-base fs-lg-7 d-flex flex-column">
-                      <span class="fs-3 fs-lg-1 lh-base mb-1">{id}</span>
+                  <div className="process-card position-relative z-2 p-3 p-lg-10 d-flex flex-column">
+                    <h3 className="fs-base fs-lg-7 d-flex flex-column">
+                      <span className="fs-3 fs-lg-1 lh-base mb-1">{id}</span>
                       {name}
                     </h3>
-                    <p class="mt-auto mb-0">
+                    <p className="mt-auto mb-0">
                       {content}
                     </p>
                   </div>
@@ -96,7 +96,7 @@ export default function AboutProposal() {
               </li>))
           }
         </ul>
-        <a href="terms-of-use.html" class="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">我要提案</a>
+        <a href="terms-of-use.html" className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">我要提案</a>
       </div>
     </div>
     </>

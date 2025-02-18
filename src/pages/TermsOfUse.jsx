@@ -12,7 +12,6 @@ export default function TermsOfUse() {
       contents:[
         "註冊要求：用戶需年滿18歲並擁有有效的電子郵件地址進行註冊。",
         "帳戶安全：用戶應妥善保管自己的帳戶資訊和密碼，對於帳戶內發生的所有活動負責。",
-        
       ]
     },{
       title: "三、募資項目",
@@ -55,18 +54,18 @@ export default function TermsOfUse() {
 
 
   return(<>
-    <div class="container pt-20 pt-xl-40 pb-10 pb-md-15 pb-xl-30 text-center">
-      <h1 class="text-center mb-5 mb-sm-8 mb-md-10">募資平台條款說明</h1>
-      <div class="row justify-content-center mb-5 mb-sm-8 mb-md-10 text-start">
-        <div class="col-12 col-md-10">
-          <div class="p-5 p-sm-8 p-md-10 border">
+    <div className="container pt-20 pt-xl-40 pb-10 pb-md-15 pb-xl-30 text-center">
+      <h1 className="text-center mb-5 mb-sm-8 mb-md-10">募資平台條款說明</h1>
+      <div className="row justify-content-center mb-5 mb-sm-8 mb-md-10 text-start">
+        <div className="col-12 col-md-10">
+          <div className="p-5 p-sm-8 p-md-10 border">
             {
               data.map(({title,contents},index)=>(
                 <>
-                  <h2 key={index} class="fs-6">{title}</h2>
+                  <h2 key={index} className="fs-6">{title}</h2>
                   {contents.map((content,index)=>(
                     <>
-                      <p key={index} class={`${((index + 1) !== contents.length) && ("mb-0")}`}>{content}</p>
+                      <p key={index} className={`${((index + 1) !== contents.length) && ("mb-0")}`}>{content}</p>
                     </>
                   ))}
                 </>
@@ -75,7 +74,7 @@ export default function TermsOfUse() {
           </div>
         </div>
       </div>
-      <a href="createProposal.html" class="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">前往提案</a>
+      <a href="createProposal.html" className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">前往提案</a>
     </div>
   </>)
 }
