@@ -1,9 +1,7 @@
-body {
-  background-color: white;
-  color: black;
-}
+$gray-900: #212529 !default;
+$white: #fff !default;
 
-.form-control {
-  background-color: white;
-  color: black;
-}
+$body-color: $gray-900 ;
+$body-bg: $white ;
+
+@import './all.scss';
