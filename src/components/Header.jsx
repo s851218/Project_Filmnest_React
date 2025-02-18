@@ -15,8 +15,11 @@ export default function Header() {
             後台頁面
           </NavLink>
           <NavLink to="/aboutStudio" className="p-0 me-12">
-              提案者頁面
-            </NavLink>
+            提案者頁面
+          </NavLink>
+          <NavLink to="/termsOfUse" className="p-0 me-12">
+            募資條款說明
+          </NavLink>
           <div className="ms-auto">
             <NavLink to="/login" className="btn btn-outline-light fw-bolder py-3 px-5 me-3">
               登入 / 註冊
