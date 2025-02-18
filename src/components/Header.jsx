@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 export default function Header() {
   const profile = useSelector((state) => state.user.profile);
+  console.log(profile);
 
   return (
     <>

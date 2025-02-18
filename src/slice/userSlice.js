@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   profile: {
     token: "",
+    userId: "",
     userName: "",
     imageUrl: "",
   },
@@ -13,6 +14,7 @@ export const userSlice = createSlice({
     setLogin(state, { payload }) {
       state.profile = {
         token: payload.token,
+        userId: payload.userId,
         userName: payload.userName,
         imageUrl: payload.imageUrl,
       };

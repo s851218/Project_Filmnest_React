@@ -25,9 +25,12 @@ export default function Login() {
     try {
       const response = await axios.post(`${apiBase}/login`, userData);
       const { accessToken, user } = response.data;
+      console.log(user);
+
       dispatch(
         setLogin({
           token: accessToken,
+          userId: user.id,
           userName: user.userProfile.userName,
           imageUrl: user.userProfile.userImageUrl,
         })
