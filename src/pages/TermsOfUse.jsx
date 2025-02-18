@@ -58,20 +58,20 @@ export default function TermsOfUse() {
       <h1 className="text-center mb-5 mb-sm-8 mb-md-10">募資平台條款說明</h1>
       <div className="row justify-content-center mb-5 mb-sm-8 mb-md-10 text-start">
         <div className="col-12 col-md-10">
-          <div className="p-5 p-sm-8 p-md-10 border">
+          <ul className="list-unstyled p-5 p-sm-8 p-md-10 border">
             {
               data.map(({title,contents},index)=>(
-                <>
-                  <h2 key={index} className="fs-6">{title}</h2>
+                <li key={index}>
+                  <h2 className="fs-6">{title}</h2>
                   {contents.map((content,index)=>(
                     <>
                       <p key={index} className={`${((index + 1) !== contents.length) && ("mb-0")}`}>{content}</p>
                     </>
                   ))}
-                </>
+                </li>
               ))
             }
-          </div>
+          </ul>
         </div>
       </div>
       <a href="createProposal.html" className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">前往提案</a>
