@@ -16,6 +16,8 @@ import Post from "../adminPages/Post";
 import Intro from "../adminPages/Intro";
 import Faq from "../adminPages/Faq";
 import Feedback from "../adminPages/Feedback";
+import AboutStudio from "../assets/AboutStudio";
+
 const routes = [
   {
     path: "/",
@@ -37,6 +39,10 @@ const routes = [
         path: "aboutProposal",
         element: <AboutProposal />,
       },
+      {
+        path: "aboutStudio",
+        element: <AboutStudio />,
+      }
     ],
   },
   {
