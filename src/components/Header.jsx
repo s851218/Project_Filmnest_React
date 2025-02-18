@@ -1,6 +1,9 @@
 import { NavLink } from "react-router";
+import { useSelector } from "react-redux";
 
 export default function Header() {
+  const profile = useSelector((state) => state.user.profile);
+
   return (
     <>
       <nav className="navbar navbar-expand-md navbar-dark py-5">
@@ -14,10 +17,17 @@ export default function Header() {
           <NavLink className="p-0 me-12" to="/admin/adminProfile">
             後台頁面
           </NavLink>
-          <div className="ms-auto">
-            <NavLink to="/login" className="btn btn-outline-light fw-bolder py-3 px-5 me-3">
-              登入 / 註冊
-            </NavLink>
+          <div className="ms-auto d-flex align-items-center">
+            {profile.token ? (
+              <NavLink to="/personalCenter" className="btn btn-outline-light fw-bolder py-1 px-1 me-3 border-0">
+                <span className="me-2">{profile.userName}</span> <img src={profile.imageUrl} alt="" />
+              </NavLink>
+            ) : (
+              <NavLink to="/login" className="btn btn-outline-light fw-bolder py-3 px-5 me-3">
+                登入 / 註冊
+              </NavLink>
+            )}
+            <div className="border-start border-white mx-3" style={{ height: "20px" }}></div>
             <NavLink to="/aboutProposal" className="btn btn-outline-light fw-bolder py-3 px-5 ms-8">
               我要提案
             </NavLink>

@@ -16,6 +16,8 @@ import Post from "../adminPages/Post";
 import Intro from "../adminPages/Intro";
 import Faq from "../adminPages/Faq";
 import Feedback from "../adminPages/Feedback";
+import SignUp from "../pages/Signup";
+import PersonalCenter from "../pages/PersonalCenter";
 const routes = [
   {
     path: "/",
@@ -32,6 +34,14 @@ const routes = [
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "personalCenter",
+        element: <PersonalCenter />,
+      },
+      {
+        path: "signUp",
+        element: <SignUp />,
       },
       {
         path: "aboutProposal",

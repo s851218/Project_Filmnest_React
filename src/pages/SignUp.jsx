@@ -1,58 +1,59 @@
 import { Link } from "react-router";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router";
-import { useDispatch } from "react-redux";
-import { setLogin } from "../slice/userSlice";
 import axios from "axios";
 const apiBase = import.meta.env.VITE_API_BASE;
 
-export default function Login() {
+export default function SignUp() {
   const {
     register,
     handleSubmit,
+    control,
     reset,
     formState: { errors },
   } = useForm({ mode: "onChange" });
+  // 使用 useWatch 監聽 password 欄位的值
+  const password = useWatch({ control, name: "password", defaultValue: "" });
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const login = async (data) => {
+  const signUp = async (data) => {
     const userData = {
       email: data.email,
       password: data.password,
+      userProfile: {
+        userName: data.userName,
+        nickName: "",
+        phone: "",
+        birthdate: "",
+        bio: "",
+        userImageUrl: `https://ui-avatars.com/api/?name=${data.userName}&background=0D8ABC&color=fff&size=40&rounded=true&length=1`,
+      },
+      hasStudio: false,
     };
     try {
-      const response = await axios.post(`${apiBase}/login`, userData);
-      const { accessToken, user } = response.data;
-      dispatch(
-        setLogin({
-          token: accessToken,
-          userName: user.userProfile.userName,
-          imageUrl: user.userProfile.userImageUrl,
-        })
-      );
-      alert("登入成功");
+      await axios.post(`${apiBase}/signUp`, userData);
+      alert("註冊成功");
       reset;
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
     <div className="login-bg">
       <div className="container pt-20 pb-10">
         <div className="row">
           <div className="col-6 mx-auto">
             <div className="mx-auto" style={{ width: "216px" }}>
-              <h1 className="text-center h6 lh-base mb-6 border-bottom border-2 py-3">會員登入</h1>
+              <h1 className="text-center h6 lh-base mb-6 border-bottom border-2 py-3">會員註冊</h1>
             </div>
             <div className="bg-primary-9 py-10 px-30 mb-20 rounded-2">
               <div className="mb-10 text-center">
                 <p className="mb-0">
-                  是新朋友嗎?
-                  <Link to="/signUp" className="ms-2 border-bottom">
-                    立即註冊
+                  已經有帳號?
+                  <Link to="/login" className="ms-2 border-bottom">
+                    立即登入
                   </Link>
                 </p>
               </div>
@@ -72,11 +73,11 @@ export default function Login() {
               <div className="mb-10">
                 <div className="d-flex align-items-center my-3">
                   <div className="flex-grow-1 border-top border-white"></div>
-                  <span className="mx-3 fw-bold">或使用 FilmNest 影巢帳號登入</span>
+                  <span className="mx-3 fw-bold">或註冊 FilmNest 影巢帳號</span>
                   <div className="flex-grow-1 border-top border-white"></div>
                 </div>
               </div>
-              <form className="" onSubmit={handleSubmit(login)}>
+              <form className="" onSubmit={handleSubmit(signUp)}>
                 <div className="mb-5">
                   <label htmlFor="email" className="mb-2">
                     帳號
@@ -100,32 +101,70 @@ export default function Login() {
                   {errors.email && <div className="invalid-feedback text-danger">{errors.email.message}</div>}
                 </div>
                 <div className="mb-5">
+                  <label htmlFor="userName" className="mb-2">
+                    姓名
+                  </label>
+                  <input
+                    id="userName"
+                    type="text"
+                    className={`form-control ${errors.userName && "is-invalid"}`}
+                    placeholder="請輸入真實姓名"
+                    {...register("userName", {
+                      required: {
+                        value: true,
+                        message: "姓名為必填!",
+                      },
+                    })}
+                  />
+                  {errors.userName && <div className="invalid-feedback text-danger">{errors.userName.message}</div>}
+                </div>
+                <div className="mb-5">
                   <label htmlFor="password" className="mb-2">
                     密碼
                   </label>
                   <input
                     id="password"
                     type="password"
-                    placeholder="請輸入密碼"
                     className={`form-control ${errors.password && "is-invalid"}`}
+                    placeholder="請輸入密碼(至少8個字元)"
                     {...register("password", {
                       required: {
                         value: true,
                         message: "密碼為必填!",
                       },
+                      minLength: {
+                        value: 8,
+                        message: "長度不得少於8碼",
+                      },
                     })}
                   />
                   {errors.password && <div className="invalid-feedback text-danger">{errors.password.message}</div>}
                 </div>
-                <div className="mb-10 text-end">
-                  <span className="fs-sm mb-3 mb-md-5 ms-auto border-bottom">忘記密碼</span>
+                <div className="mb-10">
+                  <label htmlFor="passwordCheck" className="mb-2">
+                    再次輸入密碼
+                  </label>
+                  <input
+                    id="passwordCheck"
+                    type="password"
+                    className={`form-control ${errors.passwordCheck && "is-invalid"}`}
+                    placeholder="再次輸入密碼"
+                    {...register("passwordCheck", {
+                      required: {
+                        value: true,
+                        message: "再次輸入密碼為必填!",
+                      },
+                      validate: (value) => value === password || "再次輸入的密碼不一致!",
+                    })}
+                  />
+                  {errors.passwordCheck && <div className="invalid-feedback text-danger">{errors.passwordCheck.message}</div>}
                 </div>
                 <div>
                   <button type="submit" className="btn btn-primary form-control py-3 mb-5">
-                    登入
+                    註冊
                   </button>
                   <p className="text-center">
-                    登入後即代表你同意
+                    註冊後即代表你同意
                     <span className="border-bottom">服務條款</span>及<span className="border-bottom">隱私權政策</span>
                   </p>
                 </div>
