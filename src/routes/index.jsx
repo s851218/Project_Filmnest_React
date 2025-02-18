@@ -16,7 +16,7 @@ import Post from "../adminPages/Post";
 import Intro from "../adminPages/Intro";
 import Faq from "../adminPages/Faq";
 import Feedback from "../adminPages/Feedback";
-import AboutStudio from "../assets/AboutStudio";
+import AboutStudio from "../pages/AboutStudio";
 
 const routes = [
   {
