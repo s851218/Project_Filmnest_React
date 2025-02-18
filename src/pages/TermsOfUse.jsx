@@ -74,7 +74,7 @@ export default function TermsOfUse() {
           </ul>
         </div>
       </div>
-      <a href="createProposal.html" className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">前往提案</a>
+      <a href="/#/createProposal" className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">前往提案</a>
     </div>
   </>)
 }

@@ -96,7 +96,7 @@ export default function AboutProposal() {
               </li>))
           }
         </ul>
-        <a href="terms-of-use.html" className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">我要提案</a>
+        <a href="/#/termsOfUse" className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">我要提案</a>
       </div>
     </div>
     </>
