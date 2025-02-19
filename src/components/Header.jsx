@@ -18,6 +18,9 @@ export default function Header() {
           <NavLink className="p-0 me-12" to="/admin/adminProfile">
             後台頁面
           </NavLink>
+          <NavLink to="/aboutStudio" className="p-0 me-12">
+            提案者頁面
+          </NavLink>
           <div className="ms-auto d-flex align-items-center">
             {profile.token ? (
               <NavLink to="/personalCenter" className="btn btn-outline-light fw-bolder py-1 px-1 me-3 border-0">

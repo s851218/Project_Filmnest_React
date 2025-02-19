@@ -18,6 +18,10 @@ import Faq from "../adminPages/Faq";
 import Feedback from "../adminPages/Feedback";
 import SignUp from "../pages/Signup";
 import PersonalCenter from "../pages/PersonalCenter";
+import AboutStudio from "../pages/AboutStudio";
+import TermsOfUse from "../pages/TermsOfUse";
+import CreateProposal from "../pages/CreateProposal";
+
 const routes = [
   {
     path: "/",
@@ -47,6 +51,16 @@ const routes = [
         path: "aboutProposal",
         element: <AboutProposal />,
       },
+      {
+        path: "aboutStudio",
+        element: <AboutStudio />,
+      },{
+        path: "termsOfUse",
+        element: <TermsOfUse />,
+      },{
+        path: "createProposal",
+        element: <CreateProposal />
+      }
     ],
   },
   {
