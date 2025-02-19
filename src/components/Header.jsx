@@ -21,7 +21,7 @@ export default function Header() {
           <div className="ms-auto d-flex align-items-center">
             {profile.token ? (
               <NavLink to="/personalCenter" className="btn btn-outline-light fw-bolder py-1 px-1 me-3 border-0">
-                <span className="me-2">{profile.userName}</span> <img src={profile.imageUrl} alt="" />
+                <span className="me-2">{profile.userName}</span> <img src={profile.imageUrl} className="rounded-circle object-fit-cover" style={{ width: "40px", height: "40px" }} alt="" />
               </NavLink>
             ) : (
               <NavLink to="/login" className="btn btn-outline-light fw-bolder py-3 px-5 me-3">
