@@ -1,3 +1,5 @@
+import { useForm } from "react-hook-form"
+
 {/* <script src="https://code.jquery.com/jquery-3.7.1.js" />
 <!-- Bootstrap DatePicker 日期選擇器模組.JS -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" />
@@ -6,12 +8,41 @@
 <!-- Bootstrap DatePicker 日期選擇器模組.CSS -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" rel="stylesheet" /> */}
 
+
 export default function CreatePropsal() {
+  {/*
+    email: "電子信箱"
+    endTime: "服務時間(迄)"
+    groupName: "團隊名稱"
+    personResponsible: "負責人"
+    phone: "電話"
+    startTime: "服務時間(起)"
+    studioFb: "FB"
+    studioIg: "IG"
+    studioImageUrl: "大頭貼"
+    studioLine: "LINE"
+    teamIntro: "團隊簡介"
+  */}
+  
+  const {
+    register,
+    handleSubmit,
+    control
+  } = useForm({
+    defaultValues: {
+
+    }
+  })
+
+  const onSubmit = () => {
+
+  }
+
   return (
     <>
       <div class="container pt-20 pt-xl-40 pb-10 pb-md-15 pb-xl-30 text-center">
         <h1 class="text-center mb-5 mb-sm-8 mb-md-10">發起專案</h1>
-        <form action="#">
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div class="container">
             <div class="row justify-content-center mb-5 mb-sm-8 mb-md-10 text-start">
               <fieldset class="payment-fieldset col-12 col-md-10">
@@ -165,8 +196,10 @@ export default function CreatePropsal() {
               </div>
             </div>
           </div>  */}
+
+          {/* <button type="submit" class="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto"><a href="completeProposal.html" class="btn btn-primary">送出</a></button> */}
         </form>
-        <a href="completeProposal.html" class="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">送出</a>
+          <a href="completeProposal.html" class="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">送出</a>
       </div>
     </>
   )
