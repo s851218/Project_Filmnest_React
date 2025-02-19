@@ -36,7 +36,12 @@ export default function SignUp() {
       reset;
       navigate("/login");
     } catch (error) {
-      console.log(error);
+      const { data, status } = error.response;
+      if (status === 400 && data === "Email already exists") {
+        alert("此帳號已存在");
+      } else {
+        alert("註冊失敗");
+      }
     }
   };
 
@@ -44,11 +49,11 @@ export default function SignUp() {
     <div className="login-bg">
       <div className="container pt-20 pb-10">
         <div className="row">
-          <div className="col-6 mx-auto">
+          <div className="col-lg-6 mx-auto">
             <div className="mx-auto" style={{ width: "216px" }}>
               <h1 className="text-center h6 lh-base mb-6 border-bottom border-2 py-3">會員註冊</h1>
             </div>
-            <div className="bg-primary-9 py-10 px-30 mb-20 rounded-2">
+            <div className="bg-primary-9 py-10 px-3 px-lg-30 mb-20 rounded-2">
               <div className="mb-10 text-center">
                 <p className="mb-0">
                   已經有帳號?

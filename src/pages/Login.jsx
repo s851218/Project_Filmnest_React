@@ -39,18 +39,25 @@ export default function Login() {
       reset;
       navigate("/");
     } catch (error) {
-      console.log(error);
+      const { data, status } = error.response;
+      if (status === 400 && data === "Cannot find user") {
+        alert("帳號不存在");
+      } else if (status === 400 && data === "Incorrect password") {
+        alert("密碼錯誤");
+      } else {
+        alert("登入失敗");
+      }
     }
   };
   return (
     <div className="login-bg">
       <div className="container pt-20 pb-10">
         <div className="row">
-          <div className="col-6 mx-auto">
+          <div className="col-lg-6 mx-auto">
             <div className="mx-auto" style={{ width: "216px" }}>
               <h1 className="text-center h6 lh-base mb-6 border-bottom border-2 py-3">會員登入</h1>
             </div>
-            <div className="bg-primary-9 py-10 px-30 mb-20 rounded-2">
+            <div className="bg-primary-9 py-10 px-3 px-lg-30 mb-20 rounded-2">
               <div className="mb-10 text-center">
                 <p className="mb-0">
                   是新朋友嗎?
