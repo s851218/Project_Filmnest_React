@@ -7,111 +7,110 @@
 //   padding-left: 12px;
 //   margin-left: auto;
 // }
-.index-banner-text-bg{
+.index-banner-text-bg {
   position: relative;
   z-index: 0;
-  background-image: url(/assets/images/image.png);
+  background-image: url(/public/image.png);
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
 }
-.index-banner-text{
+.index-banner-text {
   position: relative;
   z-index: 2;
   padding-top: 290px;
   padding-bottom: 60px;
   padding-right: 616px;
-  @media(max-width:992px){
+  @media (max-width: 992px) {
     text-align: center;
     padding-top: 333px;
     padding-bottom: 0px;
     padding-right: 12px;
   }
 }
-.index-banner-text-bg::after{
+.index-banner-text-bg::after {
   content: "";
   z-index: 1;
   position: absolute;
-  bottom:0;
-  left:0;
+  bottom: 0;
+  left: 0;
   width: 100%;
   height: 30%;
   background: linear-gradient(0deg, #040404 0%, rgba(0, 0, 0, 0) 100%);
-  @media(max-width: 576px){
+  @media (max-width: 576px) {
     height: 30%;
   }
 }
-.index-banner-text-bg::before{
+.index-banner-text-bg::before {
   content: "";
   z-index: 1;
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   width: 30%;
   height: 100%;
   background: linear-gradient(90deg, #040404 0%, rgba(0, 0, 0, 0) 100%);
-  @media(max-width: 576px){
+  @media (max-width: 576px) {
     width: 100%;
     height: 10%;
     background: linear-gradient(180deg, #040404 0%, rgba(0, 0, 0, 0) 100%);
   }
 }
 // banner 追風者
-.index-banner-text-bg.index-banner-text-bg2{
+.index-banner-text-bg.index-banner-text-bg2 {
   position: relative;
   z-index: 0;
-  background-image: url(/assets/images/首頁_輪播_01.jpg);
+  background-image: url(/public/首頁_輪播_01.jpg);
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
 }
 
 // banner 孤獨時光
-.index-banner-text-bg.index-banner-text-bg3{
+.index-banner-text-bg.index-banner-text-bg3 {
   position: relative;
   z-index: 0;
-  background-image: url(/assets/images/首頁_輪播_02.jpg);
+  background-image: url(/public/首頁_輪播_02.jpg);
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
 }
 
 // banner 孤獨時光
-.index-banner-text-bg.index-banner-text-bg4{
+.index-banner-text-bg.index-banner-text-bg4 {
   position: relative;
   z-index: 0;
-  background-image: url(/assets/images/首頁_輪播_03.jpg);
+  background-image: url(/public/首頁_輪播_03.jpg);
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
 }
 
 // banner CLAW MACHINE
-.index-banner-text-bg.index-banner-text-bg5{
+.index-banner-text-bg.index-banner-text-bg5 {
   position: relative;
   z-index: 0;
-  background-image: url(/assets/images/首頁_輪播_04.jpg);
+  background-image: url(/public/首頁_輪播_04.jpg);
   background-size: cover;
   background-position: top center;
   background-repeat: no-repeat;
 }
 
 // banner 黑色照片
-.index-banner-text-bg.index-banner-text-bg6{
+.index-banner-text-bg.index-banner-text-bg6 {
   position: relative;
   z-index: 0;
-  background-image: url(/assets/images/首頁_輪播_05.jpg);
+  background-image: url(/public/首頁_輪播_05.jpg);
   background-size: cover;
   background-position: top center;
   background-repeat: no-repeat;
-  @media(max-width:576px){
-    background-image: url(/assets/images/首頁_輪播_05_sm.jpg);
+  @media (max-width: 576px) {
+    background-image: url(/public/首頁_輪播_05_sm.jpg);
   }
 }
 
-
-
-.swiper-horizontal > .swiper-scrollbar.indexbannerswiper-scrollbar, .swiper-scrollbar.indexbannerswiper-scrollbar.swiper-scrollbar-horizontal {
+.swiper-horizontal > .swiper-scrollbar.indexbannerswiper-scrollbar,
+.swiper-scrollbar.indexbannerswiper-scrollbar.swiper-scrollbar-horizontal {
   position: absolute;
   left: 77%;
   bottom: 0;
@@ -119,173 +118,173 @@
   z-index: 50;
   height: var(--swiper-scrollbar-size, 4px);
   width: 200px;
-  @media(max-width:992px){
+  @media (max-width: 992px) {
     left: 50%;
     top: 60%;
     translate: (-50% -50%);
   }
 }
-.indexbannerswiper-scrollbar>.swiper-scrollbar-drag {
-  background: #FFFFFF;
+.indexbannerswiper-scrollbar > .swiper-scrollbar-drag {
+  background: #ffffff;
 }
 
-.card.index-card,.card.index-card2{
+.card.index-card,
+.card.index-card2 {
   background-color: rgba(255, 255, 255, 0.1);
   border: 1px solid #606060;
-  box-shadow: 0px 0px 10px 0px rgba(255,255,255,0.2);
-  &:hover{
-    box-shadow: 2px 2px 20px 2px rgba(255,255,255,0.2);
+  box-shadow: 0px 0px 10px 0px rgba(255, 255, 255, 0.2);
+  &:hover {
+    box-shadow: 2px 2px 20px 2px rgba(255, 255, 255, 0.2);
   }
 }
-.progress.index-progress{
+.progress.index-progress {
   border-radius: 30px;
 }
-.progress-bar.index-progress-bar{
+.progress-bar.index-progress-bar {
   border-radius: 30px;
 }
-.index-projectcard::after{
+.index-projectcard::after {
   content: "";
   width: 420px;
   height: 400px;
   border-radius: 100%;
   position: absolute;
   top: 305px;
-  left:-72px;
+  left: -72px;
   background-color: $primary-600;
   z-index: -1;
   filter: blur(250px);
-  @media(max-width:576px){
+  @media (max-width: 576px) {
     width: 251px;
     height: 243px;
     top: 327px;
-    left:-102px;
+    left: -102px;
   }
 }
-.index-category{
-  background-image: url(/assets/images/image49.png);
+.index-category {
+  background-image: url(/public/image49.png);
   background-position: top center;
   background-repeat: no-repeat;
   background-size: cover;
   padding-top: 80px;
   padding-bottom: 80px;
-  @media(max-width:992px){
+  @media (max-width: 992px) {
     padding-top: 28px;
     padding-bottom: 72px;
   }
 }
-.indexcategory-card:hover{
-  box-shadow: 2px 2px 20px 2px rgba(255,255,255,0.2);
+.indexcategory-card:hover {
+  box-shadow: 2px 2px 20px 2px rgba(255, 255, 255, 0.2);
 }
-.indexcategory-img{
-  @media(max-width:992px){
+.indexcategory-img {
+  @media (max-width: 992px) {
     width: 36px;
     height: 36px;
   }
 }
-.index-case{
+.index-case {
   overflow: hidden;
 }
-.index-case::after{
+.index-case::after {
   content: "";
   width: 619px;
   height: 614px;
   border-radius: 100%;
   position: absolute;
   top: 151px;
-  right:-142px;
+  right: -142px;
   background-color: $primary-600;
   z-index: -1;
   filter: blur(250px);
-  @media(max-width:576px){
+  @media (max-width: 576px) {
     width: 255px;
     height: 252px;
     top: 261px;
-    right:-113px;
+    right: -113px;
   }
 }
-.index-case::before{
+.index-case::before {
   content: "";
   width: 363px;
   height: 360px;
   border-radius: 100%;
   position: absolute;
   top: 926px;
-  left:-5px;
+  left: -5px;
   background-color: $primary-600;
   z-index: -1;
   filter: blur(250px);
-  @media(max-width:576px){
+  @media (max-width: 576px) {
     width: 175px;
     height: 174px;
     top: 708px;
-    left:-43px;
+    left: -43px;
   }
 }
-.index-modal{
-  @media(max-width:767px){
+.index-modal {
+  @media (max-width: 767px) {
     height: 788px;
   }
 }
-.index-modal-header{
-  background-image: url(/assets/images/image45.png);
+.index-modal-header {
+  background-image: url(/public/image45.png);
   background-size: cover;
   background-position: center center;
   height: 320px;
 }
-.index-modal-header2{
-  background-image: url(/assets/images/image46.png);
+.index-modal-header2 {
+  background-image: url(/public/image46.png);
   background-size: cover;
   background-position: center 20%;
   height: 320px;
 }
-.index-modal-header3{
-  background-image: url(/assets/images/image44.png);
+.index-modal-header3 {
+  background-image: url(/public/image44.png);
   background-size: cover;
   background-position: center top;
   height: 320px;
 }
-.index-modal-body{
+.index-modal-body {
   padding-top: 40px;
   padding-bottom: 80px;
   padding-right: 110px;
   padding-left: 110px;
-  @media(max-width:992px){
+  @media (max-width: 992px) {
     padding-top: 20px;
     padding-bottom: 20px;
     padding-right: 12px;
     padding-left: 12px;
   }
 }
-.btn-close.btn-index-close{
-	--bs-btn-close-color: #FFFFFF;
-	--bs-btn-close-bg: url(/assets/images/icon/close_32dp_000_FILL0_wght0_GRAD0_opsz40.png);
-	--bs-btn-close-opacity: 1;
-	--bs-btn-close-hover-opacity: 0.75;
-	--bs-btn-close-focus-shadow: 0 0 0 0 rgba(13, 110, 253, 0.25);
+.btn-close.btn-index-close {
+  --bs-btn-close-color: #ffffff;
+  --bs-btn-close-bg: url(/public/close_32dp_000_FILL0_wght0_GRAD0_opsz40.png);
+  --bs-btn-close-opacity: 1;
+  --bs-btn-close-hover-opacity: 0.75;
+  --bs-btn-close-focus-shadow: 0 0 0 0 rgba(13, 110, 253, 0.25);
   background-size: cover;
-	box-sizing: content-box;
-	width: 24px;
-	height: 24px;
-	color: #FFFFFF;
+  box-sizing: content-box;
+  width: 24px;
+  height: 24px;
+  color: #ffffff;
 }
 
-
-.slogan{
-  background-image: url(/assets/images/image47.png);
+.slogan {
+  background-image: url(/public/image47.png);
   background-size: cover;
   background-position: center center;
   position: relative;
 }
-.slogan::after{
+.slogan::after {
   content: "";
   position: absolute;
-  top:0;
-  left:0;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background: #00000080;
 }
-.slogan-card-bg{
+.slogan-card-bg {
   background-color: rgba(4, 4, 4, 0.4);
   border-radius: 8px;
 }
