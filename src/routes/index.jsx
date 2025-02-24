@@ -54,13 +54,15 @@ const routes = [
       {
         path: "aboutStudio",
         element: <AboutStudio />,
-      },{
+      },
+      {
         path: "termsOfUse",
         element: <TermsOfUse />,
-      },{
+      },
+      {
         path: "createProposal",
-        element: <CreateProposal />
-      }
+        element: <CreateProposal />,
+      },
     ],
   },
   {
