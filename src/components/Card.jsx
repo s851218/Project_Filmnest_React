@@ -1,5 +1,5 @@
 import { Link } from "react-router";
-export default function Card({ projects, IsSwiper }) {
+export default function Card({ projects, isSwiper }) {
   return projects?.map((project) => {
     const endDate = new Date(project.endAt); // 設定結束日期
     const nowDate = new Date(); // 取得今天的日期
@@ -7,7 +7,7 @@ export default function Card({ projects, IsSwiper }) {
     // 計算剩餘天數
     const time = endDate - nowDate; // 取得毫秒差
     const remainDays = Math.ceil(time / (1000 * 60 * 60 * 24)); // 轉換為天數，並用 Math.ceil取整數
-    return IsSwiper ? (
+    return isSwiper ? (
       <div className="swiper-slide h-auto" key={project.id}>
         <div className="card index-card rounded-0 h-100">
           <img src={project.projectImage} className="card-img-top rounded-0 mb-3" alt="" />
