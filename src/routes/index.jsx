@@ -21,6 +21,13 @@ import PersonalCenter from "../pages/PersonalCenter";
 import AboutStudio from "../pages/AboutStudio";
 import TermsOfUse from "../pages/TermsOfUse";
 import CreateProposal from "../pages/CreateProposal";
+import ProjectIntro from "../pages/ProjectIntro";
+import ProjectIntroContent from "../pages/ProjectIntroContent";
+import ProjectIntroNews from "../pages/ProjectIntroNews";
+import ProjectIntroSupportFeedback from "../pages/ProjectIntroSupportFeedback";
+import ProjectIntroQA from "../pages/ProjectIntroQA";
+import ProjectIntroComments from "../pages/ProjectIntroComments";
+import ProjectIntroInfoDisclosure from "../pages/ProjectIntroInfoDisclosure";
 
 const routes = [
   {
@@ -54,13 +61,45 @@ const routes = [
       {
         path: "aboutStudio",
         element: <AboutStudio />,
-      },{
+      },
+      {
         path: "termsOfUse",
         element: <TermsOfUse />,
-      },{
+      },
+      {
         path: "createProposal",
-        element: <CreateProposal />
-      }
+        element: <CreateProposal />,
+      },
+      {
+        path: "projectIntro",
+        element: <ProjectIntro />,
+        children: [
+          {
+            index: true,
+            element: <ProjectIntroContent />,
+          },
+          {
+            path: "news",
+            element: <ProjectIntroNews />,
+          },
+          {
+            path: "supportFeedback",
+            element: <ProjectIntroSupportFeedback />,
+          },
+          {
+            path: "QA",
+            element: <ProjectIntroQA />,
+          },
+          {
+            path: "comments",
+            element: <ProjectIntroComments />,
+          },
+          {
+            path: "infoDisclosure",
+            element: <ProjectIntroInfoDisclosure />,
+          },
+        ],
+      },
     ],
   },
   {
