@@ -11,7 +11,7 @@ export default function ProjectIntro() {
         style={{ marginTop: 89 }}
       >
         <div className="container">
-          <div className="row d-flex flex-column flex-md-row gap-8 gap-xxl-9">
+          <div className="row d-flex flex-column flex-md-row gap-8 gap-xxl-9 align-items-stretch">
             {/* 左半部劇照 Swiper */}
             <ProjectIntroSwiper />
             {/* 右半部專案資訊、提案人資訊 */}
