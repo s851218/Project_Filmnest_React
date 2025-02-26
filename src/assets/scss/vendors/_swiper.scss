@@ -31,18 +31,28 @@
 
 // project-intro
 // 劇照 swiper
-.projectIntroSwiper .swiper-slide {
-  opacity: 0.4;
-}
-
-.projectIntroMainSwiperSlide {
+.project-intro-main-swiper-slide {
   width: 660px;
   height: 366px;
+}
+
+.main-swiper-slide-image {
+  height: 100%;
   object-fit: cover;
+}
+
+.projectIntroSwiper .swiper-slide {
+  height: 121px;
+  opacity: 0.4;
 }
 
 .projectIntroSwiper .swiper-slide-thumb-active {
   opacity: 1;
+}
+
+.small-swiper-slide-image {
+  height: 100%;
+  object-fit: cover;
 }
 
 //手機版 劇照 Swiper
