@@ -65,7 +65,10 @@ export default function ProjectIntroSwiper() {
           className="rounded overflow-hidden mb-0 mb-md-1 mb-lg-2 mb-xxl-3"
         >
           {otherImages.map((image) => (
-            <SwiperSlide key={image.id} className="projectIntroMainSwiperSlide">
+            <SwiperSlide
+              key={image.id}
+              className="project-intro-main-swiper-slide"
+            >
               <img className="rounded" src={image.imageUrl} alt="外送員" />
             </SwiperSlide>
           ))}
@@ -94,7 +97,11 @@ export default function ProjectIntroSwiper() {
         >
           {otherImages.map((image) => (
             <SwiperSlide key={image.id} className="swiper-slide">
-              <img className="rounded" src={image.imageUrl} alt="外送員" />
+              <img
+                className="rounded small-slide-image"
+                src={image.imageUrl}
+                alt="外送員"
+              />
             </SwiperSlide>
           ))}
         </Swiper>
