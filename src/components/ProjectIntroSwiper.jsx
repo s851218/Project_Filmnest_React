@@ -5,6 +5,8 @@ import { Navigation, Thumbs } from "swiper/modules";
 
 import { useEffect, useRef, useState } from "react";
 
+import { useParams } from "react-router"; // xiang 2025/02/27 intro路由調整
+
 import axios from "axios";
 
 // Import Swiper styles
@@ -25,10 +27,11 @@ export default function ProjectIntroSwiper() {
   const [isEnd, setIsEnd] = useState(false);
 
   // 取得劇照資料
+  const { id } = useParams(); // xiang 2025/02/27 intro路由調整
   useEffect(() => {
     const projectData = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/projects/1`);
+        const res = await axios.get(`${API_BASE}/projects/${id}`); // xiang 2025/02/27 intro路由調整
 
         setOtherImages(res.data.otherImages);
       } catch (error) {
@@ -65,10 +68,7 @@ export default function ProjectIntroSwiper() {
           className="rounded overflow-hidden mb-0 mb-md-1 mb-lg-2 mb-xxl-3"
         >
           {otherImages.map((image) => (
-            <SwiperSlide
-              key={image.id}
-              className="project-intro-main-swiper-slide"
-            >
+            <SwiperSlide key={image.id} className="project-intro-main-swiper-slide">
               <img className="rounded" src={image.imageUrl} alt="外送員" />
             </SwiperSlide>
           ))}
@@ -87,21 +87,10 @@ export default function ProjectIntroSwiper() {
         </Swiper>
 
         {/* 下方圖片的 Swiper */}
-        <Swiper
-          modules={[Thumbs]}
-          watchSlidesProgress
-          onSwiper={setThumbsSwiper}
-          slidesPerView={3}
-          spaceBetween={24}
-          className="projectIntroSwiper d-none d-md-block"
-        >
+        <Swiper modules={[Thumbs]} watchSlidesProgress onSwiper={setThumbsSwiper} slidesPerView={3} spaceBetween={24} className="projectIntroSwiper d-none d-md-block">
           {otherImages.map((image) => (
             <SwiperSlide key={image.id} className="swiper-slide">
-              <img
-                className="rounded small-slide-image"
-                src={image.imageUrl}
-                alt="外送員"
-              />
+              <img className="rounded small-slide-image" src={image.imageUrl} alt="外送員" />
             </SwiperSlide>
           ))}
         </Swiper>

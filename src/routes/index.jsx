@@ -71,7 +71,7 @@ const routes = [
         element: <CreateProposal />,
       },
       {
-        path: "projectIntro",
+        path: ":id",
         element: <ProjectIntro />,
         children: [
           {

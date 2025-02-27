@@ -12,7 +12,7 @@ export default function Card({ projects, isSwiper }) {
         <div className="card index-card rounded-0 h-100">
           <img src={project.projectImage} className="card-img-top rounded-0 mb-3" alt="" />
           <div className="card-body p-3 d-flex flex-column">
-            <Link to="/projectExplore" className="link-light stretched-link">
+            <Link to={`${project.id}`} className="link-light stretched-link">
               <h3 className="fs-sm fs-lg-base mb-4">{project.projectTitle}</h3>
             </Link>
             <div className="d-flex justify-content-between align-items-center mb-4 mt-auto">
@@ -36,7 +36,7 @@ export default function Card({ projects, isSwiper }) {
         <div className="card index-card rounded-0 h-100">
           <img src={project.projectImage} className="card-img-top rounded-0 mb-3" alt="" />
           <div className="card-body p-3 d-flex flex-column">
-            <Link to="/projectExplore" className="link-light stretched-link">
+            <Link to={`/${project.id}`} className="link-light stretched-link">
               <h3 className="fs-sm fs-lg-base mb-4">{project.projectTitle}</h3>
             </Link>
             <div className="d-flex justify-content-between align-items-center mb-4 mt-auto">
