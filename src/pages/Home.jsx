@@ -21,7 +21,7 @@ export default function Home() {
   const getProjectsData = async () => {
     try {
       const response = await axios.get(`${apiBase}/projects`);
-      setProjects(response.data);
+      setProjects(response.data.map((item) => item));
       setSortProjects(response.data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()));
     } catch (error) {
       console.log("取得產品失敗");

@@ -28,6 +28,8 @@ import ProjectIntroSupportFeedback from "../pages/ProjectIntroSupportFeedback";
 import ProjectIntroQA from "../pages/ProjectIntroQA";
 import ProjectIntroComments from "../pages/ProjectIntroComments";
 import ProjectIntroInfoDisclosure from "../pages/ProjectIntroInfoDisclosure";
+import HeaderSm from "../components/HeaderSm";
+import HeaderSmSec from "../components/HeaderSmSec";
 
 const routes = [
   {
@@ -99,6 +101,14 @@ const routes = [
             element: <ProjectIntroInfoDisclosure />,
           },
         ],
+      },
+      {
+        path: "headerSm",
+        element: <HeaderSm />,
+      },
+      {
+        path: "headerSmSec",
+        element: <HeaderSmSec />,
       },
     ],
   },

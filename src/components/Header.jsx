@@ -2,26 +2,12 @@ import { useRef, useEffect } from "react";
 import { Link, NavLink } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { setCategory } from "../slice/categorySlice";
-import { Collapse } from "bootstrap";
 
 export default function Header() {
   const profile = useSelector((state) => state.user.profile);
   const categoryData = ["喜劇", "愛情", "恐怖", "懸疑", "科幻", "紀錄片", "動畫", "實驗電影"];
   const dispatch = useDispatch();
   const navbarRef = useRef(null);
-  const collapseRef = useRef(null);
-
-  const handleNavbarListOpen = () => {
-    const collapsibleInstance = Collapse.getInstance(collapseRef.current);
-    collapsibleInstance.toggle();
-  };
-
-  useEffect(() => {
-    new Collapse(collapseRef.current, {
-      toggle: false,
-    });
-  }, []);
-  console.log(window.screen);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,24 +34,26 @@ export default function Header() {
           <NavLink className="p-0 me-12" to="/">
             <img src="https://github.com/s851218/Project-FilmNest/blob/main/assets/images/logo.png?raw=true" alt="logo" />
           </NavLink>
-          <button type="button" className="navbar-toggler border-0 me-3" onClick={handleNavbarListOpen}>
+          <Link type="button" className="navbar-toggler border-0 ms-auto" to="/headerSm">
             <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse text-white" ref={collapseRef}>
+          </Link>
+          <div className="collapse navbar-collapse text-white">
             <div className="p-0 me-12 dropdown nav-item">
               <button className="btn btn-outline-light border-0 fw-bolder dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 探索
               </button>
               <ul className="dropdown-menu">
                 <li>
-                  <Link className="dropdown-item" to="/projectExplore" onClick={() => dispatch(setCategory("all"))}>
+                  <Link className="dropdown-item mb-2" to="/projectExplore" onClick={() => dispatch(setCategory("all"))}>
+                    <img src="全部專案.png" alt="全部專案" className="me-2" style={{ width: "24px" }} />
                     全部專案
                   </Link>
                 </li>
                 {categoryData.map((item, index) => {
                   return (
                     <li key={index}>
-                      <Link className="dropdown-item" to="/projectExplore" onClick={() => dispatch(setCategory(item))}>
+                      <Link className="dropdown-item mb-2" to="/projectExplore" onClick={() => dispatch(setCategory(item))}>
+                        <img src={`${item}.png`} alt={item} className="me-2" style={{ width: "24px" }} />
                         {item}
                       </Link>
                     </li>
