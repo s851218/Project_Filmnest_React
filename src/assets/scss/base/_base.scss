@@ -8,7 +8,7 @@ img {
 }
 
 a {
-  color:white;
+  color: white;
   text-decoration: none;
 }
 
@@ -34,7 +34,7 @@ textarea {
 }
 
 //依照內容寬度伸縮
-.fit-content{
+.fit-content {
   width: fit-content;
 }
 
@@ -48,7 +48,7 @@ textarea {
 //modal遮罩
 
 .modal-backdrop {
-  --bs-backdrop-opacity: .7;
+  --bs-backdrop-opacity: 0.7;
 }
 
 .bg-ligth-deco {
@@ -64,11 +64,11 @@ textarea {
     background-color: #686868;
     z-index: -1;
     filter: blur(250px);
-    @media (min-width:768px) {
+    @media (min-width: 768px) {
       width: 350px;
       height: 330px;
     }
-    @media (min-width:992px) {
+    @media (min-width: 992px) {
       width: 420px;
       height: 400px;
     }
@@ -84,11 +84,11 @@ textarea {
     background-color: #686868;
     z-index: -1;
     filter: blur(250px);
-    @media (min-width:768px) {
+    @media (min-width: 768px) {
       width: 350px;
       height: 330px;
     }
-    @media (min-width:992px) {
+    @media (min-width: 992px) {
       width: 420px;
       height: 400px;
     }
