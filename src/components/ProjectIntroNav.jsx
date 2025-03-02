@@ -1,6 +1,8 @@
 import { NavLink } from "react-router";
+import { useParams } from "react-router";
 
 export default function ProjectIntroNav() {
+  const { id } = useParams();
   return (
     <>
       <section className="py-3 bg-primary-8 d-none d-lg-block">
@@ -8,7 +10,7 @@ export default function ProjectIntroNav() {
           <ul className="list-unstyled mb-0 d-flex gap-8 align-items-center">
             <li>
               <NavLink
-                to="/projectIntro"
+                to={`/${id}`}
                 className="nav-link py-3 <%= page === 'project-intro' ? 'border-white ' : '' %>"
               >
                 專案介紹
@@ -16,7 +18,7 @@ export default function ProjectIntroNav() {
             </li>
             <li>
               <NavLink
-                to="/projectIntro/news"
+                to="news"
                 className="nav-link py-3 <%= page === 'project-breaking-news' ? 'border-white ' : '' %>"
               >
                 最新消息
@@ -24,7 +26,7 @@ export default function ProjectIntroNav() {
             </li>
             <li>
               <NavLink
-                to="/projectIntro/supportFeedback"
+                to="supportFeedback"
                 className="nav-link py-3 <%= page === 'project-support-feedback' ? 'border-white ' : '' %>"
               >
                 支持與回饋
@@ -32,7 +34,7 @@ export default function ProjectIntroNav() {
             </li>
             <li>
               <NavLink
-                to="/projectIntro/QA"
+                to="QA"
                 className="nav-link py-3 <%= page === 'project-QA' ? 'border-white ' : '' %>"
               >
                 常見問題
@@ -40,7 +42,7 @@ export default function ProjectIntroNav() {
             </li>
             <li>
               <NavLink
-                to="/projectIntro/comments"
+                to="comments"
                 className="nav-link py-3 <%= page === 'project-comments' ? 'border-white ' : '' %>"
               >
                 留言板
@@ -48,7 +50,7 @@ export default function ProjectIntroNav() {
             </li>
             <li>
               <NavLink
-                to="/projectIntro/infoDisclosure"
+                to="infoDisclosure"
                 className="nav-link py-3 <%= page === 'project-information-disclosure' ? 'border-white ' : '' %>"
                 href="project-information-disclosure.html"
               >
