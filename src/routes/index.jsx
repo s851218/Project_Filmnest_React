@@ -21,6 +21,15 @@ import PersonalCenter from "../pages/PersonalCenter";
 import AboutStudio from "../pages/AboutStudio";
 import TermsOfUse from "../pages/TermsOfUse";
 import CreateProposal from "../pages/CreateProposal";
+import ProjectIntro from "../pages/ProjectIntro";
+import ProjectIntroContent from "../pages/ProjectIntroContent";
+import ProjectIntroNews from "../pages/ProjectIntroNews";
+import ProjectIntroSupportFeedback from "../pages/ProjectIntroSupportFeedback";
+import ProjectIntroQA from "../pages/ProjectIntroQA";
+import ProjectIntroComments from "../pages/ProjectIntroComments";
+import ProjectIntroInfoDisclosure from "../pages/ProjectIntroInfoDisclosure";
+import HeaderSm from "../components/HeaderSm";
+import HeaderSmSec from "../components/HeaderSmSec";
 
 const routes = [
   {
@@ -62,6 +71,44 @@ const routes = [
       {
         path: "createProposal",
         element: <CreateProposal />,
+      },
+      {
+        path: ":id",
+        element: <ProjectIntro />,
+        children: [
+          {
+            index: true,
+            element: <ProjectIntroContent />,
+          },
+          {
+            path: "news",
+            element: <ProjectIntroNews />,
+          },
+          {
+            path: "supportFeedback",
+            element: <ProjectIntroSupportFeedback />,
+          },
+          {
+            path: "QA",
+            element: <ProjectIntroQA />,
+          },
+          {
+            path: "comments",
+            element: <ProjectIntroComments />,
+          },
+          {
+            path: "infoDisclosure",
+            element: <ProjectIntroInfoDisclosure />,
+          },
+        ],
+      },
+      {
+        path: "headerSm",
+        element: <HeaderSm />,
+      },
+      {
+        path: "headerSmSec",
+        element: <HeaderSmSec />,
       },
     ],
   },
