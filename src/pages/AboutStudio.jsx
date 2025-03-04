@@ -20,20 +20,6 @@ export default function AboutStudio() {
     getStudioProfile()
   },[])
 
-  {/*
-    email: "電子信箱"
-    endTime: "服務時間(迄)"
-    groupName: "團隊名稱"
-    personResponsible: "負責人"
-    phone: "電話"
-    startTime: "服務時間(起)"
-    studioFb: "FB"
-    studioIg: "IG"
-    studioImageUrl: "大頭貼"
-    studioLine: "LINE"
-    teamIntro: "團隊簡介"
-  */}
-
   const {
     email,
     endTime,
@@ -52,15 +38,15 @@ export default function AboutStudio() {
     <>
       <div className="container mt-20 pb-15">
         <div className="row justify-content-center">
-          <div className="col-8">
+          <div className="col-xl-8 col-lg-10">
             <div className="border-bottom border-primary-4 pb-8 mb-8">
-              <div className="row">
-                <div className="col-4">
+              <div className="row flex-md-row flex-column">
+                <div className="col-lg-4 col-md-5 text-center">
                   <img src={studioImageUrl} className="img-fluid" style={{height:264 , width:264}} alt={groupName}/>
                 </div>
-                <div className="col-8">
+                <div className="col-lg-8 col-md-7">
                   <div className="d-flex flex-column h-100">
-                    <h3 className="fs-4 mb-3">{groupName}</h3>
+                    <h3 className="fs-6 fs-md-4 mb-3">{groupName}</h3>
                     <p className="fs-sm"><i className="bi bi-person" />{personResponsible}</p>
                     <div id="connectUs" className="rounded-1 p-4 mt-auto" style={{background: "#FFFFFF1A",border: "1px solid #606060"}}>
                       <div className="d-flex justify-content-between mb-2">
@@ -97,21 +83,6 @@ export default function AboutStudio() {
           </div>
         </div>
       </div>
-      {/* <section className="py-3 bg-primary-8">
-        <div className="container">
-          <ul className="list-unstyled mb-0 d-flex gap-8 justify-content-around align-items-center">
-            <li>
-              <a className="nav-link py-3 fs-7 fs-lg-3 <%= page === 'aboutProposal-now' ? 'border-white ' : '' %>" href="aboutProposal-now.html">進行中</a>
-            </li>
-            <li>
-              <a className="nav-link py-3 fs-7 fs-lg-3 <%= page === 'aboutProposal-fin' ? 'border-white ' : '' %>" href="aboutProposal-fin.html">已結案</a>
-            </li>
-            <li>
-              <a className="nav-link py-3 fs-7 fs-lg-3 <%= page === 'aboutProposal-other' ? 'border-white ' : '' %>" href="aboutProposal-other.html">其他作品集</a>
-            </li>
-          </ul>
-        </div>
-      </section> */}
     </>
   )
 }
