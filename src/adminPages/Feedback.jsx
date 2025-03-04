@@ -75,7 +75,12 @@ function FeedbackItems({ optionIndex, control, register }) {
 
 function EditFeedbackOption({ submittedData }) {
   const [feedbackData, setFeedbackData] = useState([]);
+  const [inputChosen, setInputChosen] = useState(null);
+  // const [isEditable, setIsEditable] = useState(false);
 
+  const { register, handleSubmit, setFocus } = useForm();
+
+  // 取得資料
   useEffect(() => {
     const controller = new AbortController();
     const getFeedbackData = async () => {
@@ -97,64 +102,104 @@ function EditFeedbackOption({ submittedData }) {
     return () => controller.abort();
   }, [submittedData]);
 
+  const onSubmit = (data, id) => {
+    console.log(data, id);
+  };
+
   return (
     <>
-      {feedbackData.map((feedback) => {
+      {feedbackData.map((feedback, index) => {
         const targetID = `accordion-${feedback.id}`;
+        const isEditable = inputChosen === feedback.id;
 
         return (
-          <div key={feedback.id} className="accordion" id="FeedbackAccordion">
-            <div className="accordion-item">
-              <h2 className="accordion-header">
-                <button
-                  className="accordion-button"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target={`#${targetID}`}
-                  aria-expanded="true"
-                  aria-controls={targetID}
+          <form key={feedback.id}>
+            <div className="accordion" id="FeedbackAccordion">
+              <div className="accordion-item">
+                <h2 className="accordion-header">
+                  <button
+                    className="accordion-button"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target={`#${targetID}`}
+                    aria-expanded={index === 0 ? "true" : "false"}
+                    aria-controls={targetID}
+                  >
+                    #{index + 1} {feedback.title}
+                  </button>
+                </h2>
+                <div
+                  id={targetID}
+                  className="accordion-collapse collapse show"
+                  data-bs-parent="#FeedbackAccordion"
                 >
-                  {feedback.title}
-                </button>
-              </h2>
-              <div
-                id={targetID}
-                className="accordion-collapse collapse show"
-                data-bs-parent="#FeedbackAccordion"
-              >
-                <div className="accordion-body">
-                  <div>
-                    <img src={feedback.image} alt={feedback.title} />
+                  <div className="accordion-body">
+                    <div>
+                      <img src={feedback.image} alt={feedback.title} />
+                    </div>
+                    <label className="form-label my-3" htmlFor="">
+                      項目名稱
+                    </label>
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        defaultValue={feedback.title}
+                        disabled={!isEditable}
+                        className="form-control"
+                        {...register(`title[${feedback.id}]`)}
+                      />
+                    </div>
+                    <label className="form-label my-3" htmlFor="">
+                      項目金額
+                    </label>
+                    <div className="input-group">
+                      <input
+                        type="text"
+                        defaultValue={feedback.price}
+                        disabled={!isEditable}
+                        className="form-control"
+                        {...register(`price[${feedback.id}]`)}
+                      />
+                    </div>
+                    <label htmlFor="">項目內容</label>
+                    {feedback.contents.map((items, index) => (
+                      <section key={index}>
+                        <div className="input-group my-3">
+                          <label className="form-label" htmlFor="">
+                            {index + 1}.
+                          </label>
+                          <input
+                            type="text"
+                            defaultValue={items.item}
+                            disabled={!isEditable}
+                            className="form-control"
+                            {...register(`item.${index + 1}`)}
+                          />
+                        </div>
+                      </section>
+                    ))}
                   </div>
-                  <label className="form-label" htmlFor="">
-                    項目金額
-                  </label>
-                  <input
-                    type="text"
-                    defaultValue={feedback.price}
-                    disabled
-                    className="form-control"
-                  />
-                  <label htmlFor="">項目內容</label>
-                  {feedback.contents.map((items, index) => (
-                    <form key={items.item}>
-                      <div className="input-group">
-                        <label className="form-label" htmlFor="">
-                          {index + 1}.
-                        </label>
-                        <input
-                          type="text"
-                          defaultValue={items.item}
-                          disabled
-                          className="form-control"
-                        />
-                      </div>
-                    </form>
-                  ))}
                 </div>
               </div>
             </div>
-          </div>
+            <button
+              type="submit"
+              onClick={handleSubmit((data) => onSubmit(data, feedback.id))}
+            >
+              送出
+            </button>
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                setInputChosen(feedback.id);
+                setFocus(`title[${feedback.id}]`);
+              }}
+              type="button"
+              className="btn btn-primary"
+            >
+              編輯
+            </button>
+          </form>
         );
       })}
     </>
