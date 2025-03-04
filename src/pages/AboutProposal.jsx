@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 const data = {
   bannerImageUrl:"https://s851218.github.io/Project-FilmNest/assets/image48-d6d8f560.png",
   slogan: "有好想法，卻沒辦法嗎？",
@@ -95,7 +97,7 @@ export default function AboutProposal() {
                 </li>))
             }
           </ul>
-          <a href="/termsOfUse" className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">我要提案</a>
+          <Link to="/termsOfUse" className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">我要提案</Link>
         </div>
       </div>
     </>
