@@ -1,4 +1,39 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useOutletContext } from "react-router";
+
+const API_BASE = import.meta.env.VITE_API_BASE;
+
 export default function ProjectIntroContent() {
+  const projectInfo = useOutletContext();
+
+  const [otherImages, setOtherImages] = useState([]);
+
+  const [proposerPhoto, setProposerPhoto] = useState("");
+
+  // 取得劇照資料
+  useEffect(() => {
+    if (projectInfo && Array.isArray(projectInfo?.otherImages)) {
+      setOtherImages(projectInfo?.otherImages);
+    }
+  }, [projectInfo]);
+
+  // 取得提案人照片
+  useEffect(() => {
+    if (!projectInfo.studioId) return;
+    const getProposerData = async () => {
+      try {
+        const res = await axios.get(
+          `${API_BASE}/studios/${projectInfo.studioId}`
+        );
+        setProposerPhoto(res.data.studioProfile?.studioImageUrl);
+      } catch (error) {
+        console.log("取得提案人資料失敗：", error);
+      }
+    };
+    getProposerData();
+  }, [projectInfo.studioId]);
+
   return (
     <>
       {/* 專案介紹內文 */}
@@ -16,7 +51,7 @@ export default function ProjectIntroContent() {
             <div className="col-lg-6 d-none d-lg-block">
               <img
                 className="rounded w-100"
-                src="/assets/images/追風者劇照/追風者3.png"
+                src={`${otherImages[3]?.imageUrl}`}
                 alt="兩位外送人員的背影"
               />
             </div>
@@ -24,7 +59,7 @@ export default function ProjectIntroContent() {
             <div className="col-lg-6 d-block d-lg-none mb-10">
               <img
                 className="rounded w-100"
-                src="/assets/images/追風者劇照/追風者3.png"
+                src={`${otherImages[3]?.imageUrl}`}
                 alt="兩位外送人員的背影"
               />
             </div>
@@ -50,7 +85,7 @@ export default function ProjectIntroContent() {
               </p>
               <img
                 className="rounded"
-                src="/assets/images/追風者劇照/追風者4.png"
+                src={`${otherImages[4]?.imageUrl}`}
                 alt="外送人員利用停等紅燈時吃便當"
               />
               <h4 className="mb-8 mb-lg-10 mt-10 mt-lg-15 fs-7 fs-md-6 fw-bolder">
@@ -62,8 +97,8 @@ export default function ProjectIntroContent() {
               </p>
               <img
                 className="object-fit-cover rounded mb-10"
-                src="/assets/images/追風者劇照/追風者7.png"
-                alt=""
+                src={`${otherImages[1]?.imageUrl}`}
+                alt="雨中的熊貓外送員"
               />
               <h5 className="mb-3 mb-lg-4 fs-base fs-md-7 fw-bolder">
                 故事大綱
@@ -81,7 +116,7 @@ export default function ProjectIntroContent() {
               </p>
               <img
                 className="object-fit-cover rounded mb-6"
-                src="/assets/images/追風者劇照/追風者5.png"
+                src={`${projectInfo.projectImage}`}
                 alt="追風者背影"
               />
               <p>
@@ -93,12 +128,14 @@ export default function ProjectIntroContent() {
           <div className="row pt-10 pb-8">
             <div className="col-lg-8 mx-auto">
               <div className="p-5 p-lg-10 bg-producer text-center">
-                <h4 className="mb-3 mb-lg-5 fs-lg-7 fw-bolder">製作團隊介紹</h4>
+                <h4 className="mb-3 mb-lg-5 fs-base fs-lg-7 fw-bolder">
+                  製作團隊介紹
+                </h4>
                 <img
                   className="object-fit-cover rounded-1 mb-4"
                   style={{ maxWidth: 200, height: 200 }}
-                  src="/assets/images/遠端對話劇照/遠端對話導演照/導演照1.jpg"
-                  alt=""
+                  src={proposerPhoto}
+                  alt="導演照片"
                 />
                 <h6 className="mb-2 mb-lg-3 fs-sm fs-lg-base">導演：周禹丞</h6>
                 <p className="mb-3 mb-lg-4 text-start">

@@ -49,7 +49,7 @@ export default function ProjectIntro() {
 
       {/* 專案介紹 Navbar */}
       <ProjectIntroNav projectId={projectInfo.id} />
-      <Outlet />
+      <Outlet context={projectInfo} />
     </>
   );
 }
