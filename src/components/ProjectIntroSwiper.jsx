@@ -20,12 +20,28 @@ export default function ProjectIntroSwiper({ projectInfo }) {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
 
-  // 取得劇照資料
+  // 將專案封面圖加進 otherImages 後，產生一個新的圖片陣列
   useEffect(() => {
-    if (projectInfo && Array.isArray(projectInfo?.otherImages)) {
-      setOtherImages(projectInfo?.otherImages);
+    if (projectInfo && projectInfo.projectImage) {
+      const addMainImage = [
+        {
+          id: `${new Date().getTime()}`,
+          imageUrl: projectInfo.projectImage,
+        },
+        ...(Array.isArray(projectInfo.otherImages)
+          ? projectInfo.otherImages
+          : []),
+      ];
+      setOtherImages(addMainImage);
     }
   }, [projectInfo]);
+
+  // 把 otherImages 當成依賴，能確保在圖片陣列更新後，Swiper 的內部狀態也跟著更新，第一張圖片的縮圖才正確顯示 active 狀態。
+  useEffect(() => {
+    if (thumbsSwiper && swiperRef.current) {
+      swiperRef.current.update();
+    }
+  }, [otherImages]);
 
   // 手機版 Navigation
   const handlePrevSlide = () => {
@@ -42,7 +58,9 @@ export default function ProjectIntroSwiper({ projectInfo }) {
         {/* 上方大圖的 Swiper */}
         <Swiper
           modules={[Thumbs, Navigation]}
-          thumbs={{ swiper: thumbsSwiper }}
+          thumbs={{
+            swiper: thumbsSwiper,
+          }}
           spaceBetween={24}
           onSwiper={(swiper) => {
             swiperRef.current = swiper;
