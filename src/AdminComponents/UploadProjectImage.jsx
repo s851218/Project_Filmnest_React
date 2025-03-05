@@ -17,7 +17,7 @@ const UploadProjectImage = ({ onUploadSuccess }) => {
 
   return (
     <div>
-      <h5>更換封面圖片</h5>
+      <h2 className="fs-7">更換封面圖片</h2>
       <input type="file" accept="image/*" onChange={handleFileChange} />
     </div>
   );

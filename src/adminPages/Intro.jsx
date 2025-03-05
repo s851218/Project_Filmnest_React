@@ -7,7 +7,7 @@ const API_BASE = import.meta.env.VITE_API_BASE;
 
 const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
   return (
-    <div className="mb-3">
+    <div className="mb-5">
       <label htmlFor={id} className="form-label">
         {labelText}
       </label>
@@ -147,8 +147,8 @@ export default function Intro() {
   console.dir({ fields, append, remove, update });
   return (
     <>
+      <h1 className="fs-6 mb-7">專案資訊</h1>
       <form action="" className="mb-5" onSubmit={handleSubmit(onSubmit)}>
-        <h1 className="fs-6">專案資訊</h1>
         <IntroInput
           register={register}
           errors={errors}
@@ -192,11 +192,11 @@ export default function Intro() {
           </div>
         </div>
         <div className="my-3">
-          <h5>專案封面圖片預覽</h5>
+          <h2 className="fs-7">專案封面圖片預覽</h2>
           <img src={projectImage} alt="" className="img-fluid" />
         </div>
         <div className="my-3">
-          <h5>專案介紹頁圖片</h5>
+          <h2 className="fs-7">專案介紹頁圖片</h2>
           <ul className="row g-3 list-unstyled">
             {fields.map((image, index) => {
               return (
@@ -242,7 +242,7 @@ export default function Intro() {
           </ul>
         </div>
         <div className="my-3">
-          <h5>專案介紹</h5>
+          <h2>專案介紹</h2>
         </div>
         <button type="submit" className="btn btn-primary">
           儲存
