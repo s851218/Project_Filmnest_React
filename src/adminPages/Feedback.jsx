@@ -183,6 +183,7 @@ function EditFeedbackOption({ submittedData }) {
               </div>
             </div>
             <button
+              className="btn btn-primary"
               type="submit"
               onClick={handleSubmit((data) => onSubmit(data, feedback.id))}
             >
