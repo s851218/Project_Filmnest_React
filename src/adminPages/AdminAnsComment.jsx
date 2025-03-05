@@ -5,8 +5,8 @@ import { useForm } from "react-hook-form";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function AdminAnsComment() {
+  const [comments, setComments] = useState([]);
   const [activeReplyId, setActiveReplyId] = useState(null);
-  const [isReplied, setIsReplied] = useState(false);
   const {
     register,
     handleSubmit,
@@ -14,38 +14,19 @@ export default function AdminAnsComment() {
     formState: { errors },
   } = useForm();
 
-  const [comments, setComments] = useState([
-    {
-      id: 2,
-      projectId: 1,
-      userId: 3,
-      content: "很喜歡這樣紀錄片的風格，期待創作者能做出更多的作品",
-      date: "2024-08-04T18:30",
-    },
-    {
-      id: 3,
-      projectId: 1,
-      userId: 3,
-      content: "很喜歡這樣紀錄片的風格，期待創作者能做出更多的作品",
-      date: "2024-08-04T19:30",
-    },
-  ]);
-
-  // useEffect(() => {
-  //   const getCommentData = async () => {
-  //     try {
-  //       const response = await axios.get(`${API_BASE}/comments`);
-  //       setComments(response.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   getCommentData();
-  // }, []);
+  useEffect(() => {
+    const getCommentData = async () => {
+      try {
+        const response = await axios.get(`${API_BASE}/comments`);
+        setComments(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getCommentData();
+  }, []);
 
   const onSubmitReply = async (data, id) => {
-    // console.log("回覆內容：", data.replyContent);
-    // console.log("回覆 ID：", id);
     const commentReplied = comments.find((comment) => comment.id === id);
     commentReplied.reply = data.replyContent;
     console.log(commentReplied);
@@ -62,12 +43,25 @@ export default function AdminAnsComment() {
     }
   };
 
+  const handleDelete = async (id) => {
+    const replyToDelete = comments.find((comment) => comment.id === id);
+    replyToDelete.reply = "";
+    try {
+      await axios.put(`${API_BASE}/comments/${id}`, {
+        ...replyToDelete,
+      });
+      reset();
+      setActiveReplyId(null);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <h1>回覆留言</h1>
       <div className="container-fluid p-4">
         {comments.map((comment, index) => {
-          // const isReplied = replyContent.find((item) => item.id === comment.id);
           return (
             <div key={comment.id} className="row shadow-sm rounded mb-3 p-3">
               <div className="col-10">
@@ -103,7 +97,31 @@ export default function AdminAnsComment() {
                           </small>
                         </div>
                       </section>
-                      <section>{comment.reply}</section>
+                      <div>{comment.reply}</div>
+                      {/* 編輯／刪除按鈕 */}
+                      <section className="text-end">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary btn-sm"
+                          onClick={() => {
+                            setActiveReplyId(
+                              activeReplyId === comment.id ? null : comment.id
+                            );
+                            reset({ replyContent: comment.reply });
+                          }}
+                        >
+                          {activeReplyId === comment.id ? "取消" : "編輯"}
+                        </button>
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger btn-sm"
+                          onClick={() => {
+                            handleDelete(comment.id);
+                          }}
+                        >
+                          刪除
+                        </button>
+                      </section>
                     </>
                   ) : (
                     <>
@@ -123,7 +141,6 @@ export default function AdminAnsComment() {
                     </>
                   )}
                 </section>
-
                 {/* 條件渲染回覆區塊 */}
                 {activeReplyId === comment.id && (
                   <div className="mt-3 p-3 bg-light rounded">
@@ -133,7 +150,7 @@ export default function AdminAnsComment() {
                           className={`form-control ${
                             errors.replyContent && "is-invalid"
                           }`}
-                          rows="4"
+                          rows="3"
                           placeholder="請輸入回覆..."
                           {...register("replyContent", {
                             required: "你必須輸入回覆",
@@ -151,7 +168,7 @@ export default function AdminAnsComment() {
                           })}
                           className="btn btn-primary"
                         >
-                          回覆留言
+                          確認送出
                         </button>
                       </div>
                     </form>
