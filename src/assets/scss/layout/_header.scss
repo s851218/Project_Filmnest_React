@@ -4,7 +4,7 @@
 
 .navbar-dark {
   .nav-link {
-    color: #FFF;
+    color: #fff;
   }
 }
 
@@ -16,7 +16,7 @@
 .login-btn {
   border-color: transparent;
   &:hover {
-    border-color: #FFF;
+    border-color: #fff;
   }
 }
 
@@ -26,7 +26,7 @@
   height: 20px;
   width: 1px;
   opacity: 40%;
-  background: #FFF;
+  background: #fff;
   // left: -32px;
   right: -12px;
   top: 50%;
@@ -56,11 +56,11 @@
 }
 
 .dropdown-menu[data-bs-popper] {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 .navbar > .container {
-  justify-content:start;
+  justify-content: start;
   @media (min-width: 992px) {
     justify-content: space-between;
   }
@@ -81,98 +81,138 @@
   }
 }
 
+.search-container {
+  position: relative;
+}
+.search-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+.search-input-container {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  width: 0;
+  transition: transform 0.3s ease-out, width 0.3s ease-out;
+}
+.search-input-container.open {
+  transform: translateY(-50%) scaleX(1);
+  width: 300px;
+}
+.search-input {
+  border: none;
+  outline: none;
+  padding: 5px;
+  width: 100%;
+}
+.search-input-search-icon,
+.search-input-close-icon {
+  cursor: pointer;
+  padding: 5px;
+}
 
 //search
 // 參考 - AI製作範例：https://codepen.io/zxlee/pen/bGXWgOG?editors=1100
-.search-container {
-  position: relative;
-  display: inline-block;
-}
-.search-input {
-  width: 80px;
-  height: 40px;
-  border-radius: 6px;
-  border: none;
-  outline: none;
-  padding: 8px 12px;
-  padding-left: 40px;
-  transition: all 0.3s ease;
-  background-color: transparent;
-}
+// .search-container {
+//   position: relative;
+//   display: inline-block;
+// }
+// .search-input {
+//   width: 80px;
+//   height: 40px;
+//   border-radius: 6px;
+//   border: none;
+//   outline: none;
+//   padding: 8px 12px;
+//   padding-left: 40px;
+//   transition: all 0.3s ease;
+//   background-color: transparent;
+// }
 
-.search-input::placeholder {
-  color: transparent;
-}
+// .search-input::placeholder {
+//   color: transparent;
+// }
 
-.search-input:focus {
-  width: 365px;
-  background-color: white;
-  color: black;
-}
+// .search-input:focus {
+//   width: 365px;
+//   background-color: white;
+//   color: black;
+// }
 
-.search-input:focus::placeholder {
-  color: #6c757d;
-}
+// .search-input:focus::placeholder {
+//   color: #6c757d;
+// }
 
-.search-icon {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 80px;
-  height: 40px;
-  background-color: transparent;
-  border: none;
-  pointer-events: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.search-icon span {
-  color: white;
-  transition: color 0.3s ease;
-}
+// .search-icon {
+//   position: absolute;
+//   left: 0;
+//   top: 0;
+//   width: 80px;
+//   height: 40px;
+//   background-color: transparent;
+//   border: none;
+//   pointer-events: none;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+// }
+// .search-icon span {
+//   color: white;
+//   transition: color 0.3s ease;
+// }
 
-.search-input:focus + .search-icon {
-  display: none;
-}
+// .search-input:focus + .search-icon {
+//   display: none;
+// }
 
-.search-input-search-icon {
-  display: none;
-  position: absolute;
-  left: 8px;
-  top: 8px;
-  color: #040404;
-  transition: width 0.3s ease;
-}
+// .search-input-search-icon {
+//   display: none;
+//   position: absolute;
+//   left: 8px;
+//   top: 8px;
+//   color: #040404;
+//   transition: width 0.3s ease;
+// }
 
-.search-input-close-icon {
-  display: none;
-  position: absolute;
-  right: 8px;
-  top: 8px;
-  color: #040404;
-  transition: width 0.3s ease;
-}
+// .search-input-close-icon {
+//   display: none;
+//   position: absolute;
+//   right: 8px;
+//   top: 8px;
+//   color: #040404;
+//   transition: width 0.3s ease;
+// }
 
-.search-input:focus ~ span {
-  display: block;
-}
+// .search-input:focus ~ span {
+//   display: block;
+// }
 
-.mobile-search-input {
-  height: 40px;
-  padding: 8px 44px;
-}
+// .mobile-search-input {
+//   height: 40px;
+//   padding: 8px 44px;
+// }
 
-.mobile-search-icon {
-  position: absolute;
-  left: 24px;
-  top: 20px;
-  color: #040404;
-}
+// .mobile-search-icon {
+//   position: absolute;
+//   left: 24px;
+//   top: 20px;
+//   color: #040404;
+// }
 
-.mobile-close-icon {
-  position: absolute;
-  right: 24px;
-  top: 20px;
-  color: #040404;
-}
+// .mobile-close-icon {
+//   position: absolute;
+//   right: 24px;
+//   top: 20px;
+//   color: #040404;
+// }

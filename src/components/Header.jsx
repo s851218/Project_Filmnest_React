@@ -1,13 +1,17 @@
-import { useRef, useEffect } from "react";
-import { Link, NavLink } from "react-router";
+import { useRef, useEffect, useState } from "react";
+import { Link, NavLink, useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { setCategory } from "../slice/categorySlice";
+import { setSearchText, setSearchValue, setIsSearchOpen } from "../slice/searchSlice";
 
 export default function Header() {
   const profile = useSelector((state) => state.user.profile);
+  const searchValue = useSelector((state) => state.search.value);
+  const isSearchOpen = useSelector((state) => state.search.isSearchOpen);
   const categoryData = ["喜劇", "愛情", "恐怖", "懸疑", "科幻", "紀錄片", "動畫", "實驗電影"];
   const dispatch = useDispatch();
   const navbarRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -26,6 +30,20 @@ export default function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleSearchToggle = () => {
+    if (!isSearchOpen) {
+      setSearchValue("");
+    }
+    dispatch(setIsSearchOpen(!isSearchOpen));
+  };
+
+  const handleSearchSubmit = async () => {
+    if (searchValue.trim()) {
+      dispatch(setSearchText(searchValue));
+      navigate("/projectExplore");
+    }
+  };
 
   return (
     <>
@@ -61,8 +79,25 @@ export default function Header() {
                 })}
               </ul>
             </div>
-            <div className="p-0 me-12 nav-item">
-              <NavLink to="/admin/adminProfile">後台頁面</NavLink>
+            <div className="p-0 me-12 nav-item ">
+              <div className="search-container">
+                <button className={`search-icon ${isSearchOpen ? "d-none" : ""}`} type="button" onClick={handleSearchToggle}>
+                  <span className="fw-bolder me-2 text-white">搜尋</span>
+                  <span className="material-symbols-outlined text-white">search</span>
+                </button>
+                <div className={`search-input-container ${isSearchOpen ? "open" : ""}`}>
+                  <input type="text" className="search-input" placeholder="輸入影片名稱" value={searchValue} onChange={(e) => dispatch(setSearchValue(e.target.value))} />
+                  <span className="material-symbols-outlined search-input-search-icon" onClick={handleSearchSubmit}>
+                    Search
+                  </span>
+                  <span className="material-symbols-outlined search-input-close-icon" onClick={handleSearchToggle}>
+                    Close
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className={`p-0 me-12 nav-item ${!profile.token && "d-none"}`}>
+              <NavLink to="/admin/adminProfile">工作室</NavLink>
             </div>
             <div className="p-0 me-12 nav-item">
               <NavLink to="/aboutStudio">提案者頁面</NavLink>

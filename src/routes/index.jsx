@@ -30,6 +30,9 @@ import ProjectIntroComments from "../pages/ProjectIntroComments";
 import ProjectIntroInfoDisclosure from "../pages/ProjectIntroInfoDisclosure";
 import HeaderSm from "../components/HeaderSm";
 import HeaderSmSec from "../components/HeaderSmSec";
+import HeaderSmSearch from "../components/HeaderSmSearch";
+import AdminProjectsHome from "../adminPages/AdminProjectsHome";
+import AdminHeaderSm from "../AdminComponents/AdminHeaderSm ";
 
 const routes = [
   {
@@ -110,6 +113,14 @@ const routes = [
         path: "headerSmSec",
         element: <HeaderSmSec />,
       },
+      {
+        path: "headerSmSearch",
+        element: <HeaderSmSearch />,
+      },
+      {
+        path:"adminHeaderSm",
+        element: <AdminHeaderSm />
+      }
     ],
   },
   {
@@ -125,11 +136,11 @@ const routes = [
             element: <AdminProfile />,
           },
           {
-            path: "adminAnsComment",
-            element: <AdminAnsComment />,
+            path: "adminProjectsHome",
+            element: <AdminProjectsHome />,
           },
           {
-            path: "adminEdit",
+            path: ":id",
             element: <AdminEdit />,
             children: [
               {
@@ -148,6 +159,14 @@ const routes = [
                 path: "feedback",
                 element: <Feedback />,
               },
+              {
+                path: "adminChart",
+                element: <AdminChart />,
+              },
+              {
+                path: "adminAnsComment",
+                element: <AdminAnsComment />,
+              }
             ],
           },
           {
@@ -157,13 +176,10 @@ const routes = [
           {
             path: "adminUpload",
             element: <AdminUpload />,
-          },
-          {
-            path: "adminChart",
-            element: <AdminChart />,
-          },
+          }
+          
         ],
-      },
+      }
     ],
   },
 ];

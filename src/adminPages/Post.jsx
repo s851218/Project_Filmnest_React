@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 export default function Post() {
   const [postsData, setPostsData] = useState([]);
   const [isEdit, setIsEdit] = useState(null);
   const [isAdd, setIsAdd] = useState(false);
+  const { id } = useParams();
 
   // 新增最新消息
   const {
@@ -21,12 +23,11 @@ export default function Post() {
 
   const onSubmit = async (data) => {
     const postData = {
-      projectId: 1,
+      projectId: id,
       title: data.title,
       content: data.content,
       date: data.date === "now" ? new Date().toISOString() : data.schedule,
     };
-    console.log(data);
 
     const formatDate = postData.date.slice(0, 16).replace("T", " ");
     const newPost = {
@@ -38,7 +39,7 @@ export default function Post() {
       await axios.post(`${apiBase}/posts`, newPost);
       setIsAdd(false);
       alert("新增成功");
-      getPostsData();
+      getPostsData(id);
       reset();
     } catch (error) {
       alert("新增失敗");
@@ -53,40 +54,40 @@ export default function Post() {
     formState: { errors: updateErrors },
   } = useForm({ mode: "onChange" });
 
-  const onPutSubmit = async (data, id) => {
+  const onPutSubmit = async (data, dataId) => {
     const now = new Date();
     const formatDate = now.toISOString().slice(0, 16).replace("T", " ");
     const updataPost = {
-      projectId: 1,
+      projectId: id,
       title: data.title,
       content: data.content,
       date: formatDate, // 設定為當前時間
     };
     try {
-      await axios.put(`${apiBase}/posts/${id}`, updataPost);
+      await axios.put(`${apiBase}/posts/${dataId}`, updataPost);
       setIsEdit(null);
       alert("編輯成功");
-      getPostsData();
+      getPostsData(id);
     } catch (error) {
       alert("編輯失敗");
     }
   };
 
   // 刪除最新消息
-  const handleDelPostData = async (id) => {
+  const handleDelPostData = async (dataId) => {
     try {
-      await axios.delete(`${apiBase}/posts/${id}`);
+      await axios.delete(`${apiBase}/posts/${dataId}`);
       alert("刪除成功");
-      getPostsData();
+      getPostsData(id);
     } catch (error) {
       console.log("刪除失敗");
     }
   };
 
   // 取得最新消息
-  const getPostsData = async () => {
+  const getPostsData = async (projectId) => {
     try {
-      const response = await axios.get(`${apiBase}/posts`);
+      const response = await axios.get(`${apiBase}/posts?projectId=${projectId}`);
       setPostsData(response.data);
     } catch (error) {
       console.log("取得資料失敗");
@@ -94,7 +95,7 @@ export default function Post() {
   };
 
   useEffect(() => {
-    getPostsData();
+    getPostsData(id);
   }, []);
 
   return (
