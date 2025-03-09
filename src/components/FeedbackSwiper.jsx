@@ -10,6 +10,7 @@ const API_BASE = import.meta.env.VITE_API_BASE;
 function FeedbackSwiper() {
   const [feedbackData, setFeedbackData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [showNavigation, setShowNavigation] = useState(false);
 
   // 渲染時取得資料
   useEffect(() => {
@@ -54,70 +55,87 @@ function FeedbackSwiper() {
       border: "none",
       outline: "none",
     },
-    paginationContainer: {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      position: "absolute",
-      bottom: "20px",
-      width: "100%",
-      zIndex: 10,
-    },
-    paginationDot: {
-      width: "8px",
-      height: "8px",
-      borderRadius: "50%",
-      backgroundColor: "#ccc",
-      margin: "0 4px",
-      cursor: "pointer",
-    },
-    activeDot: {
-      backgroundColor: "#fff",
-    },
   };
 
   // 自定義導航和分頁的引用
   const prevNavRef = useRef(null);
   const nextNavRef = useRef(null);
   const paginationRef = useRef(null);
+  const swiperRef = useRef(null);
+
+  // 用於更新導航和分頁的顯示狀態
+  const updateNavigationVisibility = (swiper) => {
+    if (!swiper) return;
+
+    const shouldShowNavigation =
+      swiper.slides.length > swiper.params.slidesPerView;
+    setShowNavigation(shouldShowNavigation);
+
+    // 如果應該顯示導航，確保所有元素都正確初始化
+    if (shouldShowNavigation) {
+      setTimeout(() => {
+        // 確保元素存在再初始化
+        if (prevNavRef.current && nextNavRef.current && paginationRef.current) {
+          swiper.params.navigation.prevEl = prevNavRef.current;
+          swiper.params.navigation.nextEl = nextNavRef.current;
+          swiper.params.pagination.el = paginationRef.current;
+
+          swiper.navigation.init();
+          swiper.navigation.update();
+          swiper.pagination.init();
+          swiper.pagination.update();
+
+          // 使分頁指示器可見
+          const paginationContainer = paginationRef.current;
+          if (paginationContainer) {
+            paginationContainer.style.display = "flex";
+          }
+        }
+      }, 0);
+    }
+  };
 
   return (
     <div className="container py-4">
       <div className="row">
         <div className="col-12 position-relative">
-          {/* 自定義導航按鈕 */}
-          <div style={navigationStyles.navigationContainer}>
-            <button
-              ref={prevNavRef}
-              style={navigationStyles.navigationButton}
-              aria-label="上一張"
-            >
-              <i className="bi bi-chevron-left"></i>
-            </button>
+          {/* 自定義導航按鈕 - 根據showNavigation狀態決定是否顯示 */}
+          {showNavigation && (
+            <div style={navigationStyles.navigationContainer}>
+              <button
+                ref={prevNavRef}
+                style={navigationStyles.navigationButton}
+                aria-label="上一張"
+              >
+                <i className="bi bi-chevron-left"></i>
+              </button>
 
-            {/* 自定義分頁指示器 */}
-            <div
-              ref={paginationRef}
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                gap: "4px",
-                margin: "0 16px",
-              }}
-            >
-              {/* Swiper 會自動在這裡生成分頁指示器 */}
+              {/* 自定義分頁指示器 */}
+              <div
+                ref={paginationRef}
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: "4px",
+                  margin: "0 16px",
+                }}
+                className="pagination-container"
+              >
+                {/* Swiper 會自動在這裡生成分頁指示器 */}
+              </div>
+
+              <button
+                ref={nextNavRef}
+                style={navigationStyles.navigationButton}
+                aria-label="下一張"
+              >
+                <i className="bi bi-chevron-right"></i>
+              </button>
             </div>
+          )}
 
-            <button
-              ref={nextNavRef}
-              style={navigationStyles.navigationButton}
-              aria-label="下一張"
-            >
-              <i className="bi bi-chevron-right"></i>
-            </button>
-          </div>
-
+          {/* Swiper 本體 */}
           {feedbackData.length > 0 && (
             <Swiper
               modules={[Navigation, Pagination]}
@@ -126,19 +144,23 @@ function FeedbackSwiper() {
                   slidesPerView: 4,
                   spaceBetween: 36,
                 },
-                768: {
+                992: {
                   slidesPerView: 3.5,
                   spaceBetween: 28,
                 },
-                640: {
+                768: {
                   slidesPerView: 2.1,
                   spaceBetween: 20,
+                },
+                576: {
+                  slidesPerView: 2.1,
+                  spaceBetween: 16,
                 },
               }}
               slidesPerView={1}
               spaceBetween={12}
               pagination={{
-                el: paginationRef.current,
+                el: ".pagination-container",
                 clickable: true,
                 bulletClass: "custom-bullet",
                 bulletActiveClass: "custom-bullet-active",
@@ -147,38 +169,39 @@ function FeedbackSwiper() {
                 },
               }}
               navigation={{
-                prevEl: prevNavRef.current,
-                nextEl: nextNavRef.current,
+                prevEl: ".swiper-button-prev-custom",
+                nextEl: ".swiper-button-next-custom",
                 disabledClass: "custom-nav-disabled",
               }}
               onSwiper={(swiper) => {
-                // 在 swiper 初始化後，更新導航和分頁元素引用
-                setTimeout(() => {
-                  // 更新 swiper 參數
-                  swiper.params.navigation.prevEl = prevNavRef.current;
-                  swiper.params.navigation.nextEl = nextNavRef.current;
-                  swiper.params.pagination.el = paginationRef.current;
+                // 保存 swiper 實例供後續使用
+                swiperRef.current = swiper;
 
-                  // 重新初始化導航和分頁
+                // 在 swiper 初始化後，判斷是否應該顯示導航功能
+                updateNavigationVisibility(swiper);
+
+                // 監聽視窗大小變化，重新計算是否應該顯示導航
+                window.addEventListener("resize", () => {
+                  updateNavigationVisibility(swiperRef.current);
+                });
+
+                // 確保分頁元素正確引用
+                setTimeout(() => {
+                  if (paginationRef.current) {
+                    paginationRef.current.className = "pagination-container";
+                  }
+                  if (prevNavRef.current) {
+                    prevNavRef.current.className = "swiper-button-prev-custom";
+                  }
+                  if (nextNavRef.current) {
+                    nextNavRef.current.className = "swiper-button-next-custom";
+                  }
+
                   swiper.navigation.init();
                   swiper.navigation.update();
                   swiper.pagination.init();
                   swiper.pagination.update();
-
-                  // 添加自定義樣式到已生成的分頁指示器
-                  const bullets = document.querySelectorAll(".custom-bullet");
-                  bullets.forEach((bullet) => {
-                    bullet.style.opacity = "1";
-                  });
-
-                  // 修改活動指示器的樣式
-                  const activeBullet = document.querySelector(
-                    ".custom-bullet-active"
-                  );
-                  if (activeBullet) {
-                    activeBullet.style.backgroundColor = "#fff";
-                  }
-                }, 0);
+                }, 10);
               }}
               onSlideChange={(swiper) => {
                 setActiveIndex(swiper.activeIndex);
@@ -186,12 +209,16 @@ function FeedbackSwiper() {
                 // 更新活動指示器的樣式
                 const bullets = document.querySelectorAll(".custom-bullet");
                 bullets.forEach((bullet, index) => {
-                  if (index === activeIndex) {
+                  if (index === swiper.activeIndex) {
                     bullet.style.backgroundColor = "#fff";
                   } else {
                     bullet.style.backgroundColor = "#ccc";
                   }
                 });
+              }}
+              onBreakpoint={(swiper) => {
+                // 在斷點變化時重新判斷是否應該顯示導航
+                updateNavigationVisibility(swiper);
               }}
               className="position-relative"
             >
@@ -265,6 +292,14 @@ function FeedbackSwiper() {
               .custom-nav-disabled {
                 opacity: 0.5;
                 cursor: not-allowed;
+              }
+              
+              .pagination-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 4px;
+                margin: 0 16px;
               }
             `}
           </style>
