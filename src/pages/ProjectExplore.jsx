@@ -8,11 +8,12 @@ const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function ProjectExplore() {
   const [projects, setProjects] = useState([]);
-
   const dispatch = useDispatch();
   const category = useSelector((state) => state.category.type);
+  const searchText = useSelector((state) => state.search.text);
+  const searchValue = useSelector((state) => state.search.value);
 
-  const getProjectsData = async (category) => {
+  const getProjectsData = async () => {
     let apiUrl;
     if (!category || category === "all") {
       apiUrl = `${apiBase}/projects`;
@@ -21,7 +22,12 @@ export default function ProjectExplore() {
     }
     try {
       const response = await axios.get(apiUrl);
-      setProjects(response.data);
+      if (searchText){
+        const newData = response.data.filter((item)=>item.projectTitle.toLowerCase().includes(searchText.toLowerCase())) //toLowerCase()轉小寫比較
+        setProjects(newData);
+      }else{
+        setProjects(response.data);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -33,8 +39,8 @@ export default function ProjectExplore() {
   };
 
   useEffect(() => {
-    getProjectsData(category);
-  }, [category]);
+    getProjectsData();
+  }, [category,searchText,searchValue]);
 
   return (
     <>
