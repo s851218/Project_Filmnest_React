@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 const data = [
   {
     title: "一、服務介紹",
@@ -73,7 +75,7 @@ export default function TermsOfUse() {
           </ul>
         </div>
       </div>
-      <a href="/#/createProposal" className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">前往提案</a>
+      <Link to="/createProposal" className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto">我要提案</Link>
     </div>
   </>)
 }
