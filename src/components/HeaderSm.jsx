@@ -1,25 +1,53 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { setCategory } from "../slice/categorySlice";
+import { setSearchText, setSearchValue, setIsSearchOpen } from "../slice/searchSlice";
 
 export default function HeaderSm() {
   const profile = useSelector((state) => state.user.profile);
+  const searchValue = useSelector((state) => state.search.value);
+  const isSearchOpen = useSelector((state) => state.search.isSearchOpen);
   const categoryData = ["喜劇", "愛情", "恐怖", "懸疑", "科幻", "紀錄片", "動畫", "實驗電影"];
   const [isExpand, setIsExpand] = useState({ category: false });
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleIsExpand = () => {
     setIsExpand((prev) => ({ ...prev, category: !prev.category }));
   };
+  const handleSearchToggle = () => {
+    if (!isSearchOpen) {
+      setSearchValue("");
+    }
+    dispatch(setIsSearchOpen(!isSearchOpen));
+  };
+  const handleSearchSubmit = async () => {
+    if (searchValue.trim()) {
+      dispatch(setSearchText(searchValue));
+      navigate("/projectExplore");
+    }
+  };
   return (
     <>
-      <div className="mb-3">
-        <Link className="p-0 me-3" to="/">
-          <img src="close_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="logo" style={{ width: "20px" }} />
-        </Link>
-        <Link className="p-0 me-12" to="/">
-          <img src="https://github.com/s851218/Project-FilmNest/blob/main/assets/images/logo.png?raw=true" alt="logo" />
-        </Link>
+      <div className="mb-3 d-flex justify-content-between">
+        <div>
+          <Link className="p-0 me-3" to="/">
+            <img src="close_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="logo" style={{ width: "20px" }} />
+          </Link>
+          <Link className="p-0 me-12" to="/">
+            <img src="https://github.com/s851218/Project-FilmNest/blob/main/assets/images/logo.png?raw=true" alt="logo" />
+          </Link>
+        </div>
+        <div>
+          <div className="p-0 me-12 nav-item ">
+            <div className="search-container">
+              <button className={`search-icon ${isSearchOpen ? "d-none" : ""}`} type="button" onClick={()=>{handleSearchToggle();navigate("/headerSmSearch")}}>
+                <span className="fw-bolder me-2 text-white">搜尋</span>
+                <span className="material-symbols-outlined text-white">search</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
       <ul className="nav flex-column">
         {profile.token ? (
