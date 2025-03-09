@@ -21,6 +21,7 @@ import PersonalCenter from "../pages/PersonalCenter";
 import AboutStudio from "../pages/AboutStudio";
 import TermsOfUse from "../pages/TermsOfUse";
 import CreateProposal from "../pages/CreateProposal";
+import FeedbackSwiper from "../components/FeedbackSwiper";
 
 const routes = [
   {
@@ -62,6 +63,10 @@ const routes = [
       {
         path: "createProposal",
         element: <CreateProposal />,
+      },
+      {
+        path: "test",
+        element: <FeedbackSwiper />,
       },
     ],
   },
