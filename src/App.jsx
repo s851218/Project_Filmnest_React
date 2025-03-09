@@ -6,7 +6,7 @@ function App() {
   const location = useLocation();
 
   // 不顯示Header和Footer頁面
-  const layoutHiddenRoutes = ["/headerSm", "/headerSmSec"];
+  const layoutHiddenRoutes = ["/headerSm", "/headerSmSec","/headerSmSearch","/adminHeaderSm"];
 
   const shouldHideLayout = layoutHiddenRoutes.includes(location.pathname);
   return (
