@@ -4,12 +4,11 @@ import AdminSidebar from "../AdminComponents/AdminSidebar";
 export default function AdminHome() {
   return (
     <>
-      <h1>Studio 主頁</h1>
       <div className="row">
-        <div className="col-2 ">
+        <div className="col-md-2 d-none d-md-block">
           <AdminSidebar />
         </div>
-        <div className="col-10">
+        <div className="col-12 col-md-10">
           <Outlet />
         </div>
       </div>
