@@ -94,3 +94,29 @@ textarea {
     }
   }
 }
+.admin {
+  background-color: #fafafa;
+  color: $primary-1000;
+}
+.admin.form-control {
+  background-color: white;
+  color: $primary-1000;
+}
+.admin.form-control::placeholder {
+  color: $primary-1000;
+  opacity: 1;
+}
+.admin.form-control:disabled {
+  background-color: #e6e6e6;
+  opacity: 1;
+  cursor: not-allowed;
+}
+.nowrap-table {
+  white-space: nowrap;
+}
+.table-responsive {
+  overflow-x: auto;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
