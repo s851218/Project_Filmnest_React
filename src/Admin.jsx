@@ -6,8 +6,8 @@ function Admin() {
   return (
     <>
       <AdminHeader />
-      <div className="bg-white text-dark">
-        <div className="container mt-20">
+      <div className="text-dark" style={{ background: "#FAFAFA" }}>
+        <div className="container-fluid mt-20">
           <Outlet />
         </div>
       </div>
