@@ -8,12 +8,12 @@ const API_BASE = import.meta.env.VITE_API_BASE;
 const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
   return (
     <div className="mb-5">
-      <label htmlFor={id} className="form-label">
+      <label htmlFor={id} className="form-label fw-bolder fs-sm fs-md-base">
         {labelText}
       </label>
       <input
         type={type}
-        className={`form-control bg-light text-dark ${
+        className={`form-control bg-light text-dark fs-sm fs-md-base ${
           errors?.[id]?.message && "is-invalid"
         }`}
         id={id}
@@ -74,8 +74,6 @@ export default function Intro() {
 
         // 封面圖片狀態
         setProjectImage(projectData.projectImage);
-        // 專案介紹圖片狀態
-        // setProjectOtherImages(projectData.otherImages);
       } catch (error) {
         console.log("取得專案資訊失敗", error);
       }
@@ -92,25 +90,27 @@ export default function Intro() {
       reader.onloadend = () => {
         //事件處理器，於每一次讀取結束之後觸發（不論成功或失敗）
         const fileUrl = reader.result;
+
         update(index, { ...fields[index], imageUrl: fileUrl });
       };
     }
   };
 
-  // 新增圖片檔案選擇 input
-  const handleAddImageFileChange = (e) => {
-    const selectedfile = e.target.files[0]; //取目標files的內容
-    if (selectedfile) {
-      const reader = new FileReader();
-      reader.readAsDataURL(selectedfile); // 轉換為 Base64，會進入onload狀態
-      reader.onloadend = () => {
-        //事件處理器，於每一次讀取結束之後觸發（不論成功或失敗）
-        const fileUrl = reader.result;
-        append({ imageUrl: fileUrl });
-        e.target.value = "";
-      };
-    }
+  // 圖片新增 input
+  const handleAddImage = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      // 新增圖片，這裡直接使用 Base64 字串
+      const fileUrl = reader.result;
+      append({ imageUrl: fileUrl });
+      e.target.value = ""; // 重置 input
+    };
   };
+
+  console.log(fields);
 
   const onSubmit = (data) => {
     const editData = {
@@ -128,7 +128,7 @@ export default function Intro() {
       const updateData = {
         projectTitle: data.projectTitle,
         projectImage: data.projectImage,
-        category: data.projectCategory,
+        category: data.category,
         summary: data.summary,
         goalMoney: parseInt(data.goalMoney),
         otherImages: data.otherImages,
@@ -142,79 +142,98 @@ export default function Intro() {
     }
   };
 
-  console.log("fields:", fields);
-
-  console.dir({ fields, append, remove, update });
   return (
     <>
-      <h1 className="fs-6 mb-7">專案資訊</h1>
-      <form action="" className="mb-5" onSubmit={handleSubmit(onSubmit)}>
-        <IntroInput
-          register={register}
-          errors={errors}
-          id="projectTitle"
-          labelText="專案名稱"
-          type="text"
-          rules={{ required: "專案名稱為必填" }}
-        />
-        <IntroInput
-          register={register}
-          errors={errors}
-          id="category"
-          labelText="專案類型"
-          type="text"
-          rules={{ required: "專案類型為必填" }}
-        />
-        <IntroInput
-          register={register}
-          errors={errors}
-          id="summary"
-          labelText="專案簡介"
-          type="text"
-          rules={{ required: "專案簡介為必填" }}
-        />
-        <IntroInput
-          register={register}
-          errors={errors}
-          id="goalMoney"
-          labelText="目標金額"
-          type="number"
-          rules={{ required: "目標金額為必填" }}
-          min="1"
-        />
+      <section className="p-3 py-md-4 py-lg-7 px-md-8 px-lg-10 bg-white mb-5 rounded-4">
+        <form action="" onSubmit={handleSubmit(onSubmit)}>
+          <IntroInput
+            register={register}
+            errors={errors}
+            id="projectTitle"
+            labelText="專案名稱"
+            type="text"
+            rules={{ required: "專案名稱為必填" }}
+          />
+          <IntroInput
+            register={register}
+            errors={errors}
+            id="category"
+            labelText="專案類型"
+            type="text"
+            rules={{ required: "專案類型為必填" }}
+          />
+          <IntroInput
+            register={register}
+            errors={errors}
+            id="summary"
+            labelText="專案簡介"
+            type="text"
+            rules={{ required: "專案簡介為必填" }}
+          />
+          <IntroInput
+            register={register}
+            errors={errors}
+            id="goalMoney"
+            labelText="目標金額"
+            type="number"
+            rules={{ required: "目標金額為必填" }}
+            min="1"
+          />
 
-        {/* 更換封面圖片 */}
-        <div className="mt-3">
-          <div className="d-flex">
+          {/* 更換封面圖片 */}
+          <div className="mt-5">
             <UploadProjectImage
               onUploadSuccess={(img) => setProjectImage(img)}
             />
           </div>
-        </div>
-        <div className="my-3">
-          <h2 className="fs-7">專案封面圖片預覽</h2>
-          <img src={projectImage} alt="" className="img-fluid" />
-        </div>
-        <div className="my-3">
-          <h2 className="fs-7">專案介紹頁圖片</h2>
-          <ul className="row g-3 list-unstyled">
-            {fields.map((image, index) => {
-              return (
-                <li className="col-4" key={image.id}>
-                  <img src={image.imageUrl} alt="" className="img-fluid" />
-                  <div className="d-flex flex-column align-items-center">
-                    <div className="mt-2 align-self-start">
-                      <input
-                        type="file"
-                        onChange={(e) => handleOtherImagesFileChange(e, index)}
+          <div className="mt-5">
+            <h2 className="fs-base fw-bolder">專案封面圖片預覽</h2>
+            <img src={projectImage} alt="" className="img-fluid rounded" />
+            <p className="fs-xs text-primary-5 mt-1">
+              封面圖片會顯示在專案圖片、首頁輪播與第一張劇照等位置
+            </p>
+          </div>
+
+          <div className="mt-5">
+            <h2 className="fs-base fw-bolder">專案介紹頁劇照</h2>
+            <div className="container" style={{ overflow: "visible" }}>
+              <ul
+                className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1 g-md-2 g-lg-3 list-unstyled"
+                style={{ overflow: "visible" }}
+              >
+                {fields.map((img, index) => (
+                  <li
+                    key={img.id}
+                    className="col"
+                    style={{ overflow: "visible" }}
+                  >
+                    <h3 className="fs-xs fs-md-sm text-primary-6">{`第 ${
+                      index + 1
+                    } 張劇照`}</h3>
+
+                    <label
+                      htmlFor={`change-image-input-${index}`}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <img
+                        src={img.imageUrl}
+                        alt={`第 ${index + 1} 張劇照`}
+                        className="img-fluid object-fit-cover rounded mb-2"
                       />
-                    </div>
-                    <div className="mt-2">
+                    </label>
+                    <input
+                      id={`change-image-input-${index}`}
+                      type="file"
+                      accept="image/*"
+                      className="w-100"
+                      onChange={(e) => handleOtherImagesFileChange(e, index)}
+                    />
+                    <div className="d-flex justify-content-center mt-2">
                       {/* 當圖片數量超過 3 張時，才顯示刪除按鈕 */}
                       {fields.length > 3 && (
                         <button
                           type="button"
-                          className="btn btn-outline-danger"
+                          className="btn btn-sm btn-outline-danger"
                           onClick={() => {
                             remove(index);
                           }}
@@ -223,31 +242,44 @@ export default function Intro() {
                         </button>
                       )}
                     </div>
-                  </div>
-                </li>
-              );
-            })}
-            {/* 僅當圖片數量少於 10 張時顯示新增圖片按鈕 */}
-            {fields.length < 10 && (
-              <li className="col-4">
-                <div
-                  className="d-flex flex-column justify-content-center align-items-center"
-                  style={{ minHeight: "200px", border: "1px dashed #ccc" }}
-                >
-                  <input type="file" onChange={handleAddImageFileChange} />
-                  <p className="fs-6 mt-2">這裡新增圖片</p>
-                </div>
-              </li>
-            )}
-          </ul>
-        </div>
-        <div className="my-3">
-          <h2>專案介紹</h2>
-        </div>
-        <button type="submit" className="btn btn-primary">
-          儲存
-        </button>
-      </form>
+                  </li>
+                ))}
+                {/* 僅當圖片數量少於 10 張時顯示新增圖片按鈕 */}
+                {fields.length < 10 && (
+                  <li className="col">
+                    <p className="fs-xs fs-md-sm text-primary-6 mb-2">
+                      選擇圖片新增劇照 (最多十張)
+                    </p>
+                    <label
+                      htmlFor="add-image-input"
+                      className="mb-2"
+                      style={{ cursor: "pointer" }}
+                    >
+                      <img
+                        className="img-fluid object-cover"
+                        src="https://assets.backme.tw/production-aws/assets/platform/placeholders/bg-placeholder-square-28da8606154a1426e4c6d266d62cd058de7b2b4201b905de0bd5e974b675ed3e.svg"
+                      />
+                    </label>
+                    <input
+                      type="file"
+                      id="add-image-input"
+                      accept="image/*"
+                      className="w-100"
+                      onChange={handleAddImage}
+                    />
+                  </li>
+                )}
+              </ul>
+            </div>
+          </div>
+          <div className="mt-5">
+            <h2 className="fs-base fw-bolder">專案介紹</h2>
+          </div>
+          <button type="submit" className="btn btn-primary">
+            儲存
+          </button>
+        </form>
+      </section>
     </>
   );
 }
