@@ -7,7 +7,7 @@ const API_BASE = import.meta.env.VITE_API_BASE;
 
 const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
   return (
-    <div className="mb-5">
+    <section className="mb-5">
       <label htmlFor={id} className="form-label fw-bolder fs-sm fs-md-base">
         {labelText}
       </label>
@@ -23,7 +23,7 @@ const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
       {errors[id] && (
         <p className="invalid-feedback my-2">{errors?.[id]?.message}</p>
       )}
-    </div>
+    </section>
   );
 };
 
@@ -154,14 +154,35 @@ export default function Intro() {
             type="text"
             rules={{ required: "專案名稱為必填" }}
           />
-          <IntroInput
-            register={register}
-            errors={errors}
-            id="category"
-            labelText="專案類型"
-            type="text"
-            rules={{ required: "專案類型為必填" }}
-          />
+          <section className="mb-5">
+            <label htmlFor="category" className="form-label">
+              專案類型
+            </label>
+            <select
+              id="category"
+              className={`form-control bg-light text-dark ${
+                errors?.category ? "is-invalid" : ""
+              }`}
+              {...register("category", { required: "請選擇專案類型" })}
+            >
+              <option value="" disabled hidden>
+                請選擇專案類型
+              </option>
+              <option value="喜劇">喜劇</option>
+              <option value="愛情">愛情</option>
+              <option value="恐怖">恐怖</option>
+              <option value="懸疑">懸疑</option>
+              <option value="科幻">科幻</option>
+              <option value="紀錄片">紀錄片</option>
+              <option value="動畫">動畫</option>
+              <option value="實驗電影">實驗電影</option>
+            </select>
+            {errors?.category && (
+              <p className="invalid-feedback my-2">
+                {errors?.category.message}
+              </p>
+            )}
+          </section>
           <IntroInput
             register={register}
             errors={errors}
@@ -188,7 +209,12 @@ export default function Intro() {
           </div>
           <div className="mt-5">
             <h2 className="fs-base fw-bolder">專案封面圖片預覽</h2>
-            <img src={projectImage} alt="" className="img-fluid rounded" />
+            <img
+              src={projectImage}
+              alt=""
+              className="img-fluid object-fit-cover rounded w-100"
+              style={{ maxWidth: "600px" }}
+            />
             <p className="fs-xs text-primary-5 mt-1">
               封面圖片會顯示在專案圖片、首頁輪播與第一張劇照等位置
             </p>
@@ -196,29 +222,23 @@ export default function Intro() {
 
           <div className="mt-5">
             <h2 className="fs-base fw-bolder">專案介紹頁劇照</h2>
-            <div className="container" style={{ overflow: "visible" }}>
-              <ul
-                className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-1 g-md-2 g-lg-3 list-unstyled"
-                style={{ overflow: "visible" }}
-              >
+            <div className="container">
+              <ul className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 g-lg-3 list-unstyled">
                 {fields.map((img, index) => (
-                  <li
-                    key={img.id}
-                    className="col"
-                    style={{ overflow: "visible" }}
-                  >
+                  <li key={img.id} className="col">
                     <h3 className="fs-xs fs-md-sm text-primary-6">{`第 ${
                       index + 1
                     } 張劇照`}</h3>
 
                     <label
                       htmlFor={`change-image-input-${index}`}
+                      className="mb-2"
                       style={{ cursor: "pointer" }}
                     >
                       <img
                         src={img.imageUrl}
                         alt={`第 ${index + 1} 張劇照`}
-                        className="img-fluid object-fit-cover rounded mb-2"
+                        className="img-fluid object-fit-cover rounded"
                       />
                     </label>
                     <input
@@ -246,7 +266,7 @@ export default function Intro() {
                 ))}
                 {/* 僅當圖片數量少於 10 張時顯示新增圖片按鈕 */}
                 {fields.length < 10 && (
-                  <li className="col">
+                  <li className="col mt-2">
                     <p className="fs-xs fs-md-sm text-primary-6 mb-2">
                       選擇圖片新增劇照 (最多十張)
                     </p>
@@ -256,8 +276,8 @@ export default function Intro() {
                       style={{ cursor: "pointer" }}
                     >
                       <img
-                        className="img-fluid object-cover"
-                        src="https://assets.backme.tw/production-aws/assets/platform/placeholders/bg-placeholder-square-28da8606154a1426e4c6d266d62cd058de7b2b4201b905de0bd5e974b675ed3e.svg"
+                        className="img-fluid object-cover rounded"
+                        src="假圖.jpg"
                       />
                     </label>
                     <input
