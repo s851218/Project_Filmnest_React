@@ -1,8 +1,85 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router";
 import { useParams } from "react-router";
 
-export default function ProjectIntroNav() {
-  const { id } = useParams();
+// import Swiper core and required modules
+import { FreeMode } from "swiper/modules";
+
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/free-mode";
+
+const API_BASE = import.meta.env.VITE_API_BASE;
+
+export default function ProjectIntroNav({ projectId }) {
+  const { userId, token } = useSelector((state) => state.user.profile);
+
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [favoriteId, setFavoriteId] = useState(null);
+
+  // 檢查收藏狀態
+  useEffect(() => {
+    if (!projectId || !userId) return;
+
+    const getFavoritesData = async () => {
+      try {
+        const res = await axios.get(
+          `${API_BASE}/favorites?userId=${userId}&projectId=${projectId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (res.data && res.data.length > 0) {
+          setIsFavorited(true);
+          setFavoriteId(res.data[0].id);
+        }
+      } catch (error) {
+        console.log("取得收藏狀態失敗：", error);
+      }
+    };
+    getFavoritesData();
+  }, [projectId, userId]);
+
+  // 收藏與取消收藏
+  const toggleFavorite = async (e) => {
+    e.preventDefault();
+    if (!token) {
+      alert("請先登入！");
+      return;
+    }
+
+    if (!isFavorited) {
+      try {
+        const res = await axios.post(
+          `${API_BASE}/favorites`,
+          { userId, projectId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setIsFavorited(true);
+        setFavoriteId(res.data.id);
+        alert("專案已收藏！");
+      } catch (error) {
+        console.error("新增收藏失敗：", error);
+      }
+    } else {
+      try {
+        await axios.delete(`${API_BASE}/favorites/${favoriteId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setIsFavorited(false);
+        setFavoriteId(null);
+        alert("專案已取消收藏！");
+      } catch (error) {
+        console.error("取消收藏失敗：", error);
+      }
+    }
+  };
+
   return (
     <>
       <section className="py-3 bg-primary-8 d-none d-lg-block">
@@ -10,8 +87,11 @@ export default function ProjectIntroNav() {
           <ul className="list-unstyled mb-0 d-flex gap-8 align-items-center">
             <li>
               <NavLink
-                to={`/${id}`}
-                className="nav-link py-3 <%= page === 'project-intro' ? 'border-white ' : '' %>"
+                to=""
+                end
+                className={({ isActive }) =>
+                  `nav-link py-3 ${isActive ? "project-intro-nav-active" : ""}`
+                }
               >
                 專案介紹
               </NavLink>
@@ -19,7 +99,9 @@ export default function ProjectIntroNav() {
             <li>
               <NavLink
                 to="news"
-                className="nav-link py-3 <%= page === 'project-breaking-news' ? 'border-white ' : '' %>"
+                className={({ isActive }) =>
+                  `nav-link py-3 ${isActive ? "project-intro-nav-active" : ""}`
+                }
               >
                 最新消息
               </NavLink>
@@ -27,7 +109,9 @@ export default function ProjectIntroNav() {
             <li>
               <NavLink
                 to="supportFeedback"
-                className="nav-link py-3 <%= page === 'project-support-feedback' ? 'border-white ' : '' %>"
+                className={({ isActive }) =>
+                  `nav-link py-3 ${isActive ? "project-intro-nav-active" : ""}`
+                }
               >
                 支持與回饋
               </NavLink>
@@ -35,7 +119,9 @@ export default function ProjectIntroNav() {
             <li>
               <NavLink
                 to="QA"
-                className="nav-link py-3 <%= page === 'project-QA' ? 'border-white ' : '' %>"
+                className={({ isActive }) =>
+                  `nav-link py-3 ${isActive ? "project-intro-nav-active" : ""}`
+                }
               >
                 常見問題
               </NavLink>
@@ -43,7 +129,9 @@ export default function ProjectIntroNav() {
             <li>
               <NavLink
                 to="comments"
-                className="nav-link py-3 <%= page === 'project-comments' ? 'border-white ' : '' %>"
+                className={({ isActive }) =>
+                  `nav-link py-3 ${isActive ? "project-intro-nav-active" : ""}`
+                }
               >
                 留言板
               </NavLink>
@@ -51,8 +139,9 @@ export default function ProjectIntroNav() {
             <li>
               <NavLink
                 to="infoDisclosure"
-                className="nav-link py-3 <%= page === 'project-information-disclosure' ? 'border-white ' : '' %>"
-                href="project-information-disclosure.html"
+                className={({ isActive }) =>
+                  `nav-link py-3 ${isActive ? "project-intro-nav-active" : ""}`
+                }
               >
                 資訊揭露與承諾
               </NavLink>
@@ -60,23 +149,31 @@ export default function ProjectIntroNav() {
           </ul>
           <ul className="list-unstyled mb-0 d-flex gap-5 align-items-center">
             <li>
-              <a
+              <button
                 className="p-3 border border-primary-4 rounded-circle heart-hover"
-                href="#"
+                onClick={toggleFavorite}
               >
-                <span className="material-symbols-outlined text-white align-bottom">
+                <span
+                  className="material-symbols-outlined text-white align-bottom"
+                  style={{
+                    fontVariationSettings: isFavorited
+                      ? "'FILL' 1"
+                      : "'FILL' 0",
+                  }}
+                >
                   favorite
                 </span>
-              </a>
+              </button>
             </li>
             <li>
-              <a
+              <button
+                type="button"
                 className="btn btn-primary py-3 fw-bolder"
                 style={{ width: 188 }}
-                href="feedback-choice.html"
+                href="#"
               >
                 立即贊助
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -85,58 +182,77 @@ export default function ProjectIntroNav() {
       {/* 專案介紹頁導覽列-手機版 */}
       <section className="py-2 bg-primary-8 d-block d-lg-none">
         <div className="container d-flex">
-          <div className="swiper project-intro-nav-swiper">
-            <div className="swiper-wrapper">
-              <div className="swiper-slide w-auto">
-                <a
-                  className="nav-link py-3 <%= page === 'project-intro' ? 'border-white ' : '' %>"
-                  href="project-intro.html"
-                >
-                  專案介紹
-                </a>
-              </div>
-              <div className="swiper-slide w-auto">
-                <a
-                  className="nav-link py-3 <%= page === 'project-breaking-news' ? 'border-white ' : '' %>"
-                  href="project-breaking-news.html"
-                >
-                  最新消息
-                </a>
-              </div>
-              <div className="swiper-slide w-auto">
-                <a
-                  className="nav-link py-3 <%= page === 'project-support-feedback' ? 'border-white ' : '' %>"
-                  href="project-support-feedback.html"
-                >
-                  支持與回饋
-                </a>
-              </div>
-              <div className="swiper-slide w-auto">
-                <a
-                  className="nav-link py-3 <%= page === 'project-QA' ? 'border-white ' : '' %>"
-                  href="project-QA.html"
-                >
-                  常見問題
-                </a>
-              </div>
-              <div className="swiper-slide w-auto">
-                <a
-                  className="nav-link py-3 <%= page === 'project-comments' ? 'border-white ' : '' %>"
-                  href="project-comments.html"
-                >
-                  留言板
-                </a>
-              </div>
-              <div className="swiper-slide w-auto">
-                <a
-                  className="nav-link py-3 <%= page === 'project-information-disclosure' ? 'border-white ' : '' %>"
-                  href="project-information-disclosure.html"
-                >
-                  資訊揭露與承諾
-                </a>
-              </div>
-            </div>
-          </div>
+          <Swiper
+            modules={[FreeMode]}
+            slidesPerView="auto"
+            spaceBetween={20}
+            freeMode={true}
+            watchOverflow={true}
+            resistance={true}
+            className="project-intro-nav-swiper"
+          >
+            <SwiperSlide className="w-auto">
+              <NavLink
+                to=""
+                end
+                className={({ isActive }) =>
+                  `nav-link py-3 ${isActive ? "project-intro-nav-active" : ""}`
+                }
+              >
+                專案介紹
+              </NavLink>
+            </SwiperSlide>
+            <SwiperSlide className="w-auto">
+              <NavLink
+                to="news"
+                className={({ isActive }) =>
+                  `nav-link py-3 ${isActive ? "project-intro-nav-active" : ""}`
+                }
+              >
+                最新消息
+              </NavLink>
+            </SwiperSlide>
+            <SwiperSlide className="w-auto">
+              <NavLink
+                to="supportFeedback"
+                className={({ isActive }) =>
+                  `nav-link py-3 ${isActive ? "project-intro-nav-active" : ""}`
+                }
+              >
+                支持與回饋
+              </NavLink>
+            </SwiperSlide>
+            <SwiperSlide className="w-auto">
+              <NavLink
+                to="QA"
+                className={({ isActive }) =>
+                  `nav-link py-3 ${isActive ? "project-intro-nav-active" : ""}`
+                }
+              >
+                常見問題
+              </NavLink>
+            </SwiperSlide>
+            <SwiperSlide className="w-auto">
+              <NavLink
+                to="comments"
+                className={({ isActive }) =>
+                  `nav-link py-3 ${isActive ? "project-intro-nav-active" : ""}`
+                }
+              >
+                留言板
+              </NavLink>
+            </SwiperSlide>
+            <SwiperSlide className="w-auto">
+              <NavLink
+                to="infoDisclosure"
+                className={({ isActive }) =>
+                  `nav-link py-3 ${isActive ? "project-intro-nav-active" : ""}`
+                }
+              >
+                資訊揭露與承諾
+              </NavLink>
+            </SwiperSlide>
+          </Swiper>
         </div>
       </section>
       {/* 專案介紹頁導覽列-收藏和立即贊助-手機版 */}
@@ -144,14 +260,22 @@ export default function ProjectIntroNav() {
         <div className="container">
           <ul className="list-unstyled mb-0 d-flex gap-3 align-items-center justify-content-center">
             <li>
-              <a
+              <button
+                type="button"
                 className="p-3 border border-primary-4 rounded-circle heart-hover"
-                href="#"
+                onClick={toggleFavorite}
               >
-                <span className="material-symbols-outlined text-white align-bottom">
+                <span
+                  className="material-symbols-outlined text-white align-bottom"
+                  style={{
+                    fontVariationSettings: isFavorited
+                      ? "'FILL' 1"
+                      : "'FILL' 0",
+                  }}
+                >
                   favorite
                 </span>
-              </a>
+              </button>
             </li>
             <li>
               <a

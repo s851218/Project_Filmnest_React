@@ -6,7 +6,7 @@ export default function AdminHome() {
     <>
       <div className="d-none d-lg-block pt-8">
         <div className="row">
-          <div className="col-2 ">
+          <div className="col-2">
             <AdminSidebar />
           </div>
           <div className="col-10">
