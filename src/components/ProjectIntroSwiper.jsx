@@ -101,6 +101,7 @@ export default function ProjectIntroSwiper({ projectInfo }) {
           slidesPerView={3}
           spaceBetween={24}
           className="projectIntroSwiper d-none d-md-block"
+          style={{ cursor: "pointer" }}
         >
           {otherImages.map((image) => (
             <SwiperSlide key={image.id} className="swiper-slide">
