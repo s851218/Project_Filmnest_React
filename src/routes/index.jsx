@@ -28,7 +28,6 @@ import ProjectIntroSupportFeedback from "../pages/ProjectIntroSupportFeedback";
 import ProjectIntroQA from "../pages/ProjectIntroQA";
 import ProjectIntroComments from "../pages/ProjectIntroComments";
 import ProjectIntroInfoDisclosure from "../pages/ProjectIntroInfoDisclosure";
-import MinimalImageExample from "../pages/MinimalImageExample";
 
 const routes = [
   {
@@ -70,10 +69,6 @@ const routes = [
       {
         path: "createProposal",
         element: <CreateProposal />,
-      },
-      {
-        path: "minimalImageExample",
-        element: <MinimalImageExample />,
       },
       {
         path: "projects/:id",
