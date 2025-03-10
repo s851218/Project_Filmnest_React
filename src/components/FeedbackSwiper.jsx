@@ -225,44 +225,46 @@ function FeedbackSwiper() {
               {feedbackData.map((feedback) => (
                 <SwiperSlide
                   key={feedback.id}
-                  className="card rounded-2 bg-primary-9 border shadow overflow-hidden h-100 d-flex flex-column"
-                  style={{ maxWidth: "350px", borderColor: "#606060" }}
+                  className="card rounded-2 bg-primary-9 border shadow overflow-hidden h-auto"
+                  style={{ minWidth: "320px", borderColor: "#606060" }}
                 >
-                  <div className="position-relative">
-                    <img
-                      src={feedback.image}
-                      alt={feedback.title}
-                      className="card-img-top"
-                    />
-                  </div>
+                  <div className="h-100 d-flex flex-column">
+                    <div className="position-relative">
+                      <img
+                        src={feedback.image}
+                        alt={feedback.title}
+                        className="card-img-top"
+                      />
+                    </div>
 
-                  <div className="card-body p-5">
-                    <h5 className="fw-bold fs-lg-7 mb-1">{feedback.title}</h5>
-                    <h3 className="fw-bold fs-lg-6 fs-7 mb-lg-6 mb-3">{`NT${feedback.price.toLocaleString(
-                      "zh-TW",
-                      {
-                        style: "currency",
-                        currency: "TWD",
-                        minimumFractionDigits: 0,
-                      }
-                    )}`}</h3>
+                    <div className="card-body p-5 d-flex flex-column h-100">
+                      <h5 className="fw-bold fs-lg-7 mb-1">{feedback.title}</h5>
+                      <h3 className="fw-bold fs-lg-6 fs-7 mb-lg-6 mb-3">{`NT${feedback.price.toLocaleString(
+                        "zh-TW",
+                        {
+                          style: "currency",
+                          currency: "TWD",
+                          minimumFractionDigits: 0,
+                        }
+                      )}`}</h3>
 
-                    <hr className="my-3" />
-                    <div className="d-flex flex-column h-100">
-                      <p className="mb-lg-2 mb-1">本方案包含：</p>
-                      <ol className="list-unstyled mb-g-6 mb-3 ms-2">
-                        {feedback.contents.map((item, index) => (
-                          <li key={index}>{`${index + 1}、${item.item}`}</li>
-                        ))}
-                      </ol>
+                      <hr className="my-3" />
+                      <div className="d-flex flex-column h-100">
+                        <p className="mb-lg-2 mb-1">本方案包含：</p>
+                        <ol className="mb-lg-6 mb-3 fit-content">
+                          {feedback.contents.map((item, index) => (
+                            <li key={index}>{item.item}</li>
+                          ))}
+                        </ol>
 
-                      <div className="mt-4 mb-2">
-                        <button
-                          type="button"
-                          className="btn btn-primary btn-lg py-2 fw-bold w-100 mt-auto"
-                        >
-                          選擇此方案
-                        </button>
+                        <div className="mb-0 mt-auto">
+                          <button
+                            type="button"
+                            className="btn btn-primary py-2 fw-bold w-100"
+                          >
+                            選擇此方案
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
