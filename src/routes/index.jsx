@@ -65,7 +65,7 @@ const routes = [
         element: <CreateProposal />,
       },
       {
-        path: "test",
+        path: "feedbackSwiper",
         element: <FeedbackSwiper />,
       },
     ],

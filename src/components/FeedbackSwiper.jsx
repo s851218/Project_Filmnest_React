@@ -36,7 +36,7 @@ function FeedbackSwiper() {
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
-      top: "105%",
+      top: "103%",
       left: "50%",
       transform: "translate(-50%)",
       zIndex: 10,
@@ -96,7 +96,7 @@ function FeedbackSwiper() {
   };
 
   return (
-    <div className="container py-4">
+    <div className="container py-4 mb-6">
       <div className="row">
         <div className="col-12 position-relative">
           {/* 自定義導航按鈕 - 根據showNavigation狀態決定是否顯示 */}
@@ -159,6 +159,7 @@ function FeedbackSwiper() {
               }}
               slidesPerView={1}
               spaceBetween={12}
+              loop={true}
               pagination={{
                 el: ".pagination-container",
                 clickable: true,
@@ -209,7 +210,7 @@ function FeedbackSwiper() {
                 // 更新活動指示器的樣式
                 const bullets = document.querySelectorAll(".custom-bullet");
                 bullets.forEach((bullet, index) => {
-                  if (index === swiper.activeIndex) {
+                  if (index === activeIndex) {
                     bullet.style.backgroundColor = "#fff";
                   } else {
                     bullet.style.backgroundColor = "#ccc";
@@ -251,7 +252,7 @@ function FeedbackSwiper() {
                       <hr className="my-3" />
                       <div className="d-flex flex-column h-100">
                         <p className="mb-lg-2 mb-1">本方案包含：</p>
-                        <ol className="mb-lg-6 mb-3 fit-content">
+                        <ol className="mb-lg-6 mb-3 text-balance">
                           {feedback.contents.map((item, index) => (
                             <li key={index}>{item.item}</li>
                           ))}
@@ -273,7 +274,7 @@ function FeedbackSwiper() {
             </Swiper>
           )}
 
-          {/* 為了確保導航樣式正確應用，添加額外的 CSS */}
+          {/* 導航按鈕 CSS */}
           <style>
             {`
               .custom-bullet {
