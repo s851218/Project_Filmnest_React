@@ -44,7 +44,7 @@ export default function AdminEdit() {
                       isActive ? "active-edit-nav-link" : ""
                     }`
                   }
-                  to={`/admin/adminEdit/${id}/intro`}
+                  to={`/admin/${id}/intro`}
                 >
                   專案資訊
                 </NavLink>
@@ -56,7 +56,7 @@ export default function AdminEdit() {
                       isActive ? "active-edit-nav-link" : ""
                     }`
                   }
-                  to={`/admin/adminEdit/${id}/post`}
+                  to={`/admin/${id}/post`}
                 >
                   最新消息
                 </NavLink>
@@ -68,7 +68,7 @@ export default function AdminEdit() {
                       isActive ? "active-edit-nav-link" : ""
                     }`
                   }
-                  to={`/admin/adminEdit/${id}/faq`}
+                  to={`/admin/${id}/faq`}
                 >
                   常見問題
                 </NavLink>
@@ -80,7 +80,7 @@ export default function AdminEdit() {
                       isActive ? "active-edit-nav-link" : ""
                     }`
                   }
-                  to={`/admin/adminEdit/${id}/feedback`}
+                  to={`/admin/${id}/feedback`}
                 >
                   回饋項目
                 </NavLink>
