@@ -96,7 +96,7 @@ function FeedbackSwiper() {
   };
 
   return (
-    <div className="container py-4 mb-6">
+    <div className="container py-4 my-10">
       <div className="row">
         <div className="col-12 position-relative">
           {/* 自定義導航按鈕 - 根據showNavigation狀態決定是否顯示 */}
@@ -140,25 +140,25 @@ function FeedbackSwiper() {
             <Swiper
               modules={[Navigation, Pagination]}
               breakpoints={{
-                1024: {
+                1200: {
                   slidesPerView: 4,
-                  spaceBetween: 36,
+                  spaceBetween: 20,
                 },
                 992: {
-                  slidesPerView: 3.5,
-                  spaceBetween: 28,
+                  slidesPerView: 3,
+                  spaceBetween: 16,
                 },
                 768: {
                   slidesPerView: 2.1,
-                  spaceBetween: 20,
+                  spaceBetween: 12,
                 },
                 576: {
-                  slidesPerView: 2.1,
-                  spaceBetween: 16,
+                  slidesPerView: 2,
+                  spaceBetween: 8,
                 },
               }}
               slidesPerView={1}
-              spaceBetween={12}
+              spaceBetween={4}
               loop={true}
               pagination={{
                 el: ".pagination-container",
@@ -227,7 +227,7 @@ function FeedbackSwiper() {
                 <SwiperSlide
                   key={feedback.id}
                   className="card rounded-2 bg-primary-9 border shadow overflow-hidden h-auto"
-                  style={{ minWidth: "320px", borderColor: "#606060" }}
+                  style={{ minWidth: "300px", borderColor: "#606060" }}
                 >
                   <div className="h-100 d-flex flex-column">
                     <div className="position-relative">
