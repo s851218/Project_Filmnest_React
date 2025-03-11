@@ -129,11 +129,11 @@ export default function AdminAnsComment() {
                       <div className="text-end">
                         <button
                           className="btn btn-outline-primary btn-sm"
-                          onClick={() =>
+                          onClick={() => {
                             setActiveReplyId(
                               activeReplyId === comment.id ? null : comment.id
-                            )
-                          }
+                            );
+                          }}
                         >
                           {activeReplyId === comment.id ? "取消" : "回覆"}
                         </button>

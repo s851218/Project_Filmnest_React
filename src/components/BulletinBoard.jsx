@@ -7,16 +7,16 @@ const BASE_URL = "https://json-server-vercel-tdcc.onrender.com";
 
 function BulletinBoard() {
   const [messages, setMessages] = useState([]);
-  const getMessage = async () => {
+
+  const getMessage = async (id = 1) => {
     try {
-      const response = await axios.get(`${BASE_URL}/comments`);
+      const response = await axios.get(`${BASE_URL}/comments?projectId=${id}`);
       console.log(response.data);
       setMessages(response.data);
     } catch (error) {
       console.error(error);
     }
   };
-
   useEffect(() => {
     getMessage();
   }, []);
@@ -113,7 +113,7 @@ function BulletinBoard() {
                           />
                           <div>
                             <h2 className="fs-base mb-1">{message.title}</h2>
-                            <p>{message.date}</p>
+                            <p>{message.date.split("T").join(" ")}</p>
                           </div>
                         </div>
                         <p>{message.content}</p>
