@@ -118,9 +118,9 @@ const routes = [
         element: <HeaderSmSearch />,
       },
       {
-        path:"adminHeaderSm",
-        element: <AdminHeaderSm />
-      }
+        path: "adminHeaderSm",
+        element: <AdminHeaderSm />,
+      },
     ],
   },
   {
@@ -166,7 +166,7 @@ const routes = [
               {
                 path: "adminAnsComment",
                 element: <AdminAnsComment />,
-              }
+              },
             ],
           },
           {
@@ -176,10 +176,9 @@ const routes = [
           {
             path: "adminUpload",
             element: <AdminUpload />,
-          }
-          
+          },
         ],
-      }
+      },
     ],
   },
 ];
