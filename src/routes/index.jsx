@@ -22,6 +22,7 @@ import AboutStudio from "../pages/AboutStudio";
 import TermsOfUse from "../pages/TermsOfUse";
 import CreateProposal from "../pages/CreateProposal";
 import FeedbackSwiper from "../components/FeedbackSwiper";
+import FeedbackPage from "../pages/FeedbackPage";
 
 const routes = [
   {
@@ -67,6 +68,10 @@ const routes = [
       {
         path: "feedbackSwiper",
         element: <FeedbackSwiper />,
+      },
+      {
+        path: "feedbackPage",
+        element: <FeedbackPage />,
       },
     ],
   },
