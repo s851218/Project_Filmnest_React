@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import BulletinBoard from "../components/BulletinBoard";
-import CommentBoard from "../components/Test";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
@@ -211,10 +209,6 @@ export default function ProjectIntroComments() {
           </div>
         </div>
       </section>
-
-      <hr />
-      <CommentBoard />
-      {/* <BulletinBoard /> */}
     </>
   );
 }
