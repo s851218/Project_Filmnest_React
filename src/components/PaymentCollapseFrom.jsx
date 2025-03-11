@@ -162,13 +162,18 @@ export default function PaymentCollapseFrom ({reference}) {
 
     if (newCardType !== enabledCardType) {
       setEnabledCardType(newCardType)
+      reset({
+        "cardType": newCardType,
+        "payMethod": enabledPayMethod,
+      })
     }
   }
 
   useEffect(()=>{
     if (enabledCardType) {
+      console.log(watch)
       if (watch.cardType !== enabledCardType) {
-        setValue("cardType",enabledCardType)
+        setValue("cardType", enabledCardType)
       }
     }
   },[enabledCardType])
@@ -179,7 +184,6 @@ export default function PaymentCollapseFrom ({reference}) {
     const newPayMethod = e.target.value
 
     if (newPayMethod !== enabledPayMethod) {
-      console.log("進行切換");
       setEnabledPayMethod(newPayMethod)
     }
   }
@@ -340,6 +344,7 @@ export default function PaymentCollapseFrom ({reference}) {
                             maxLength="4"
                             disabled={cardCodeIndex !== index}
                             onChange={(e) => handleCardNumInputChange(e ,index, "creditCard")}
+                            autoComplete="one-time-code"
                           />
                           { (index !== 3) ? (<span>-</span>) : (<button type="button" className="btn ms-1" onMouseDown={handleMouseDown} onMouseUp={handleMouseIp}><i className="fa-solid fa-eye"/></button>) }
                         </Fragment>
@@ -425,6 +430,7 @@ export default function PaymentCollapseFrom ({reference}) {
                             maxLength={maxLength[index]}
                             disabled={cardCodeIndex !== index}
                             onChange={(e) => handleCardNumInputChange(e , index,"unionPay")}
+                            autoComplete="one-time-code"
                           />
                           { (index !== 2) ? (<span>-</span>) : (<button type="button" className="btn ms-1" onMouseDown={handleMouseDown} onMouseUp={handleMouseIp}><i className="fa-solid fa-eye"/></button>) }
                         </Fragment>
