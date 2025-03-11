@@ -33,6 +33,11 @@ import HeaderSmSec from "../components/HeaderSmSec";
 import HeaderSmSearch from "../components/HeaderSmSearch";
 import AdminProjectsHome from "../adminPages/AdminProjectsHome";
 import AdminHeaderSm from "../AdminComponents/AdminHeaderSm ";
+import Profile from "../pages/Profile";
+import FavoriteProject from "../pages/FavoriteProject";
+import OrderRecords from "../pages/OrderRecords";
+import FavoriteVideo from "../pages/FavoriteVideo";
+import ViewRecords from "../pages/ViewRecords"
 
 const routes = [
   {
@@ -54,6 +59,28 @@ const routes = [
       {
         path: "personalCenter",
         element: <PersonalCenter />,
+        children: [
+          {
+            path: "profile",
+            element: <Profile />
+          },
+          {
+            path: "favoriteProject",
+            element: <FavoriteProject />
+          },
+          {
+            path: "orderRecords",
+            element: <OrderRecords />
+          },
+          {
+            path: "favoriteVideo",
+            element: <FavoriteVideo />
+          },
+          {
+            path: "viewRecords",
+            element: <ViewRecords />
+          },
+        ]
       },
       {
         path: "signUp",
