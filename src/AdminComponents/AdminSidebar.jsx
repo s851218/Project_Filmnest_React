@@ -2,10 +2,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useParams } from "react-router";
 import { setExpanded } from "../slice/adminSidebarExpandSlice";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useParams } from "react-router";
-import { setExpanded } from "../slice/adminSidebarExpandSlice";
-import { useEffect } from "react";
 
 export default function Sidebar() {
   const dispatch = useDispatch();
