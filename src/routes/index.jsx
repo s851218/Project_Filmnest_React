@@ -23,6 +23,18 @@ import TermsOfUse from "../pages/TermsOfUse";
 import CreateProposal from "../pages/CreateProposal";
 import FeedbackSwiper from "../components/FeedbackSwiper";
 import FeedbackPage from "../pages/FeedbackPage";
+import ProjectIntro from "../pages/ProjectIntro";
+import ProjectIntroContent from "../pages/ProjectIntroContent";
+import ProjectIntroNews from "../pages/ProjectIntroNews";
+import ProjectIntroSupportFeedback from "../pages/ProjectIntroSupportFeedback";
+import ProjectIntroQA from "../pages/ProjectIntroQA";
+import ProjectIntroComments from "../pages/ProjectIntroComments";
+import ProjectIntroInfoDisclosure from "../pages/ProjectIntroInfoDisclosure";
+import HeaderSm from "../components/HeaderSm";
+import HeaderSmSec from "../components/HeaderSmSec";
+import HeaderSmSearch from "../components/HeaderSmSearch";
+import AdminProjectsHome from "../adminPages/AdminProjectsHome";
+import AdminHeaderSm from "../AdminComponents/AdminHeaderSm ";
 
 const routes = [
   {
@@ -73,6 +85,52 @@ const routes = [
         path: "feedbackPage",
         element: <FeedbackPage />,
       },
+      {
+        path: "projects/:id",
+        element: <ProjectIntro />,
+        children: [
+          {
+            index: true,
+            element: <ProjectIntroContent />,
+          },
+          {
+            path: "news",
+            element: <ProjectIntroNews />,
+          },
+          {
+            path: "supportFeedback",
+            element: <ProjectIntroSupportFeedback />,
+          },
+          {
+            path: "QA",
+            element: <ProjectIntroQA />,
+          },
+          {
+            path: "comments",
+            element: <ProjectIntroComments />,
+          },
+          {
+            path: "infoDisclosure",
+            element: <ProjectIntroInfoDisclosure />,
+          },
+        ],
+      },
+      {
+        path: "headerSm",
+        element: <HeaderSm />,
+      },
+      {
+        path: "headerSmSec",
+        element: <HeaderSmSec />,
+      },
+      {
+        path: "headerSmSearch",
+        element: <HeaderSmSearch />,
+      },
+      {
+        path: "adminHeaderSm",
+        element: <AdminHeaderSm />,
+      },
     ],
   },
   {
@@ -88,11 +146,11 @@ const routes = [
             element: <AdminProfile />,
           },
           {
-            path: "adminAnsComment",
-            element: <AdminAnsComment />,
+            path: "adminProjectsHome",
+            element: <AdminProjectsHome />,
           },
           {
-            path: "adminEdit",
+            path: ":id",
             element: <AdminEdit />,
             children: [
               {
@@ -111,6 +169,14 @@ const routes = [
                 path: "feedback",
                 element: <Feedback />,
               },
+              {
+                path: "adminChart",
+                element: <AdminChart />,
+              },
+              {
+                path: "adminAnsComment",
+                element: <AdminAnsComment />,
+              },
             ],
           },
           {
@@ -120,10 +186,6 @@ const routes = [
           {
             path: "adminUpload",
             element: <AdminUpload />,
-          },
-          {
-            path: "adminChart",
-            element: <AdminChart />,
           },
         ],
       },
