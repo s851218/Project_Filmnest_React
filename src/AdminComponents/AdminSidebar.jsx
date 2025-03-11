@@ -13,7 +13,7 @@ export default function Sidebar() {
 
   return (
     <>
-      <div className="vh-100 p-3 d-none d-lg-block">
+      <div className="p-3 d-none d-lg-block">
         <nav>
           <div className="d-flex justify-content-center mb-8 mt-10">
             <img
