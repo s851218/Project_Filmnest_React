@@ -31,9 +31,6 @@ export default function PaymentCollapseFrom ({reference}) {
     mode: "onTouched"
   })
 
-  console.log(errors);
-  
-
   useImperativeHandle(reference,() => ({
     async submitForm() {
       btnSubmit()
