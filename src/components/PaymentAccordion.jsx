@@ -73,8 +73,6 @@ export default function PaymentAccordion ({children}) {
     toggleCollapse(0) // OK
   },[])
 
-  console.log("accordionSlice",accordionSlice)
-
   return (
     <div className="accordion" id="paymentOption">
       {
@@ -122,7 +120,7 @@ export default function PaymentAccordion ({children}) {
                   </ol>
                 </small>
                 {/* 手風琴內容 */}
-                { index === accordionSlice && children}
+                { (index === accordionSlice.index) && children}
               </div>
             </div>
           </div>
