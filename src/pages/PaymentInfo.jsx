@@ -1,6 +1,8 @@
 import { useRef } from "react"
 import PaymentAside from "../components/PaymentAside"
 import PaymentMobileFooter from "../components/PaymentMobileFooter"
+import PaymentInfoFrom from "../components/PaymentInfoFrom"
+import PaymentCollapseFrom from "../components/PaymentCollapseFrom"
 
 export default function PaymentInfo () {
 
