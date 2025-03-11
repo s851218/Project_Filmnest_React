@@ -30,6 +30,7 @@ import ProjectIntroComments from "../pages/ProjectIntroComments";
 import ProjectIntroInfoDisclosure from "../pages/ProjectIntroInfoDisclosure";
 import HeaderSm from "../components/HeaderSm";
 import HeaderSmSec from "../components/HeaderSmSec";
+import PaymentInfo from "../pages/PaymentInfo";
 
 const routes = [
   {
@@ -101,6 +102,10 @@ const routes = [
             element: <ProjectIntroInfoDisclosure />,
           },
         ],
+      },
+      {
+        path: "paymentInfo",
+        element: <PaymentInfo />
       },
       {
         path: "headerSm",
