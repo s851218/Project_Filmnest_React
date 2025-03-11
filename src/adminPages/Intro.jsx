@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import UploadProjectImage from "../AdminComponents/UploadProjectImage";
 import { useParams } from "react-router";
+import ArticleEditor from "../AdminComponents/ArticleEditor";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -297,6 +298,7 @@ export default function Intro() {
           </div>
           <div className="mt-5">
             <h2 className="fs-base fw-bolder">專案介紹</h2>
+            <ArticleEditor projectId={id} />
           </div>
           <button type="submit" className="btn btn-primary">
             儲存
