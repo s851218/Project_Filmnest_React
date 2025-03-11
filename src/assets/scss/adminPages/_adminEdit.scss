@@ -1,0 +1,43 @@
+.edit-nav-link {
+  display: block;
+  padding: 0.35rem 1rem;
+  text-align: center;
+  color: gray;
+  text-shadow: none;
+  border-left: 2px solid transparent;
+  border-right: 2px solid transparent;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
+
+  &:hover {
+    color: black;
+    text-shadow: 0 0 2px rgba(128, 128, 128, 0.3),
+      0 0 4px rgba(128, 128, 128, 0.3), 0 0 6px rgba(128, 128, 128, 0.3);
+  }
+
+  @media (max-width: 375px) {
+    padding: 0.25rem 0.75rem;
+  }
+}
+
+.active-edit-nav-link {
+  color: black;
+  border-left: 2px solid black;
+  border-right: 2px solid black;
+  text-shadow: 0 0 2px rgba(128, 128, 128, 0.3),
+    0 0 4px rgba(128, 128, 128, 0.3), 0 0 6px rgba(128, 128, 128, 0.3);
+}
+
+.edit-nav-swiper {
+  @media screen and (min-width: 576px) {
+    display: flex;
+    width: 100%;
+  }
+}
+
+.edit-nav-slide {
+  width: auto;
+  @media screen and (min-width: 576px) {
+    display: flex;
+    flex: 1 0 0;
+  }
+}

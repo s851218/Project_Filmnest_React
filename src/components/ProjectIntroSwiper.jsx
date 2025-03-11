@@ -5,18 +5,12 @@ import { Navigation, Thumbs } from "swiper/modules";
 
 import { useEffect, useRef, useState } from "react";
 
-import { useParams } from "react-router"; // xiang 2025/02/27 intro路由調整
-
-import axios from "axios";
-
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/thumbs";
 import "swiper/css/navigation";
 
-const API_BASE = import.meta.env.VITE_API_BASE;
-
-export default function ProjectIntroSwiper() {
+export default function ProjectIntroSwiper({ projectInfo }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 
   const [otherImages, setOtherImages] = useState([]);
@@ -26,20 +20,28 @@ export default function ProjectIntroSwiper() {
   const [isBeginning, setIsBeginning] = useState(true);
   const [isEnd, setIsEnd] = useState(false);
 
-  // 取得劇照資料
-  const { id } = useParams(); // xiang 2025/02/27 intro路由調整
+  // 將專案封面圖加進 otherImages 後，產生一個新的圖片陣列
   useEffect(() => {
-    const projectData = async () => {
-      try {
-        const res = await axios.get(`${API_BASE}/projects/${id}`); // xiang 2025/02/27 intro路由調整
+    if (projectInfo && projectInfo.projectImage) {
+      const addMainImage = [
+        {
+          id: `${new Date().getTime()}`,
+          imageUrl: projectInfo.projectImage,
+        },
+        ...(Array.isArray(projectInfo.otherImages)
+          ? projectInfo.otherImages
+          : []),
+      ];
+      setOtherImages(addMainImage);
+    }
+  }, [projectInfo]);
 
-        setOtherImages(res.data.otherImages);
-      } catch (error) {
-        console.log("取得專案資料失敗：", error);
-      }
-    };
-    projectData();
-  }, []);
+  // 把 otherImages 當成依賴，能確保在圖片陣列更新後，Swiper 的內部狀態也跟著更新，第一張圖片的縮圖才正確顯示 active 狀態。
+  useEffect(() => {
+    if (thumbsSwiper && swiperRef.current) {
+      swiperRef.current.update();
+    }
+  }, [otherImages]);
 
   // 手機版 Navigation
   const handlePrevSlide = () => {
@@ -56,7 +58,9 @@ export default function ProjectIntroSwiper() {
         {/* 上方大圖的 Swiper */}
         <Swiper
           modules={[Thumbs, Navigation]}
-          thumbs={{ swiper: thumbsSwiper }}
+          thumbs={{
+            swiper: thumbsSwiper,
+          }}
           spaceBetween={24}
           onSwiper={(swiper) => {
             swiperRef.current = swiper;
@@ -68,7 +72,10 @@ export default function ProjectIntroSwiper() {
           className="rounded overflow-hidden mb-0 mb-md-1 mb-lg-2 mb-xxl-3"
         >
           {otherImages.map((image) => (
-            <SwiperSlide key={image.id} className="project-intro-main-swiper-slide">
+            <SwiperSlide
+              key={image.id}
+              className="project-intro-main-swiper-slide"
+            >
               <img className="rounded" src={image.imageUrl} alt="外送員" />
             </SwiperSlide>
           ))}
@@ -87,10 +94,22 @@ export default function ProjectIntroSwiper() {
         </Swiper>
 
         {/* 下方圖片的 Swiper */}
-        <Swiper modules={[Thumbs]} watchSlidesProgress onSwiper={setThumbsSwiper} slidesPerView={3} spaceBetween={24} className="projectIntroSwiper d-none d-md-block">
+        <Swiper
+          modules={[Thumbs]}
+          watchSlidesProgress
+          onSwiper={setThumbsSwiper}
+          slidesPerView={3}
+          spaceBetween={24}
+          className="projectIntroSwiper d-none d-md-block"
+          style={{ cursor: "pointer" }}
+        >
           {otherImages.map((image) => (
             <SwiperSlide key={image.id} className="swiper-slide">
-              <img className="rounded small-slide-image" src={image.imageUrl} alt="外送員" />
+              <img
+                className="rounded small-slide-image"
+                src={image.imageUrl}
+                alt="外送員"
+              />
             </SwiperSlide>
           ))}
         </Swiper>

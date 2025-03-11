@@ -19,7 +19,6 @@ function Admin() {
   }, [location]);
   return (
     <>
-      
       <AdminHeader />
       <div className="admin">
         <div className="container mt-20">

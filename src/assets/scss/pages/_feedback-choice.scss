@@ -1,19 +1,29 @@
-.feedbackChoice-bg{
-    background-image: linear-gradient(0.18deg, #040404 0.18%, rgba(0, 0, 0, 0) 99.87%), url(/assets/images/追風者劇照/feedback-choice-banner-sm.jpg);
-    background-position: center center;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 600px;
+.feedbackChoice-bg {
+  background-image: linear-gradient(
+      0.18deg,
+      #040404 0.18%,
+      rgba(0, 0, 0, 0) 99.87%
+    ),
+    url(https://s851218.github.io/Project-FilmNest/assets/feedback-choice-banner-sm-90cedd15.jpg);
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 600px;
 
-    @include md{ 
-        background-image: linear-gradient(0.18deg, #040404 0.18%, rgba(0, 0, 0, 0) 99.87%), url(/assets/images/追風者劇照/feedback-choice-banner-lg.jpg);
-        height: 720px;
-    }
+  @include md {
+    background-image: linear-gradient(
+        0.18deg,
+        #040404 0.18%,
+        rgba(0, 0, 0, 0) 99.87%
+      ),
+      url(https://s851218.github.io/Project-FilmNest/assets/feedback-choice-banner-lg-dd366bfb.jpg);
+    height: 720px;
+  }
 }
-.header-wrapper{
-    width: 100%;
-  
-    @include lg{
-        width: 748px;
-    }
+.header-wrapper {
+  width: 100%;
+
+  @include lg {
+    width: 748px;
+  }
 }

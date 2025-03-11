@@ -21,6 +21,8 @@ import PersonalCenter from "../pages/PersonalCenter";
 import AboutStudio from "../pages/AboutStudio";
 import TermsOfUse from "../pages/TermsOfUse";
 import CreateProposal from "../pages/CreateProposal";
+import FeedbackSwiper from "../components/FeedbackSwiper";
+import FeedbackPage from "../pages/FeedbackPage";
 import ProjectIntro from "../pages/ProjectIntro";
 import ProjectIntroContent from "../pages/ProjectIntroContent";
 import ProjectIntroNews from "../pages/ProjectIntroNews";
@@ -103,7 +105,15 @@ const routes = [
         element: <CreateProposal />,
       },
       {
-        path: ":id",
+        path: "feedbackSwiper",
+        element: <FeedbackSwiper />,
+      },
+      {
+        path: "feedbackPage",
+        element: <FeedbackPage />,
+      },
+      {
+        path: "projects/:id",
         element: <ProjectIntro />,
         children: [
           {
@@ -145,9 +155,9 @@ const routes = [
         element: <HeaderSmSearch />,
       },
       {
-        path:"adminHeaderSm",
-        element: <AdminHeaderSm />
-      }
+        path: "adminHeaderSm",
+        element: <AdminHeaderSm />,
+      },
     ],
   },
   {
@@ -193,7 +203,7 @@ const routes = [
               {
                 path: "adminAnsComment",
                 element: <AdminAnsComment />,
-              }
+              },
             ],
           },
           {
@@ -203,10 +213,9 @@ const routes = [
           {
             path: "adminUpload",
             element: <AdminUpload />,
-          }
-          
+          },
         ],
-      }
+      },
     ],
   },
 ];
