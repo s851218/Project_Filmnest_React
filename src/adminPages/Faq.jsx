@@ -1,11 +1,13 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 export default function Faq() {
   const [faqsData, setFaqsData] = useState([]);
   const [isEdit, setIsEdit] = useState(null);
   const [isAdd, setIsAdd] = useState(false);
+  const { id } = useParams();
 
   // 新增問答
   const {
@@ -17,7 +19,7 @@ export default function Faq() {
 
   const onSubmit = async (data) => {
     const faqData = {
-      projectId: 1,
+      projectId: id,
       title: data.title,
       content: data.content,
       date: "date",
@@ -32,7 +34,7 @@ export default function Faq() {
       await axios.post(`${apiBase}/faqs`, newFaq);
       setIsAdd(false);
       alert("新增成功");
-      getFaqData();
+      getFaqData(id);
       reset();
     } catch (error) {
       alert("新增失敗");
@@ -47,40 +49,40 @@ export default function Faq() {
     formState: { errors: updateErrors },
   } = useForm({ mode: "onChange" });
 
-  const onPutSubmit = async (data, id) => {
+  const onPutSubmit = async (data, dataId) => {
     const now = new Date();
     const formatDate = now.toISOString().slice(0, 16).replace("T", " ");
     const updataFaq = {
-      projectId: 1,
+      projectId: id,
       title: data.title,
       content: data.content,
       date: formatDate, // 設定為當前時間
     };
     try {
-      await axios.put(`${apiBase}/faqs/${id}`, updataFaq);
+      await axios.put(`${apiBase}/faqs/${dataId}`, updataFaq);
       setIsEdit(null);
       alert("編輯成功");
-      getFaqData();
+      getFaqData(id);
     } catch (error) {
       alert("編輯失敗");
     }
   };
 
   // 刪除問答
-  const handleDelFaqData = async (id) => {
+  const handleDelFaqData = async (dataId) => {
     try {
-      await axios.delete(`${apiBase}/faqs/${id}`);
+      await axios.delete(`${apiBase}/faqs/${dataId}`);
       alert("刪除成功");
-      getFaqData();
+      getFaqData(id);
     } catch (error) {
       console.log("刪除失敗");
     }
   };
 
   // 取得問答
-  const getFaqData = async () => {
+  const getFaqData = async (projectId) => {
     try {
-      const response = await axios.get(`${apiBase}/faqs`);
+      const response = await axios.get(`${apiBase}/faqs?projectId=${projectId}`);
       setFaqsData(response.data);
     } catch (error) {
       console.log("取得資料失敗");
@@ -88,7 +90,7 @@ export default function Faq() {
   };
 
   useEffect(() => {
-    getFaqData();
+    getFaqData(id);
   }, []);
 
   return (

@@ -20,6 +20,10 @@
   }
 }
 
+.project-intro-nav-active {
+  border-bottom: 2px solid $white;
+}
+
 .heart-hover {
   background: transparent;
   &:hover {

@@ -16,10 +16,15 @@ const UploadProjectImage = ({ onUploadSuccess }) => {
   };
 
   return (
-    <div>
-      <h5>更換封面圖片</h5>
-      <input type="file" accept="image/*" onChange={handleFileChange} />
-    </div>
+    <>
+      <h2 className="fs-base fw-bolder mb-2">更換封面圖片</h2>
+      <input
+        type="file"
+        className="w-100"
+        accept="image/*"
+        onChange={handleFileChange}
+      />
+    </>
   );
 };
 

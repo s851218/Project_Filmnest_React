@@ -125,6 +125,8 @@ export default function Home() {
       },
     });
   }, []);
+  console.log(projects);
+  
   return (
     <>
       <section className="index-banner">
@@ -148,103 +150,25 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="swiper-slide h-auto">
-                <div className="index-banner-text-bg index-banner-text-bg2 h-100">
-                  <div className="container index-banner-text h-100 d-flex flex-column">
-                    <h1 className="fs-6 fs-lg-xxl mb-3 mb-lg-6 d-flex flex-column justify-content-center justify-content-lg-start">
-                      追風者<span className="fs-base fs-lg-6">Northwest Panda</span>
-                    </h1>
-                    <p className="fs-sm fs-lg-7 mb-8 mb-lg-15">
-                      他們穿梭於霓虹之下，奔馳於風雨之中
-                      <br />
-                      道路上常見的外送員身影，他們背後的人生究竟為何？
-                    </p>
-                    <div className="mt-auto">
-                      <a href="project-intro.html" className="btn btn-primary fw-bolder py-3 px-5">
-                        我想贊助
-                      </a>
+              {projects.map((project)=>{
+                return(<div className="swiper-slide h-auto" key={project.id}>
+                  <div className="index-banner-text-bg  h-100" style={{backgroundImage:`url(${project.projectImage})`}}>
+                    <div className="container index-banner-text h-100 d-flex flex-column">
+                      <h1 className="fs-6 fs-lg-xxl mb-3 mb-lg-6 d-flex flex-column justify-content-center justify-content-lg-start">
+                        {project.projectTitle}
+                      </h1>
+                      <p className="fs-sm fs-lg-7 mb-8 mb-lg-15">
+                        {project.summary}
+                      </p>
+                      <div className="mt-auto">
+                        <Link to={`/${project.id}`} className="btn btn-primary fw-bolder py-3 px-5">
+                          我想贊助
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="swiper-slide h-auto">
-                <div className="index-banner-text-bg index-banner-text-bg3 h-100">
-                  <div className="container index-banner-text h-100 d-flex flex-column">
-                    <h1 className="fs-6 fs-lg-xxl mb-3 mb-lg-6 d-flex flex-column justify-content-center justify-content-lg-start">
-                      孤獨時光<span className="fs-base fs-lg-6">The Lonely Time</span>
-                    </h1>
-                    <p className="fs-sm fs-lg-7 mb-8 mb-lg-15">
-                      一張不翼而飛的遊戲光碟，引發對好友的猜疑
-                      <br />
-                      年幼的初中少年，要如何面對艱難而常見的成長課題？
-                      <br />
-                      2017 金穗獎作品長片募資計畫
-                    </p>
-                    <div className="mt-auto">
-                      <a href="project-intro.html" className="btn btn-primary fw-bolder py-3 px-5">
-                        我想贊助
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="swiper-slide h-auto">
-                <div className="index-banner-text-bg index-banner-text-bg4 h-100">
-                  <div className="container index-banner-text h-100 d-flex flex-column">
-                    <h1 className="fs-6 fs-lg-xxl mb-3 mb-lg-6 d-flex flex-column justify-content-center justify-content-lg-start">
-                      遠端對話<span className="fs-base fs-lg-6">Remote Talk</span>
-                    </h1>
-                    <p className="fs-sm fs-lg-7 mb-8 mb-lg-15">
-                      疫情之下的台北，
-                      <br />
-                      異鄉人對家人的思念
-                    </p>
-                    <div className="mt-auto">
-                      <a href="project-intro.html" className="btn btn-primary fw-bolder py-3 px-5">
-                        我想贊助
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="swiper-slide h-auto">
-                <div className="index-banner-text-bg index-banner-text-bg5 h-100">
-                  <div className="container index-banner-text h-100 d-flex flex-column">
-                    <h1 className="fs-6 fs-lg-xxl mb-3 mb-lg-6 d-flex flex-column justify-content-center justify-content-lg-start">
-                      CLAW MACHINE<span className="fs-base fs-lg-6">Claw Machine</span>
-                    </h1>
-                    <p className="fs-sm fs-lg-7 mb-8 mb-lg-15">
-                      度過悲慘一天的女子，
-                      <br />
-                      將希望寄託給一間散發異色光輝的夾娃娃機店
-                    </p>
-                    <div className="mt-auto">
-                      <a href="project-intro.html" className="btn btn-primary fw-bolder py-3 px-5">
-                        我想贊助
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="swiper-slide h-auto">
-                <div className="index-banner-text-bg index-banner-text-bg6 h-100">
-                  <div className="container index-banner-text h-100 d-flex flex-column">
-                    <h1 className="fs-6 fs-lg-xxl mb-3 mb-lg-6 d-flex flex-column justify-content-center justify-content-lg-start">
-                      黑色照片<span className="fs-base fs-lg-6">Pictures of Black</span>
-                    </h1>
-                    <p className="fs-sm fs-lg-7 mb-8 mb-lg-15">
-                      消逝的愛情，遺留著執念
-                      <br />
-                      如同往夜色拍去的黑色照片
-                    </p>
-                    <div className="mt-auto">
-                      <a href="project-intro.html" className="btn btn-primary fw-bolder py-3 px-5">
-                        我想贊助
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
+                </div>)
+              })}
             </div>
             <div className="swiper-scrollbar indexbannerswiper-scrollbar"></div>
           </div>

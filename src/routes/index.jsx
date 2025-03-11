@@ -21,6 +21,8 @@ import PersonalCenter from "../pages/PersonalCenter";
 import AboutStudio from "../pages/AboutStudio";
 import TermsOfUse from "../pages/TermsOfUse";
 import CreateProposal from "../pages/CreateProposal";
+import FeedbackSwiper from "../components/FeedbackSwiper";
+import FeedbackPage from "../pages/FeedbackPage";
 import ProjectIntro from "../pages/ProjectIntro";
 import ProjectIntroContent from "../pages/ProjectIntroContent";
 import ProjectIntroNews from "../pages/ProjectIntroNews";
@@ -31,6 +33,14 @@ import ProjectIntroInfoDisclosure from "../pages/ProjectIntroInfoDisclosure";
 import HeaderSm from "../components/HeaderSm";
 import HeaderSmSec from "../components/HeaderSmSec";
 import PaymentInfo from "../pages/PaymentInfo";
+import HeaderSmSearch from "../components/HeaderSmSearch";
+import AdminProjectsHome from "../adminPages/AdminProjectsHome";
+import AdminHeaderSm from "../AdminComponents/AdminHeaderSm ";
+import Profile from "../pages/Profile";
+import FavoriteProject from "../pages/FavoriteProject";
+import OrderRecords from "../pages/OrderRecords";
+import FavoriteVideo from "../pages/FavoriteVideo";
+import ViewRecords from "../pages/ViewRecords"
 
 const routes = [
   {
@@ -52,6 +62,28 @@ const routes = [
       {
         path: "personalCenter",
         element: <PersonalCenter />,
+        children: [
+          {
+            path: "profile",
+            element: <Profile />
+          },
+          {
+            path: "favoriteProject",
+            element: <FavoriteProject />
+          },
+          {
+            path: "orderRecords",
+            element: <OrderRecords />
+          },
+          {
+            path: "favoriteVideo",
+            element: <FavoriteVideo />
+          },
+          {
+            path: "viewRecords",
+            element: <ViewRecords />
+          },
+        ]
       },
       {
         path: "signUp",
@@ -74,7 +106,15 @@ const routes = [
         element: <CreateProposal />,
       },
       {
-        path: ":id",
+        path: "feedbackSwiper",
+        element: <FeedbackSwiper />,
+      },
+      {
+        path: "feedbackPage",
+        element: <FeedbackPage />,
+      },
+      {
+        path: "projects/:id",
         element: <ProjectIntro />,
         children: [
           {
@@ -115,6 +155,14 @@ const routes = [
         path: "headerSmSec",
         element: <HeaderSmSec />,
       },
+      {
+        path: "headerSmSearch",
+        element: <HeaderSmSearch />,
+      },
+      {
+        path: "adminHeaderSm",
+        element: <AdminHeaderSm />,
+      },
     ],
   },
   {
@@ -130,11 +178,11 @@ const routes = [
             element: <AdminProfile />,
           },
           {
-            path: "adminAnsComment",
-            element: <AdminAnsComment />,
+            path: "adminProjectsHome",
+            element: <AdminProjectsHome />,
           },
           {
-            path: "adminEdit",
+            path: ":id",
             element: <AdminEdit />,
             children: [
               {
@@ -153,6 +201,14 @@ const routes = [
                 path: "feedback",
                 element: <Feedback />,
               },
+              {
+                path: "adminChart",
+                element: <AdminChart />,
+              },
+              {
+                path: "adminAnsComment",
+                element: <AdminAnsComment />,
+              },
             ],
           },
           {
@@ -162,10 +218,6 @@ const routes = [
           {
             path: "adminUpload",
             element: <AdminUpload />,
-          },
-          {
-            path: "adminChart",
-            element: <AdminChart />,
           },
         ],
       },
