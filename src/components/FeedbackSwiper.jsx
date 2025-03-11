@@ -221,20 +221,23 @@ function FeedbackSwiper() {
                 // 在斷點變化時重新判斷是否應該顯示導航
                 updateNavigationVisibility(swiper);
               }}
-              className="position-relative"
+              className="position-relative p-5"
             >
               {feedbackData.map((feedback) => (
                 <SwiperSlide
                   key={feedback.id}
-                  className="card rounded-2 bg-primary-9 border shadow overflow-hidden h-auto"
+                  className="card feedbackSlide rounded-2 bg-primary-9 border overflow-hidden h-auto"
                   style={{ minWidth: "300px", borderColor: "#606060" }}
                 >
-                  <div className="h-100 d-flex flex-column">
-                    <div className="position-relative">
+                  <div className="h-100 d-flex flex-column ">
+                    <div className="position-relative card-img-top overflow-hidden h-100">
                       <img
                         src={feedback.image}
                         alt={feedback.title}
-                        className="card-img-top"
+                        className="feedback-image object-fit-cover"
+                        style={{
+                          transition: "transform 0.3s ease",
+                        }}
                       />
                     </div>
 
@@ -303,6 +306,18 @@ function FeedbackSwiper() {
                 align-items: center;
                 gap: 4px;
                 margin: 0 16px;
+              }
+
+              .feedbackSlide {
+                transition: box-shadow 0.3s ease;
+              }
+
+              .feedbackSlide:hover {
+                box-shadow: 0 0 20px 8px rgba(96, 96, 96, 0.7); 
+              }
+
+              .feedbackSlide:hover .feedback-image{
+                transform: scale(1.1);
               }
             `}
           </style>
