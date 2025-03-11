@@ -53,6 +53,7 @@ export default function AdminProjectsHome() {
     <>
       <div className="container mb-6 mb-lg-15">
         <div className="d-none d-lg-block">
+          <h1 className="fs-6 mb-7">摘要</h1>
           <div className="row row-cols-3 gx-5 mb-5">
             <div className="col">
               <div className="d-flex align-items-center rounded-2 bg-white p-5">
@@ -147,6 +148,7 @@ export default function AdminProjectsHome() {
           </div>
         </div>
         <div className="d-block d-lg-none">
+        <h1 className="fs-base mb-3">摘要</h1>
           <div className="row g-3 mb-5">
             <div className="col-12">
               <div className="d-flex align-items-center rounded-2 bg-white p-3">
@@ -240,7 +242,7 @@ export default function AdminProjectsHome() {
         </div>
       </div>
       <div className="container pb-5">
-        <h2 className="mb-5">專案總覽</h2>
+        <h2 className="fs-6 mb-5">專案總覽</h2>
         <div className="table-responsive">
           <table className="table align-middle border border-primary-9 bg-white mb-0">
             <thead className="nowrap-table">
