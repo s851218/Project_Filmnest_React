@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import UploadProjectImage from "../AdminComponents/UploadProjectImage";
+import { useParams } from "react-router";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -28,6 +29,8 @@ const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
 };
 
 export default function Intro() {
+  const { id } = useParams();
+
   const [projectImage, setProjectImage] = useState({});
 
   // 專案編輯用 useForm
@@ -59,7 +62,7 @@ export default function Intro() {
   useEffect(() => {
     const getProjectInfo = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/projects/1`);
+        const res = await axios.get(`${API_BASE}/projects/${id}`);
 
         const projectData = res.data;
 
@@ -134,7 +137,7 @@ export default function Intro() {
         otherImages: data.otherImages,
       };
 
-      const res = await axios.patch(`${API_BASE}/projects/1`, updateData);
+      const res = await axios.patch(`${API_BASE}/projects/${id}`, updateData);
       alert("成功更新專案資訊！");
       console.log("成功更新專案資訊：", res.data);
     } catch (error) {
