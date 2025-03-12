@@ -171,7 +171,6 @@ export default function PaymentCollapseFrom ({reference}) {
 
   useEffect(()=>{
     if (enabledCardType) {
-      console.log(watch)
       if (watch.cardType !== enabledCardType) {
         setValue("cardType", enabledCardType)
       }
