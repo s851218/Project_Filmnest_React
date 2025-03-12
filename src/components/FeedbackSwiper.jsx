@@ -80,10 +80,10 @@ function FeedbackSwiper() {
           swiper.params.navigation.nextEl = nextNavRef.current;
           swiper.params.pagination.el = paginationRef.current;
 
-          swiper.navigation.init();
-          swiper.navigation.update();
-          swiper.pagination.init();
-          swiper.pagination.update();
+          swiper.navigation?.init();
+          swiper.navigation?.update();
+          swiper.pagination?.init();
+          swiper.pagination?.update();
 
           // 使分頁指示器可見
           const paginationContainer = paginationRef.current;
@@ -193,10 +193,10 @@ function FeedbackSwiper() {
                     nextNavRef.current.className = "swiper-button-next-custom";
                   }
 
-                  swiper.navigation.init();
-                  swiper.navigation.update();
-                  swiper.pagination.init();
-                  swiper.pagination.update();
+                  swiper.navigation?.init();
+                  swiper.navigation?.update();
+                  swiper.pagination?.init();
+                  swiper.pagination?.update();
                 }, 10);
               }}
               onSlideChange={(swiper) => {
