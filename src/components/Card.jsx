@@ -56,7 +56,7 @@ export default function Card({ projects, isSwiper }) {
         </div>
       </div>
     ) : (
-      <div className="col g-5 h-auto" key={project.id}>
+      <div className="col-md-6 col-lg-4 g-5 h-auto" key={project.id}>
         <div className="card index-card rounded-0 h-100">
           <img
             src={project.projectImage}

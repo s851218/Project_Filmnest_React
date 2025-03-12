@@ -93,10 +93,10 @@ function FeedbackSwiper() {
           swiper.params.navigation.nextEl = nextNavRef.current;
           swiper.params.pagination.el = paginationRef.current;
 
-          swiper.navigation.init();
-          swiper.navigation.update();
-          swiper.pagination.init();
-          swiper.pagination.update();
+          swiper.navigation?.init();
+          swiper.navigation?.update();
+          swiper.pagination?.init();
+          swiper.pagination?.update();
 
           // 使分頁指示器可見
           const paginationContainer = paginationRef.current;
@@ -112,7 +112,7 @@ function FeedbackSwiper() {
     <div className="container py-4 my-10">
       <div className="row">
         <div className="col-12 position-relative">
-          {/* 自定義導航按鈕 - 根據showNavigation狀態決定是否顯示 */}
+          {/* 自定義導航按鈕 - 根據 showNavigation 狀態決定是否顯示 */}
           {showNavigation && (
             <div style={navigationStyles.navigationContainer}>
               <button
@@ -162,17 +162,12 @@ function FeedbackSwiper() {
                   spaceBetween: 16,
                 },
                 768: {
-                  slidesPerView: 2.1,
-                  spaceBetween: 12,
-                },
-                576: {
                   slidesPerView: 2,
                   spaceBetween: 8,
                 },
               }}
               slidesPerView={1}
               spaceBetween={4}
-              loop={true}
               pagination={{
                 el: ".pagination-container",
                 clickable: true,
@@ -211,10 +206,10 @@ function FeedbackSwiper() {
                     nextNavRef.current.className = "swiper-button-next-custom";
                   }
 
-                  swiper.navigation.init();
-                  swiper.navigation.update();
-                  swiper.pagination.init();
-                  swiper.pagination.update();
+                  swiper.navigation?.init();
+                  swiper.navigation?.update();
+                  swiper.pagination?.init();
+                  swiper.pagination?.update();
                 }, 10);
               }}
               onSlideChange={(swiper) => {
@@ -240,7 +235,7 @@ function FeedbackSwiper() {
                 <SwiperSlide
                   key={feedback.id}
                   className="card feedbackSlide rounded-2 bg-primary-9 border overflow-hidden h-auto"
-                  style={{ minWidth: "300px", borderColor: "#606060" }}
+                  style={{ borderColor: "#606060" }}
                 >
                   <div className="h-100 d-flex flex-column ">
                     <div className="position-relative card-img-top overflow-hidden h-100">

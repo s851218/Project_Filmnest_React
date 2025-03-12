@@ -1,30 +1,21 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
-import { setCategory } from "../slice/categorySlice";
 import { setSearchText, setSearchValue, setIsSearchOpen } from "../slice/searchSlice";
 
 export default function HeaderSmSearch() {
-  const profile = useSelector((state) => state.user.profile);
   const searchValue = useSelector((state) => state.search.value);
   const isSearchOpen = useSelector((state) => state.search.isSearchOpen);
-  const categoryData = ["喜劇", "愛情", "恐怖", "懸疑", "科幻", "紀錄片", "動畫", "實驗電影"];
-  const [isExpand, setIsExpand] = useState({ category: false });
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleIsExpand = () => {
-    setIsExpand((prev) => ({ ...prev, category: !prev.category }));
-  };
   const handleSearchToggle = () => {
-    if (!isSearchOpen) {
-      setSearchValue("");
-    }
     dispatch(setIsSearchOpen(!isSearchOpen));
   };
   const handleSearchSubmit = async () => {
     if (searchValue.trim()) {
       dispatch(setSearchText(searchValue));
-      dispatch(setIsSearchOpen(!isSearchOpen));
+      navigate("/projectExplore");
+    } else {
+      dispatch(setSearchText(""));
       navigate("/projectExplore");
     }
   };

@@ -2,183 +2,428 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 
-const API_BASE = import.meta.env.VITE_API_BASE;
+const BASE_URL = import.meta.env.VITE_API_BASE;
 
 export default function AdminAnsComment() {
   const [comments, setComments] = useState([]);
-  const [activeReplyId, setActiveReplyId] = useState(null);
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
+  const [projectOwner, setProjectOwner] = useState(null);
+  const [replyingToId, setReplyingToId] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
-    const getCommentData = async () => {
+    const getCommentsData = async (id = 1) => {
       try {
-        const response = await axios.get(`${API_BASE}/comments`);
-        setComments(response.data);
+        setLoading(true);
+        const response = await axios.get(
+          `${BASE_URL}/comments?projectId=${id}&_expand=user`
+        );
+        const responseForStudio = await axios.get(
+          `${BASE_URL}/projects/${id}?_expand=studio`
+        );
+        setProjectOwner(responseForStudio.data.studio.studioProfile);
+        const sortedComments = sortCommentsByDate(response.data, sortOrder);
+        setComments(sortedComments);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
-    getCommentData();
-  }, []);
+    getCommentsData();
+  }, [sortOrder]);
 
-  const onSubmitReply = async (data, id) => {
-    const commentReplied = comments.find((comment) => comment.id === id);
-    commentReplied.reply = data.replyContent;
-    console.log(commentReplied);
+  // 排序留言
+  const sortCommentsByDate = (commentsToSort, order) => {
+    return [...commentsToSort].sort((a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+      return order === "asc" ? dateA - dateB : dateB - dateA;
+    });
+  };
 
+  // 切換排序順序
+  const toggleSortOrder = () => {
+    const newOrder = sortOrder === "desc" ? "asc" : "desc";
+    setSortOrder(newOrder);
+    const sortedComments = sortCommentsByDate(comments, newOrder);
+    setComments(sortedComments);
+  };
+
+  const {
+    register: registerReply,
+    handleSubmit: handleSubmitReply,
+    reset: resetReply,
+    formState: { errors: errorsReply },
+  } = useForm({
+    defaultValues: {
+      replyContent: "",
+    },
+  });
+
+  const startReply = (commentId) => {
+    setReplyingToId(commentId);
+  };
+
+  const cancelReply = () => {
+    setReplyingToId(null);
+    resetReply();
+  };
+
+  // 提交回覆功能實現
+  const submitReply = async (data) => {
     try {
-      await axios.put(`${API_BASE}/comments/${id}`, {
-        ...commentReplied,
+      setLoading(true);
+      const currentComment = comments.find(
+        (comment) => comment.id === replyingToId
+      );
+      if (!currentComment) return;
+      const updatedComment = {
+        ...currentComment,
+        reply: data.replyContent,
+        replyDate: new Date().toISOString(),
+      };
+      await axios.patch(`${BASE_URL}/comments/${replyingToId}`, {
+        reply: data.replyContent,
+        replyDate: new Date().toISOString(),
       });
-      console.log("回覆後", comments);
-      reset();
-      setActiveReplyId(null);
+
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === replyingToId ? updatedComment : comment
+        )
+      );
+
+      resetReply();
+      setReplyingToId(null);
     } catch (error) {
-      console.error(error);
+      console.error("提交回覆時發生錯誤：", error);
+      alert("提交回覆失敗，請稍後再試");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    const replyToDelete = comments.find((comment) => comment.id === id);
-    replyToDelete.reply = "";
+  // 編輯狀態管理
+  const [editingReplyId, setEditingReplyId] = useState(null);
+  const [editContent, setEditContent] = useState("");
+
+  // 刪除回覆
+  const deleteReply = async (commentId) => {
     try {
-      await axios.put(`${API_BASE}/comments/${id}`, {
-        ...replyToDelete,
+      setLoading(true);
+      await axios.patch(`${BASE_URL}/comments/${commentId}`, {
+        reply: "",
+        replyDate: "",
       });
-      reset();
-      setActiveReplyId(null);
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId
+            ? {
+                ...comment,
+                reply: "",
+                replyDate: "",
+              }
+            : comment
+        )
+      );
     } catch (error) {
-      console.error(error);
+      console.error("刪除回覆失敗：", error);
+      alert("刪除回覆失敗，請稍後再試");
+    } finally {
+      setLoading(false);
     }
+  };
+
+  // 編輯回覆
+  const startEditReply = (replyContent, commentId) => {
+    setEditingReplyId(commentId);
+    setEditContent(replyContent);
+  };
+
+  // 儲存編輯後的回覆
+  const saveEditReply = async (commentId) => {
+    try {
+      setLoading(true);
+      await axios.patch(`${BASE_URL}/comments/${commentId}`, {
+        reply: editContent,
+        replyDate: new Date().toISOString(),
+      });
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId
+            ? {
+                ...comment,
+                reply: editContent,
+                replyDate: new Date().toISOString(),
+              }
+            : comment
+        )
+      );
+      // 重置編輯狀態
+      setEditingReplyId(null);
+      setEditContent("");
+    } catch (error) {
+      console.error("儲存回覆失敗：", error);
+      alert("儲存回覆失敗，請稍後再試");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 取消編輯
+  const cancelEdit = () => {
+    setEditingReplyId(null);
+    setEditContent("");
   };
 
   return (
     <>
-      <h1>回覆留言</h1>
-      <div className="container-fluid p-4">
-        {comments.map((comment, index) => {
-          return (
-            <div key={comment.id} className="row shadow-sm rounded mb-3 p-3">
-              <div className="col-10">
-                <section className="d-flex align-items-center justify-content-between w-25 mb-3">
-                  <img
-                    src="/api/placeholder/50/50"
-                    alt="Profile"
-                    className="rounded-circle"
-                  />
-                  <div className="d-flex flex-column">
-                    <h5 className="mb-1">User #{index + 1}</h5>
-                    <small className="text-muted">
-                      {comment.date.split("T").join(" ")}
-                    </small>
-                  </div>
-                </section>
-                <section>
-                  <p>{comment.content}</p>
-                </section>
-                <section>
-                  {comment.reply ? (
-                    <>
-                      <section className="d-flex align-items-center justify-content-between w-25 mb-3">
-                        <img
-                          src="/api/placeholder/50/50"
-                          alt="Profile"
-                          className="rounded-circle"
-                        />
-                        <div className="d-flex flex-column">
-                          <h5 className="mb-1">春日影像</h5>
-                          <small className="text-muted">
-                            {comment.date.split("T").join(" ")}
-                          </small>
-                        </div>
-                      </section>
-                      <div>{comment.reply}</div>
-                      {/* 編輯／刪除按鈕 */}
-                      <section className="text-end">
-                        <button
-                          type="button"
-                          className="btn btn-outline-primary btn-sm"
-                          onClick={() => {
-                            setActiveReplyId(
-                              activeReplyId === comment.id ? null : comment.id
-                            );
-                            reset({ replyContent: comment.reply });
-                          }}
-                        >
-                          {activeReplyId === comment.id ? "取消" : "編輯"}
-                        </button>
-                        <button
-                          type="button"
-                          className="btn btn-outline-danger btn-sm"
-                          onClick={() => {
-                            handleDelete(comment.id);
-                          }}
-                        >
-                          刪除
-                        </button>
-                      </section>
-                    </>
-                  ) : (
-                    <>
-                      {/* 回覆按鈕 */}
-                      <div className="text-end">
-                        <button
-                          className="btn btn-outline-primary btn-sm"
-                          onClick={() =>
-                            setActiveReplyId(
-                              activeReplyId === comment.id ? null : comment.id
-                            )
-                          }
-                        >
-                          {activeReplyId === comment.id ? "取消" : "回覆"}
-                        </button>
-                      </div>
-                    </>
-                  )}
-                </section>
-                {/* 條件渲染回覆區塊 */}
-                {activeReplyId === comment.id && (
-                  <div className="mt-3 p-3 bg-light rounded">
-                    <form>
-                      <div className="mb-3">
-                        <textarea
-                          className={`form-control ${
-                            errors.replyContent && "is-invalid"
-                          }`}
-                          rows="3"
-                          placeholder="請輸入回覆..."
-                          {...register("replyContent", {
-                            required: "你必須輸入回覆",
-                          })}
-                        ></textarea>
-                        <div className="invalid-feedback text-danger">
-                          {errors?.replyContent?.message}
-                        </div>
-                      </div>
-                      <div className="d-flex justify-content-end">
-                        <button
-                          type="submit"
-                          onClick={handleSubmit((data) => {
-                            onSubmitReply(data, comment.id);
-                          })}
-                          className="btn btn-primary"
-                        >
-                          確認送出
-                        </button>
-                      </div>
-                    </form>
-                  </div>
-                )}
-              </div>
+      {/* 展示留言區塊 */}
+      <section className="container py-10">
+        <div className="row">
+          <div className="col-lg-10 mx-auto">
+            <h1 className="text-start">回覆留言</h1>
+            {/* 排序按鈕 */}
+            <div className="d-flex justify-content-end mb-4">
+              <button
+                className="btn btn-outline-secondary d-flex align-items-center gap-1"
+                onClick={toggleSortOrder}
+                disabled={loading}
+              >
+                <i
+                  className={`bi bi-sort-${
+                    sortOrder === "desc" ? "down" : "up"
+                  }`}
+                ></i>
+                {sortOrder === "desc" ? "由新到舊" : "由舊到新"}
+              </button>
             </div>
-          );
-        })}
-      </div>
+            {comments.length === 0 && !loading ? (
+              <div className="alert alert-info">目前沒有留言</div>
+            ) : (
+              comments.map((comment) => (
+                <div key={comment.id} className="mb-6">
+                  <div className="card rounded-1 bg-primary-2 text-primary-8">
+                    <div className="card-body">
+                      <div className="d-flex align-items-center justify-content-between mb-6">
+                        <div className="d-flex align-items-center">
+                          {/* 頭像 */}
+                          <div className="comment-avatar me-3">
+                            {comment.user.userProfile.userImageUrl ? (
+                              <img
+                                src={comment.user.userProfile.userImageUrl}
+                                className="img-fluid object-fit-cover me-1"
+                                alt={
+                                  comment.user.userProfile.nickName ||
+                                  comment.user.userProfile.userName
+                                }
+                                style={{
+                                  width: 50,
+                                  height: 50,
+                                  borderRadius: "50px",
+                                }}
+                              />
+                            ) : (
+                              <div
+                                className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
+                                style={{ width: 50, height: 50 }}
+                              >
+                                <i className="bi bi-person"></i>
+                              </div>
+                            )}
+                          </div>
+                          <div className="d-flex flex-column">
+                            {/* 名稱 */}
+                            <h6 className="mb-1">
+                              {comment.user.userProfile.nickName ||
+                                comment.user.userProfile.userName}
+                            </h6>
+                            {/* 時間 */}
+                            <div className="small text-primary-7 d-flex align-items-center gap-2">
+                              <i className="bi bi-calendar"></i>
+                              {comment.date.split("T")[0]}
+                              <i className="bi bi-clock"></i>
+                              {comment.date.split("T")[1].substring(0, 5)}
+                            </div>
+                          </div>
+                        </div>
+                        {/* 回覆按鈕 */}
+                        {replyingToId !== comment.id &&
+                          editingReplyId !== comment.id &&
+                          !comment.reply && (
+                            <button
+                              className="btn btn-outline-dark btn-sm d-flex align-items-center"
+                              onClick={() => startReply(comment.id)}
+                            >
+                              <i className="bi bi-reply me-1"></i> 回覆
+                            </button>
+                          )}
+                      </div>
+                      {/* 內容 */}
+                      <div className="p-1">
+                        <p>{comment.content}</p>
+                      </div>
+
+                      {/* 回覆表單 */}
+                      {replyingToId === comment.id && (
+                        <div className="mt-3 border-top pt-3">
+                          <form onSubmit={handleSubmitReply(submitReply)}>
+                            <textarea
+                              className={`form-control mb-2 bg-white text-primary-8 ${
+                                errorsReply.replyContent ? "is-invalid" : ""
+                              }`}
+                              rows="2"
+                              placeholder="輸入您的回覆..."
+                              {...registerReply("replyContent", {
+                                required: "請輸入回覆內容",
+                                minLength: {
+                                  value: 2,
+                                  message: "回覆內容太短",
+                                },
+                              })}
+                            />
+                            {errorsReply.replyContent && (
+                              <div className="invalid-feedback mb-2">
+                                {errorsReply.replyContent.message}
+                              </div>
+                            )}
+                            <div className="d-flex justify-content-end">
+                              <button
+                                type="button"
+                                className="btn btn-sm btn-secondary me-2"
+                                onClick={cancelReply}
+                                disabled={loading}
+                              >
+                                取消
+                              </button>
+                              <button
+                                type="submit"
+                                className="btn btn-sm btn-primary"
+                                disabled={loading}
+                              >
+                                {loading ? "處理中..." : "送出回覆"}
+                              </button>
+                            </div>
+                          </form>
+                        </div>
+                      )}
+
+                      {/* 已有回覆的顯示區塊 */}
+                      {comment.reply && (
+                        <>
+                          <hr />
+                          <div className="bg-primary-1 rounded-1 p-3">
+                            <div className="d-flex align-items-center justify-content-between mb-6">
+                              <div className="d-flex align-items-center">
+                                <div className="comment-avatar me-3">
+                                  {projectOwner &&
+                                  projectOwner.studioImageUrl ? (
+                                    <img
+                                      src={projectOwner.studioImageUrl}
+                                      className="img-fluid object-fit-cover me-1"
+                                      alt={
+                                        projectOwner.groupName ||
+                                        projectOwner.personResponsible
+                                      }
+                                      style={{
+                                        width: 50,
+                                        height: 50,
+                                        borderRadius: "50px",
+                                      }}
+                                    />
+                                  ) : (
+                                    <div
+                                      className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
+                                      style={{ width: 50, height: 50 }}
+                                    >
+                                      <i className="bi bi-person"></i>
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="d-flex flex-column">
+                                  {/* 名稱 */}
+                                  <h6 className="mb-1">
+                                    {projectOwner &&
+                                      (projectOwner.groupName ||
+                                        projectOwner.personResponsible)}
+                                  </h6>
+                                  {/* 回覆時間 */}
+                                  {comment.replyDate && (
+                                    <div className="small text-primary-7 d-flex align-items-center gap-2">
+                                      <i className="bi bi-calendar"></i>
+                                      {comment.replyDate.split("T")[0]}
+                                      <i className="bi bi-clock"></i>
+                                      {comment.replyDate
+                                        .split("T")[1]
+                                        ?.substring(0, 5)}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              {editingReplyId === comment.id || (
+                                <div className="d-flex align-items-center">
+                                  <button
+                                    className="btn btn-outline-info btn-sm me-2 d-flex align-items-center"
+                                    onClick={() =>
+                                      startEditReply(comment.reply, comment.id)
+                                    }
+                                  >
+                                    <i className="bi bi-pencil me-1"></i> 編輯
+                                  </button>
+                                  <button
+                                    className="btn btn-outline-danger btn-sm d-flex align-items-center"
+                                    disabled={loading}
+                                    onClick={() => deleteReply(comment.id)}
+                                  >
+                                    <i className="bi bi-trash me-1"></i> 刪除
+                                  </button>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* 編輯中的回覆 */}
+                            {editingReplyId === comment.id ? (
+                              <div className="mb-3">
+                                <textarea
+                                  className="form-control mb-2 bg-white text-primary-8"
+                                  rows="2"
+                                  value={editContent}
+                                  onChange={(e) =>
+                                    setEditContent(e.target.value)
+                                  }
+                                ></textarea>
+                                <div className="d-flex justify-content-end">
+                                  <button
+                                    className="btn btn-sm btn-secondary me-2"
+                                    onClick={cancelEdit}
+                                    disabled={loading}
+                                  >
+                                    取消
+                                  </button>
+                                  <button
+                                    className="btn btn-sm btn-success"
+                                    onClick={() => saveEditReply(comment.id)}
+                                    disabled={loading}
+                                  >
+                                    {loading ? "儲存中..." : "儲存"}
+                                  </button>
+                                </div>
+                              </div>
+                            ) : (
+                              <p className="mb-0 p-1">{comment.reply}</p>
+                            )}
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </section>
     </>
   );
 }

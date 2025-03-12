@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { setCategory } from "../slice/categorySlice";
-import { setSearchText, setSearchValue, setIsSearchOpen } from "../slice/searchSlice";
+import { setSearchValue, setIsSearchOpen } from "../slice/searchSlice";
 import { setLogout } from "../slice/userSlice";
 import axios from "axios";
 const apiBase = import.meta.env.VITE_API_BASE;
@@ -22,7 +22,7 @@ export default function HeaderSm() {
       await axios.patch(`${apiBase}/users/${id}`, { token: "" });
       document.cookie = "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
       dispatch(setLogout());
-      navigate("/")
+      navigate("/");
       alert("登出成功");
     } catch (error) {
       console.log(error);
