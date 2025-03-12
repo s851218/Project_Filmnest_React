@@ -5,28 +5,40 @@ import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router";
+import { setSelected } from "../slice/paymentInfoSlice";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 function FeedbackSwiper() {
   const [feedbackData, setFeedbackData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [showNavigation, setShowNavigation] = useState(false);
+  const { projectId } = useSelector((state)=>state.paymentInfo.selected)
+
+  const dispatch = useDispatch()
+  // 選擇方案
+  const handleSelectItem = (item) => {
+    dispatch(setSelected(item))
+  }
+
+  const getFeedbackData = async (id) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE}/products?projectId=${id}`
+      );
+      setFeedbackData(response.data);
+    } catch (error) {
+      alert("回饋資料取得失敗：" + error.message);
+    }
+  };
 
   // 渲染時取得資料
   useEffect(() => {
-    const getFeedbackData = async (id = 1) => {
-      try {
-        const response = await axios.get(
-          `${API_BASE}/products?projectId=${id}`
-        );
-        setFeedbackData(response.data);
-      } catch (error) {
-        alert("回饋資料取得失敗：" + error.message);
-      }
-    };
-
-    getFeedbackData();
-  }, []);
+    if (projectId) {
+      getFeedbackData(projectId);
+    }
+  }, [projectId]);
 
   // 自定義導航和分頁的樣式
   const navigationStyles = {
@@ -257,12 +269,13 @@ function FeedbackSwiper() {
                         </ol>
 
                         <div className="mb-0 mt-auto">
-                          <button
-                            type="button"
+                          <Link
+                            to="/PaymentInfo"
                             className="btn btn-primary py-2 fw-bold w-100"
+                            onClick={() => handleSelectItem(feedback)}
                           >
                             選擇此方案
-                          </button>
+                          </Link>
                         </div>
                       </div>
                     </div>

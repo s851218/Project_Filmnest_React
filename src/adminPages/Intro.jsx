@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import UploadProjectImage from "../AdminComponents/UploadProjectImage";
+import { useParams } from "react-router";
+import ArticleEditor from "../AdminComponents/ArticleEditor";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -28,13 +30,19 @@ const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
 };
 
 export default function Intro() {
+  const { id } = useParams();
+
   const [projectImage, setProjectImage] = useState({});
+
+  const [content, setContent] = useState("");
 
   // 專案編輯用 useForm
   const {
     register,
     handleSubmit,
     control,
+    setValue,
+    getValues,
     reset,
     formState: { errors },
   } = useForm({
@@ -46,6 +54,7 @@ export default function Intro() {
       summary: "",
       goalMoney: "",
       otherImages: [],
+      content: "",
     },
   });
 
@@ -59,7 +68,7 @@ export default function Intro() {
   useEffect(() => {
     const getProjectInfo = async () => {
       try {
-        const res = await axios.get(`${API_BASE}/projects/1`);
+        const res = await axios.get(`${API_BASE}/projects/${id}`);
 
         const projectData = res.data;
 
@@ -70,16 +79,19 @@ export default function Intro() {
           summary: projectData.summary,
           goalMoney: projectData.goalMoney,
           otherImages: projectData.otherImages,
+          content: projectData.content,
         });
 
         // 封面圖片狀態
         setProjectImage(projectData.projectImage);
+        // 文章狀態
+        setContent(projectData.content);
       } catch (error) {
         console.log("取得專案資訊失敗", error);
       }
     };
     getProjectInfo();
-  }, [reset]);
+  }, [reset, id]);
 
   // 圖片檔案選擇 input
   const handleOtherImagesFileChange = (e, index) => {
@@ -132,9 +144,10 @@ export default function Intro() {
         summary: data.summary,
         goalMoney: parseInt(data.goalMoney),
         otherImages: data.otherImages,
+        content: getValues("content"),
       };
 
-      const res = await axios.patch(`${API_BASE}/projects/1`, updateData);
+      const res = await axios.patch(`${API_BASE}/projects/${id}`, updateData);
       alert("成功更新專案資訊！");
       console.log("成功更新專案資訊：", res.data);
     } catch (error) {
@@ -146,6 +159,7 @@ export default function Intro() {
     <>
       <section className="p-3 py-md-4 py-lg-7 px-md-8 px-lg-10 bg-white mb-5 rounded-4">
         <form action="" onSubmit={handleSubmit(onSubmit)}>
+          {/* 專案名稱 */}
           <IntroInput
             register={register}
             errors={errors}
@@ -154,8 +168,12 @@ export default function Intro() {
             type="text"
             rules={{ required: "專案名稱為必填" }}
           />
+          {/* 專案類型 */}
           <section className="mb-5">
-            <label htmlFor="category" className="form-label">
+            <label
+              htmlFor="category"
+              className="form-label fw-bolder fs-sm fs-md-base"
+            >
               專案類型
             </label>
             <select
@@ -183,6 +201,7 @@ export default function Intro() {
               </p>
             )}
           </section>
+          {/* 專案簡介 */}
           <IntroInput
             register={register}
             errors={errors}
@@ -191,6 +210,7 @@ export default function Intro() {
             type="text"
             rules={{ required: "專案簡介為必填" }}
           />
+          {/* 目標金額 */}
           <IntroInput
             register={register}
             errors={errors}
@@ -200,7 +220,6 @@ export default function Intro() {
             rules={{ required: "目標金額為必填" }}
             min="1"
           />
-
           {/* 更換封面圖片 */}
           <div className="mt-5">
             <UploadProjectImage
@@ -219,7 +238,7 @@ export default function Intro() {
               封面圖片會顯示在專案圖片、首頁輪播與第一張劇照等位置
             </p>
           </div>
-
+          {/* 專案介紹頁劇照 */}
           <div className="mt-5">
             <h2 className="fs-base fw-bolder">專案介紹頁劇照</h2>
             <div className="container">
@@ -229,7 +248,6 @@ export default function Intro() {
                     <h3 className="fs-xs fs-md-sm text-primary-6">{`第 ${
                       index + 1
                     } 張劇照`}</h3>
-
                     <label
                       htmlFor={`change-image-input-${index}`}
                       className="mb-2"
@@ -292,9 +310,19 @@ export default function Intro() {
               </ul>
             </div>
           </div>
-          <div className="mt-5">
+          {/* 專案介紹圖文 */}
+          <section className="mt-5 mb-5">
             <h2 className="fs-base fw-bolder">專案介紹</h2>
-          </div>
+            <ArticleEditor
+              projectId={id}
+              setValue={setValue}
+              defaultContent={content}
+            />
+          </section>
+          {/* 製作團隊介紹 */}
+          {/* <section className="my-5">
+            <h2 className="fs-base fw-bolder">製作團隊介紹</h2>
+          </section> */}
           <button type="submit" className="btn btn-primary">
             儲存
           </button>
