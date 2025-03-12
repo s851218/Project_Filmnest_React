@@ -12,8 +12,6 @@ export default function PaymentInfo () {
 
   // 送出表單 => props傳遞給aside footer
   const handleFormsSubmit = async() => {
-    console.log(infoFromRef.current.submitForm())
-    console.log(paymentFromRef.current.submitForm)
     await infoFromRef.current.submitForm()
     await paymentFromRef.current.submitForm()
   }
@@ -38,8 +36,6 @@ export default function PaymentInfo () {
       </div>
 
       <PaymentMobileFooter handleFormsSubmit={handleFormsSubmit} />
-      
-      
     </>
   )
 }
