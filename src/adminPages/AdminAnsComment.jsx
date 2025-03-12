@@ -108,6 +108,33 @@ export default function AdminAnsComment() {
   const [editingReplyId, setEditingReplyId] = useState(null);
   const [editContent, setEditContent] = useState("");
 
+  // 刪除回覆
+  const deleteReply = async (commentId) => {
+    try {
+      setLoading(true);
+      await axios.patch(`${BASE_URL}/comments/${commentId}`, {
+        reply: "",
+        replyDate: "",
+      });
+      setComments((prevComments) =>
+        prevComments.map((comment) =>
+          comment.id === commentId
+            ? {
+                ...comment,
+                reply: "",
+                replyDate: "",
+              }
+            : comment
+        )
+      );
+    } catch (error) {
+      console.error("刪除回覆失敗：", error);
+      alert("刪除回覆失敗，請稍後再試");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // 編輯回覆
   const startEditReply = (replyContent, commentId) => {
     setEditingReplyId(commentId);
@@ -255,7 +282,7 @@ export default function AdminAnsComment() {
                         <div className="mt-3 border-top pt-3">
                           <form onSubmit={handleSubmitReply(submitReply)}>
                             <textarea
-                              className={`form-control mb-2 ${
+                              className={`form-control mb-2 bg-white text-primary-8 ${
                                 errorsReply.replyContent ? "is-invalid" : ""
                               }`}
                               rows="2"
@@ -287,7 +314,7 @@ export default function AdminAnsComment() {
                                 className="btn btn-sm btn-primary"
                                 disabled={loading}
                               >
-                                {loading ? "處理中..." : "發表回覆"}
+                                {loading ? "處理中..." : "送出回覆"}
                               </button>
                             </div>
                           </form>
@@ -299,50 +326,60 @@ export default function AdminAnsComment() {
                         <>
                           <hr />
                           <div className="bg-primary-1 rounded-1 p-3">
-                            <div className="d-flex align-items-center mb-6">
-                              <div className="comment-avatar me-3">
-                                {projectOwner && projectOwner.studioImageUrl ? (
-                                  <img
-                                    src={projectOwner.studioImageUrl}
-                                    className="img-fluid object-fit-cover me-1"
-                                    alt={
-                                      projectOwner.groupName ||
-                                      projectOwner.personResponsible
-                                    }
-                                    style={{
-                                      width: 50,
-                                      height: 50,
-                                      borderRadius: "50px",
-                                    }}
-                                  />
-                                ) : (
-                                  <div
-                                    className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
-                                    style={{ width: 50, height: 50 }}
-                                  >
-                                    <i className="bi bi-person"></i>
-                                  </div>
-                                )}
-                              </div>
-                              <div className="d-flex flex-column">
-                                {/* 名稱 */}
-                                <h6 className="mb-1">
+                            <div className="d-flex align-items-center justify-content-between mb-6">
+                              <div className="d-flex align-items-center">
+                                <div className="comment-avatar me-3">
                                   {projectOwner &&
-                                    (projectOwner.groupName ||
-                                      projectOwner.personResponsible)}
-                                </h6>
-                                {/* 回覆時間 */}
-                                {comment.replyDate && (
-                                  <div className="small text-primary-7 d-flex align-items-center gap-2">
-                                    <i className="bi bi-calendar"></i>
-                                    {comment.replyDate.split("T")[0]}
-                                    <i className="bi bi-clock"></i>
-                                    {comment.replyDate
-                                      .split("T")[1]
-                                      ?.substring(0, 5)}
-                                  </div>
-                                )}
+                                  projectOwner.studioImageUrl ? (
+                                    <img
+                                      src={projectOwner.studioImageUrl}
+                                      className="img-fluid object-fit-cover me-1"
+                                      alt={
+                                        projectOwner.groupName ||
+                                        projectOwner.personResponsible
+                                      }
+                                      style={{
+                                        width: 50,
+                                        height: 50,
+                                        borderRadius: "50px",
+                                      }}
+                                    />
+                                  ) : (
+                                    <div
+                                      className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
+                                      style={{ width: 50, height: 50 }}
+                                    >
+                                      <i className="bi bi-person"></i>
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="d-flex flex-column">
+                                  {/* 名稱 */}
+                                  <h6 className="mb-1">
+                                    {projectOwner &&
+                                      (projectOwner.groupName ||
+                                        projectOwner.personResponsible)}
+                                  </h6>
+                                  {/* 回覆時間 */}
+                                  {comment.replyDate && (
+                                    <div className="small text-primary-7 d-flex align-items-center gap-2">
+                                      <i className="bi bi-calendar"></i>
+                                      {comment.replyDate.split("T")[0]}
+                                      <i className="bi bi-clock"></i>
+                                      {comment.replyDate
+                                        .split("T")[1]
+                                        ?.substring(0, 5)}
+                                    </div>
+                                  )}
+                                </div>
                               </div>
+                              <button
+                                className="btn btn-outline-danger btn-sm d-flex align-items-center"
+                                disabled={loading}
+                                onClick={() => deleteReply(comment.id)}
+                              >
+                                <i className="bi bi-trash me-1"></i> 刪除
+                              </button>
                             </div>
                             {/* 編輯中的回覆 */}
                             {editingReplyId === comment.id ? (
