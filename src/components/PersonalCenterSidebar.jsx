@@ -12,7 +12,7 @@ export default function PersonalCenterSidebar() {
     <>
       <div className="d-none d-lg-block">
         <nav>
-          <div className="d-flex justify-content-center mb-8 mt-10">
+          <div className="d-flex justify-content-center align-items-center mb-8 mt-10">
             <img src={userImage} className="rounded-circle object-fit-cover " style={{ width: "120px", height: "120px" }} alt="" />
           </div>
           <ul className="list-unstyled d-flex flex-column">
@@ -56,7 +56,7 @@ export default function PersonalCenterSidebar() {
         </nav>
       </div>
       <div className="container d-lg-none">
-        <div className="d-flex justify-content-between align-item-center d-lg-none mb-3">
+        <div className="d-flex justify-content-between align-item-center d-lg-none">
           <span className="fs-7 mb-0 align-bottom">會員中心</span>
           <button className="btn btn-outline-light border-0 rounded-3 fw-bolder dropdown-toggle d-flex align-items-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span className="material-symbols-outlined fs-7 me-1">manage_accounts</span>
