@@ -7,6 +7,8 @@ import { RouterProvider } from "react-router";
 import router from "./routes";
 import { Provider } from "react-redux";
 import { store } from "./store";
+// Quill 文字編輯器 theme css
+import "quill/dist/quill.core.css";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

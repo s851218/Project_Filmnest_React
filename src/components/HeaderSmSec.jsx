@@ -2,14 +2,23 @@ import { Link } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { setLogout } from "../slice/userSlice";
 import { useNavigate } from "react-router";
+import axios from "axios";
+const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function HeaderSmSec() {
   const profile = useSelector((state) => state.user.profile);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleLogout = () => {
-    dispatch(setLogout());
-    navigate("/headerSm");
+  const handleLogout = async () => {
+    try {
+      await axios.patch(`${apiBase}/users/${id}`, { token: "" });
+      document.cookie = "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+      dispatch(setLogout());
+      navigate("/")
+      alert("登出成功");
+    } catch (error) {
+      alert("登出失敗");
+    }
   };
   return (
     <>
@@ -34,11 +43,11 @@ export default function HeaderSmSec() {
             登入 / 註冊
           </Link>
         )}
-        <Link className="nav-item px-5 py-3 border-bottom">個人頁面</Link>
-        <Link className="nav-item px-5 py-3">贊助紀錄</Link>
-        <Link className="nav-item px-5 py-3">提案紀錄</Link>
-        <Link className="nav-item px-5 py-3 border-bottom">收藏專案</Link>
-        <Link className="nav-item px-5 py-3 border-bottom">編輯個人資料</Link>
+        <Link to="/personalCenter/profile" className="nav-item px-5 py-3 border-bottom">個人頁面</Link>
+        <Link to="/personalCenter/favoriteProject" className="nav-item px-5 py-3">收藏專案</Link>
+        <Link to="/personalCenter/orderRecords" className="nav-item px-5 py-3">訂單紀錄</Link>
+        <Link to="/personalCenter/favoriteVideo" className="nav-item px-5 py-3 border-bottom">收藏影音</Link>
+        <Link to="/personalCenter/viewRecords" className="nav-item px-5 py-3 border-bottom">觀看紀錄</Link>
         <Link className="nav-item px-5 py-3" onClick={handleLogout}>
           登出
         </Link>

@@ -1,6 +1,7 @@
 .edit-nav-link {
   display: block;
-  padding: 0.35rem 1rem;
+  padding-top: 0.35rem;
+  padding-bottom: 0.35rem;
   text-align: center;
   color: gray;
   text-shadow: none;
@@ -14,8 +15,14 @@
       0 0 4px rgba(128, 128, 128, 0.3), 0 0 6px rgba(128, 128, 128, 0.3);
   }
 
-  @media (max-width: 375px) {
-    padding: 0.25rem 0.75rem;
+  @media (max-width: 768px) {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
+  @media (max-width: 576px) {
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
   }
 }
 
@@ -25,19 +32,4 @@
   border-right: 2px solid black;
   text-shadow: 0 0 2px rgba(128, 128, 128, 0.3),
     0 0 4px rgba(128, 128, 128, 0.3), 0 0 6px rgba(128, 128, 128, 0.3);
-}
-
-.edit-nav-swiper {
-  @media screen and (min-width: 576px) {
-    display: flex;
-    width: 100%;
-  }
-}
-
-.edit-nav-slide {
-  width: auto;
-  @media screen and (min-width: 576px) {
-    display: flex;
-    flex: 1 0 0;
-  }
 }

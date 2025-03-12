@@ -1,27 +1,33 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import FeedbackSwiper from "../components/FeedbackSwiper";
+import { useSelector } from "react-redux";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 function FeedbackPage() {
   const [projectData, setProjectData] = useState({});
+  const { projectId } = useSelector((state)=>state.paymentInfo.selected)
 
+  const getProjectData = async (id = 1) => {
+    try {
+      const response = await axios.get(
+        `${API_BASE}/projects?_expand=studio&id=${id}`
+      );
+      console.log(response.data[0]);
+      setProjectData(response.data[0]);
+    } catch (error) {
+      alert("頁面資料取得失敗：" + error.message);
+    }
+  };
+  
   // 取得資料
   useEffect(() => {
-    const getProjectData = async (id = 1) => {
-      try {
-        const response = await axios.get(
-          `${API_BASE}/projects?_expand=studio&id=${id}`
-        );
-        console.log(response.data[0]);
-        setProjectData(response.data[0]);
-      } catch (error) {
-        alert("頁面資料取得失敗：" + error.message);
-      }
-    };
-    getProjectData();
-  }, []);
+    getProjectData() // 開發使用
+    if (projectId) {
+      getProjectData(projectId);
+    }
+  }, [projectId]);
 
   function getDateFormatted(date) {
     const dt = new Date(date);

@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import { NavLink } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, NavLink } from "react-router";
 import { useParams } from "react-router";
+import { setSelected } from "../slice/paymentInfoSlice";
 
 // import Swiper core and required modules
 import { FreeMode } from "swiper/modules";
@@ -18,6 +19,7 @@ const API_BASE = import.meta.env.VITE_API_BASE;
 export default function ProjectIntroNav({ projectId }) {
   const { userId, token } = useSelector((state) => state.user.profile);
 
+  
   const [isFavorited, setIsFavorited] = useState(false);
   const [favoriteId, setFavoriteId] = useState(null);
 
@@ -79,6 +81,12 @@ export default function ProjectIntroNav({ projectId }) {
       }
     }
   };
+
+  const dispatch = useDispatch()
+  useEffect(()=> {
+    dispatch(setSelected({projectId}))
+  },[projectId])
+
 
   return (
     <>
@@ -166,14 +174,13 @@ export default function ProjectIntroNav({ projectId }) {
               </button>
             </li>
             <li>
-              <button
-                type="button"
+              <Link
+                to="/feedbackPage"
                 className="btn btn-primary py-3 fw-bolder"
                 style={{ width: 188 }}
-                href="#"
               >
                 立即贊助
-              </button>
+              </Link>
             </li>
           </ul>
         </div>
