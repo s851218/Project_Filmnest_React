@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 
@@ -7,6 +7,7 @@ const BASE_URL = "https://json-server-vercel-tdcc.onrender.com";
 export default function ProjectIntroComments() {
   const [comments, setComments] = useState([]);
   const [projectOwner, setProjectOwner] = useState(null);
+
   const {
     register,
     handleSubmit,
@@ -56,6 +57,35 @@ export default function ProjectIntroComments() {
       alert(error.message);
     }
   };
+
+  const [showButton, setShowButton] = useState(false);
+  const commentRef = useRef(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (commentRef.current) {
+        const formRect = commentRef.current.getBoundingClientRect();
+        const inputRect = document
+          .querySelector("textarea")
+          .getBoundingClientRect();
+
+        setShowButton(formRect.bottom < 0 && inputRect.bottom < 0);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    handleScroll(); // 頁面載入時立即檢查
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    document
+      .querySelector(".floating-button")
+      ?.classList.toggle("show", showButton);
+  }, [showButton]);
   return (
     <>
       {/* 留言區塊 */}
@@ -74,7 +104,7 @@ export default function ProjectIntroComments() {
                   className="position-relative"
                   onSubmit={handleSubmit(onSubmit)}
                 >
-                  <div className="mb-3 ">
+                  <div className="mb-3" ref={commentRef}>
                     <textarea
                       {...register("commentContent", {
                         required: "請輸入留言內容",
@@ -240,15 +270,16 @@ export default function ProjectIntroComments() {
               <div className="d-flex justify-content-end p-4">
                 <button
                   title="我要留言"
-                  className="btn btn-success"
+                  className={`btn btn-success floating-button ${
+                    showButton ? "show" : "hide"
+                  }`}
+                  // className="btn btn-success"
                   type="button"
                   onClick={() => {
-                    // alert("前往留言？");
                     setFocus("commentContent");
                   }}
                   style={{
                     borderRadius: "100px",
-                    scrollBehavior: "smooth",
                   }}
                 >
                   <i className="bi bi-chat-heart-fill"></i>
@@ -258,6 +289,24 @@ export default function ProjectIntroComments() {
           </div>
         </div>
       </section>
+
+      <style>
+        {`
+        .floating-button {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+          }
+        .floating-button.show {
+            opacity: 1;
+            transform: translateY(-100px);
+          }
+
+          .floating-button.hide {
+            opacity: 0;
+            transform: translateY(20px);
+          }`}
+      </style>
     </>
   );
 }
