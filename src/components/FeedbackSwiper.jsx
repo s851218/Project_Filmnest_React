@@ -22,7 +22,7 @@ function FeedbackSwiper() {
     dispatch(setSelected(item))
   }
 
-  const getFeedbackData = async (id) => {
+  const getFeedbackData = async (id = 1) => {
     try {
       const response = await axios.get(
         `${API_BASE}/products?projectId=${id}`
@@ -35,6 +35,7 @@ function FeedbackSwiper() {
 
   // 渲染時取得資料
   useEffect(() => {
+    getFeedbackData()
     if (projectId) {
       getFeedbackData(projectId);
     }
