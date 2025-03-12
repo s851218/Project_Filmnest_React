@@ -1,14 +1,5 @@
 import { NavLink, Outlet, useLocation, useParams } from "react-router";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// import Swiper core and required modules
-import { FreeMode } from "swiper/modules";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/free-mode";
-
 export default function AdminEdit() {
   const { id } = useParams();
   const location = useLocation();
@@ -27,66 +18,57 @@ export default function AdminEdit() {
       ) : (
         <>
           <h2 className="fs-7 fs-lg-6 mb-3 mb-md-5 mb-lg-7">專案編輯</h2>
-          <section className="d-flex">
-            <Swiper
-              modules={[FreeMode]}
-              slidesPerView="auto"
-              spaceBetween={10}
-              freeMode={true}
-              watchOverflow={true}
-              resistance={true}
-              className="mb-4 edit-nav-swiper"
-            >
-              <SwiperSlide className="w-auto edit-nav-slide">
-                <NavLink
-                  className={({ isActive }) =>
-                    `edit-nav-link fs-base fs-lg-7 ${
-                      isActive ? "active-edit-nav-link" : ""
-                    }`
-                  }
-                  to={`/admin/${id}/intro`}
-                >
-                  專案資訊
-                </NavLink>
-              </SwiperSlide>
-              <SwiperSlide className="w-auto edit-nav-slide">
-                <NavLink
-                  className={({ isActive }) =>
-                    `edit-nav-link fs-base fs-lg-7 ${
-                      isActive ? "active-edit-nav-link" : ""
-                    }`
-                  }
-                  to={`/admin/${id}/post`}
-                >
-                  最新消息
-                </NavLink>
-              </SwiperSlide>
-              <SwiperSlide className="w-auto edit-nav-slide">
-                <NavLink
-                  className={({ isActive }) =>
-                    `edit-nav-link fs-base fs-lg-7 ${
-                      isActive ? "active-edit-nav-link" : ""
-                    }`
-                  }
-                  to={`/admin/${id}/faq`}
-                >
-                  常見問題
-                </NavLink>
-              </SwiperSlide>
-              <SwiperSlide className="w-auto edit-nav-slide">
-                <NavLink
-                  className={({ isActive }) =>
-                    `edit-nav-link fs-base fs-lg-7 ${
-                      isActive ? "active-edit-nav-link" : ""
-                    }`
-                  }
-                  to={`/admin/${id}/feedback`}
-                >
-                  回饋項目
-                </NavLink>
-              </SwiperSlide>
-            </Swiper>
-          </section>
+
+          <ul className="mb-4 list-unstyled d-flex">
+            <li className="w-100">
+              <NavLink
+                className={({ isActive }) =>
+                  `edit-nav-link fs-base fs-lg-7 ${
+                    isActive ? "active-edit-nav-link" : ""
+                  }`
+                }
+                to={`/admin/${id}/intro`}
+              >
+                專案資訊
+              </NavLink>
+            </li>
+            <li className="w-100">
+              <NavLink
+                className={({ isActive }) =>
+                  `edit-nav-link fs-base fs-lg-7 ${
+                    isActive ? "active-edit-nav-link" : ""
+                  }`
+                }
+                to={`/admin/${id}/post`}
+              >
+                最新消息
+              </NavLink>
+            </li>
+            <li className="w-100">
+              <NavLink
+                className={({ isActive }) =>
+                  `edit-nav-link fs-base fs-lg-7 ${
+                    isActive ? "active-edit-nav-link" : ""
+                  }`
+                }
+                to={`/admin/${id}/faq`}
+              >
+                常見問題
+              </NavLink>
+            </li>
+            <li className="w-100">
+              <NavLink
+                className={({ isActive }) =>
+                  `edit-nav-link fs-base fs-lg-7 ${
+                    isActive ? "active-edit-nav-link" : ""
+                  }`
+                }
+                to={`/admin/${id}/feedback`}
+              >
+                回饋項目
+              </NavLink>
+            </li>
+          </ul>
           <Outlet />
         </>
       )}
