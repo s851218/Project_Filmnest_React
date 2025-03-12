@@ -11,6 +11,7 @@ export default function ProjectIntroComments() {
     register,
     handleSubmit,
     reset,
+    setFocus,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
@@ -228,6 +229,32 @@ export default function ProjectIntroComments() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="fixed-bottom">
+        <div className="container">
+          <div className="row">
+            <div className="col-10">
+              <div className="d-flex justify-content-end p-4">
+                <button
+                  title="我要留言"
+                  className="btn btn-success"
+                  type="button"
+                  onClick={() => {
+                    // alert("前往留言？");
+                    setFocus("commentContent");
+                  }}
+                  style={{
+                    borderRadius: "100px",
+                    scrollBehavior: "smooth",
+                  }}
+                >
+                  <i className="bi bi-chat-heart-fill"></i>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
