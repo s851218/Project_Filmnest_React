@@ -179,29 +179,26 @@ export default function AdminAnsComment() {
 
   return (
     <>
-      <h1>回覆留言</h1>
-
-      {/* 排序按鈕 */}
-      <div className="d-flex justify-content-end mb-3">
-        <button
-          className="btn btn-outline-secondary d-flex align-items-center gap-1"
-          onClick={toggleSortOrder}
-          disabled={loading}
-        >
-          <i
-            className={`bi bi-sort-${sortOrder === "desc" ? "down" : "up"}`}
-          ></i>
-          {sortOrder === "desc" ? "由新到舊" : "由舊到新"}
-        </button>
-      </div>
-
-      {/* 載入中提示 */}
-      {loading && <div className="text-center py-3">載入中...</div>}
-
       {/* 展示留言區塊 */}
       <section className="container py-10">
         <div className="row">
-          <div className="col-10 col-lg-9 mx-auto">
+          <div className="col-lg-10 mx-auto">
+            <h1 className="text-start">回覆留言</h1>
+            {/* 排序按鈕 */}
+            <div className="d-flex justify-content-end mb-4">
+              <button
+                className="btn btn-outline-secondary d-flex align-items-center gap-1"
+                onClick={toggleSortOrder}
+                disabled={loading}
+              >
+                <i
+                  className={`bi bi-sort-${
+                    sortOrder === "desc" ? "down" : "up"
+                  }`}
+                ></i>
+                {sortOrder === "desc" ? "由新到舊" : "由舊到新"}
+              </button>
+            </div>
             {comments.length === 0 && !loading ? (
               <div className="alert alert-info">目前沒有留言</div>
             ) : (
@@ -254,23 +251,14 @@ export default function AdminAnsComment() {
                         {/* 回覆按鈕 */}
                         {replyingToId !== comment.id &&
                           editingReplyId !== comment.id &&
-                          (comment.reply ? (
-                            <button
-                              className="btn btn-outline-info btn-sm me-2 d-flex align-items-center"
-                              onClick={() =>
-                                startEditReply(comment.reply, comment.id)
-                              }
-                            >
-                              <i className="bi bi-pencil me-1"></i> 編輯
-                            </button>
-                          ) : (
+                          !comment.reply && (
                             <button
                               className="btn btn-outline-dark btn-sm d-flex align-items-center"
                               onClick={() => startReply(comment.id)}
                             >
                               <i className="bi bi-reply me-1"></i> 回覆
                             </button>
-                          ))}
+                          )}
                       </div>
                       {/* 內容 */}
                       <div className="p-1">
@@ -373,14 +361,27 @@ export default function AdminAnsComment() {
                                   )}
                                 </div>
                               </div>
-                              <button
-                                className="btn btn-outline-danger btn-sm d-flex align-items-center"
-                                disabled={loading}
-                                onClick={() => deleteReply(comment.id)}
-                              >
-                                <i className="bi bi-trash me-1"></i> 刪除
-                              </button>
+                              {editingReplyId === comment.id || (
+                                <div className="d-flex align-items-center">
+                                  <button
+                                    className="btn btn-outline-info btn-sm me-2 d-flex align-items-center"
+                                    onClick={() =>
+                                      startEditReply(comment.reply, comment.id)
+                                    }
+                                  >
+                                    <i className="bi bi-pencil me-1"></i> 編輯
+                                  </button>
+                                  <button
+                                    className="btn btn-outline-danger btn-sm d-flex align-items-center"
+                                    disabled={loading}
+                                    onClick={() => deleteReply(comment.id)}
+                                  >
+                                    <i className="bi bi-trash me-1"></i> 刪除
+                                  </button>
+                                </div>
+                              )}
                             </div>
+
                             {/* 編輯中的回覆 */}
                             {editingReplyId === comment.id ? (
                               <div className="mb-3">
