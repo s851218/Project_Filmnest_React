@@ -57,14 +57,23 @@ export default function ProjectIntroComments() {
   };
   return (
     <>
+      {/* 留言區塊 */}
       <section className="container py-10">
         <div className="row">
           <div className="col-lg-9 col-10 mx-auto">
-            <div className="card mb-4 shadow-sm">
-              <div className="card-body">
-                <h5 className="mb-3">留下一句話</h5>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                  <div className="mb-3">
+            <div
+              className="card mb-4 shadow-sm"
+              style={{
+                backgroundColor: "transparent",
+              }}
+            >
+              <div className="card-body p-0">
+                <h5 className="mb-4">留下一句話</h5>
+                <form
+                  className="position-relative"
+                  onSubmit={handleSubmit(onSubmit)}
+                >
+                  <div className="mb-3 ">
                     <textarea
                       {...register("commentContent", {
                         required: "請輸入留言內容",
@@ -78,21 +87,33 @@ export default function ProjectIntroComments() {
                       placeholder="你的鼓勵將會是創作者繼續前進的最大原動力"
                     />
                     {errors.commentContent && (
-                      <div className="invalid-feedback">
+                      <div className="invalid-feedback position-absolute">
                         {errors.commentContent.message}
                       </div>
                     )}
                   </div>
-                  <div className="d-flex justify-content-end">
+                  <div
+                    className="position-absolute"
+                    style={{
+                      bottom: 10,
+                      right: 15,
+                    }}
+                  >
                     <button
-                      className="btn btn-primary"
+                      className={`btn btn-primary-8 ${
+                        errors.commentContent ? "text-danger border-danger" : ""
+                      }`}
                       disabled={isSubmitting}
                       type="submit"
+                      style={{
+                        borderRadius: "100px",
+                      }}
                     >
-                      {isSubmitting && (
-                        <span className="spinner-border spinner-border-sm me-2" />
-                      )}{" "}
-                      {isSubmitting ? "送出中..." : "發表留言"}
+                      {isSubmitting ? (
+                        <span className="spinner-border spinner-border-sm" />
+                      ) : (
+                        <i className="bi bi-send"></i>
+                      )}
                     </button>
                   </div>
                 </form>
@@ -101,7 +122,8 @@ export default function ProjectIntroComments() {
           </div>
         </div>
       </section>
-      {/* 留言展示板 */}
+
+      {/* 展示留言區塊 */}
       <section className="container">
         <div className="row">
           <div className="col-10 col-lg-9 mx-auto">
