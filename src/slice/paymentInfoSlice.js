@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { act } from "react-dom/test-utils";
 
 const paymentInfoSlice = createSlice({
   name: "paymentInfo",
@@ -26,6 +27,9 @@ const paymentInfoSlice = createSlice({
     requried: {
       paymentInfo: false,
       paymentType: false,
+    },
+    selected: {
+      projectId: "",
     }
   },
   reducers: {
@@ -72,10 +76,17 @@ const paymentInfoSlice = createSlice({
         default:
           break;
       }
+    },
+    setSelected(state,action) {
+      const newSelected = {
+        ...state.selected,
+        ...action.payload,
+      }
+      state.selected = newSelected
     }
   }
 })
 
-export const { setAddress , setRecipientInfo , setSameAsMember , setAccordionIndex , setPaymentOption , setRequried } = paymentInfoSlice.actions
+export const { setAddress , setRecipientInfo , setSameAsMember , setAccordionIndex , setPaymentOption , setRequried , setSelected } = paymentInfoSlice.actions
 
 export default paymentInfoSlice.reducer

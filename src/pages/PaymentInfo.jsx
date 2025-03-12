@@ -1,4 +1,5 @@
 import { useRef } from "react"
+import { useSelector } from "react-redux";
 import PaymentAside from "../components/PaymentAside"
 import PaymentMobileFooter from "../components/PaymentMobileFooter"
 import PaymentInfoFrom from "../components/PaymentInfoFrom"
@@ -16,7 +17,9 @@ export default function PaymentInfo () {
     await infoFromRef.current.submitForm()
     await paymentFromRef.current.submitForm()
   }
-  
+
+  const selected = useSelector((state)=>state.paymentInfo.selected)
+  console.log("selected",selected)
   return (
     <>
       <div className="container mb-20" style={{marginTop: 88}}>
