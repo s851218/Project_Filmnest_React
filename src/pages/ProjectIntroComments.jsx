@@ -212,12 +212,12 @@ export default function ProjectIntroComments() {
                                   projectOwner.personResponsible}
                               </h6>
                               {/* 時間 */}
-                              {/* <div className="small text-muted d-flex align-items-center gap-2">
-                          <i className="bi bi-calendar"></i>
-                          {comment.date.split("T")[0]}
-                          <i className="bi bi-clock"></i>
-                          {comment.date.split("T")[1]}
-                        </div> */}
+                              <div className="small text-muted d-flex align-items-center gap-2">
+                                <i className="bi bi-calendar"></i>
+                                {comment.date.split("T")[0]}
+                                <i className="bi bi-clock"></i>
+                                {comment.date.split("T")[1]}
+                              </div>
                             </div>
                           </div>
                           <p className="mb-0 p-1">{comment.reply}</p>
