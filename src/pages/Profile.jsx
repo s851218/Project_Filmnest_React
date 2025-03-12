@@ -1,15 +1,19 @@
+import PersonalCenterSidebar from "../components/PersonalCenterSidebar";
 export default function Profile() {
   return (
     <div className="container">
-      <div className="d-flex justify-content-between align-items-center mb-7">
+      <div className="justify-content-between align-items-center mb-7 d-none d-lg-flex">
         <h1 className="fs-6">編輯個人資料</h1>
         <button className="d-flex align-items-center btn btn-primary py-3 px-4">
           <span className="fs-sm fw-bolder me-2">儲存</span>
           <span class="material-symbols-outlined align-bottom fs-7">check</span>
         </button>
       </div>
-      <div className="bg-primary-8 rounded-4 d-flex align-items-center p-10">
-        <div className="me-11">
+      <div className="bg-primary-8 rounded-4 d-flex flex-column flex-lg-row align-items-center p-10">
+        <div className="d-block d-lg-none w-100 mb-5">
+          <PersonalCenterSidebar />
+        </div>
+        <div className="me-lg-11">
           <div className="mb-3">
             <div style={{ width: "280px", height: "280px" }} className="mb-5">
               <img src="首頁_輪播_01.jpg" alt="" className="object-fit-cover h-100" />
@@ -70,6 +74,10 @@ export default function Profile() {
             </div>
           </form>
         </div>
+        <button className="align-items-center btn btn-primary py-3 px-4 d-block d-lg-none w-100 mt-4">
+          <span className="fs-sm fw-bolder me-2">儲存</span>
+          <span class="material-symbols-outlined align-bottom fs-7">check</span>
+        </button>
       </div>
     </div>
   );
