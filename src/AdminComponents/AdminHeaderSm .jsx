@@ -1,9 +1,24 @@
 import { Link, useNavigate } from "react-router";
 import { useSelector} from "react-redux";
+import { setLogout } from "../slice/userSlice";
+import axios from "axios";
+const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function AdminHeaderSm() {
   const profile = useSelector((state) => state.user.profile);
+  const id = useSelector((state) => state.user.profile.userId);
   const navigate = useNavigate();
+  const handleLogout = async () => {
+    try {
+      await axios.patch(`${apiBase}/users/${id}`, { token: "" });
+      document.cookie = "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+      dispatch(setLogout());
+      navigate("/");
+      alert("登出成功");
+    } catch (error) {
+      alert("登出失敗");
+    }
+  };
 
   return (
     <>
@@ -30,6 +45,9 @@ export default function AdminHeaderSm() {
         )}
         <Link className="nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder">我要提案</Link>
         <Link to="/" className="nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder">離開工作室</Link>
+        <Link className="nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder" onClick={handleLogout}>
+          登出
+        </Link>
       </ul>
     </>
   );

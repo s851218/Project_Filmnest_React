@@ -24,9 +24,9 @@ export default function Login() {
     };
     try {
       const response = await axios.post(`${apiBase}/login`, userData);
-      const { accessToken, user } = response.data;
-      console.log(user);
-
+      const { accessToken, user} = response.data;
+      document.cookie = `loginToken=${accessToken}`;
+      await axios.patch(`${apiBase}/users/${user.id}`, {token:accessToken})
       dispatch(
         setLogin({
           token: accessToken,
