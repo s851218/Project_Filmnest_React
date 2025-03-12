@@ -141,7 +141,7 @@ export default function Sidebar() {
           </ul>
         </nav>
       </div>
-      <div className="container d-flex justify-content-between align-item-center d-lg-none mb-3">
+      <div className="container d-flex justify-content-between align-item-center d-lg-none p-2">
         <span className="fs-7 mb-0 align-bottom">提案工作室</span>
         <button
           className="btn btn-primary rounded-3 border-0 fw-bolder dropdown-toggle"
