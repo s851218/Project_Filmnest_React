@@ -125,7 +125,6 @@ export default function Home() {
       },
     });
   }, []);
-  console.log(projects);
   
   return (
     <>
@@ -133,9 +132,9 @@ export default function Home() {
         <div className="index-banner-container">
           <div className="swiper indexbannerswiper" ref={swiperBannerRef}>
             <div className="swiper-wrapper">
-              <div className="swiper-slide">
-                <div className="index-banner-text-bg">
-                  <div className="container index-banner-text">
+              <div className="swiper-slide h-auto">
+                <div className="index-banner-text-bg h-100 text-balance">
+                  <div className="container index-banner-text h-100 d-flex flex-column">
                     <h1 className="fs-6 fs-lg-xxl mb-3 mb-lg-6">點燃創意，成就影視夢想</h1>
                     <p className="fs-sm fs-lg-7 mb-8 mb-lg-15">
                       為影視創作者打造專屬募資平台，
@@ -144,17 +143,19 @@ export default function Home() {
                       <br />
                       加入我們，讓你的創意被發現，讓更多故事成為現實。
                     </p>
-                    <a href="project-explore.html" className="btn btn-primary fw-bolder py-3 px-5">
-                      我想贊助
-                    </a>
+                    <div className="mt-auto">
+                        <Link to="/" className="btn btn-primary fw-bolder py-3 px-5">
+                          我想贊助
+                        </Link>
+                      </div>
                   </div>
                 </div>
               </div>
               {projects.map((project)=>{
                 return(<div className="swiper-slide h-auto" key={project.id}>
-                  <div className="index-banner-text-bg  h-100" style={{backgroundImage:`url(${project.projectImage})`}}>
+                  <div className="index-banner-text-bg  h-100 text-balance" style={{backgroundImage:`url(${project.projectImage})`}}>
                     <div className="container index-banner-text h-100 d-flex flex-column">
-                      <h1 className="fs-6 fs-lg-xxl mb-3 mb-lg-6 d-flex flex-column justify-content-center justify-content-lg-start">
+                      <h1 className="fs-6 fs-lg-xxl mb-3 mb-lg-6 justify-content-center justify-content-lg-start">
                         {project.projectTitle}
                       </h1>
                       <p className="fs-sm fs-lg-7 mb-8 mb-lg-15">
