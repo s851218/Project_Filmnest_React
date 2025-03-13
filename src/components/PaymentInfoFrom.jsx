@@ -1,14 +1,13 @@
 import axios from "axios"
 import { useEffect, useImperativeHandle, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
-import { setAddress, setRecipientInfo, setSameAsMember , setRequried } from "../slice/paymentInfoSlice"
+import { setUserInfo , setAddress, setRecipientInfo, setSameAsMember , setRequried } from "../slice/paymentInfoSlice"
 import { useDispatch, useSelector } from "react-redux"
 
-export default function PaymentInfoFrom ({reference}) {
+export default function PaymentInfoFrom ({reference , userData}) {
   const dispatch = useDispatch()
   const { userInfo , recipientInfo } = useSelector((state) => state.paymentInfo)
-  const paymentInfo = useSelector((state) => state.paymentInfo)
-  const { register , setValue , control , formState:{errors} , handleSubmit , reset } = useForm({
+  const { register , setValue , control , formState:{errors} , handleSubmit } = useForm({
     defaultValues: {
       ...userInfo,
       sameAsMember: false,
@@ -21,69 +20,35 @@ export default function PaymentInfoFrom ({reference}) {
     mode: "onTouched"
   })
 
+  useEffect(()=>{
+    if (userData.userProfile) {
+      const {userName , phone} = userData?.userProfile
+      const {email} = userData
+  
+      const userInfo = {
+        userName,
+        // userPhone: phone, // 目前電話格式錯誤
+        userEmail: email,
+      }
+      setValue("userName",userName)
+      // setValue("userPhone", phone) // 目前電話格式錯誤
+      setValue("userEmail", email)
+      dispatch(setUserInfo(userInfo))
+    }
+  },[userData.userProfile])
+
   useImperativeHandle(reference, () => ({
-    submitForm() {
-      handleSubmit(onSubmit)()
+    async submitForm() {
+      await handleSubmit(onSubmit)()
     }
   }))
 
   const onSubmit = (data) => {
-    console.log("開始submit")
     dispatch(setRequried({name:"paymentInfo",value:true}))
-    // const { recipientName , recipientPhone , recipientEmail } = recipientInfo
-    // const recipientAddress = paymentInfo.address
-    
-    // let payment
-    // if (paymentInfo.accordion.index === 0) {
-    //   payment = {
-    //     "paymentOption": "線上刷卡",
-    //     "cardTypes": paymentInfo.paymentOption.cardType,
-    //     "payMethod": paymentInfo.paymentOption.payMethod,
-    //   }
-    // }
-    // else if (paymentInfo.accordion.index === 1) {
-    //   payment = {
-    //     "paymentOption": "ATM轉帳",
-    //     "bankSelect": paymentInfo.paymentOption.bankSelect,
-    //   }
-    // }
-    // else if (paymentInfo.accordion.index === 2) {
-    //   payment = {
-    //     "paymentOption": "超商代碼付款",
-    //   }
-    // }
-
-    // const today = new Date()
-
-    // const OrderApiData = {
-    //   "orderFile": {
-    //     "Recipient": recipientName,
-    //     "phone": recipientPhone,
-    //     "email": recipientEmail,
-    //     "address": recipientAddress,
-    //   },
-    //   "orderStatus": "訂單成立",
-    //   "paymentStatus": "已付款",
-    //   "shippingStatus": "未出貨",
-    //   "bonus": "額外加碼",
-    //   "totalPrice": "總價格(包含加碼)",
-    //   "payment": payment,
-    //   "createdAt": today,
-    //   "paymentTime": today,
-    //   "canCancel": false,
-    //   "canRefund": false,
-    //   "canReturn": false,
-    //   "userId": 0,
-    //   "projectId": 0
-    // }
-
-    // console.log("OrderApiData:",OrderApiData)
   }
   
   const watch = useWatch({control})
-  // useEffect(()=> {
-  //   console.log(watch)
-  // },[watch])
+  
   const [ countys , setCountys ] = useState([]) // 縣市選擇
   const [ districts , setDistricts ] = useState([]) // 行政區選擇
   // 取得郵遞區號資料 (OK)
@@ -166,26 +131,29 @@ export default function PaymentInfoFrom ({reference}) {
         <legend className="payment-lengend">會員資料</legend>
         <div className="row mb-3">
           <div className="col-lg-6 mb-lg-0 mb-3">
-            <label htmlFor="userName" className="form-label required">會員姓名</label>
+            <label htmlFor="userName" className="form-label">會員姓名</label>
             <input type="text" id="userName"
-              className="form-control bg-dark text-primary-3 disabled" 
+              className="form-control bg-dark text-primary-3"
+              disabled
               {...register("userName")}
               />
           </div>
 
           <div className="col-lg-6">
-            <label htmlFor="userPhone" className="form-label required">手機</label>
+            <label htmlFor="userPhone" className="form-label">手機</label>
             <input type="tel" id="userPhone"
-              className="form-control bg-dark text-primary-3 disabled"
+              className="form-control bg-dark text-primary-3"
+              disabled
               {...register("userPhone")}
               />
           </div>
         </div>
 
         <div className="mb-3">
-          <label htmlFor="userEmail" className="form-label required">Email</label>
+          <label htmlFor="userEmail" className="form-label">Email</label>
           <input type="email" id="userEmail"
-            className="form-control bg-dark text-primary-3 disabled"
+            className="form-control bg-dark text-primary-3"
+            disabled
             {...register("userEmail")}
             />
         </div>
