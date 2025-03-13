@@ -11,6 +11,21 @@ export default function ProjectIntro() {
   const [projectInfo, setProjectInfo] = useState({});
 
   const { id } = useParams(); // xiang 2025/02/27 intro路由調整
+  const [ params , setParams ] = useState({})  
+  
+  //處理params
+  useEffect(()=>{
+    if (id) {
+      const paramsArry = id.split("&")
+      let paramsObj = {}
+      paramsArry.forEach((param)=>{
+        let [ key , value ] = param.split("=")
+        paramsObj[key] = Number(value)
+      })
+      console.log(paramsObj);
+      setParams(paramsObj)
+    }
+  },[id])
 
   // 路由跳轉至專案介紹頁時，重製滾輪捲軸
   useEffect(() => {
@@ -20,16 +35,18 @@ export default function ProjectIntro() {
   }, []);
 
   useEffect(() => {
-    const getProjectData = async () => {
-      try {
-        const res = await axios.get(`${API_BASE}/projects/${id}`); // xiang 2025/02/27 intro路由調整
-        setProjectInfo(res.data);
-      } catch (error) {
-        console.log("取得專案資訊失敗：", error);
-      }
-    };
-    getProjectData();
-  }, []);
+    if (params.projectId) {
+      const getProjectData = async (id) => {
+        try {
+          const res = await axios.get(`${API_BASE}/projects/${id}`); // xiang 2025/02/27 intro路由調整
+          setProjectInfo(res.data);
+        } catch (error) {
+          console.log("取得專案資訊失敗：", error);
+        }
+      };
+      getProjectData(params.projectId);
+    }
+  }, [params]);
 
   return (
     <>
