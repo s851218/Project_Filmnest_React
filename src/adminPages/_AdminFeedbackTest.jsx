@@ -66,15 +66,23 @@ function FeedbackFormTest() {
               </div>
 
               <div className="mb-3">
-                <label htmlFor="" className="form-label">
-                  上傳圖片
-                </label>
                 <input
+                  id="feedbackImageInput"
                   type="file"
                   accept="image/*"
-                  className="form-control bg-white text-primary-8"
+                  className="form-control d-none"
                 />
               </div>
+              <label
+                htmlFor="feedbackImageInput"
+                className="d-block mb-0 cursor-pointer"
+              >
+                <div className="d-flex flex-column align-items-center">
+                  <i className="bi bi-cloud-arrow-up fs-1 text-secondary mb-2"></i>
+                  <p className="mb-1">拖曳圖片至此處或點擊上傳</p>
+                  <p className="text-muted small">支援常見圖片格式</p>
+                </div>
+              </label>
             </form>
           </div>
         </div>
