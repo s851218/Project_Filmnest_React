@@ -14,19 +14,17 @@ function FeedbackSwiper() {
   const [feedbackData, setFeedbackData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [showNavigation, setShowNavigation] = useState(false);
-  const { projectId } = useSelector((state)=>state.paymentInfo.selected)
+  const { projectId } = useSelector((state) => state.paymentInfo.selected);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // 選擇方案
   const handleSelectItem = (item) => {
-    dispatch(setSelected(item))
-  }
+    dispatch(setSelected(item));
+  };
 
   const getFeedbackData = async (id = 1) => {
     try {
-      const response = await axios.get(
-        `${API_BASE}/products?projectId=${id}`
-      );
+      const response = await axios.get(`${API_BASE}/products?projectId=${id}`);
       setFeedbackData(response.data);
     } catch (error) {
       alert("回饋資料取得失敗：" + error.message);
@@ -35,7 +33,7 @@ function FeedbackSwiper() {
 
   // 渲染時取得資料
   useEffect(() => {
-    getFeedbackData()
+    getFeedbackData();
     if (projectId) {
       getFeedbackData(projectId);
     }

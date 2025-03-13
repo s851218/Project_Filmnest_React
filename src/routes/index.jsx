@@ -21,7 +21,6 @@ import PersonalCenter from "../pages/PersonalCenter";
 import AboutStudio from "../pages/AboutStudio";
 import TermsOfUse from "../pages/TermsOfUse";
 import CreateProposal from "../pages/CreateProposal";
-import FeedbackSwiper from "../components/FeedbackSwiper";
 import FeedbackPage from "../pages/FeedbackPage";
 import ProjectIntro from "../pages/ProjectIntro";
 import ProjectIntroContent from "../pages/ProjectIntroContent";
@@ -40,7 +39,9 @@ import Profile from "../pages/Profile";
 import FavoriteProject from "../pages/FavoriteProject";
 import OrderRecords from "../pages/OrderRecords";
 import FavoriteVideo from "../pages/FavoriteVideo";
-import ViewRecords from "../pages/ViewRecords"
+import ViewRecords from "../pages/ViewRecords";
+
+import FeedbackFormTest from "../adminPages/_AdminFeedbackTest";
 
 const routes = [
   {
@@ -65,25 +66,25 @@ const routes = [
         children: [
           {
             path: "profile",
-            element: <Profile />
+            element: <Profile />,
           },
           {
             path: "favoriteProject",
-            element: <FavoriteProject />
+            element: <FavoriteProject />,
           },
           {
             path: "orderRecords",
-            element: <OrderRecords />
+            element: <OrderRecords />,
           },
           {
             path: "favoriteVideo",
-            element: <FavoriteVideo />
+            element: <FavoriteVideo />,
           },
           {
             path: "viewRecords",
-            element: <ViewRecords />
+            element: <ViewRecords />,
           },
-        ]
+        ],
       },
       {
         path: "signUp",
@@ -106,12 +107,12 @@ const routes = [
         element: <CreateProposal />,
       },
       {
-        path: "feedbackSwiper",
-        element: <FeedbackSwiper />,
-      },
-      {
         path: "feedbackPage",
         element: <FeedbackPage />,
+      },
+      {
+        path: "test",
+        element: <FeedbackFormTest />,
       },
       {
         path: "projects/:id",
@@ -145,7 +146,7 @@ const routes = [
       },
       {
         path: "paymentInfo",
-        element: <PaymentInfo />
+        element: <PaymentInfo />,
       },
       {
         path: "headerSm",

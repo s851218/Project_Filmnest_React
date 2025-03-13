@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import getNewDateFormatted from "../helpers/getNewDateFormatted";
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
@@ -70,7 +71,7 @@ export default function AdminAnsComment() {
     resetReply();
   };
 
-  // 提交回覆功能實現
+  // 提交回覆功能
   const submitReply = async (data) => {
     try {
       setLoading(true);
@@ -81,11 +82,11 @@ export default function AdminAnsComment() {
       const updatedComment = {
         ...currentComment,
         reply: data.replyContent,
-        replyDate: new Date().toISOString(),
+        replyDate: new Date(),
       };
       await axios.patch(`${BASE_URL}/comments/${replyingToId}`, {
         reply: data.replyContent,
-        replyDate: new Date().toISOString(),
+        replyDate: new Date(),
       });
 
       setComments((prevComments) =>
@@ -147,7 +148,7 @@ export default function AdminAnsComment() {
       setLoading(true);
       await axios.patch(`${BASE_URL}/comments/${commentId}`, {
         reply: editContent,
-        replyDate: new Date().toISOString(),
+        replyDate: new Date(),
       });
       setComments((prevComments) =>
         prevComments.map((comment) =>
@@ -155,7 +156,7 @@ export default function AdminAnsComment() {
             ? {
                 ...comment,
                 reply: editContent,
-                replyDate: new Date().toISOString(),
+                replyDate: new Date(),
               }
             : comment
         )
@@ -202,224 +203,238 @@ export default function AdminAnsComment() {
             {comments.length === 0 && !loading ? (
               <div className="alert alert-info">目前沒有留言</div>
             ) : (
-              comments.map((comment) => (
-                <div key={comment.id} className="mb-6">
-                  <div className="card rounded-1 bg-primary-2 text-primary-8">
-                    <div className="card-body">
-                      <div className="d-flex align-items-center justify-content-between mb-6">
-                        <div className="d-flex align-items-center">
-                          {/* 頭像 */}
-                          <div className="comment-avatar me-3">
-                            {comment.user.userProfile.userImageUrl ? (
-                              <img
-                                src={comment.user.userProfile.userImageUrl}
-                                className="img-fluid object-fit-cover me-1"
-                                alt={
-                                  comment.user.userProfile.nickName ||
-                                  comment.user.userProfile.userName
-                                }
-                                style={{
-                                  width: 50,
-                                  height: 50,
-                                  borderRadius: "50px",
-                                }}
-                              />
-                            ) : (
-                              <div
-                                className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
-                                style={{ width: 50, height: 50 }}
-                              >
-                                <i className="bi bi-person"></i>
-                              </div>
-                            )}
-                          </div>
-                          <div className="d-flex flex-column">
-                            {/* 名稱 */}
-                            <h6 className="mb-1">
-                              {comment.user.userProfile.nickName ||
-                                comment.user.userProfile.userName}
-                            </h6>
-                            {/* 時間 */}
-                            <div className="small text-primary-7 d-flex align-items-center gap-2">
-                              <i className="bi bi-calendar"></i>
-                              {comment.date.split("T")[0]}
-                              <i className="bi bi-clock"></i>
-                              {comment.date.split("T")[1].substring(0, 5)}
-                            </div>
-                          </div>
-                        </div>
-                        {/* 回覆按鈕 */}
-                        {replyingToId !== comment.id &&
-                          editingReplyId !== comment.id &&
-                          !comment.reply && (
-                            <button
-                              className="btn btn-outline-dark btn-sm d-flex align-items-center"
-                              onClick={() => startReply(comment.id)}
-                            >
-                              <i className="bi bi-reply me-1"></i> 回覆
-                            </button>
-                          )}
-                      </div>
-                      {/* 內容 */}
-                      <div className="p-1">
-                        <p>{comment.content}</p>
-                      </div>
-
-                      {/* 回覆表單 */}
-                      {replyingToId === comment.id && (
-                        <div className="mt-3 border-top pt-3">
-                          <form onSubmit={handleSubmitReply(submitReply)}>
-                            <textarea
-                              className={`form-control mb-2 bg-white text-primary-8 ${
-                                errorsReply.replyContent ? "is-invalid" : ""
-                              }`}
-                              rows="2"
-                              placeholder="輸入您的回覆..."
-                              {...registerReply("replyContent", {
-                                required: "請輸入回覆內容",
-                                minLength: {
-                                  value: 2,
-                                  message: "回覆內容太短",
-                                },
-                              })}
-                            />
-                            {errorsReply.replyContent && (
-                              <div className="invalid-feedback mb-2">
-                                {errorsReply.replyContent.message}
-                              </div>
-                            )}
-                            <div className="d-flex justify-content-end">
-                              <button
-                                type="button"
-                                className="btn btn-sm btn-secondary me-2"
-                                onClick={cancelReply}
-                                disabled={loading}
-                              >
-                                取消
-                              </button>
-                              <button
-                                type="submit"
-                                className="btn btn-sm btn-primary"
-                                disabled={loading}
-                              >
-                                {loading ? "處理中..." : "送出回覆"}
-                              </button>
-                            </div>
-                          </form>
-                        </div>
-                      )}
-
-                      {/* 已有回覆的顯示區塊 */}
-                      {comment.reply && (
-                        <>
-                          <hr />
-                          <div className="bg-primary-1 rounded-1 p-3">
-                            <div className="d-flex align-items-center justify-content-between mb-6">
-                              <div className="d-flex align-items-center">
-                                <div className="comment-avatar me-3">
-                                  {projectOwner &&
-                                  projectOwner.studioImageUrl ? (
-                                    <img
-                                      src={projectOwner.studioImageUrl}
-                                      className="img-fluid object-fit-cover me-1"
-                                      alt={
-                                        projectOwner.groupName ||
-                                        projectOwner.personResponsible
-                                      }
-                                      style={{
-                                        width: 50,
-                                        height: 50,
-                                        borderRadius: "50px",
-                                      }}
-                                    />
-                                  ) : (
-                                    <div
-                                      className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
-                                      style={{ width: 50, height: 50 }}
-                                    >
-                                      <i className="bi bi-person"></i>
-                                    </div>
-                                  )}
-                                </div>
-                                <div className="d-flex flex-column">
-                                  {/* 名稱 */}
-                                  <h6 className="mb-1">
-                                    {projectOwner &&
-                                      (projectOwner.groupName ||
-                                        projectOwner.personResponsible)}
-                                  </h6>
-                                  {/* 回覆時間 */}
-                                  {comment.replyDate && (
-                                    <div className="small text-primary-7 d-flex align-items-center gap-2">
-                                      <i className="bi bi-calendar"></i>
-                                      {comment.replyDate.split("T")[0]}
-                                      <i className="bi bi-clock"></i>
-                                      {comment.replyDate
-                                        .split("T")[1]
-                                        ?.substring(0, 5)}
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                              {editingReplyId === comment.id || (
-                                <div className="d-flex align-items-center">
-                                  <button
-                                    className="btn btn-outline-info btn-sm me-2 d-flex align-items-center"
-                                    onClick={() =>
-                                      startEditReply(comment.reply, comment.id)
-                                    }
-                                  >
-                                    <i className="bi bi-pencil me-1"></i> 編輯
-                                  </button>
-                                  <button
-                                    className="btn btn-outline-danger btn-sm d-flex align-items-center"
-                                    disabled={loading}
-                                    onClick={() => deleteReply(comment.id)}
-                                  >
-                                    <i className="bi bi-trash me-1"></i> 刪除
-                                  </button>
+              comments.map((comment) => {
+                const commentTime = comment.date
+                  ? getNewDateFormatted(comment.date)
+                  : "";
+                let replyTime;
+                if (comment.reply !== "") {
+                  replyTime = getNewDateFormatted(comment.replyDate);
+                }
+                return (
+                  <div key={comment.id} className="mb-6">
+                    <div className="card rounded-1 bg-primary-2 text-primary-8">
+                      <div className="card-body">
+                        <div className="d-flex align-items-center justify-content-between mb-6">
+                          <div className="d-flex align-items-center">
+                            {/* 頭像 */}
+                            <div className="comment-avatar me-3">
+                              {!comment.isIncognito &&
+                              comment.user?.userProfile?.userImageUrl ? (
+                                <img
+                                  src={comment.user?.userProfile?.userImageUrl}
+                                  className="img-fluid object-fit-cover me-1"
+                                  alt={
+                                    comment.user?.userProfile?.nickName ||
+                                    comment.user?.userProfile?.userName
+                                  }
+                                  style={{
+                                    width: 50,
+                                    height: 50,
+                                    borderRadius: "50px",
+                                  }}
+                                />
+                              ) : (
+                                <div
+                                  className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
+                                  style={{ width: 50, height: 50 }}
+                                >
+                                  <i className="bi bi-person"></i>
                                 </div>
                               )}
                             </div>
-
-                            {/* 編輯中的回覆 */}
-                            {editingReplyId === comment.id ? (
-                              <div className="mb-3">
-                                <textarea
-                                  className="form-control mb-2 bg-white text-primary-8"
-                                  rows="2"
-                                  value={editContent}
-                                  onChange={(e) =>
-                                    setEditContent(e.target.value)
-                                  }
-                                ></textarea>
-                                <div className="d-flex justify-content-end">
-                                  <button
-                                    className="btn btn-sm btn-secondary me-2"
-                                    onClick={cancelEdit}
-                                    disabled={loading}
-                                  >
-                                    取消
-                                  </button>
-                                  <button
-                                    className="btn btn-sm btn-success"
-                                    onClick={() => saveEditReply(comment.id)}
-                                    disabled={loading}
-                                  >
-                                    {loading ? "儲存中..." : "儲存"}
-                                  </button>
-                                </div>
+                            <div className="d-flex flex-column">
+                              {/* 名稱 */}
+                              <h6 className="mb-1">
+                                {comment.isIncognito
+                                  ? "匿名"
+                                  : comment.user?.userProfile?.nickName ||
+                                    comment.user?.userProfile?.userName ||
+                                    "訪客"}
+                              </h6>
+                              {/* 時間 */}
+                              <div className="small text-primary-7 d-flex align-items-center gap-2">
+                                <i className="bi bi-calendar"></i>
+                                {commentTime.split("T")[0]}
+                                <i className="bi bi-clock"></i>
+                                {commentTime.split("T")[1]}
                               </div>
-                            ) : (
-                              <p className="mb-0 p-1">{comment.reply}</p>
-                            )}
+                            </div>
                           </div>
-                        </>
-                      )}
+                          {/* 回覆按鈕 */}
+                          {replyingToId !== comment.id &&
+                            editingReplyId !== comment.id &&
+                            !comment.reply && (
+                              <button
+                                className="btn btn-outline-dark btn-sm d-flex align-items-center"
+                                onClick={() => startReply(comment.id)}
+                              >
+                                <i className="bi bi-reply me-1"></i> 回覆
+                              </button>
+                            )}
+                        </div>
+                        {/* 內容 */}
+                        <div className="p-1">
+                          <p>{comment.content}</p>
+                        </div>
+
+                        {/* 回覆表單 */}
+                        {replyingToId === comment.id && (
+                          <div className="mt-3 border-top pt-3">
+                            <form onSubmit={handleSubmitReply(submitReply)}>
+                              <textarea
+                                className={`form-control mb-2 bg-white text-primary-8 ${
+                                  errorsReply.replyContent ? "is-invalid" : ""
+                                }`}
+                                rows="2"
+                                placeholder="輸入您的回覆..."
+                                {...registerReply("replyContent", {
+                                  required: "請輸入回覆內容",
+                                  minLength: {
+                                    value: 2,
+                                    message: "回覆內容太短",
+                                  },
+                                })}
+                              />
+                              {errorsReply.replyContent && (
+                                <div className="invalid-feedback mb-2">
+                                  {errorsReply.replyContent.message}
+                                </div>
+                              )}
+                              <div className="d-flex justify-content-end">
+                                <button
+                                  type="button"
+                                  className="btn btn-sm btn-secondary me-2"
+                                  onClick={cancelReply}
+                                  disabled={loading}
+                                >
+                                  取消
+                                </button>
+                                <button
+                                  type="submit"
+                                  className="btn btn-sm btn-primary"
+                                  disabled={loading}
+                                >
+                                  {loading ? "處理中..." : "送出回覆"}
+                                </button>
+                              </div>
+                            </form>
+                          </div>
+                        )}
+
+                        {/* 已有回覆的顯示區塊 */}
+                        {comment.reply && (
+                          <>
+                            <hr />
+                            <div className="bg-primary-1 rounded-1 p-3">
+                              <div className="d-flex align-items-center justify-content-between mb-6">
+                                <div className="d-flex align-items-center">
+                                  <div className="comment-avatar me-3">
+                                    {projectOwner &&
+                                    projectOwner.studioImageUrl ? (
+                                      <img
+                                        src={projectOwner.studioImageUrl}
+                                        className="img-fluid object-fit-cover me-1"
+                                        alt={
+                                          projectOwner.groupName ||
+                                          projectOwner.personResponsible
+                                        }
+                                        style={{
+                                          width: 50,
+                                          height: 50,
+                                          borderRadius: "50px",
+                                        }}
+                                      />
+                                    ) : (
+                                      <div
+                                        className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
+                                        style={{ width: 50, height: 50 }}
+                                      >
+                                        <i className="bi bi-person"></i>
+                                      </div>
+                                    )}
+                                  </div>
+                                  <div className="d-flex flex-column">
+                                    {/* 名稱 */}
+                                    <h6 className="mb-1">
+                                      {projectOwner &&
+                                        (projectOwner.groupName ||
+                                          projectOwner.personResponsible)}
+                                    </h6>
+                                    {/* 回覆時間 */}
+                                    {comment.replyDate && (
+                                      <div className="small text-primary-7 d-flex align-items-center gap-2">
+                                        <i className="bi bi-calendar"></i>
+                                        {replyTime.split("T")[0]}
+                                        <i className="bi bi-clock"></i>
+                                        {replyTime.split("T")[1]}
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                                {editingReplyId === comment.id || (
+                                  <div className="d-flex align-items-center">
+                                    <button
+                                      className="btn btn-outline-info btn-sm me-2 d-flex align-items-center"
+                                      onClick={() =>
+                                        startEditReply(
+                                          comment.reply,
+                                          comment.id
+                                        )
+                                      }
+                                    >
+                                      <i className="bi bi-pencil me-1"></i> 編輯
+                                    </button>
+                                    <button
+                                      className="btn btn-outline-danger btn-sm d-flex align-items-center"
+                                      disabled={loading}
+                                      onClick={() => deleteReply(comment.id)}
+                                    >
+                                      <i className="bi bi-trash me-1"></i> 刪除
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+
+                              {/* 編輯中的回覆 */}
+                              {editingReplyId === comment.id ? (
+                                <div className="mb-3">
+                                  <textarea
+                                    className="form-control mb-2 bg-white text-primary-8"
+                                    rows="2"
+                                    value={editContent}
+                                    onChange={(e) =>
+                                      setEditContent(e.target.value)
+                                    }
+                                  ></textarea>
+                                  <div className="d-flex justify-content-end">
+                                    <button
+                                      className="btn btn-sm btn-secondary me-2"
+                                      onClick={cancelEdit}
+                                      disabled={loading}
+                                    >
+                                      取消
+                                    </button>
+                                    <button
+                                      className="btn btn-sm btn-success"
+                                      onClick={() => saveEditReply(comment.id)}
+                                      disabled={loading}
+                                    >
+                                      {loading ? "儲存中..." : "儲存"}
+                                    </button>
+                                  </div>
+                                </div>
+                              ) : (
+                                <p className="mb-0 p-1">{comment.reply}</p>
+                              )}
+                            </div>
+                          </>
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </div>
