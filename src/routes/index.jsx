@@ -40,7 +40,9 @@ import Profile from "../pages/Profile";
 import FavoriteProject from "../pages/FavoriteProject";
 import OrderRecords from "../pages/OrderRecords";
 import FavoriteVideo from "../pages/FavoriteVideo";
-import ViewRecords from "../pages/ViewRecords"
+import ViewRecords from "../pages/ViewRecords";
+
+import FeedbackFormTest from "../adminPages/_AdminFeedbackTest";
 
 const routes = [
   {
@@ -65,25 +67,29 @@ const routes = [
         children: [
           {
             path: "profile",
-            element: <Profile />
+            element: <Profile />,
           },
           {
             path: "favoriteProject",
-            element: <FavoriteProject />
+            element: <FavoriteProject />,
           },
           {
             path: "orderRecords",
-            element: <OrderRecords />
+            element: <OrderRecords />,
           },
           {
             path: "favoriteVideo",
-            element: <FavoriteVideo />
+            element: <FavoriteVideo />,
           },
           {
             path: "viewRecords",
-            element: <ViewRecords />
+            element: <ViewRecords />,
           },
-        ]
+          {
+            path: "test",
+            element: <FeedbackFormTest />,
+          },
+        ],
       },
       {
         path: "signUp",
@@ -145,7 +151,7 @@ const routes = [
       },
       {
         path: "paymentInfo",
-        element: <PaymentInfo />
+        element: <PaymentInfo />,
       },
       {
         path: "headerSm",
