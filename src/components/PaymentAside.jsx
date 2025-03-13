@@ -24,12 +24,9 @@ export default function PaymentAside ({handleFormsSubmit}) {
     }
   },[id])
   
-  console.log("專案",projectData,"方案",productData);
   // 取得專案資料
   const getData = async(order) => {
     const { projectId , productId } = order
-    console.log( projectId , productId);
-    
     try {
       const projectRes = await axios.get(`${API_BASE}/projects?projectId=${projectId}`)
       const productRes = await axios.get(`${API_BASE}/products?productId=${productId}`)

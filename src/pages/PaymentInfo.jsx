@@ -22,8 +22,8 @@ export default function PaymentInfo() {
     await paymentFromRef.current.submitForm();
   };
   const userProfile = useSelector((state) => state.user.profile);
-  const selected = useSelector((state) => state.paymentInfo.selected);
-  console.log("userId", userProfile, "selected", selected);
+
+  
   return (
     <>
       <div className="container mb-20" style={{ marginTop: 88 }}>
