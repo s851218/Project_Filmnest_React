@@ -31,9 +31,7 @@ function FeedbackSwiper() {
 
   const getFeedbackData = async (id) => {
     try {
-      const response = await axios.get(
-        `${API_BASE}/products?projectId=${id}`
-      );
+      const response = await axios.get(`${API_BASE}/products?projectId=${id}`);
       setFeedbackData(response.data);
     } catch (error) {
       alert("回饋資料取得失敗：" + error.message);

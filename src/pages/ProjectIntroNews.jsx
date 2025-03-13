@@ -10,20 +10,50 @@ export default function ProjectIntroNews() {
   const [postsIsOpen,setPostsIsOpen] = useState([]);
   const newsCollapseRef = useRef([]);
   const newsCollapseInstances = useRef([]);
+  const [ params , setParams ] = useState({})
+
+  const getTime = (time) =>{
+    const newTime = new Date(time).toLocaleString("zh-TW", {
+      timeZone: "Asia/Taipei",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).replace(/\//g, "-")
+    return newTime
+  }
+
+  //處理params
+  useEffect(()=>{
+    if (id) {
+      const paramsArry = id.split("&")
+      let paramsObj = {}
+      paramsArry.forEach((param)=>{
+        let [ key , value ] = param.split("=")
+        paramsObj[key] = Number(value)
+      })
+      console.log(paramsObj);
+      setParams(paramsObj)
+    }
+  },[id])
 
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get(`${apiBase}/posts?projectId=${id}`);
-        setProjectPosts(response.data);
-        setPostsIsOpen(response.data.map((item)=>{
-          return ({id:item.id,isOpen:false})
-        }))
-      } catch (error) {
-        alert("最新消息取得失敗");
-      }
-    })();
-  }, []);
+    if (params.projectId) {
+      (async () => {
+        try {
+          const response = await axios.get(`${apiBase}/posts?projectId=${params.projectId}`);
+          setProjectPosts(response.data);
+          setPostsIsOpen(response.data.map((item)=>{
+            return ({id:item.id,isOpen:false})
+          }))
+        } catch (error) {
+          alert("最新消息取得失敗");
+        }
+      })();
+    }
+  }, [params]);
 
   useEffect(() => {
     newsCollapseRef.current.forEach((item, index) => {
@@ -54,7 +84,7 @@ export default function ProjectIntroNews() {
               <div className="row mb-3" key={item.id}>
                   <div className="col-10 mx-auto">
                       <button class="btn btn-primary w-100 fs-5 d-flex justify-content-between" type="button" onClick={() => handleCollapse(item.id)}>
-                        {item.title} {(postsIsOpen[index].isOpen) ? <i class="bi bi-chevron-up"></i> : <i class="bi bi-chevron-down"></i>}
+                        <span>{item.title}</span> <span className="d-flex align-items-center"><span className="fs-base me-2">{getTime(item.date)}</span>{(postsIsOpen[index].isOpen) ? <i class="bi bi-chevron-up"></i> : <i class="bi bi-chevron-down"></i>}</span>
                       </button>
                     <div class="collapse " ref={(el) => (newsCollapseRef.current[index] = el)}>
                       <div class="card card-body">{item.content}</div>

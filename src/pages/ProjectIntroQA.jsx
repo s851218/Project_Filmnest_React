@@ -10,20 +10,50 @@ export default function ProjectIntroQA() {
   const [faqsIsOpen,setFaqsIsOpen] = useState([]);
   const faqsCollapseRef = useRef([]);
   const faqsCollapseInstances = useRef([]);
+  const [ params , setParams ] = useState({})
+
+  //處理params
+  useEffect(()=>{
+    if (id) {
+      const paramsArry = id.split("&")
+      let paramsObj = {}
+      paramsArry.forEach((param)=>{
+        let [ key , value ] = param.split("=")
+        paramsObj[key] = Number(value)
+      })
+      console.log(paramsObj);
+      setParams(paramsObj)
+    }
+  },[id])
+
+  const getTime = (time) =>{
+    const newTime = new Date(time).toLocaleString("zh-TW", {
+      timeZone: "Asia/Taipei",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).replace(/\//g, "-")
+    return newTime
+  }
 
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get(`${apiBase}/faqs?projectId=${id}`);
-        setProjectFaqs(response.data);
-        setFaqsIsOpen(response.data.map((item)=>{
-          return ({id:item.id,isOpen:false})
-        }))
-      } catch (error) {
-        alert("最新消息取得失敗");
-      }
-    })();
-  }, []);
+    if (params.projectId) {
+      (async () => {
+        try {
+          const response = await axios.get(`${apiBase}/faqs?projectId=${params.projectId}`);
+          setProjectFaqs(response.data);
+          setFaqsIsOpen(response.data.map((item)=>{
+            return ({id:item.id,isOpen:false})
+          }))
+        } catch (error) {
+          alert("最新消息取得失敗");
+        }
+      })();
+    }
+  }, [params]);
 
   useEffect(() => {
     faqsCollapseRef.current.forEach((item, index) => {
@@ -54,7 +84,7 @@ export default function ProjectIntroQA() {
               <div className="row mb-3" key={item.id}>
                   <div className="col-10 mx-auto">
                       <button class="btn btn-primary w-100 fs-5 d-flex justify-content-between" type="button" onClick={() => handleCollapse(item.id)}>
-                      <span><span className="me-3">Q{index+1}:</span>{item.title} </span>{(faqsIsOpen[index].isOpen) ? <i class="bi bi-chevron-up"></i> : <i class="bi bi-chevron-down"></i>}
+                      <span><span className="me-3">Q{index+1}:</span>{item.title}</span> <span className="d-flex align-items-center"><span className="fs-base me-2">{getTime(item.date)}</span>{(faqsIsOpen[index].isOpen) ? <i class="bi bi-chevron-up"></i> : <i class="bi bi-chevron-down"></i>}</span>
                       </button>
                     <div class="collapse " ref={(el) => (faqsCollapseRef.current[index] = el)}>
                       <div class="card card-body">{item.content}</div>

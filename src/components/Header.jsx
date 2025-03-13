@@ -15,6 +15,7 @@ export default function Header() {
   const categoryData = ["喜劇", "愛情", "恐怖", "懸疑", "科幻", "紀錄片", "動畫", "實驗電影"];
   const dispatch = useDispatch();
   const navbarRef = useRef(null);
+  const navbarRef2 = useRef(null);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -41,9 +42,24 @@ export default function Header() {
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  useEffect(() => {
+    const handleScroll2 = () => {
+      navbarRef2.current.scrollY = window.scrollY;
+
+      if (navbarRef2.current.scrollY > 0) {
+        navbarRef2.current.classList.add("active");
+      } else {
+        navbarRef2.current.classList.remove("active");
+      }
+    };
+    window.addEventListener("scroll", handleScroll2);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll2);
     };
   }, []);
 
@@ -119,16 +135,16 @@ export default function Header() {
                 </div>
               </div>
             </div>
-            <div className={`p-0 me-12 nav-item ${!profile.token && "d-none"}`}>
+            {profile.hasStudio && <div className={`p-0 me-12 nav-item ${!profile.token && "d-none"}`}>
               <NavLink to="/admin/adminProfile">工作室</NavLink>
-            </div>
+            </div>}
             <div className="p-0 me-12 nav-item">
               <NavLink to="/aboutStudio">提案者頁面</NavLink>
             </div>
             <div className="ms-auto d-flex flex-column flex-lg-row align-items-center">
               {profile.token ? (
                 <>
-                  <NavLink to="/personalCenter" className="btn btn-outline-light fw-bolder py-1 px-1 me-8 border-0">
+                  <NavLink to="/personalCenter/profile" className="btn btn-outline-light fw-bolder py-1 px-1 me-8 border-0">
                     <span className="me-2">{profile.userName}</span> <img src={profile.imageUrl} className="rounded-circle object-fit-cover" style={{ width: "40px", height: "40px" }} alt="" />
                   </NavLink>
                   <button type="button" className="btn btn-primary" onClick={handleLogout}>
@@ -149,7 +165,7 @@ export default function Header() {
           </div>
         </div>
       </nav>
-      <nav ref={navbarRef} className="navbar navbar-expand-md navbar-dark py-5 d-lg-flex d-lg-none">
+      <nav ref={navbarRef2} className="navbar navbar-expand-md navbar-dark py-5 d-lg-flex d-lg-none">
         <div className="container">
           <NavLink className="p-0 me-12" to="/">
             <img src="https://github.com/s851218/Project-FilmNest/blob/main/assets/images/logo.png?raw=true" alt="logo" />

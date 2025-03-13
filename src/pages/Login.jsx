@@ -30,6 +30,7 @@ export default function Login() {
       dispatch(
         setLogin({
           token: accessToken,
+          hasStudio:user.hasStudio,
           userId: user.id,
           userName: user.userProfile.userName,
           imageUrl: user.userProfile.userImageUrl,

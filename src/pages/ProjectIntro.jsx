@@ -11,7 +11,7 @@ export default function ProjectIntro() {
   const [projectInfo, setProjectInfo] = useState({});
 
   const { id } = useParams(); // xiang 2025/02/27 intro路由調整
-  const [ params , setParams ] = useState({})  
+  const [ params , setParams ] = useState({})
   
   //處理params
   useEffect(()=>{
@@ -29,7 +29,7 @@ export default function ProjectIntro() {
 
   // 路由跳轉至專案介紹頁時，重製滾輪捲軸
   useEffect(() => {
-    // 將滾動行為設為 auto 避免捲動過程的動畫
+    // 將滾動行為設為 auto 避免有捲動過程的動畫
     document.documentElement.style.scrollBehavior = "auto";
     window.scrollTo(0, 0);
   }, []);

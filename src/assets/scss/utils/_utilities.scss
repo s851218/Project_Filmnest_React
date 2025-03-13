@@ -284,8 +284,7 @@ $utilities: map-merge(
         responsive: true,
         property: border,
         values: (
-          null: var(--#{$prefix}border-width) var(--#{$prefix}border-style)
-            var(--#{$prefix}border-color),
+          null: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color),
           0: 0,
         ),
       ),
@@ -293,8 +292,7 @@ $utilities: map-merge(
       responsive: true,
       property: border-top,
       values: (
-        null: var(--#{$prefix}border-width) var(--#{$prefix}border-style)
-          var(--#{$prefix}border-color),
+        null: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color),
         0: 0,
       ),
     ),
@@ -303,8 +301,7 @@ $utilities: map-merge(
       property: border-right,
       class: border-end,
       values: (
-        null: var(--#{$prefix}border-width) var(--#{$prefix}border-style)
-          var(--#{$prefix}border-color),
+        null: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color),
         0: 0,
       ),
     ),
@@ -312,8 +309,7 @@ $utilities: map-merge(
       responsive: true,
       property: border-bottom,
       values: (
-        null: var(--#{$prefix}border-width) var(--#{$prefix}border-style)
-          var(--#{$prefix}border-color),
+        null: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color),
         0: 0,
       ),
     ),
