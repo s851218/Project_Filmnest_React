@@ -22,7 +22,6 @@ export default function ProjectIntro() {
         let [ key , value ] = param.split("=")
         paramsObj[key] = Number(value)
       })
-      console.log(paramsObj);
       setParams(paramsObj)
     }
   },[id])
