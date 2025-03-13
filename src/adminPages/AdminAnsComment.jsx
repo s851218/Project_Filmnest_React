@@ -219,7 +219,8 @@ export default function AdminAnsComment() {
                           <div className="d-flex align-items-center">
                             {/* 頭像 */}
                             <div className="comment-avatar me-3">
-                              {comment.user?.userProfile?.userImageUrl ? (
+                              {!comment.isIncognito &&
+                              comment.user?.userProfile?.userImageUrl ? (
                                 <img
                                   src={comment.user?.userProfile?.userImageUrl}
                                   className="img-fluid object-fit-cover me-1"
