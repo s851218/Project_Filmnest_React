@@ -5,9 +5,9 @@ const paymentInfoSlice = createSlice({
   name: "paymentInfo",
   initialState: {
     userInfo: {
-      userName: "王曉明",
-      userPhone: "0912345678",
-      userEmail: "aaa@gmail.com",
+      userName: "",
+      userPhone: "0911000123",
+      userEmail: "",
     },
     recipientInfo: {
       recipientName: "", 
@@ -32,7 +32,7 @@ const paymentInfoSlice = createSlice({
   reducers: {
     setUserInfo(state, action) {
       // 寫入會員資料
-
+      state.userInfo = action.payload
     },
     setRecipientInfo(state, action) {
       // 寫入收件人資料
@@ -44,12 +44,7 @@ const paymentInfoSlice = createSlice({
     },
     setSameAsMember(state, action) {
       // 收件人同會員
-      if (action.payload) {
-        return {
-          ...state,
-          sameAsMember: action.payload,
-        }
-      }
+      state.sameAsMember = action.payload
     },
     setAccordionIndex(state, action) {
       // 寫入當前手風琴選擇 => 付款方式(信用卡/ATM/超商代碼)
@@ -77,6 +72,6 @@ const paymentInfoSlice = createSlice({
   }
 })
 
-export const { setAddress , setRecipientInfo , setSameAsMember , setAccordionIndex , setPaymentOption , setRequried } = paymentInfoSlice.actions
+export const { setUserInfo , setAddress , setRecipientInfo , setSameAsMember , setAccordionIndex , setPaymentOption , setRequried } = paymentInfoSlice.actions
 
 export default paymentInfoSlice.reducer
