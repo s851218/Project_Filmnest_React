@@ -177,7 +177,7 @@ function FeedbackSwiper() {
                 bulletClass: "custom-bullet",
                 bulletActiveClass: "custom-bullet-active",
                 renderBullet: function (index, className) {
-                  return `<span class="${className}" style="display: block; width: 8px; height: 8px; border-radius: 50%; background-color: #ccc; margin: 0 4px; cursor: pointer;"></span>`;
+                  return `<span className="${className}" style="display: block; width: 8px; height: 8px; border-radius: 50%; background-color: #ccc; margin: 0 4px; cursor: pointer;"></span>`;
                 },
               }}
               navigation={{

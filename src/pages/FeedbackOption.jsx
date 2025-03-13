@@ -253,7 +253,7 @@ export default function FeedbackOption () {
                   <p className="mb-1">總計金額</p>
                   <h4 className="fs-6 fw-bolder mb-1">NT$ {totalPrice.toLocaleString()}</h4>
                 </div>
-                <button type="button" class="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>下一步</button>
+                <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>下一步</button>
               </div>
             </div>
           </aside>
@@ -261,39 +261,39 @@ export default function FeedbackOption () {
       </div>
 
       {/* 手機版：aside 變成 footer */}
-      <footer class="checkout-confirmation-footer d-lg-none d-block p-6 bg-primary-8 fixed-bottom">
-        <div class="d-flex justify-content-between flex-wrap gap-3">
-          <div class="d-flex align-items-center">
-            <p class="mb-0 d-sm-block d-none">總計：</p>
-            <p class="total-amount fs-7 mb-0">NT$ 2,000</p>
+      <footer className="checkout-confirmation-footer d-lg-none d-block p-6 bg-primary-8 fixed-bottom">
+        <div className="d-flex justify-content-between flex-wrap gap-3">
+          <div className="d-flex align-items-center">
+            <p className="mb-0 d-sm-block d-none">總計：</p>
+            <p className="total-amount fs-7 mb-0">NT$ 2,000</p>
           </div>
-          <div class="amount-confirm-mobile d-flex align-items-center gap-3">
-            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#extraSupportModal">我要加碼</button>
-            <button type="button" class="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>下一步</button>
+          <div className="amount-confirm-mobile d-flex align-items-center gap-3">
+            <button className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#extraSupportModal">我要加碼</button>
+            <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>下一步</button>
           </div>
         </div>
       </footer>
       {/* footer 加碼功能 */}
-      {/* <div class="modal" id="extraSupportModal" tabindex="-1" aria-labelledby="extraSupportModal" aria-hidden="true"> */}
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content rounded-1 bg-primary-9 border border-primary-1">
-          <div class="modal-header align-items-center">
-            <h1 class="modal-title fs-5" id="extraSupportModal">我要加碼</h1>
-            <button type="button" class="material-symbols-outlined text-white border-0 ms-auto" data-bs-dismiss="modal" aria-label="Close" style={{backgroundColor: "transparent"}}>close</button>
+      {/* <div className="modal" id="extraSupportModal" tabindex="-1" aria-labelledby="extraSupportModal" aria-hidden="true"> */}
+      <div className="modal-dialog modal-dialog-centered">
+        <div className="modal-content rounded-1 bg-primary-9 border border-primary-1">
+          <div className="modal-header align-items-center">
+            <h1 className="modal-title fs-5" id="extraSupportModal">我要加碼</h1>
+            <button type="button" className="material-symbols-outlined text-white border-0 ms-auto" data-bs-dismiss="modal" aria-label="Close" style={{backgroundColor: "transparent"}}>close</button>
           </div>
-          <div class="modal-body d-flex flex-column justify-content-center gap-3">
-            <div class="d-flex align-items-center">
-              <p class="mb-0">多給一點點，讓夢想早日實現</p> 
-              <span class="material-symbols-outlined ms-1 fs-base icon-fill text-danger">favorite</span>
+          <div className="modal-body d-flex flex-column justify-content-center gap-3">
+            <div className="d-flex align-items-center">
+              <p className="mb-0">多給一點點，讓夢想早日實現</p> 
+              <span className="material-symbols-outlined ms-1 fs-base icon-fill text-danger">favorite</span>
             </div>
             <BonusCalculator />
-            <div class="bg-primary-8 p-6 rounded-1">
-              <p class="mb-0 text-center">總計：NT$ {totalPrice.toLocaleString()}</p>
+            <div className="bg-primary-8 p-6 rounded-1">
+              <p className="mb-0 text-center">總計：NT$ {totalPrice.toLocaleString()}</p>
             </div>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">確認加碼</button>
+          <div className="modal-footer">
+            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            <button type="button" className="btn btn-primary" data-bs-dismiss="modal">確認加碼</button>
           </div>
         </div>
       </div>

@@ -83,11 +83,11 @@ export default function ProjectIntroQA() {
           return (
               <div className="row mb-3" key={item.id}>
                   <div className="col-10 mx-auto">
-                      <button class="btn btn-primary w-100 fs-5 d-flex justify-content-between" type="button" onClick={() => handleCollapse(item.id)}>
-                      <span><span className="me-3">Q{index+1}:</span>{item.title}</span> <span className="d-flex align-items-center"><span className="fs-base me-2">{getTime(item.date)}</span>{(faqsIsOpen[index].isOpen) ? <i class="bi bi-chevron-up"></i> : <i class="bi bi-chevron-down"></i>}</span>
+                      <button className="btn btn-primary w-100 fs-5 d-flex justify-content-between" type="button" onClick={() => handleCollapse(item.id)}>
+                      <span><span className="me-3">Q{index+1}:</span>{item.title}</span> <span className="d-flex align-items-center"><span className="fs-base me-2">{getTime(item.date)}</span>{(faqsIsOpen[index].isOpen) ? <i className="bi bi-chevron-up"></i> : <i className="bi bi-chevron-down"></i>}</span>
                       </button>
-                    <div class="collapse " ref={(el) => (faqsCollapseRef.current[index] = el)}>
-                      <div class="card card-body">{item.content}</div>
+                    <div className="collapse " ref={(el) => (faqsCollapseRef.current[index] = el)}>
+                      <div className="card card-body">{item.content}</div>
                     </div>
                   </div>
               </div>
