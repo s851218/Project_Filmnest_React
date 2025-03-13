@@ -162,7 +162,7 @@ export default function Home() {
                         {project.summary}
                       </p>
                       <div className="mt-auto">
-                        <Link to={`/${project.id}`} className="btn btn-primary fw-bolder py-3 px-5">
+                        <Link to={`/projects/project=${project.id}`} className="btn btn-primary fw-bolder py-3 px-5">
                           我想贊助
                         </Link>
                       </div>
