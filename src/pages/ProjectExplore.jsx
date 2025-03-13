@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../slice/categorySlice";
 import Card from "../components/Card";
+import { useLocation } from "react-router";
 
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function ProjectExplore() {
   const [projects, setProjects] = useState([]);
+  const location = useLocation();
   const dispatch = useDispatch();
   const category = useSelector((state) => state.category.type);
   const searchText = useSelector((state) => state.search.text);
@@ -19,6 +21,7 @@ export default function ProjectExplore() {
       apiUrl = `${apiBase}/projects`;
     } else if (category && category !== "all") {
       apiUrl = `${apiBase}/projects?category=${category}`;
+      dispatch(setCategory(category))
     }
     try {
       const response = await axios.get(apiUrl);
@@ -41,6 +44,11 @@ export default function ProjectExplore() {
   useEffect(() => {
     getProjectsData();
   }, [category,searchText,searchValue]);
+  useEffect(() => {
+    return () => {
+      dispatch(setCategory("all"));
+    };
+  }, [location.pathname]);
 
   return (
     <>
@@ -50,7 +58,7 @@ export default function ProjectExplore() {
             <div className="d-flex pb-5 border-bottom border-primary-9 project-spacing">
               <div className="d-flex align-items-center">
                 <span className="project-select me-md-3 fs-sm fs-md-base">專案分類</span>
-                <select className="form-select fs-sm fs-md-base project-option" aria-label="Default select example" onChange={handleSwitchCategory}>
+                <select className="form-select fs-sm fs-md-base project-option" aria-label="Default select example" defaultValue={category} onChange={handleSwitchCategory}>
                   <option value="all">全部專案</option>
                   <option value="喜劇">喜劇</option>
                   <option value="愛情">愛情</option>
@@ -74,7 +82,7 @@ export default function ProjectExplore() {
           </div>
         </div>
         <div>
-          <div className="row row-cols-3">
+          <div className="row">
             <Card projects={projects} isSwiper={false} />
           </div>
         </div>

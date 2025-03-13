@@ -6,8 +6,15 @@ import { useSelector } from "react-redux";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 function FeedbackPage() {
+  // 路由跳轉頁面時，重製滾輪捲軸
+  useEffect(() => {
+    // 將滾動行為設為 auto 避免有捲動過程的動畫
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+  }, []);
+
   const [projectData, setProjectData] = useState({});
-  const { projectId } = useSelector((state)=>state.paymentInfo.selected)
+  const { projectId } = useSelector((state) => state.paymentInfo.selected);
 
   const getProjectData = async (id = 1) => {
     try {
@@ -20,10 +27,10 @@ function FeedbackPage() {
       alert("頁面資料取得失敗：" + error.message);
     }
   };
-  
+
   // 取得資料
   useEffect(() => {
-    getProjectData() // 開發使用
+    getProjectData(); // 開發使用
     if (projectId) {
       getProjectData(projectId);
     }
