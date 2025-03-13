@@ -45,97 +45,107 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    // index-banner
-    new Swiper(swiperBannerRef.current, {
-      slidesPerView: 1,
-      loop: true,
-      autoplay: true,
-      scrollbar: {
-        el: ".swiper-scrollbar",
-        hide: true,
-      },
-    });
-    // index-projectcard 精選專案
-    new Swiper(swiperRef.current, {
-      slidesPerView: 1.1, // 每次顯示的幻燈片數量
-      spaceBetween: 24, // 兩張圖片之間的間距
-      navigation: {
-        // 啟用左右箭頭
-        nextEl: ".indexcard-button-next",
-        prevEl: ".indexcard-button-prev",
-      },
-      pagination: {
-        // 啟用下方的點點導航
-        el: ".indexcard-pagination",
-        clickable: true,
-      },
-      breakpoints: {
-        992: {
-          slidesPerView: 3.1,
+      // index-banner
+      const indexBannerSwiper = new Swiper(swiperBannerRef.current, {
+        slidesPerView: 1,
+        loop: true,
+        autoplay: true,
+        scrollbar: {
+          el: ".swiper-scrollbar",
+          hide: true,
         },
-        576: {
-          slidesPerView: 2.1,
+      });
+      // index-projectcard 精選專案
+      const indexProjectcardSwiper = new Swiper(swiperRef.current, {
+        slidesPerView: 1.1, // 每次顯示的幻燈片數量
+        spaceBetween: 24, // 兩張圖片之間的間距
+        navigation: {
+          // 啟用左右箭頭
+          nextEl: ".indexcard-button-next",
+          prevEl: ".indexcard-button-prev",
         },
-      },
-    });
-    // index-projectcard 最新專案
-    new Swiper(swiper2Ref.current, {
-      slidesPerView: 1.1, // 每次顯示的幻燈片數量
-      spaceBetween: 24, // 兩張圖片之間的間距
-      navigation: {
-        // 啟用左右箭頭
-        nextEl: ".indexcard2-button-next",
-        prevEl: ".indexcard2-button-prev",
-      },
-      pagination: {
-        // 啟用下方的點點導航
-        el: ".indexcard2-pagination",
-        clickable: true,
-      },
-      breakpoints: {
-        992: {
-          slidesPerView: 3.1,
+        pagination: {
+          // 啟用下方的點點導航
+          el: ".indexcard-pagination",
+          clickable: true,
+          type: "bullets",
+          updateOnWindowResize: true,
         },
-        576: {
-          slidesPerView: 2.1,
-        },
-      },
-    });
-    // index-category 類別
-    new Swiper(swiperCategoryRef.current, {
-      slidesPerView: 2,
-      spaceBetween: 8,
-      grid: {
-        fill: "row",
-        rows: 4,
-      },
-      pagination: {
-        el: ".indexcategory-pagination",
-        clickable: true,
-      },
-
-      breakpoints: {
-        992: {
-          slidesPerView: 4,
-          spaceBetween: 32,
-          grid: {
-            fill: "row",
-            rows: 2,
+        breakpoints: {
+          992: {
+            slidesPerView: 3.1,
+          },
+          576: {
+            slidesPerView: 2.1,
           },
         },
-      },
-    });
-    // index-slogan
-    new Swiper(swiperSloganRef.current, {
-      slidesPerView: 3,
-      spaceBetween: 8,
-      breakpoints: {
-        992: {
-          slidesPerView: 3,
-          spaceBetween: 40,
+      });
+
+      // index-projectcard 最新專案
+      const indexProjectcardSwiper2 = new Swiper(swiper2Ref.current, {
+        slidesPerView: 1.1, // 每次顯示的幻燈片數量
+        spaceBetween: 24, // 兩張圖片之間的間距
+        navigation: {
+          // 啟用左右箭頭
+          nextEl: ".indexcard2-button-next",
+          prevEl: ".indexcard2-button-prev",
         },
-      },
-    });
+        pagination: {
+          // 啟用下方的點點導航
+          el: ".indexcard2-pagination",
+          clickable: true,
+        },
+        breakpoints: {
+          992: {
+            slidesPerView: 3.1,
+          },
+          576: {
+            slidesPerView: 2.1,
+          },
+        },
+      });
+      // index-category 類別
+      const indexCaregorySwiper = new Swiper(swiperCategoryRef.current, {
+        slidesPerView: 2,
+        spaceBetween: 8,
+        grid: {
+          fill: "row",
+          rows: 4,
+        },
+        pagination: {
+          el: ".indexcategory-pagination",
+          clickable: true,
+        },
+  
+        breakpoints: {
+          992: {
+            slidesPerView: 4,
+            spaceBetween: 32,
+            grid: {
+              fill: "row",
+              rows: 2,
+            },
+          },
+        },
+      });
+      // index-slogan
+      const indexSlogaSwiper = new Swiper(swiperSloganRef.current, {
+        slidesPerView: 3,
+        spaceBetween: 8,
+        breakpoints: {
+          992: {
+            slidesPerView: 3,
+            spaceBetween: 40,
+          },
+        },
+      });
+      return () => {
+        indexBannerSwiper.destroy();
+        indexProjectcardSwiper.destroy();
+        indexProjectcardSwiper2.destroy();
+        indexCaregorySwiper.destroy();
+        indexSlogaSwiper.destroy();
+      };
   }, []);
 
   return (
