@@ -30,6 +30,13 @@ const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
 };
 
 export default function Intro() {
+  // 路由跳轉頁面時，重製滾輪捲軸
+  useEffect(() => {
+    // 將滾動行為設為 auto 避免有捲動過程的動畫
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+  }, []);
+
   const { id } = useParams();
 
   const [projectImage, setProjectImage] = useState({});
