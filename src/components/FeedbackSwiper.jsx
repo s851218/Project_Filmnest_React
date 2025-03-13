@@ -5,24 +5,31 @@ import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router";
-import { setSelected } from "../slice/paymentInfoSlice";
+import { Link, useParams } from "react-router";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 function FeedbackSwiper() {
   const [feedbackData, setFeedbackData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [showNavigation, setShowNavigation] = useState(false);
-  const { projectId } = useSelector((state) => state.paymentInfo.selected);
+  const { id } = useParams()
+  const [ params , setParams ] = useState({})
+  
+  //處理params
+  useEffect(()=>{
+    console.log(id)
+    if (id) {
+      const paramsArry = id.split("&")
+      let paramsObj = {}
+      paramsArry.forEach((param)=>{
+        let [ key , value ] = param.split("=")
+        paramsObj[key] = Number(value)
+      })
+      setParams(paramsObj)
+    }
+  },[id])
 
-  const dispatch = useDispatch();
-  // 選擇方案
-  const handleSelectItem = (item) => {
-    dispatch(setSelected(item));
-  };
-
-  const getFeedbackData = async (id = 1) => {
+  const getFeedbackData = async (id) => {
     try {
       const response = await axios.get(`${API_BASE}/products?projectId=${id}`);
       setFeedbackData(response.data);
@@ -33,11 +40,10 @@ function FeedbackSwiper() {
 
   // 渲染時取得資料
   useEffect(() => {
-    getFeedbackData();
-    if (projectId) {
-      getFeedbackData(projectId);
+    if (params.projectId) {
+      getFeedbackData(params.projectId);
     }
-  }, [projectId]);
+  }, [params]);
 
   // 自定義導航和分頁的樣式
   const navigationStyles = {
@@ -269,9 +275,8 @@ function FeedbackSwiper() {
 
                         <div className="mb-0 mt-auto">
                           <Link
-                            to="/PaymentInfo"
+                            to={`/feedbackOption/projectId=${params.projectId}&productId=${feedback.id}`}
                             className="btn btn-primary py-2 fw-bold w-100"
-                            onClick={() => handleSelectItem(feedback)}
                           >
                             選擇此方案
                           </Link>

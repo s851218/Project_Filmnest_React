@@ -40,7 +40,7 @@ import FavoriteProject from "../pages/FavoriteProject";
 import OrderRecords from "../pages/OrderRecords";
 import FavoriteVideo from "../pages/FavoriteVideo";
 import ViewRecords from "../pages/ViewRecords";
-
+import FeedbackOption from "../pages/FeedbackOption";
 import FeedbackFormTest from "../adminPages/_AdminFeedbackTest";
 
 const routes = [
@@ -143,6 +143,10 @@ const routes = [
             element: <ProjectIntroInfoDisclosure />,
           },
         ],
+      },
+      { 
+        path: "feedbackOption/:id",
+        element: <FeedbackOption />
       },
       {
         path: "paymentInfo",

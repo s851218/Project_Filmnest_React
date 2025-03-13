@@ -120,3 +120,15 @@ textarea {
   -webkit-overflow-scrolling: touch;
   max-width: 100%;
 }
+.row.row-lg {
+  @media (max-width: 992px) {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+}
+.container.container-lg {
+  @media (max-width: 992px) {
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+}
