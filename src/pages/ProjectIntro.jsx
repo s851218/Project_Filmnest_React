@@ -8,16 +8,16 @@ import axios from "axios";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function ProjectIntro() {
-  const [projectInfo, setProjectInfo] = useState({});
-
-  const { id } = useParams(); // xiang 2025/02/27 intro路由調整
-
-  // 路由跳轉至專案介紹頁時，重製滾輪捲軸
+  // 路由跳轉頁面時，重製滾輪捲軸
   useEffect(() => {
-    // 將滾動行為設為 auto 避免捲動過程的動畫
+    // 將滾動行為設為 auto 避免有捲動過程的動畫
     document.documentElement.style.scrollBehavior = "auto";
     window.scrollTo(0, 0);
   }, []);
+
+  const [projectInfo, setProjectInfo] = useState({});
+
+  const { id } = useParams(); // xiang 2025/02/27 intro路由調整
 
   useEffect(() => {
     const getProjectData = async () => {
