@@ -17,7 +17,6 @@ function FeedbackSwiper() {
   
   //處理params
   useEffect(()=>{
-    console.log(id)
     if (id) {
       const paramsArry = id.split("&")
       let paramsObj = {}
