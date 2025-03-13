@@ -21,7 +21,6 @@ import PersonalCenter from "../pages/PersonalCenter";
 import AboutStudio from "../pages/AboutStudio";
 import TermsOfUse from "../pages/TermsOfUse";
 import CreateProposal from "../pages/CreateProposal";
-import FeedbackSwiper from "../components/FeedbackSwiper";
 import FeedbackPage from "../pages/FeedbackPage";
 import ProjectIntro from "../pages/ProjectIntro";
 import ProjectIntroContent from "../pages/ProjectIntroContent";
@@ -85,10 +84,6 @@ const routes = [
             path: "viewRecords",
             element: <ViewRecords />,
           },
-          {
-            path: "test",
-            element: <FeedbackFormTest />,
-          },
         ],
       },
       {
@@ -112,12 +107,12 @@ const routes = [
         element: <CreateProposal />,
       },
       {
-        path: "feedbackSwiper",
-        element: <FeedbackSwiper />,
-      },
-      {
         path: "feedbackPage",
         element: <FeedbackPage />,
+      },
+      {
+        path: "test",
+        element: <FeedbackFormTest />,
       },
       {
         path: "projects/:id",
