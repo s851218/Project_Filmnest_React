@@ -119,9 +119,9 @@ export default function Header() {
                 </div>
               </div>
             </div>
-            <div className={`p-0 me-12 nav-item ${!profile.token && "d-none"}`}>
+            {profile.hasStudio && <div className={`p-0 me-12 nav-item ${!profile.token && "d-none"}`}>
               <NavLink to="/admin/adminProfile">工作室</NavLink>
-            </div>
+            </div>}
             <div className="p-0 me-12 nav-item">
               <NavLink to="/aboutStudio">提案者頁面</NavLink>
             </div>
