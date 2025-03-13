@@ -149,7 +149,7 @@ const routes = [
         element: <FeedbackOption />
       },
       {
-        path: "paymentInfo",
+        path: "paymentInfo/:id",
         element: <PaymentInfo />,
       },
       {
