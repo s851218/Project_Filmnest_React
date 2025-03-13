@@ -2,17 +2,24 @@ import axios from "axios";
 import { useEffect , useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
+import FeedbackSwiper from "../components/FeedbackSwiper";
+import BonusCalculator from "../components/BonusCalculator";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function FeedbackOption () {
   const { register , handleSubmit , reset , control , formState:{errors}} = useForm()
+  const navigate = useNavigate()
   const { id } = useParams()
+
   const [ params , setParams ] = useState({})
   const [ feedbackData, setFeedbackData ] = useState([]);
   const [ projectData , setProjectData ] = useState([]);
   const [ isName , setIsName ] = useState(false)
+  const [ originPrice , setOriginPrice ] = useState(0)
+  const [ bonus , setBonse ] = useState(0)
+  const [ totalPrice , setTotalPrice ] = useState(0)
   const userInfo = useSelector((state) => state.user.profile)
 
   //處理params
@@ -33,6 +40,7 @@ export default function FeedbackOption () {
     try {
       const res = await axios.get(`${API_BASE}/products?projectId=${projectId}&id=${productId}`)
       setFeedbackData(res.data[0]);
+      setOriginPrice(res.data[0].price)
     } catch (error) {
       alert("回饋資料取得失敗：" + error.message);
     }
@@ -44,7 +52,7 @@ export default function FeedbackOption () {
       const res = await axios.get(`${API_BASE}/projects?projectId=${projectId}`)
       setProjectData(res.data[0]);
     } catch (error) {
-      alert("回饋資料取得失敗：" + error.message);
+      alert("專案資料取得失敗：" + error.message);
     }
   }
 
@@ -54,7 +62,14 @@ export default function FeedbackOption () {
       getProjectData(params)
     }
   },[params])
+  //處理params
 
+  // 處理總金額totalPrice
+  useEffect(()=>{
+    setTotalPrice(originPrice+bonus)
+  },[originPrice,bonus])
+  
+  // 處理訂單送出
   const onSubmit = async(data) => {
     const { messageToTeam } = data
     console.log("驗證成功",data);
@@ -65,6 +80,7 @@ export default function FeedbackOption () {
     const createdAt = new Date().toString()
     // 創建orderId
     const orderId = "WINDS" + new Date().getTime()
+    
     // 組建orderData
     const orderData = {
       "orderFile": {
@@ -77,9 +93,9 @@ export default function FeedbackOption () {
       "paymentStatus": "未付款",
       "shippingStatus": "未出貨",
       "bonus": "額外加碼",
-      "totalPrice": "總價格(包含加碼)",
+      "totalPrice": totalPrice,
       "createdAt": createdAt,
-      "paymentTime": "",
+      "paymentTime": bonus,
       "canCancel": false,
       "canRefund": false,
       "canReturn": false,
@@ -94,33 +110,27 @@ export default function FeedbackOption () {
 
     // 發送api
     try {
-      const res = await axios.post("")
-      console.log(res.data);
+      const res = await axios.post(`${API_BASE}/orders`,orderData)
+      navigate(`/paymentInfo/${orderId}`)
     } catch (error) {
       console.log("建立訂單失敗",error);
     }
 
-    if (messageToTeam.length !== 0) {
-      console.log("有留言，打留言版api");
-    }
+    // if (messageToTeam.length !== 0) {
+    //   console.log("有留言，打留言版api");
+    // }
   }
 
+  // 處理訂單送出
+
+  // 處理更改方案
   const handleChangeOption = () => {
     console.log("更改方案");
-    
+    // 開啟更改方案modal
   }
 
-  const watch = useWatch({control})
-  // 表單監控
-  useEffect(()=> {
-    console.log(watch);
-  },[watch])
-  // 錯誤監控
-  useEffect(()=>{
-    console.log(errors);
-  },[errors])
-
   // 監控是否匿名
+  const watch = useWatch({control})
   useEffect(()=>{
     if (watch.isAnonymous === "false") {
       setIsName(true)
@@ -179,7 +189,7 @@ export default function FeedbackOption () {
             </section>
             {/* 感謝名稱 */}
             <section>
-              <button type="button" onClick={handleSubmit(onSubmit)}>測試</button>
+              {/* <button type="button" onClick={}>測試</button> */}
               <h3 className="fs-lg-3 fw-bolder mb-3 required">感謝名稱</h3>
               <p>請留下您的大名或暱稱，我們會將您的名字置入電影片尾感謝名單。</p>
               <p>※如不願露出，選擇匿名即可</p>
@@ -232,35 +242,64 @@ export default function FeedbackOption () {
               </form>
             </section>
           </main>
-          <aside className="col-4 feedback-confirmation-sidebar d-lg-block d-none" >
-            {/* <%- include('./layout/extra-amount-calculator'); -%> */}
-            {/* <div className="card bg-primary-9 p-3  border rounded-1 h-auto" style="border: 1px sold #606060;">
+          
+          {/* 加碼功能 */}
+          <aside className="col-4 feedback-confirmation-sidebar d-lg-block d-none" >            
+            <div className="card bg-primary-9 p-3  border rounded-1 h-auto" style={{border: "1px sold #606060"}}>
               <div className="card-body">
                 <h3 className="card-title fs-5 fw-bolder mb-6">隨喜加碼</h3>
-                <div className="btn-group w-100 mb-4">
-                  <button className="btn btn-secondary w-100 add-amount rounded-start-1" data-amount="100">+100</button>
-                  <button className="btn btn-secondary w-100 add-amount" data-amount="500">+500</button>
-                  <button className="btn btn-secondary w-100 add-amount rounded-end-1" data-amount="1000">+1,000</button>
-                </div>
-                <div className="input-group mb-4">
-                  <input type="number" name="" id="customAmount" placeholder="自訂金額" min="0" className="form-control rounded-start-1">
-                  <button type="button" className="btn btn-primary" id="addCustomAmount">加碼</button>
-                  <button type="button" className="btn btn-secondary rounded-end-1" id="resetCustomAmount">重設</button>
-                </div>
+                <BonusCalculator bonus={bonus} setBonse={setBonse} />
                 <div className="bg-primary-8 p-3 rounded-1 mb-4">
                   <p className="mb-1">總計金額</p>
-                  <h4 className="fs-6 fw-bolder mb-1">NT$ 2,000</h4>
+                  <h4 className="fs-6 fw-bolder mb-1">NT$ {totalPrice.toLocaleString()}</h4>
                 </div>
-                <a href="checkout-info.html">
-                  <button type="submit" className="btn btn-primary w-100 rounded-1" id="nextStep">下一步</button>
-                </a>
+                <button type="button" class="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>下一步</button>
               </div>
-            </div> */}
+            </div>
           </aside>
         </div>
       </div>
 
-      {/* <!-- #feedbackModal 內容 --> */}
+      {/* 手機版：aside 變成 footer */}
+      <footer class="checkout-confirmation-footer d-lg-none d-block p-6 bg-primary-8 fixed-bottom">
+        <div class="d-flex justify-content-between flex-wrap gap-3">
+          <div class="d-flex align-items-center">
+            <p class="mb-0 d-sm-block d-none">總計：</p>
+            <p class="total-amount fs-7 mb-0">NT$ 2,000</p>
+          </div>
+          <div class="amount-confirm-mobile d-flex align-items-center gap-3">
+            <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#extraSupportModal">我要加碼</button>
+            <button type="button" class="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>下一步</button>
+          </div>
+        </div>
+      </footer>
+      {/* footer 加碼功能 */}
+      {/* <div class="modal" id="extraSupportModal" tabindex="-1" aria-labelledby="extraSupportModal" aria-hidden="true"> */}
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-1 bg-primary-9 border border-primary-1">
+          <div class="modal-header align-items-center">
+            <h1 class="modal-title fs-5" id="extraSupportModal">我要加碼</h1>
+            <button type="button" class="material-symbols-outlined text-white border-0 ms-auto" data-bs-dismiss="modal" aria-label="Close" style={{backgroundColor: "transparent"}}>close</button>
+          </div>
+          <div class="modal-body d-flex flex-column justify-content-center gap-3">
+            <div class="d-flex align-items-center">
+              <p class="mb-0">多給一點點，讓夢想早日實現</p> 
+              <span class="material-symbols-outlined ms-1 fs-base icon-fill text-danger">favorite</span>
+            </div>
+            <BonusCalculator />
+            <div class="bg-primary-8 p-6 rounded-1">
+              <p class="mb-0 text-center">總計：NT$ {totalPrice.toLocaleString()}</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">確認加碼</button>
+          </div>
+        </div>
+      </div>
+    {/* </div> */}
+
+      {/* #feedbackModal 內容 */}
       <div className="modal fade" id="feedbackModal" tabIndex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-xl modal-fullscreen-sm-down ">
           <div className="modal-content border rounded-1" style={{borderColor: "#606060"}}>
@@ -270,7 +309,7 @@ export default function FeedbackOption () {
               <button type="button" className="material-symbols-outlined text-white border-0 ms-auto" data-bs-dismiss="modal" aria-label="Close" style={{backgroundColor: "transparent"}}>close</button>
             </div>
             <div className="modal-body">
-              {/* <%- include('./layout/feedback-swiper'); -%> */}
+              <FeedbackSwiper />
             </div>
           </div>
         </div>
