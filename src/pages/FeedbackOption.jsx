@@ -92,10 +92,10 @@ export default function FeedbackOption () {
       "orderStatus": "建立訂單",
       "paymentStatus": "未付款",
       "shippingStatus": "未出貨",
-      "bonus": "額外加碼",
+      "bonus": bonus,
       "totalPrice": totalPrice,
       "createdAt": createdAt,
-      "paymentTime": bonus,
+      "paymentTime": "付款時間",
       "canCancel": false,
       "canRefund": false,
       "canReturn": false,
@@ -104,6 +104,7 @@ export default function FeedbackOption () {
       "productId": params.productId,
       "orderId": orderId,
       "message": messageToTeam,
+      "isIncognito": watch.isAnonymous,
     }
     
     console.log(orderData);
