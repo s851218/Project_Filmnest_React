@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect} from "react";
 import { Link, NavLink, useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { setCategory } from "../slice/categorySlice";
@@ -48,9 +48,6 @@ export default function Header() {
   }, []);
 
   const handleSearchToggle = () => {
-    if (!isSearchOpen) {
-      setSearchValue("");
-    }
     dispatch(setIsSearchOpen(!isSearchOpen));
   };
 
@@ -58,8 +55,18 @@ export default function Header() {
     if (searchValue.trim()) {
       dispatch(setSearchText(searchValue));
       navigate("/projectExplore");
+    }else{
+      dispatch(setSearchText(""));
+      navigate("/projectExplore");
     }
   };
+
+  useEffect(() => {
+    if (!isSearchOpen) {
+      dispatch(setSearchValue(""));
+      dispatch(setSearchText(""));
+    }
+  }, [isSearchOpen]);
 
   return (
     <>
@@ -112,16 +119,16 @@ export default function Header() {
                 </div>
               </div>
             </div>
-            <div className={`p-0 me-12 nav-item ${!profile.token && "d-none"}`}>
+            {profile.hasStudio && <div className={`p-0 me-12 nav-item ${!profile.token && "d-none"}`}>
               <NavLink to="/admin/adminProfile">工作室</NavLink>
-            </div>
+            </div>}
             <div className="p-0 me-12 nav-item">
               <NavLink to="/aboutStudio">提案者頁面</NavLink>
             </div>
             <div className="ms-auto d-flex flex-column flex-lg-row align-items-center">
               {profile.token ? (
                 <>
-                  <NavLink to="/personalCenter" className="btn btn-outline-light fw-bolder py-1 px-1 me-8 border-0">
+                  <NavLink to="/personalCenter/profile" className="btn btn-outline-light fw-bolder py-1 px-1 me-8 border-0">
                     <span className="me-2">{profile.userName}</span> <img src={profile.imageUrl} className="rounded-circle object-fit-cover" style={{ width: "40px", height: "40px" }} alt="" />
                   </NavLink>
                   <button type="button" className="btn btn-primary" onClick={handleLogout}>
@@ -147,7 +154,7 @@ export default function Header() {
           <NavLink className="p-0 me-12" to="/">
             <img src="https://github.com/s851218/Project-FilmNest/blob/main/assets/images/logo.png?raw=true" alt="logo" />
           </NavLink>
-          <Link type="button" className="navbar-toggler border-0 ms-auto d-block" to="/headerSm">
+          <Link type="button" className="navbar-toggler border-0 ms-auto d-block" onClick={handleSearchToggle} to="/headerSm">
             <span className="navbar-toggler-icon"></span>
           </Link>
         </div>
