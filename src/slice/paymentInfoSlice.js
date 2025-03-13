@@ -28,9 +28,6 @@ const paymentInfoSlice = createSlice({
       paymentInfo: false,
       paymentType: false,
     },
-    selected: {
-      projectId: "",
-    }
   },
   reducers: {
     setUserInfo(state, action) {
@@ -77,16 +74,9 @@ const paymentInfoSlice = createSlice({
           break;
       }
     },
-    setSelected(state,action) {
-      const newSelected = {
-        ...state.selected,
-        ...action.payload,
-      }
-      state.selected = newSelected
-    }
   }
 })
 
-export const { setAddress , setRecipientInfo , setSameAsMember , setAccordionIndex , setPaymentOption , setRequried , setSelected } = paymentInfoSlice.actions
+export const { setAddress , setRecipientInfo , setSameAsMember , setAccordionIndex , setPaymentOption , setRequried } = paymentInfoSlice.actions
 
 export default paymentInfoSlice.reducer

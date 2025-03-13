@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router";
-import { setSelected } from "../slice/paymentInfoSlice";
 
 // import Swiper core and required modules
 import { FreeMode } from "swiper/modules";
@@ -79,11 +78,6 @@ export default function ProjectIntroNav({ projectId }) {
       }
     }
   };
-
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(setSelected({ projectId }));
-  }, [projectId]);
 
   return (
     <>
