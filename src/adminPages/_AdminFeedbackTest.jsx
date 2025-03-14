@@ -131,13 +131,14 @@ function FeedbackFormTest() {
                       <label htmlFor={inputId} className="d-block mb-0">
                         {hasImage ? (
                           // 有圖片時顯示預覽
-                          <div className="position-relative">
+                          <div className="position-relative w-100">
                             <img
                               src={imageValue}
                               alt="Preview"
                               className="img-thumbnail"
                               style={{
                                 maxWidth: "100%",
+                                // maxHeight: "400px",
                                 cursor:
                                   editingIndex === choiceIndex
                                     ? "pointer"
