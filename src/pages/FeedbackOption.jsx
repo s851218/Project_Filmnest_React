@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useEffect , useState } from "react";
+import { useEffect , useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router"
 import FeedbackSwiper from "../components/FeedbackSwiper";
 import BonusCalculator from "../components/BonusCalculator";
+import ModalComponent from "../components/ModalComponent";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -21,6 +22,13 @@ export default function FeedbackOption () {
   const [ bonus , setBonse ] = useState(0)
   const [ totalPrice , setTotalPrice ] = useState(0)
   const userInfo = useSelector((state) => state.user.profile)
+
+  const modalRef = useRef(null)
+  const [ isModalOpen , setIsModalOpen ] = useState(false)
+  // 處理modal開關
+  useEffect(()=>{
+    setIsModalOpen(false)
+  },[id])
 
   //處理params
   useEffect(()=>{
@@ -128,6 +136,7 @@ export default function FeedbackOption () {
   const handleChangeOption = () => {
     console.log("更改方案");
     // 開啟更改方案modal
+    setIsModalOpen(true)
   }
 
   // 監控是否匿名
@@ -261,8 +270,16 @@ export default function FeedbackOption () {
         </div>
       </div>
 
+      <ModalComponent
+        modalRef={modalRef}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      >
+        <FeedbackSwiper />
+      </ModalComponent>
+
       {/* 手機版：aside 變成 footer */}
-      <footer className="checkout-confirmation-footer d-lg-none d-block p-6 bg-primary-8 fixed-bottom">
+      {/* <footer className="checkout-confirmation-footer d-lg-none d-block p-6 bg-primary-8 fixed-bottom">
         <div className="d-flex justify-content-between flex-wrap gap-3">
           <div className="d-flex align-items-center">
             <p className="mb-0 d-sm-block d-none">總計：</p>
@@ -273,7 +290,7 @@ export default function FeedbackOption () {
             <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>下一步</button>
           </div>
         </div>
-      </footer>
+      </footer> */}
       {/* footer 加碼功能 */}
       {/* <div className="modal" id="extraSupportModal" tabindex="-1" aria-labelledby="extraSupportModal" aria-hidden="true"> */}
       {/* <div className="modal-dialog modal-dialog-centered">

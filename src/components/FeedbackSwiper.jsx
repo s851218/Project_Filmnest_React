@@ -14,7 +14,7 @@ function FeedbackSwiper() {
   const [showNavigation, setShowNavigation] = useState(false);
   const { id } = useParams()
   const [ params , setParams ] = useState({})
-  
+
   //處理params
   useEffect(()=>{
     if (id) {
@@ -275,7 +275,7 @@ function FeedbackSwiper() {
                         <div className="mb-0 mt-auto">
                           <Link
                             to={`/feedbackOption/projectId=${params.projectId}&productId=${feedback.id}`}
-                            className="btn btn-primary py-2 fw-bold w-100"
+                            className={`btn btn-primary py-2 fw-bold w-100 ${ params.productId === feedback.id ? "disabled" : ""}`}
                           >
                             選擇此方案
                           </Link>
