@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import FeedbackSwiper from "../components/FeedbackSwiper";
 import { useSelector } from "react-redux";
+import { useParams } from "react-router";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -13,10 +14,24 @@ function FeedbackPage() {
     window.scrollTo(0, 0);
   }, []);
 
+  const { id } = useParams()
+  const [ params , setParams ] = useState({})
   const [projectData, setProjectData] = useState({});
-  const { projectId } = useSelector((state) => state.paymentInfo.selected);
 
-  const getProjectData = async (id = 1) => {
+  //處理params
+  useEffect(()=>{
+    if (id) {
+      const paramsArry = id.split("&")
+      let paramsObj = {}
+      paramsArry.forEach((param)=>{
+        let [ key , value ] = param.split("=")
+        paramsObj[key] = Number(value)
+      })
+      setParams(paramsObj)
+    }
+  },[id])
+
+  const getProjectData = async (id) => {
     try {
       const response = await axios.get(
         `${API_BASE}/projects?_expand=studio&id=${id}`
@@ -30,11 +45,10 @@ function FeedbackPage() {
 
   // 取得資料
   useEffect(() => {
-    getProjectData(); // 開發使用
-    if (projectId) {
-      getProjectData(projectId);
+    if (params.projectId) {
+      getProjectData(params.projectId);
     }
-  }, [projectId]);
+  }, [params]);
 
   function getDateFormatted(date) {
     const dt = new Date(date);
@@ -109,18 +123,18 @@ function FeedbackPage() {
                   <div className="d-flex justify-content-between align-items-center  mb-4">
                     <p className="fs-lg-6 mb-0">
                       {`NT
-                     ${projectData.totalMoney?.toLocaleString("zh-TW", {
-                       style: "currency",
-                       currency: "TWD",
-                       minimumFractionDigits: 0,
-                     })}`}
+                    ${projectData.totalMoney?.toLocaleString("zh-TW", {
+                      style: "currency",
+                      currency: "TWD",
+                      minimumFractionDigits: 0,
+                    })}`}
                       <span className="fs-lg-base fs-sm text-primary-4 ms-3 me-auto mb-0">
                         {`/ NT
-                     ${projectData.goalMoney?.toLocaleString("zh-TW", {
-                       style: "currency",
-                       currency: "TWD",
-                       minimumFractionDigits: 0,
-                     })}`}
+                    ${projectData.goalMoney?.toLocaleString("zh-TW", {
+                      style: "currency",
+                      currency: "TWD",
+                      minimumFractionDigits: 0,
+                    })}`}
                       </span>
                     </p>
 
