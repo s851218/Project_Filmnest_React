@@ -4,6 +4,7 @@ import ProjectIntroSwiper from "../components/ProjectIntroSwiper";
 import ProjectIntroInfo from "../components/ProjectIntroInfo";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Helmet } from "react-helmet-async";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -11,20 +12,20 @@ export default function ProjectIntro() {
   const [projectInfo, setProjectInfo] = useState({});
 
   const { id } = useParams(); // xiang 2025/02/27 intro路由調整
-  const [ params , setParams ] = useState({})
-  
+  const [params, setParams] = useState({});
+
   //處理params
-  useEffect(()=>{
+  useEffect(() => {
     if (id) {
-      const paramsArry = id.split("&")
-      let paramsObj = {}
-      paramsArry.forEach((param)=>{
-        let [ key , value ] = param.split("=")
-        paramsObj[key] = Number(value)
-      })
-      setParams(paramsObj)
+      const paramsArry = id.split("&");
+      let paramsObj = {};
+      paramsArry.forEach((param) => {
+        let [key, value] = param.split("=");
+        paramsObj[key] = Number(value);
+      });
+      setParams(paramsObj);
     }
-  },[id])
+  }, [id]);
 
   // 路由跳轉至專案介紹頁時，重製滾輪捲軸
   useEffect(() => {
@@ -49,6 +50,10 @@ export default function ProjectIntro() {
 
   return (
     <>
+      <Helmet>
+        <title>{projectInfo.projectTitle}</title>
+        <meta name="description" content={projectInfo.projectTitle} />
+      </Helmet>
       <section
         className="pt-0 pt-md-6 pb-8 pb-mb-10 bg-layer-blur position-relative"
         style={{ marginTop: 89 }}

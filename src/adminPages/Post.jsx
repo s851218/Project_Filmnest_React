@@ -2,6 +2,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { Helmet } from "react-helmet-async";
 const apiBase = import.meta.env.VITE_API_BASE;
 export default function Post() {
   const [postsData, setPostsData] = useState([]);
@@ -9,9 +10,10 @@ export default function Post() {
   const [isAdd, setIsAdd] = useState(false);
   const { id } = useParams();
 
-    // 時間格式轉換
-    const getTime = (time) =>{
-      const newTime = new Date(time).toLocaleString("zh-TW", {
+  // 時間格式轉換
+  const getTime = (time) => {
+    const newTime = new Date(time)
+      .toLocaleString("zh-TW", {
         timeZone: "Asia/Taipei",
         year: "numeric",
         month: "2-digit",
@@ -19,9 +21,10 @@ export default function Post() {
         hour: "2-digit",
         minute: "2-digit",
         hour12: false,
-      }).replace(/\//g, "-")
-      return newTime
-    }
+      })
+      .replace(/\//g, "-");
+    return newTime;
+  };
 
   // 新增最新消息
   const {
@@ -43,7 +46,7 @@ export default function Post() {
       date: data.date === "now" ? new Date().toString() : data.schedule,
     };
 
-    const formatDate = postData.date
+    const formatDate = postData.date;
     const newPost = {
       ...postData,
       date: formatDate,
@@ -100,7 +103,9 @@ export default function Post() {
   // 取得最新消息
   const getPostsData = async (projectId) => {
     try {
-      const response = await axios.get(`${apiBase}/posts?projectId=${projectId}`);
+      const response = await axios.get(
+        `${apiBase}/posts?projectId=${projectId}`
+      );
       setPostsData(response.data);
     } catch (error) {
       console.log("取得資料失敗");
@@ -113,15 +118,23 @@ export default function Post() {
 
   return (
     <>
+      <Helmet>
+        <title>最新消息編輯</title>
+      </Helmet>
       {isAdd ? (
-        <form className="bg-primary-2 p-5 rounded-3 mb-5" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="bg-primary-2 p-5 rounded-3 mb-5"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <div className="mb-3">
             <label htmlFor="title" className="form-label">
               標題
             </label>
             <input
               type="text"
-              className={`form-control text-dark bg-white ${errors.title && "is-invalid"}`}
+              className={`form-control text-dark bg-white ${
+                errors.title && "is-invalid"
+              }`}
               id="title"
               {...register("title", {
                 required: {
@@ -130,14 +143,18 @@ export default function Post() {
                 },
               })}
             />
-            <div className="invalid-feedback text-danger">{errors?.title?.message}</div>
+            <div className="invalid-feedback text-danger">
+              {errors?.title?.message}
+            </div>
           </div>
           <div className="mb-3">
             <label htmlFor="content" className="form-label">
               內容
             </label>
             <textarea
-              className={`form-control text-dark bg-white ${errors.content && "is-invalid"}`}
+              className={`form-control text-dark bg-white ${
+                errors.content && "is-invalid"
+              }`}
               id="content"
               rows="3"
               {...register("content", {
@@ -147,7 +164,9 @@ export default function Post() {
                 },
               })}
             ></textarea>
-            <div className="invalid-feedback text-danger">{errors?.content?.message}</div>
+            <div className="invalid-feedback text-danger">
+              {errors?.content?.message}
+            </div>
           </div>
           <div className="mb-3">
             <label className="form-label me-2">時間</label>
@@ -163,7 +182,12 @@ export default function Post() {
               <label className="form-check-label">立即發布</label>
             </div>
             <div className="form-check form-check-inline">
-              <input type="radio" value="schedule" className="form-check-input" {...register("date")} />
+              <input
+                type="radio"
+                value="schedule"
+                className="form-check-input"
+                {...register("date")}
+              />
               <label className="form-check-label">排程：</label>
             </div>
             <input
@@ -171,23 +195,39 @@ export default function Post() {
               className="form-control d-inline w-auto ms-2"
               disabled={schedule !== "schedule"}
               {...register("schedule", {
-                validate: (value) => (schedule === "schedule" ? value !== "" || "請選擇排程時間" : true),
+                validate: (value) =>
+                  schedule === "schedule"
+                    ? value !== "" || "請選擇排程時間"
+                    : true,
               })}
             />
-            {errors.schedule && <div className="text-danger">{errors.schedule.message}</div>}
+            {errors.schedule && (
+              <div className="text-danger">{errors.schedule.message}</div>
+            )}
           </div>
           <div className="d-flex justify-content-end">
-            <button type="submit" className="btn btn-primary rounded-2 px-4 py-2 me-3">
+            <button
+              type="submit"
+              className="btn btn-primary rounded-2 px-4 py-2 me-3"
+            >
               確認送出
             </button>
-            <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => setIsAdd(false)}>
+            <button
+              type="button"
+              className="btn btn-primary rounded-2 px-4 py-2"
+              onClick={() => setIsAdd(false)}
+            >
               取消
             </button>
           </div>
         </form>
       ) : (
         <div className="d-flex justify-content-end mb-2">
-          <i type="button" className="btn btn-primary bi bi-plus-lg fs-1 lh-1 p-1 rounded-2" onClick={() => setIsAdd(true)}></i>
+          <i
+            type="button"
+            className="btn btn-primary bi bi-plus-lg fs-1 lh-1 p-1 rounded-2"
+            onClick={() => setIsAdd(true)}
+          ></i>
         </div>
       )}
       {postsData.map((post, index) => {
@@ -207,7 +247,9 @@ export default function Post() {
               {isEditIng && (
                 <input
                   type="text"
-                  className={`form-control text-dark bg-white ${updateErrors.title && "is-invalid"}`}
+                  className={`form-control text-dark bg-white ${
+                    updateErrors.title && "is-invalid"
+                  }`}
                   id="title"
                   defaultValue={post.title}
                   {...updateRegister("title", {
@@ -218,7 +260,9 @@ export default function Post() {
                   })}
                 />
               )}
-              <div className="invalid-feedback text-danger">{updateErrors?.title?.message}</div>
+              <div className="invalid-feedback text-danger">
+                {updateErrors?.title?.message}
+              </div>
             </div>
             <div className="mb-3">
               {!isEditIng && (
@@ -228,7 +272,9 @@ export default function Post() {
               )}
               {isEditIng && (
                 <textarea
-                  className={`form-control text-dark bg-white ${updateErrors.content && "is-invalid"}`}
+                  className={`form-control text-dark bg-white ${
+                    updateErrors.content && "is-invalid"
+                  }`}
                   id="content"
                   rows="3"
                   defaultValue={post.content}
@@ -240,15 +286,27 @@ export default function Post() {
                   })}
                 ></textarea>
               )}
-              <div className="invalid-feedback text-danger">{updateErrors?.content?.message}</div>
+              <div className="invalid-feedback text-danger">
+                {updateErrors?.content?.message}
+              </div>
             </div>
             <div className="d-flex justify-content-end">
               {isEditIng ? (
                 <>
-                  <button type="submit" className="btn btn-primary rounded-2 px-4 py-2 me-3" onClick={updateHandleSubmit((data) => onPutSubmit(data, post.id))}>
+                  <button
+                    type="submit"
+                    className="btn btn-primary rounded-2 px-4 py-2 me-3"
+                    onClick={updateHandleSubmit((data) =>
+                      onPutSubmit(data, post.id)
+                    )}
+                  >
                     確認
                   </button>
-                  <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => setIsEdit(null)}>
+                  <button
+                    type="button"
+                    className="btn btn-primary rounded-2 px-4 py-2"
+                    onClick={() => setIsEdit(null)}
+                  >
                     取消
                   </button>
                 </>
@@ -268,7 +326,11 @@ export default function Post() {
                   >
                     編輯
                   </button>
-                  <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => handleDelPostData(post.id)}>
+                  <button
+                    type="button"
+                    className="btn btn-primary rounded-2 px-4 py-2"
+                    onClick={() => handleDelPostData(post.id)}
+                  >
                     刪除
                   </button>
                 </>

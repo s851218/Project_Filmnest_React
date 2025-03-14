@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useForm, useFieldArray } from "react-hook-form";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
@@ -32,6 +33,9 @@ function FeedbackItems({ optionIndex, control, register }) {
 
   return (
     <>
+      <Helmet>
+        <title>回饋項目編輯</title>
+      </Helmet>
       {fields.map((field, index) => (
         <div key={field.id} className="my-3">
           <label

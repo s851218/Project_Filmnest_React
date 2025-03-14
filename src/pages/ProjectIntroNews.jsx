@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Collapse } from "bootstrap";
 import { useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 
@@ -45,7 +46,9 @@ export default function ProjectIntroNews() {
     if (params.projectId) {
       (async () => {
         try {
-          const response = await axios.get(`${apiBase}/posts?projectId=${params.projectId}`);
+          const response = await axios.get(
+            `${apiBase}/posts?projectId=${params.projectId}`
+          );
           setProjectPosts(response.data);
           setPostsIsOpen(
             response.data.map((item) => {
@@ -62,14 +65,18 @@ export default function ProjectIntroNews() {
   useEffect(() => {
     newsCollapseRef.current.forEach((item, index) => {
       if (item) {
-        newsCollapseInstances.current[index] = new Collapse(item, { toggle: false });
+        newsCollapseInstances.current[index] = new Collapse(item, {
+          toggle: false,
+        });
       }
     });
   }, [projectPosts]);
 
   const handleCollapse = (id) => {
     setPostsIsOpen((prev) => {
-      return prev.map((item) => (item.id === id ? { ...item, isOpen: !item.isOpen } : item));
+      return prev.map((item) =>
+        item.id === id ? { ...item, isOpen: !item.isOpen } : item
+      );
     });
 
     const index = projectPosts.findIndex((item) => item.id === id);
@@ -78,20 +85,40 @@ export default function ProjectIntroNews() {
 
   return (
     <>
+      <Helmet>
+        <title>最新消息</title>
+      </Helmet>
       <div className="container pt-8 pb-10 py-md-15">
         {projectPosts.map((item, index) => {
           return (
             <div className="row mb-5" key={item.id}>
               <div className="col-10 mx-auto">
                 <div className="border border-primary-5 rounded box-shadow">
-                  <button className={`text-white py-3 w-100 fs-5 d-flex justify-content-between ${postsIsOpen[index].isOpen ? "bg-primary-6" : "bg-primary-10"}`} type="button" onClick={() => handleCollapse(item.id)}>
+                  <button
+                    className={`text-white py-3 w-100 fs-5 d-flex justify-content-between ${
+                      postsIsOpen[index].isOpen
+                        ? "bg-primary-6"
+                        : "bg-primary-10"
+                    }`}
+                    type="button"
+                    onClick={() => handleCollapse(item.id)}
+                  >
                     <span className="fs-base fs-md-7">{item.title}</span>{" "}
                     <span className="d-flex align-items-center">
-                      <span className="fs-base text-primary-5 me-2">{getTime(item.date)}</span>
-                      {postsIsOpen[index].isOpen ? <i className="bi bi-chevron-up fs-7"></i> : <i className="bi bi-chevron-down fs-7"></i>}
+                      <span className="fs-base text-primary-5 me-2">
+                        {getTime(item.date)}
+                      </span>
+                      {postsIsOpen[index].isOpen ? (
+                        <i className="bi bi-chevron-up fs-7"></i>
+                      ) : (
+                        <i className="bi bi-chevron-down fs-7"></i>
+                      )}
                     </span>
                   </button>
-                  <div className="collapse " ref={(el) => (newsCollapseRef.current[index] = el)}>
+                  <div
+                    className="collapse "
+                    ref={(el) => (newsCollapseRef.current[index] = el)}
+                  >
                     <div className="card card-body">{item.content}</div>
                   </div>
                 </div>
