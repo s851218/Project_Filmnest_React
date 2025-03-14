@@ -6,7 +6,7 @@ const paymentInfoSlice = createSlice({
   initialState: {
     userInfo: {
       userName: "",
-      userPhone: "0911000123",
+      userPhone: "",
       userEmail: "",
     },
     recipientInfo: {
