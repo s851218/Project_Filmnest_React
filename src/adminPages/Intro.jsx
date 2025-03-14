@@ -4,6 +4,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import UploadProjectImage from "../AdminComponents/UploadProjectImage";
 import { useParams } from "react-router";
 import ArticleEditor from "../AdminComponents/ArticleEditor";
+import { Helmet } from "react-helmet-async";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -164,6 +165,9 @@ export default function Intro() {
 
   return (
     <>
+      <Helmet>
+        <title>專案資訊編輯</title>
+      </Helmet>
       <section className="p-3 py-md-4 py-lg-7 px-md-8 px-lg-10 bg-white mb-5 rounded-4">
         <form action="" onSubmit={handleSubmit(onSubmit)}>
           {/* 專案名稱 */}

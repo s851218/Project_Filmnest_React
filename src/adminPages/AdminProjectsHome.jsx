@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setExpanded } from "../slice/adminSidebarExpandSlice";
 import { useLocation, useNavigate } from "react-router";
+import { Helmet } from "react-helmet-async";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function AdminProjectsHome() {
@@ -51,6 +52,9 @@ export default function AdminProjectsHome() {
   }, [projects]);
   return (
     <>
+      <Helmet>
+        <title>提案者工作室</title>
+      </Helmet>
       <div className="container mb-6 mb-lg-15">
         <div className="d-none d-lg-block">
           <h1 className="fs-6 mb-7">摘要</h1>
@@ -58,7 +62,11 @@ export default function AdminProjectsHome() {
             <div className="col">
               <div className="d-flex align-items-center rounded-2 bg-white p-5">
                 <div className="me-5">
-                  <img src="募資金額.png" className="bg-primary-5 rounded-2 p-3" alt="募資金額" />
+                  <img
+                    src="募資金額.png"
+                    className="bg-primary-5 rounded-2 p-3"
+                    alt="募資金額"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-base mb-0 text-primary-6">募資金額</h3>
@@ -69,7 +77,11 @@ export default function AdminProjectsHome() {
             <div className="col">
               <div className="d-flex align-items-center rounded-2 bg-white p-5">
                 <div className="me-5">
-                  <img src="觀看次數.png" className="bg-primary-5 rounded-2 p-3" alt="觀看次數" />
+                  <img
+                    src="觀看次數.png"
+                    className="bg-primary-5 rounded-2 p-3"
+                    alt="觀看次數"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-base mb-0 text-primary-6">觀看次數</h3>
@@ -80,7 +92,11 @@ export default function AdminProjectsHome() {
             <div className="col">
               <div className="d-flex align-items-center rounded-2 bg-white p-5">
                 <div className="me-5">
-                  <img src="瀏覽量.png" className="bg-primary-5 rounded-2 p-3" alt="瀏覽量" />
+                  <img
+                    src="瀏覽量.png"
+                    className="bg-primary-5 rounded-2 p-3"
+                    alt="瀏覽量"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-base mb-0 text-primary-6">瀏覽量</h3>
@@ -93,7 +109,11 @@ export default function AdminProjectsHome() {
             <div className="col">
               <div className="d-flex align-items-center rounded-2 bg-white p-4">
                 <div className="me-5">
-                  <img src="專案數量.png" className="bg-primary-5 rounded-2 p-2" alt="專案數量" />
+                  <img
+                    src="專案數量.png"
+                    className="bg-primary-5 rounded-2 p-2"
+                    alt="專案數量"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">專案數量</h3>
@@ -104,7 +124,11 @@ export default function AdminProjectsHome() {
             <div className="col">
               <div className="d-flex align-items-center rounded-2 bg-white p-4">
                 <div className="me-5">
-                  <img src="影音數量.png" className="bg-primary-5 rounded-2 p-2" alt="影音數量" />
+                  <img
+                    src="影音數量.png"
+                    className="bg-primary-5 rounded-2 p-2"
+                    alt="影音數量"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">影音數量</h3>
@@ -115,7 +139,11 @@ export default function AdminProjectsHome() {
             <div className="col">
               <div className="d-flex align-items-center rounded-2 bg-white p-4">
                 <div className="me-5">
-                  <img src="收藏數量.png" className="bg-primary-5 rounded-2 p-2" alt="收藏數量" />
+                  <img
+                    src="收藏數量.png"
+                    className="bg-primary-5 rounded-2 p-2"
+                    alt="收藏數量"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">收藏數量</h3>
@@ -126,7 +154,11 @@ export default function AdminProjectsHome() {
             <div className="col">
               <div className="d-flex align-items-center rounded-2 bg-white p-4">
                 <div className="me-5">
-                  <img src="觀看時間.png" className="bg-primary-5 rounded-2 p-2" alt="觀看時間" />
+                  <img
+                    src="觀看時間.png"
+                    className="bg-primary-5 rounded-2 p-2"
+                    alt="觀看時間"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">觀看時間</h3>
@@ -137,7 +169,11 @@ export default function AdminProjectsHome() {
             <div className="col">
               <div className="d-flex align-items-center rounded-2 bg-white p-4">
                 <div className="me-5">
-                  <img src="留言數.png" className="bg-primary-5 rounded-2 p-2" alt="留言數" />
+                  <img
+                    src="留言數.png"
+                    className="bg-primary-5 rounded-2 p-2"
+                    alt="留言數"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">留言數</h3>
@@ -148,12 +184,17 @@ export default function AdminProjectsHome() {
           </div>
         </div>
         <div className="d-block d-lg-none">
-        <h1 className="fs-base mb-3">摘要</h1>
+          <h1 className="fs-base mb-3">摘要</h1>
           <div className="row g-3 mb-5">
             <div className="col-12">
               <div className="d-flex align-items-center rounded-2 bg-white p-3">
                 <div className="me-5">
-                  <img src="募資金額.png" className="bg-primary-5 rounded-2 p-2" style={{ width: "40px" }} alt="募資金額" />
+                  <img
+                    src="募資金額.png"
+                    className="bg-primary-5 rounded-2 p-2"
+                    style={{ width: "40px" }}
+                    alt="募資金額"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-base mb-0 text-primary-6">募資金額</h3>
@@ -164,7 +205,12 @@ export default function AdminProjectsHome() {
             <div className="col-6">
               <div className="d-flex align-items-center rounded-2 bg-white p-3">
                 <div className="me-5">
-                  <img src="觀看次數.png" className="bg-primary-5 rounded-2 p-1" style={{ width: "28px" }} alt="觀看次數" />
+                  <img
+                    src="觀看次數.png"
+                    className="bg-primary-5 rounded-2 p-1"
+                    style={{ width: "28px" }}
+                    alt="觀看次數"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">觀看次數</h3>
@@ -175,7 +221,12 @@ export default function AdminProjectsHome() {
             <div className="col-6">
               <div className="d-flex align-items-center rounded-2 bg-white p-3">
                 <div className="me-5">
-                  <img src="瀏覽量.png" className="bg-primary-5 rounded-2 p-1" style={{ width: "28px" }} alt="瀏覽量" />
+                  <img
+                    src="瀏覽量.png"
+                    className="bg-primary-5 rounded-2 p-1"
+                    style={{ width: "28px" }}
+                    alt="瀏覽量"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">瀏覽量</h3>
@@ -186,7 +237,12 @@ export default function AdminProjectsHome() {
             <div className="col-6">
               <div className="d-flex align-items-center rounded-2 bg-white p-3">
                 <div className="me-5">
-                  <img src="專案數量.png" className="bg-primary-5 rounded-2 p-1" style={{ width: "28px" }} alt="專案數量" />
+                  <img
+                    src="專案數量.png"
+                    className="bg-primary-5 rounded-2 p-1"
+                    style={{ width: "28px" }}
+                    alt="專案數量"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">專案數量</h3>
@@ -197,7 +253,12 @@ export default function AdminProjectsHome() {
             <div className="col-6">
               <div className="d-flex align-items-center rounded-2 bg-white p-3">
                 <div className="me-5">
-                  <img src="影音數量.png" className="bg-primary-5 rounded-2 p-1" style={{ width: "28px" }} alt="影音數量" />
+                  <img
+                    src="影音數量.png"
+                    className="bg-primary-5 rounded-2 p-1"
+                    style={{ width: "28px" }}
+                    alt="影音數量"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">影音數量</h3>
@@ -208,7 +269,12 @@ export default function AdminProjectsHome() {
             <div className="col-6">
               <div className="d-flex align-items-center rounded-2 bg-white p-3">
                 <div className="me-5">
-                  <img src="收藏數量.png" className="bg-primary-5 rounded-2 p-1" style={{ width: "28px" }} alt="收藏數量" />
+                  <img
+                    src="收藏數量.png"
+                    className="bg-primary-5 rounded-2 p-1"
+                    style={{ width: "28px" }}
+                    alt="收藏數量"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">收藏數量</h3>
@@ -219,7 +285,12 @@ export default function AdminProjectsHome() {
             <div className="col-6">
               <div className="d-flex align-items-center rounded-2 bg-white p-3">
                 <div className="me-5">
-                  <img src="觀看時間.png" className="bg-primary-5 rounded-2 p-1" style={{ width: "28px" }} alt="觀看時間" />
+                  <img
+                    src="觀看時間.png"
+                    className="bg-primary-5 rounded-2 p-1"
+                    style={{ width: "28px" }}
+                    alt="觀看時間"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">觀看時間</h3>
@@ -230,7 +301,12 @@ export default function AdminProjectsHome() {
             <div className="col-6">
               <div className="d-flex align-items-center rounded-2 bg-white p-3">
                 <div className="me-5">
-                  <img src="留言數.png" className="bg-primary-5 rounded-2 p-1" style={{ width: "28px" }} alt="留言數" />
+                  <img
+                    src="留言數.png"
+                    className="bg-primary-5 rounded-2 p-1"
+                    style={{ width: "28px" }}
+                    alt="留言數"
+                  />
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">留言數</h3>
@@ -282,27 +358,47 @@ export default function AdminProjectsHome() {
                     <td className="d-none d-lg-block">
                       <div className="row align-items-center">
                         <div className="col-4">
-                          <img src={project.projectImage} className="rounded-2" alt="專案數量" />
+                          <img
+                            src={project.projectImage}
+                            className="rounded-2"
+                            alt="專案數量"
+                          />
                         </div>
                         <div className="col-8">
-                          <h3 className="fs-6 fw-bolder">{project.projectTitle}</h3>
+                          <h3 className="fs-6 fw-bolder">
+                            {project.projectTitle}
+                          </h3>
                           <p className="fs-base">{project.summary}</p>
                         </div>
                       </div>
                     </td>
                     <td colSpan="8" className="nowrap-table d-lg-none p-1">
-                      <img src={project.projectImage} className="rounded-2" alt="專案數量" />
+                      <img
+                        src={project.projectImage}
+                        className="rounded-2"
+                        alt="專案數量"
+                      />
                     </td>
                     <td className="nowrap-table d-lg-none">
                       <h3 className="fs-7 fw-bolder">{project.projectTitle}</h3>
                       <p className="fs-sm">{project.summary}</p>
                     </td>
-                    <td className="nowrap-table">{remainDays < 0 ? "進行中" : "已結案"}</td>
-                    <td className="nowrap-table">{project.createdAt.slice(0, 10)}</td>
-                    <td className="nowrap-table">{project.endAt.slice(0, 10)}</td>
+                    <td className="nowrap-table">
+                      {remainDays < 0 ? "進行中" : "已結案"}
+                    </td>
+                    <td className="nowrap-table">
+                      {project.createdAt.slice(0, 10)}
+                    </td>
+                    <td className="nowrap-table">
+                      {project.endAt.slice(0, 10)}
+                    </td>
                     <td className="nowrap-table">{project.viewNum}</td>
-                    <td className="nowrap-table">{favoritesCount[project.id] || 0}</td>
-                    <td className="nowrap-table">{commentsCount[project.id] || 0}</td>
+                    <td className="nowrap-table">
+                      {favoritesCount[project.id] || 0}
+                    </td>
+                    <td className="nowrap-table">
+                      {commentsCount[project.id] || 0}
+                    </td>
                   </tr>
                 );
               })}

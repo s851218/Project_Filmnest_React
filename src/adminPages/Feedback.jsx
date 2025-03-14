@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useForm, useFieldArray } from "react-hook-form";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
@@ -282,6 +283,10 @@ function AddFeedbackOption() {
   };
   return (
     <>
+      <Helmet>
+        <title>回饋項目編輯</title>
+      </Helmet>
+
       <AddFormBtn handleAddNewOption={handleAddNewOption} />
       <form onSubmit={handleSubmit(onSubmit)}>
         {showFields &&

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router";
 
 const data = {
@@ -47,6 +48,9 @@ export default function AboutProposal() {
 
   return (
     <>
+      <Helmet>
+        <title>提案 | 影巢 FilmNest</title>
+      </Helmet>
       <div
         className="banner-bg-mask"
         style={{

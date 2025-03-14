@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import getNewDateFormatted from "../helpers/getNewDateFormatted";
+import { Helmet } from "react-helmet-async";
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
@@ -180,6 +181,9 @@ export default function AdminAnsComment() {
 
   return (
     <>
+      <Helmet>
+        <title>回覆留言</title>
+      </Helmet>
       {/* 展示留言區塊 */}
       <section className="container py-10">
         <div className="row">

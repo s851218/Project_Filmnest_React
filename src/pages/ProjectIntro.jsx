@@ -1,9 +1,10 @@
-import { Outlet, useParams } from "react-router";
+import { Outlet, useLocation, useParams } from "react-router";
 import ProjectIntroNav from "../components/ProjectIntroNav";
 import ProjectIntroSwiper from "../components/ProjectIntroSwiper";
 import ProjectIntroInfo from "../components/ProjectIntroInfo";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Helmet } from "react-helmet-async";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -12,19 +13,22 @@ export default function ProjectIntro() {
 
   const { id } = useParams(); // xiang 2025/02/27 intro路由調整
   const [ params , setParams ] = useState({})
+  const location = useLocation();
+
+  const isAboutStudioPage = location.pathname.includes("/aboutStudio");
   
   //處理params
-  useEffect(()=>{
+  useEffect(() => {
     if (id) {
-      const paramsArry = id.split("&")
-      let paramsObj = {}
-      paramsArry.forEach((param)=>{
-        let [ key , value ] = param.split("=")
-        paramsObj[key] = Number(value)
-      })
-      setParams(paramsObj)
+      const paramsArry = id.split("&");
+      let paramsObj = {};
+      paramsArry.forEach((param) => {
+        let [key, value] = param.split("=");
+        paramsObj[key] = Number(value);
+      });
+      setParams(paramsObj);
     }
-  },[id])
+  }, [id]);
 
   // 路由跳轉至專案介紹頁時，重製滾輪捲軸
   useEffect(() => {
@@ -49,7 +53,7 @@ export default function ProjectIntro() {
 
   return (
     <>
-      <section
+      {!isAboutStudioPage ? (<><section
         className="pt-0 pt-md-6 pb-8 pb-mb-10 bg-layer-blur position-relative"
         style={{ marginTop: 89 }}
       >
@@ -66,6 +70,8 @@ export default function ProjectIntro() {
       {/* 專案介紹 Navbar */}
       <ProjectIntroNav projectId={projectInfo.id} />
       <Outlet context={projectInfo} />
+      </>) 
+      : <div><Outlet context={projectInfo} /></div>}
     </>
   );
 }
