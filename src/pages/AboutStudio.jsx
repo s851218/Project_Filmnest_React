@@ -3,13 +3,14 @@ import axios from "axios";
 import { useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 import Card from "../components/Card";
+import { Helmet } from "react-helmet-async";
 
 export default function AboutStudio() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const navItems = ["進行中", "已結案", "其他作品集"];
   const [userId, setUserId] = useState(null);
   const [projects, setProjects] = useState([]);
-  const [length,setlength] = useState("");
+  const [length, setlength] = useState("");
   const { id } = useParams();
   // 提案者資料
   const [studioProfile, setStudioProfile] = useState({});
@@ -19,11 +20,12 @@ export default function AboutStudio() {
     let idObj = { [idArray[0]]: Number(idArray[1]) };
     const { projectId } = idObj;
     try {
-      const res = await axios.get(`${apiBase}/projects?_expand=studio&id=${projectId}`);
+      const res = await axios.get(
+        `${apiBase}/projects?_expand=studio&id=${projectId}`
+      );
       const studioProfile = res.data[0].studio.studioProfile;
       setStudioProfile(studioProfile);
       setUserId(res.data[0].studio.userId);
-      
     } catch (error) {
       console.log(error);
     }
@@ -32,13 +34,22 @@ export default function AboutStudio() {
   // 取得專案資料
   const getProjectData = async () => {
     try {
-      const response = await axios.get(`${apiBase}/projects?studioId=${userId}`);
+      const response = await axios.get(
+        `${apiBase}/projects?studioId=${userId}`
+      );
       setProjects(response.data);
-      setlength(response.data.length)
+      setlength(response.data.length);
     } catch (error) {
       console.log(error);
     }
   };
+
+  // 路由跳轉至專案介紹頁時，重製滾輪捲軸
+  useEffect(() => {
+    // 將滾動行為設為 auto 避免有捲動過程的動畫
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+  }, []);
 
   // 元件初始化
   useEffect(() => {
@@ -50,7 +61,19 @@ export default function AboutStudio() {
     }
   }, [userId]);
 
-  const { email, endTime, groupName, personResponsible, phone, startTime, studioFb, studioIg, studioImageUrl, studioLine, teamIntro } = studioProfile;
+  const {
+    email,
+    endTime,
+    groupName,
+    personResponsible,
+    phone,
+    startTime,
+    studioFb,
+    studioIg,
+    studioImageUrl,
+    studioLine,
+    teamIntro,
+  } = studioProfile;
 
   return (
     <>
@@ -63,7 +86,12 @@ export default function AboutStudio() {
             <div className="border-bottom border-primary-4 pb-8 mb-8">
               <div className="row flex-md-row flex-column">
                 <div className="col-lg-4 col-md-5 text-center">
-                  <img src={studioImageUrl} className="img-fluid object-fit-cover img-director" style={{ height: 264, width: 264 }} alt={groupName} />
+                  <img
+                    src={studioImageUrl}
+                    className="img-fluid object-fit-cover img-director"
+                    style={{ height: 264, width: 264 }}
+                    alt={groupName}
+                  />
                 </div>
                 <div className="col-lg-8 col-md-7">
                   <div className="d-flex flex-column h-100">
@@ -72,7 +100,14 @@ export default function AboutStudio() {
                       <i className="bi bi-person" />
                       {personResponsible}
                     </p>
-                    <div id="connectUs" className="rounded-1 p-4 mt-auto" style={{ background: "#FFFFFF1A", border: "1px solid #606060" }}>
+                    <div
+                      id="connectUs"
+                      className="rounded-1 p-4 mt-auto"
+                      style={{
+                        background: "#FFFFFF1A",
+                        border: "1px solid #606060",
+                      }}
+                    >
                       <div className="d-flex justify-content-between mb-2">
                         <h3 className="fs-sm mb-0">聯絡我們</h3>
                         <ul className="list-unstyled d-flex align-self-end mb-0">
@@ -147,7 +182,8 @@ export default function AboutStudio() {
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
-                  {item}{item === "進行中" && `(${length})`}
+                  {item}
+                  {item === "進行中" && `(${length})`}
                   <span
                     className="underline-effect"
                     style={{
