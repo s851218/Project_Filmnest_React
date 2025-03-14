@@ -85,7 +85,7 @@ function FeedbackFormTest() {
       if (!choice.image || !choice.title || !choice.price) {
         return false;
       }
-      // 所有內容項目
+      // 內容項目
       return choice.contents.every((content) => !!content.item);
     });
   }, [formValues, choiceFields]);
@@ -99,7 +99,9 @@ function FeedbackFormTest() {
             <form onSubmit={handleSubmit(onSubmit)}>
               {choiceFields.map((choice, choiceIndex) => {
                 const imageValue = watch(`choice.${choiceIndex}.image`);
-                const inputId = `feedbackImageInput-${choiceIndex}`;
+                const imageInputID = `feedbackImageInput-${choice.id}`;
+                const titleInputID = `feedbackTitleInput-${choice.id}`;
+                const priceInputID = `feedbackPriceInput-${choice.id}`;
                 const hasImage = !!imageValue;
 
                 return (
@@ -107,6 +109,7 @@ function FeedbackFormTest() {
                     key={choice.id}
                     className="mb-3 border border-3 border-primary-7 rounded p-5"
                   >
+                    {/* 上傳圖片區塊 */}
                     <div className="mb-3">
                       {/* 隱藏的 image 欄位，由 react-hook-form 管理 */}
                       <input
@@ -118,7 +121,7 @@ function FeedbackFormTest() {
 
                       {/* 實際的檔案上傳元素，但不受 react-hook-form 直接管理 */}
                       <input
-                        id={inputId}
+                        id={imageInputID}
                         type="file"
                         accept="image/*"
                         className="form-control d-none"
@@ -128,14 +131,14 @@ function FeedbackFormTest() {
                           handleFileUpload(choiceIndex, file);
                         }}
                       />
-                      <label htmlFor={inputId} className="d-block mb-0">
+                      <label htmlFor={imageInputID} className="d-block mb-0">
                         {hasImage ? (
                           // 有圖片時顯示預覽
-                          <div className="position-relative w-100">
+                          <div className="position-relative">
                             <img
                               src={imageValue}
                               alt="Preview"
-                              className="img-thumbnail"
+                              className="img-thumbnail w-100 object-fit-cover"
                               style={{
                                 maxWidth: "100%",
                                 // maxHeight: "400px",
@@ -146,13 +149,15 @@ function FeedbackFormTest() {
                               }}
                             />
                             {editingIndex === choiceIndex && (
-                              <div className="position-absolute top-0 end-0 p-2">
+                              <div className="position-absolute top-0 end-0 p-5">
                                 <button
                                   type="button"
                                   className="btn btn-sm btn-warning rounded-circle"
                                   onClick={(e) => {
                                     e.preventDefault();
-                                    document.getElementById(inputId).click();
+                                    document
+                                      .getElementById(imageInputID)
+                                      .click();
                                   }}
                                 >
                                   <i className="bi bi-pencil"></i>
@@ -178,7 +183,10 @@ function FeedbackFormTest() {
                       )}
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="" className="form-label required">
+                      <label
+                        htmlFor={titleInputID}
+                        className="form-label required"
+                      >
                         項目名稱
                       </label>
                       <input
@@ -186,6 +194,7 @@ function FeedbackFormTest() {
                           required: "您必須填入項目名稱",
                         })}
                         disabled={editingIndex !== choiceIndex}
+                        id={titleInputID}
                         type="text"
                         className="form-control bg-white text-primary-8"
                       />
@@ -196,7 +205,10 @@ function FeedbackFormTest() {
                       )}
                     </div>
                     <div className="mb-3">
-                      <label htmlFor="" className="form-label required">
+                      <label
+                        htmlFor={priceInputID}
+                        className="form-label required"
+                      >
                         金額設定
                       </label>
                       <input
@@ -205,6 +217,7 @@ function FeedbackFormTest() {
                           min: { value: 1, message: "項目金額必須大於 0" },
                         })}
                         disabled={editingIndex !== choiceIndex}
+                        id={priceInputID}
                         type="number"
                         min={1}
                         className="form-control bg-white text-primary-8"
@@ -301,30 +314,36 @@ const ContentItems = ({
         項目內容
       </label>
       {contentFields.map((content, contentIndex) => {
+        const contentInputID = `item-${content.id}`;
         return (
           <div key={content.id} className="mb-2 d-flex align-items-center">
             {/* fields */}
-            <input
-              {...register(
-                `choice.${choiceIndex}.contents.${contentIndex}.item`,
-                {
-                  required: "你必須填寫完所有的項目內容",
+
+            <div className="input-group">
+              <input
+                {...register(
+                  `choice.${choiceIndex}.contents.${contentIndex}.item`,
+                  {
+                    required: "你必須填寫完所有的項目內容",
+                  }
+                )}
+                id={contentInputID}
+                disabled={editingIndex !== choiceIndex}
+                type="text"
+                className="form-control bg-white text-primary-8 "
+              />
+
+              <button
+                type="button"
+                className="btn btn-danger btn-sm"
+                onClick={() => removeContent(contentIndex)}
+                disabled={
+                  contentFields.length === 1 || editingIndex !== choiceIndex
                 }
-              )}
-              disabled={editingIndex !== choiceIndex}
-              type="text"
-              className="form-control bg-white text-primary-8"
-            />
-            <button
-              type="button"
-              className="btn btn-danger ms-2"
-              onClick={() => removeContent(contentIndex)}
-              disabled={
-                contentFields.length === 1 || editingIndex !== choiceIndex
-              }
-            >
-              <i className="bi bi-x"></i>
-            </button>
+              >
+                <i className="bi bi-x"></i>
+              </button>
+            </div>
           </div>
         );
       })}

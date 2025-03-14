@@ -41,7 +41,7 @@ import OrderRecords from "../pages/OrderRecords";
 import FavoriteVideo from "../pages/FavoriteVideo";
 import ViewRecords from "../pages/ViewRecords";
 import FeedbackOption from "../pages/FeedbackOption";
-import FeedbackFormTest from "../adminPages/_AdminFeedbackTest";
+import AdminFeedbackForm from "../adminPages/Feedback";
 
 const routes = [
   {
@@ -111,10 +111,6 @@ const routes = [
         element: <FeedbackPage />,
       },
       {
-        path: "test",
-        element: <FeedbackFormTest />,
-      },
-      {
         path: "projects/:id",
         element: <ProjectIntro />,
         children: [
@@ -144,9 +140,9 @@ const routes = [
           },
         ],
       },
-      { 
+      {
         path: "feedbackOption/:id",
-        element: <FeedbackOption />
+        element: <FeedbackOption />,
       },
       {
         path: "paymentInfo/:id",
@@ -204,7 +200,7 @@ const routes = [
               },
               {
                 path: "feedback",
-                element: <Feedback />,
+                element: <AdminFeedbackForm />,
               },
               {
                 path: "adminChart",
