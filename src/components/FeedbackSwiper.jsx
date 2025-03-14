@@ -12,21 +12,21 @@ function FeedbackSwiper() {
   const [feedbackData, setFeedbackData] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [showNavigation, setShowNavigation] = useState(false);
-  const { id } = useParams()
-  const [ params , setParams ] = useState({})
+  const { id } = useParams();
+  const [params, setParams] = useState({});
 
   //處理params
-  useEffect(()=>{
+  useEffect(() => {
     if (id) {
-      const paramsArry = id.split("&")
-      let paramsObj = {}
-      paramsArry.forEach((param)=>{
-        let [ key , value ] = param.split("=")
-        paramsObj[key] = Number(value)
-      })
-      setParams(paramsObj)
+      const paramsArry = id.split("&");
+      let paramsObj = {};
+      paramsArry.forEach((param) => {
+        let [key, value] = param.split("=");
+        paramsObj[key] = Number(value);
+      });
+      setParams(paramsObj);
     }
-  },[id])
+  }, [id]);
 
   const getFeedbackData = async (id) => {
     try {
@@ -156,10 +156,10 @@ function FeedbackSwiper() {
             <Swiper
               modules={[Navigation, Pagination]}
               breakpoints={{
-                1200: {
-                  slidesPerView: 4,
-                  spaceBetween: 20,
-                },
+                // 1200: {
+                //   slidesPerView: 4,
+                //   spaceBetween: 20,
+                // },
                 992: {
                   slidesPerView: 3,
                   spaceBetween: 16,
@@ -275,7 +275,9 @@ function FeedbackSwiper() {
                         <div className="mb-0 mt-auto">
                           <Link
                             to={`/feedbackOption/projectId=${params.projectId}&productId=${feedback.id}`}
-                            className={`btn btn-primary py-2 fw-bold w-100 ${ params.productId === feedback.id ? "disabled" : ""}`}
+                            className={`btn btn-primary py-2 fw-bold w-100 ${
+                              params.productId === feedback.id ? "disabled" : ""
+                            }`}
                           >
                             選擇此方案
                           </Link>
