@@ -119,8 +119,8 @@ export default function AdminChart() {
         </div>
       </div>
 
-      <div className="row vw-lg-100">
-        <div className="col-lg-8" style={{ height: "50vh" }}>
+      <div className="row w-lg-100">
+        <div className="col-lg-8 w-lg-100" style={{ height: "50vh" }}>
           <canvas ref={chartRef}></canvas>
         </div>
       </div>
