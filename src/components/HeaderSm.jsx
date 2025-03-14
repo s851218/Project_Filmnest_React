@@ -105,6 +105,11 @@ export default function HeaderSm() {
             })}
           </>
         )}
+        {profile.hasStudio && (
+          <Link to="/admin/adminProjectsHome" className={`nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder ${!profile.token && "d-none"}`}>
+            工作室
+          </Link>
+        )}
         <Link className="nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder">我要提案</Link>
         <Link className="nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder" onClick={handleLogout}>
           登出
