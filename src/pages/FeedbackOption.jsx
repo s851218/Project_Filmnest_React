@@ -276,7 +276,7 @@ export default function FeedbackOption () {
       </footer>
       {/* footer 加碼功能 */}
       {/* <div className="modal" id="extraSupportModal" tabindex="-1" aria-labelledby="extraSupportModal" aria-hidden="true"> */}
-      <div className="modal-dialog modal-dialog-centered">
+      {/* <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content rounded-1 bg-primary-9 border border-primary-1">
           <div className="modal-header align-items-center">
             <h1 className="modal-title fs-5" id="extraSupportModal">我要加碼</h1>
@@ -297,11 +297,11 @@ export default function FeedbackOption () {
             <button type="button" className="btn btn-primary" data-bs-dismiss="modal">確認加碼</button>
           </div>
         </div>
-      </div>
+      </div> */}
     {/* </div> */}
 
       {/* #feedbackModal 內容 */}
-      <div className="modal fade" id="feedbackModal" tabIndex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+      {/* <div className="modal fade" id="feedbackModal" tabIndex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-xl modal-fullscreen-sm-down ">
           <div className="modal-content border rounded-1" style={{borderColor: "#606060"}}>
             <div className="modal-header">
@@ -314,7 +314,7 @@ export default function FeedbackOption () {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   )
 }
