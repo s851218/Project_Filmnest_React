@@ -14,10 +14,9 @@ function FeedbackSwiper() {
   const [showNavigation, setShowNavigation] = useState(false);
   const { id } = useParams()
   const [ params , setParams ] = useState({})
-  
+
   //處理params
   useEffect(()=>{
-    console.log(id)
     if (id) {
       const paramsArry = id.split("&")
       let paramsObj = {}
@@ -178,7 +177,7 @@ function FeedbackSwiper() {
                 bulletClass: "custom-bullet",
                 bulletActiveClass: "custom-bullet-active",
                 renderBullet: function (index, className) {
-                  return `<span class="${className}" style="display: block; width: 8px; height: 8px; border-radius: 50%; background-color: #ccc; margin: 0 4px; cursor: pointer;"></span>`;
+                  return `<span className="${className}" style="display: block; width: 8px; height: 8px; border-radius: 50%; background-color: #ccc; margin: 0 4px; cursor: pointer;"></span>`;
                 },
               }}
               navigation={{
@@ -194,9 +193,9 @@ function FeedbackSwiper() {
                 updateNavigationVisibility(swiper);
 
                 // 監聽視窗大小變化，重新計算是否應該顯示導航
-                window.addEventListener("resize", () => {
-                  updateNavigationVisibility(swiperRef.current);
-                });
+                // window.addEventListener("resize", () => {
+                //   updateNavigationVisibility(swiperRef.current);
+                // });
 
                 // 確保分頁元素正確引用
                 setTimeout(() => {
@@ -276,7 +275,7 @@ function FeedbackSwiper() {
                         <div className="mb-0 mt-auto">
                           <Link
                             to={`/feedbackOption/projectId=${params.projectId}&productId=${feedback.id}`}
-                            className="btn btn-primary py-2 fw-bold w-100"
+                            className={`btn btn-primary py-2 fw-bold w-100 ${ params.productId === feedback.id ? "disabled" : ""}`}
                           >
                             選擇此方案
                           </Link>

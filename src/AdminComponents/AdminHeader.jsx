@@ -29,7 +29,7 @@ export default function AdminHeader() {
               <span className="navbar-toggler-icon"></span>
             </NavLink>
           </div>
-          <NavLink className="p-0 me-12" to="/admin/adminProfile">
+          <NavLink className="p-0 me-12" to="/admin/adminProjectsHome">
             Studio
           </NavLink>
           <div className="ms-auto d-none d-lg-block">

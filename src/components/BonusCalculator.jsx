@@ -1,0 +1,41 @@
+import { useForm } from "react-hook-form"
+
+export default function BonusCalculator ({ bonus , setBonse }) {
+  const { register , reset , handleSubmit } = useForm({defaultValues:{customized:""}})
+
+  // 處理按鈕金額
+  const handleAddBonus = (e) => {
+    const addBonus = Number(e.target.value)
+    const newBonus = bonus + addBonus
+    setBonse(newBonus)
+  }
+
+  // 處理重製
+  const handleResetBonus = () => {
+    setBonse(0)
+  }
+  
+  // 處理自訂金額
+  const onsubmit = (data) => {
+    const addBouns = Number(data.customized)
+    const newBonus = bonus + addBouns
+    setBonse(newBonus)
+    reset()
+  }
+
+  return (
+    <>
+      <div className="btn-group w-100 mb-4">
+        <button className="btn btn-secondary w-100 add-amount rounded-start-1" value={100} onClick={(e) => handleAddBonus(e)}>+100</button>
+        <button className="btn btn-secondary w-100 add-amount" value={500} onClick={(e) => handleAddBonus(e)}>+500</button>
+        <button className="btn btn-secondary w-100 add-amount rounded-end-1" value={1000} onClick={(e) => handleAddBonus(e)}>+1,000</button>
+      </div>
+      <div className="input-group mb-4">
+        <input type="text" name="customized" id="customized" placeholder="自訂金額" className="form-control rounded-start-1" {...register("customized")} />
+        <button type="button" className="btn btn-primary border-white" id="addCustomAmount" onClick={handleSubmit(onsubmit)}>加碼</button>
+        <button type="button" className="btn btn-secondary rounded-end-1" id="resetCustomAmount" onClick={handleResetBonus}>重設</button>
+      </div>
+      
+    </>
+  )
+}
