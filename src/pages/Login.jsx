@@ -17,7 +17,7 @@ export default function Login() {
   const navigate = useNavigate();
   const location = useLocation();
   // 如果有來源頁面，就回到來源頁面(收藏未登入，登入後導回專案介紹頁)；沒有來源頁面的話，導回首頁
-  const redirectTo = location.state.from || "/";
+  const redirectTo = location.state?.from || "/";
 
   const dispatch = useDispatch();
 
