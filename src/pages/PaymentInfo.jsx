@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState , useRef } from "react";
-import { useParams } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { useSelector } from "react-redux";
 import PaymentAside from "../components/PaymentAside";
 import PaymentMobileFooter from "../components/PaymentMobileFooter";
@@ -17,11 +17,13 @@ export default function PaymentInfo() {
     window.scrollTo(0, 0);
   }, []);
 
+  const navigate = useNavigate()
   const { id } = useParams()
   const [ orderData , setOrderData ] = useState({})
   const [ projectData , setProjectData ] = useState({})
   const [ productData , setProductData ] = useState({})
   const [ userData , setUserData ] = useState({})
+  const paymentInfoSlice = useSelector((state) => state.paymentInfo)
 
   // 取得訂單資料
   useEffect(()=>{
@@ -39,27 +41,34 @@ export default function PaymentInfo() {
   },[id])
   
   // 取得資料
-  useEffect(()=>{
-    const getData = async(order) => {
-      const { projectId , productId , userId } = order
-      try {
-        const projectRes = await axios.get(`${API_BASE}/projects?projectId=${projectId}`)
-        const productRes = await axios.get(`${API_BASE}/products?productId=${productId}`)
-        const userRes = await axios.get(`${API_BASE}/users?userId=${userId}`)
-        setProjectData(projectRes.data[0])
-        setProductData(productRes.data[0])
-        setUserData(userRes.data[0])
-      } catch (error) {
-        console.log("資料取得錯誤",error);
-      }
+  const getData = async(order) => {
+    const { projectId , productId , userId } = order
+    try {
+      const projectRes = await axios.get(`${API_BASE}/projects/${projectId}`)
+      const productRes = await axios.get(`${API_BASE}/products/${productId}`)
+      const userRes = await axios.get(`${API_BASE}/users/${userId}`)
+      setProjectData(projectRes.data)
+      setProductData(productRes.data)
+      setUserData(userRes.data)
+    } catch (error) {
+      console.log("資料取得錯誤",error);
     }
-    if (Object.keys(orderData).length !== 0) {
-      getData(orderData)
+  }  
+
+  // 判斷訂單是否付款
+  useEffect(()=>{
+    if (orderData) {
+      if (orderData.paymentStatus === "已付款") {
+        alert("訂單已付款")
+        navigate("/")
+      } else {
+        getData(orderData)
+      }
+    } else {
+      alert("訂單不存在")
+      navigate("/")
     }
   },[orderData])
-
-  const paymentInfoSlice = useSelector((state) => state.paymentInfo)
-
 
   // 送出表單 => props傳遞給aside footer
   // 建立ref
@@ -75,55 +84,50 @@ export default function PaymentInfo() {
     }
   };
 
+  // 驗證成功後送出付款資料
   useEffect(()=>{
     const {paymentInfo , paymentType} = paymentInfoSlice.requried
 
-    console.log(paymentInfoSlice.address);
-    
     if ((paymentInfo === true) && (paymentType === true)) {
-      console.log("驗證成功");
-      console.log(orderData);
       const { recipientInfo , address } = paymentInfoSlice
 
+      // 重組地址字串
       const newAddress = address.zipcode + address.county +  address.district + address.address
 
-      // 取得建立訂單時間
-    const createdPaymentTime = new Date().toString()
-      
+      // 取得付款時間
+      const createdPaymentTime = new Date().toString()
+      // 重組收件人資料
       const newOrderFile = {
         "Recipient": recipientInfo.recipientName,
         "phone": recipientInfo.recipientPhone,
         "email": recipientInfo.recipientEmail,
-        "address": newAddress
+        "address": newAddress       // 寫入重組後的地址字串
       }
       console.log(newOrderFile);
       
       const newOrderData = {
-        ...orderData,
-        "orderFile": newOrderFile,
-        "orderStatus": "訂單成立",
-        "paymentStatus": "已付款",
-        "paymentTime": createdPaymentTime,
+        ...orderData,               // 展開原訂單內容
+        "orderFile": newOrderFile, // 寫入收件人資料
+        "orderStatus": "訂單成立", // 訂單狀態修改為"成立"
+        "paymentStatus": "已付款", // 付款狀態修改為"已付款"
+        "paymentTime": createdPaymentTime, // 寫入付款時間
       }
       
-      const handlePayment = async() => {
+      const handlePayment = async(id) => {
         console.log("NEW",newOrderData);
         try {
-          const res = await axios.put(`${API_BASE}/orders?orderId=${id}`, newOrderData) // 更新功能有問題
-          console.log(res.data);
-          
+          await axios.put(`${API_BASE}/orders/${id}`, newOrderData)
+          alert("付款成功")
+          navigate("/") // 重新導向 暫定首頁 => 之後改付款完成頁面
         } catch (error) {
           console.log(error);
         }
       }
 
-      handlePayment()
+      handlePayment(orderData.id)
     }
     
   },[paymentInfoSlice.requried])
-
-  
-
   // 送出表單
 
   return (
@@ -143,7 +147,7 @@ export default function PaymentInfo() {
                 <h2 className="fs-lg-3 fs-4 text-primary-2 mb-4">付款方式</h2>
                 <PaymentCollapseFrom reference={paymentFromRef} />
               </main>
-    
+
               <PaymentAside
                 handleFormsSubmit={handleFormsSubmit}
                 orderData={orderData}
@@ -152,7 +156,7 @@ export default function PaymentInfo() {
               />
             </div>
           </div>
-    
+
           <PaymentMobileFooter
             handleFormsSubmit={handleFormsSubmit}
             orderData={orderData}
