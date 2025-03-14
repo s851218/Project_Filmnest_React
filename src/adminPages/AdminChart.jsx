@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useRef } from "react";
 import { Chart, registerables } from "chart.js";
+import { Helmet } from "react-helmet-async";
 Chart.register(...registerables);
 
 export default function AdminChart() {
-  const [selectData,setSelectData] = useState("瀏覽量");
+  const [selectData, setSelectData] = useState("瀏覽量");
   const chartRef = useRef(null); // 用來引用 canvas 元素
   const chartInstance = useRef(null); // 儲存 Chart 實例，方便銷毀舊圖表
 
@@ -15,15 +16,30 @@ export default function AdminChart() {
     if (chartInstance.current) {
       chartInstance.current.destroy();
     }
-    if(selectData === "瀏覽量"){
+    if (selectData === "瀏覽量") {
       chartInstance.current = new Chart(ctx, {
         type: "line",
         data: {
-          labels: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"], // 標籤
+          labels: [
+            "1月",
+            "2月",
+            "3月",
+            "4月",
+            "5月",
+            "6月",
+            "7月",
+            "8月",
+            "9月",
+            "10月",
+            "11月",
+            "12月",
+          ], // 標籤
           datasets: [
             {
               label: "瀏覽量", // 圖表標題
-              data: [200, 300, 150, 100, 500, 1000, 400, 2000, 360, 250, 50, 800], // 各區塊的數據
+              data: [
+                200, 300, 150, 100, 500, 1000, 400, 2000, 360, 250, 50, 800,
+              ], // 各區塊的數據
               borderWidth: 1, // 邊框寬度
             },
           ],
@@ -41,11 +57,24 @@ export default function AdminChart() {
           },
         },
       });
-    }else if(selectData === "收藏數"){
+    } else if (selectData === "收藏數") {
       chartInstance.current = new Chart(ctx, {
         type: "line",
         data: {
-          labels: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"], // 標籤
+          labels: [
+            "1月",
+            "2月",
+            "3月",
+            "4月",
+            "5月",
+            "6月",
+            "7月",
+            "8月",
+            "9月",
+            "10月",
+            "11月",
+            "12月",
+          ], // 標籤
           datasets: [
             {
               label: "收藏數", // 圖表標題
@@ -67,15 +96,31 @@ export default function AdminChart() {
           },
         },
       });
-    }else{
+    } else {
       chartInstance.current = new Chart(ctx, {
         type: "line",
         data: {
-          labels: ["1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"], // 標籤
+          labels: [
+            "1月",
+            "2月",
+            "3月",
+            "4月",
+            "5月",
+            "6月",
+            "7月",
+            "8月",
+            "9月",
+            "10月",
+            "11月",
+            "12月",
+          ], // 標籤
           datasets: [
             {
               label: "募資金額", // 圖表標題
-              data: [5000, 800, 12000, 3600, 8800, 1000, 400, 4000, 3600, 2500, 500, 800], // 各區塊的數據
+              data: [
+                5000, 800, 12000, 3600, 8800, 1000, 400, 4000, 3600, 2500, 500,
+                800,
+              ], // 各區塊的數據
               borderWidth: 1, // 邊框寬度
             },
           ],
@@ -103,10 +148,16 @@ export default function AdminChart() {
 
   return (
     <>
+      <Helmet>
+        <title>數據分析</title>
+      </Helmet>
       <h2>數據分析</h2>
       <div className="row">
         <div className="col-6 col-lg-2">
-          <select className="form-select fs-sm fs-lg-base project-option" onChange={(e)=>setSelectData(e.target.value)}>
+          <select
+            className="form-select fs-sm fs-lg-base project-option"
+            onChange={(e) => setSelectData(e.target.value)}
+          >
             <option value="瀏覽量">瀏覽量</option>
             <option value="募資金額">募資金額</option>
             <option value="收藏數">收藏數</option>
@@ -119,8 +170,8 @@ export default function AdminChart() {
         </div>
       </div>
 
-      <div className="row vw-lg-100">
-        <div className="col-lg-8" style={{ height: "50vh" }}>
+      <div className="row w-lg-100">
+        <div className="col-lg-8 w-lg-100" style={{ height: "50vh" }}>
           <canvas ref={chartRef}></canvas>
         </div>
       </div>

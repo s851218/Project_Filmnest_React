@@ -95,10 +95,6 @@ const routes = [
         element: <AboutProposal />,
       },
       {
-        path: "aboutStudio",
-        element: <AboutStudio />,
-      },
-      {
         path: "termsOfUse",
         element: <TermsOfUse />,
       },
@@ -138,6 +134,10 @@ const routes = [
             path: "infoDisclosure",
             element: <ProjectIntroInfoDisclosure />,
           },
+          {
+            path: "aboutStudio",
+            element: <AboutStudio />,
+          }
         ],
       },
       {

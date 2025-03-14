@@ -14,18 +14,29 @@ function FeedbackSwiper() {
   const [showNavigation, setShowNavigation] = useState(false);
   const { id } = useParams();
   const [params, setParams] = useState({});
+  const { id } = useParams();
+  const [params, setParams] = useState({});
 
   //處理params
   useEffect(() => {
-    if (id) {
-      const paramsArry = id.split("&");
-      let paramsObj = {};
-      paramsArry.forEach((param) => {
-        let [key, value] = param.split("=");
-        paramsObj[key] = Number(value);
-      });
-      setParams(paramsObj);
-    }
+    useEffect(() => {
+      if (id) {
+        const paramsArry = id.split("&");
+        let paramsObj = {};
+        paramsArry.forEach((param) => {
+          let [key, value] = param.split("=");
+          paramsObj[key] = Number(value);
+        });
+        setParams(paramsObj);
+        const paramsArry = id.split("&");
+        let paramsObj = {};
+        paramsArry.forEach((param) => {
+          let [key, value] = param.split("=");
+          paramsObj[key] = Number(value);
+        });
+        setParams(paramsObj);
+      }
+    }, [id]);
   }, [id]);
 
   const getFeedbackData = async (id) => {

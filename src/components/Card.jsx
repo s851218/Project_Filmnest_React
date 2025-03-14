@@ -65,7 +65,7 @@ export default function Card({ projects, isSwiper }) {
           />
           <div className="card-body p-3 d-flex flex-column">
             <Link
-              to={`/projects/project=${project.id}`}
+              to={`/projects/projectId=${project.id}`}
               className="link-light stretched-link"
             >
               <h3 className="fs-sm fs-lg-base mb-4">{project.projectTitle}</h3>

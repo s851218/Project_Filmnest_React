@@ -17,6 +17,8 @@ export default function Header() {
   const dispatch = useDispatch();
   const navbarRef = useRef(null);
   const navbarRef2 = useRef(null);
+  const searchContainerRef = useRef(null);
+  const buttonRef = useRef(null);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -63,9 +65,28 @@ export default function Header() {
       window.removeEventListener("scroll", handleScroll2);
     };
   }, []);
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+        dispatch(setIsSearchOpen(false));
+      }
+    };
 
-  const handleSearchToggle = () => {
-    dispatch(setIsSearchOpen(!isSearchOpen));
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const handleSearchToggle = (e) => {
+    console.log(buttonRef.current.contains(e.target));
+    
+    if (buttonRef.current.contains(e.target)) {
+      navigate("/headerSm");
+    } else {
+      dispatch(setIsSearchOpen(!isSearchOpen));
+    }
   };
 
   const handleSearchSubmit = async () => {
@@ -120,7 +141,7 @@ export default function Header() {
               </ul>
             </div>
             <div className="p-0 me-12 nav-item ">
-              <div className="search-container">
+              <div ref={searchContainerRef} className="search-container">
                 <button className={`search-icon ${isSearchOpen ? "d-none" : ""}`} type="button" onClick={handleSearchToggle}>
                   <span className="fw-bolder me-2 text-white">搜尋</span>
                   <span className="material-symbols-outlined text-white">search</span>
@@ -206,7 +227,7 @@ export default function Header() {
           <NavLink className="p-0 me-12" to="/">
             <img src="https://github.com/s851218/Project-FilmNest/blob/main/assets/images/logo.png?raw=true" alt="logo" />
           </NavLink>
-          <Link type="button" className="navbar-toggler border-0 ms-auto d-block" onClick={handleSearchToggle} to="/headerSm">
+          <Link ref={buttonRef} type="button" className="navbar-toggler border-0 ms-auto d-block" onClick={handleSearchToggle} to="/headerSm">
             <span className="navbar-toggler-icon"></span>
           </Link>
         </div>

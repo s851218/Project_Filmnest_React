@@ -53,13 +53,13 @@ export default function ProjectIntroProposerInfo({ studioId }) {
         >
           <div>
             <h3 className="fs-base fs-md-7 mb-2">
-              <Link to="/aboutStudio" className="text-white title-hover">
+              <Link to="aboutStudio" className="text-white title-hover">
                 {proposerData.groupName}
               </Link>
             </h3>
             <section className="d-flex gap-4">
               <Link
-                to="/aboutStudio"
+                to="aboutStudio"
                 className="fs-sm fs-md-base icon-text-hover"
               >
                 <span className="material-symbols-outlined align-bottom text-primary-5 me-0 me-md-1">
@@ -68,7 +68,7 @@ export default function ProjectIntroProposerInfo({ studioId }) {
                 {`${projectCount} 個專案`}
               </Link>
               <Link
-                to="/aboutStudio"
+                to="aboutStudio"
                 className="fs-sm fs-md-base icon-text-hover"
               >
                 <span className="material-symbols-outlined align-bottom text-primary-5 me-0 me-md-1">
@@ -96,7 +96,7 @@ export default function ProjectIntroProposerInfo({ studioId }) {
                 </a>
               </li>
             </ul>
-            <Link to="/aboutStudio" className="btn btn-secondary fs-sm ms-auto">
+            <Link to="aboutStudio" className="btn btn-secondary fs-sm ms-auto">
               聯絡我們
             </Link>
           </section>
