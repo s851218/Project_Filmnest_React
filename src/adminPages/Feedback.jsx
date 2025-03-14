@@ -33,9 +33,6 @@ function FeedbackItems({ optionIndex, control, register }) {
 
   return (
     <>
-      <Helmet>
-        <title>回饋項目編輯</title>
-      </Helmet>
       {fields.map((field, index) => (
         <div key={field.id} className="my-3">
           <label
@@ -286,6 +283,10 @@ function AddFeedbackOption() {
   };
   return (
     <>
+      <Helmet>
+        <title>回饋項目編輯</title>
+      </Helmet>
+
       <AddFormBtn handleAddNewOption={handleAddNewOption} />
       <form onSubmit={handleSubmit(onSubmit)}>
         {showFields &&
