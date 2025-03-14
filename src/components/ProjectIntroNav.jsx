@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 
 // import Swiper core and required modules
 import { FreeMode } from "swiper/modules";
@@ -19,6 +19,8 @@ export default function ProjectIntroNav({ projectId }) {
 
   const [isFavorited, setIsFavorited] = useState(false);
   const [favoriteId, setFavoriteId] = useState(null);
+
+  const navigate = useNavigate();
 
   // 檢查收藏狀態
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function ProjectIntroNav({ projectId }) {
   const toggleFavorite = async (e) => {
     e.preventDefault();
     if (!token) {
-      alert("請先登入！");
+      navigate("/login");
       return;
     }
 
