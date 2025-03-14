@@ -93,26 +93,12 @@ export default function ProjectIntroNews() {
           return (
             <div className="row mb-5" key={item.id}>
               <div className="col-10 mx-auto">
-                <div className="border border-primary-5 rounded box-shadow">
-                  <button
-                    className={`text-white py-3 w-100 fs-5 d-flex justify-content-between ${
-                      postsIsOpen[index].isOpen
-                        ? "bg-primary-6"
-                        : "bg-primary-10"
-                    }`}
-                    type="button"
-                    onClick={() => handleCollapse(item.id)}
-                  >
-                    <span className="fs-base fs-md-7">{item.title}</span>{" "}
+                <div className="border border-0 border-primary-5 rounded box-shadow">
+                  <button className={`text-white py-3 px-4 w-100 fs-5 d-flex justify-content-between border-1 ${postsIsOpen[index].isOpen ? "bg-primary-6" : "bg-primary-10"}`} type="button" onClick={() => handleCollapse(item.id)}>
+                    <span className="fs-base">{item.title}</span>{" "}
                     <span className="d-flex align-items-center">
-                      <span className="fs-base text-primary-5 me-2">
-                        {getTime(item.date)}
-                      </span>
-                      {postsIsOpen[index].isOpen ? (
-                        <i className="bi bi-chevron-up fs-7"></i>
-                      ) : (
-                        <i className="bi bi-chevron-down fs-7"></i>
-                      )}
+                      <time className="fs-xs fs-md-sm text-primary-5 me-2" >{getTime(item.date)}</time>
+                      {postsIsOpen[index].isOpen ? <i className="bi bi-chevron-up fs-7"></i> : <i className="bi bi-chevron-down fs-7"></i>}
                     </span>
                   </button>
                   <div

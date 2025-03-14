@@ -1,4 +1,4 @@
-import { Outlet, useParams } from "react-router";
+import { Outlet, useLocation, useParams } from "react-router";
 import ProjectIntroNav from "../components/ProjectIntroNav";
 import ProjectIntroSwiper from "../components/ProjectIntroSwiper";
 import ProjectIntroInfo from "../components/ProjectIntroInfo";
@@ -12,8 +12,11 @@ export default function ProjectIntro() {
   const [projectInfo, setProjectInfo] = useState({});
 
   const { id } = useParams(); // xiang 2025/02/27 intro路由調整
-  const [params, setParams] = useState({});
+  const [ params , setParams ] = useState({})
+  const location = useLocation();
 
+  const isAboutStudioPage = location.pathname.includes("/aboutStudio");
+  
   //處理params
   useEffect(() => {
     if (id) {
@@ -50,11 +53,7 @@ export default function ProjectIntro() {
 
   return (
     <>
-      <Helmet>
-        <title>{projectInfo.projectTitle}</title>
-        <meta name="description" content={projectInfo.projectTitle} />
-      </Helmet>
-      <section
+      {!isAboutStudioPage ? (<><section
         className="pt-0 pt-md-6 pb-8 pb-mb-10 bg-layer-blur position-relative"
         style={{ marginTop: 89 }}
       >
@@ -71,6 +70,8 @@ export default function ProjectIntro() {
       {/* 專案介紹 Navbar */}
       <ProjectIntroNav projectId={projectInfo.id} />
       <Outlet context={projectInfo} />
+      </>) 
+      : <div><Outlet context={projectInfo} /></div>}
     </>
   );
 }
