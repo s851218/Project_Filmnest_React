@@ -223,179 +223,198 @@ function AdminFeedbackForm() {
                             項目圖片
                           </label>
                           <input
-                            type="text"
-                            defaultValue={items.item}
-                            disabled={!isEditable}
-                            className="form-control"
-                            {...register(`item.${index + 1}`)}
+                            type="hidden"
+                            {...register(`choice.${choiceIndex}.image`, {
+                              required: "您必須上傳一張示意圖片",
+                            })}
                           />
+                          <input
+                            id={imageInputID}
+                            type="file"
+                            accept="image/*"
+                            className="form-control d-none"
+                            disabled={!isEditing}
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              handleFileUpload(choiceIndex, file);
+                            }}
+                          />
+                          <label
+                            htmlFor={imageInputID}
+                            className="d-block mb-0"
+                          >
+                            {hasImage ? (
+                              <div className="position-relative">
+                                <div className="ratio ratio-4x3 overflow-hidden rounded">
+                                  <img
+                                    src={imageValue}
+                                    alt="Preview"
+                                    className="w-100 h-100 object-fit-cover border border-2 border-primary-8 rounded"
+                                  />
+                                </div>
+                                {isEditing && (
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-warning position-absolute top-0 end-0 m-2 rounded-circle"
+                                    style={{ width: "32px", height: "32px" }}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      document
+                                        .getElementById(imageInputID)
+                                        .click();
+                                    }}
+                                  >
+                                    <i className="bi bi-pencil"></i>
+                                  </button>
+                                )}
+                              </div>
+                            ) : (
+                              <div
+                                className="d-flex flex-column align-items-center justify-content-center border-2 border-dashed rounded bg-light p-4 ratio ratio-16x9"
+                                style={{
+                                  cursor: isEditing ? "pointer" : "default",
+                                }}
+                              >
+                                {errors.choice?.[choiceIndex]?.image && (
+                                  <div className="text-danger small p-2">
+                                    <i className="bi bi-exclamation-circle me-1"></i>
+                                    {errors.choice[choiceIndex].image.message}
+                                  </div>
+                                )}
+                                <div
+                                  className={`d-flex align-items-center justify-content-center border ${
+                                    errors.choice?.[choiceIndex]?.image &&
+                                    "border-danger"
+                                  }`}
+                                >
+                                  <div
+                                    className={`d-flex flex-column align-items-center justify-content-center ${
+                                      errors.choice?.[choiceIndex]?.image
+                                        ? "text-danger"
+                                        : "text-primary-6"
+                                    }`}
+                                  >
+                                    <i className="bi bi-cloud-arrow-up fs-1 mb-2"></i>
+                                    <p className="mb-1 fw-bold required">
+                                      上傳圖片
+                                    </p>
+                                    <p className="small mb-0">
+                                      {isEditing
+                                        ? "點擊此處上傳圖片"
+                                        : "尚未上傳圖片"}
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+                          </label>
                         </div>
-                      </section>
-                    ))}
+                      </div>
+
+                      {/* 右側表單欄位 */}
+                      <div className="col-md-7">
+                        <div className="row mb-3">
+                          <div className="col-md-7 mb-3 mb-md-0">
+                            <label
+                              htmlFor={titleInputID}
+                              className="form-label fw-bold required"
+                            >
+                              項目名稱
+                            </label>
+                            <input
+                              {...register(`choice.${choiceIndex}.title`, {
+                                required: "您必須填入項目名稱",
+                              })}
+                              disabled={!isEditing}
+                              id={titleInputID}
+                              type="text"
+                              placeholder="請輸入回饋項目名稱"
+                              className={`form-control bg-white text-primary-8 ${
+                                errors.choice?.[choiceIndex]?.title
+                                  ? "is-invalid"
+                                  : ""
+                              }`}
+                            />
+                            {errors.choice?.[choiceIndex]?.title && (
+                              <div className="invalid-feedback">
+                                {errors.choice[choiceIndex].title.message}
+                              </div>
+                            )}
+                          </div>
+                          <div className="col-md-5">
+                            <label
+                              htmlFor={priceInputID}
+                              className="form-label fw-bold required"
+                            >
+                              金額設定
+                            </label>
+                            <div className="input-group">
+                              <span className="input-group-text bg-white text-primary-8">
+                                NT$
+                              </span>
+                              <input
+                                {...register(`choice.${choiceIndex}.price`, {
+                                  required: "您必須填入項目金額",
+                                  min: { value: 1, message: "金額必須大於 0" },
+                                })}
+                                disabled={!isEditing}
+                                id={priceInputID}
+                                type="number"
+                                min={1}
+                                placeholder="0"
+                                className={`form-control bg-white text-primary-8 ${
+                                  errors.choice?.[choiceIndex]?.price
+                                    ? "is-invalid"
+                                    : ""
+                                }`}
+                              />
+                              {errors.choice?.[choiceIndex]?.price && (
+                                <div className="invalid-feedback">
+                                  {errors.choice[choiceIndex].price.message}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 內容項目列表 */}
+                        <ContentItems
+                          control={control}
+                          choiceIndex={choiceIndex}
+                          register={register}
+                          editingIndex={editingIndex}
+                          errors={errors}
+                          watch={watch}
+                        />
+                        <div>
+                          {!allFieldsValid && (
+                            <div className="text-primary-7 fst-italic text-end">
+                              <i className="bi bi-info-circle me-1"></i>
+                              <small className="me-2">
+                                完成所有欄位才能新增回饋項目唷
+                              </small>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </div>
-            <button
-              className="btn btn-primary"
-              type="submit"
-              onClick={handleSubmit((data) => onSubmit(data, feedback.id))}
-            >
-              送出
-            </button>
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setInputChosen(feedback.id);
-                setFocus(`title[${feedback.id}]`);
-              }}
-              type="button"
-              className="btn btn-primary"
-            >
-              編輯
-            </button>
-          </form>
-        );
-      })}
-    </>
-  );
-}
+                </section>
+              );
+            })}
 
-// 新增回饋選項表單
-function AddFeedbackOption() {
-  const { register, handleSubmit, control, reset } = useForm({
-    defaultValues: { feedbackOptions: [DEFAULT_FEEDBACK_OPTION] },
-  });
-  const { fields, append, remove } = useFieldArray({
-    control,
-    name: "feedbackOptions",
-  });
-  const [showFields, setShowFields] = useState(false);
-  const [file, setFile] = useState(null);
-
-  const handleFileChange = (event) => {
-    const selectedfile = event.target.files[0];
-    console.log(selectedfile);
-    if (selectedfile) {
-      const reader = new FileReader();
-      reader.readAsDataURL(selectedfile);
-      reader.onloadend = () => {
-        setFile(reader.result); // 存 Base64 字串
-      };
-    }
-  };
-
-  const handleUpload = async () => {
-    if (!file) {
-      alert("請選擇一張圖片");
-      return;
-    }
-    const data = {
-      image: file, // Base64 格式的圖片
-    };
-
-    try {
-      const response = await axios.post(`${API_BASE}/uploadImages`, data);
-      console.log("成功上傳：", response.data);
-      // alert("圖片上傳成功！");
-    } catch (error) {
-      console.error("上傳失敗：", error);
-      // alert("圖片上傳失敗");
-    }
-  };
-
-  const handleAddNewOption = () => {
-    if (showFields === false) {
-      setShowFields(true);
-      return;
-    }
-    append(DEFAULT_FEEDBACK_OPTION);
-  };
-
-  const onSubmit = async (data) => {
-    console.log("data:", data);
-    const dataToSend = data.feedbackOptions.map((option) => ({
-      projectId: 1,
-      ...option,
-      image: file,
-      price: Number(option.price),
-    }));
-    console.log("dataToSend:", dataToSend);
-
-    try {
-      await Promise.all(
-        dataToSend.map((item) => axios.post(`${API_BASE}/products`, item))
-      );
-    } catch (error) {
-      console.error(error);
-      alert("新增失敗");
-    } finally {
-      setShowFields(false);
-      reset();
-    }
-  };
-  return (
-    <>
-      <AddFormBtn handleAddNewOption={handleAddNewOption} />
-      <form onSubmit={handleSubmit(onSubmit)}>
-        {showFields &&
-          fields.map((field, index) => (
-            <div key={field.id}>
-              <h3>回饋項目 #{index + 1}</h3>
-
-              <div className="my-3">
-                <label
-                  htmlFor={`feedback-title${index + 1}`}
-                  className="form-label"
+            {/* 表單操作按鈕區 */}
+            <div className="d-flex justify-content-center align-items-center mt-4 pt-3 border-top">
+              <div className="d-flex gap-2 w-lg-50 w-sm-75 w-100 justify-content-center">
+                <button
+                  type="button"
+                  className="btn btn-primary d-flex justify-content-center align-items-center w-lg-50 w-sm-75 w-100"
+                  onClick={addNewChoice}
+                  disabled={!allFieldsValid}
                 >
-                  項目名稱
-                </label>
-                <input
-                  {...register(`feedbackOptions.${index}.title`)}
-                  id={`feedback-title${index + 1}`}
-                  type="text"
-                  className="form-control"
-                  placeholder="請輸入回饋名稱"
-                />
-              </div>
-              <div className="my-3">
-                <label
-                  htmlFor={`feedback-price${index + 1}`}
-                  className="form-label"
-                >
-                  金額設定
-                </label>
-                <input
-                  {...register(`feedbackOptions.${index}.price`)}
-                  id={`feedback-price${index + 1}`}
-                  type="number"
-                  className="form-control"
-                  placeholder="請輸入回饋金額"
-                />
-              </div>
-              <FeedbackItems
-                optionIndex={index}
-                control={control}
-                register={register}
-              />
-
-              <div className="my-3">
-                <label
-                  htmlFor={`feedback-image${index + 1}`}
-                  className="form-label"
-                >
-                  上傳圖片
-                </label>
-                <input
-                  onChange={handleFileChange}
-                  id={`feedback-image${index + 1}`}
-                  type="file"
-                  accept="image/*"
-                  className="form-control"
-                />
-              </div>
-
-              <div className="d-flex">
+                  <i className="bi bi-plus-circle me-2"></i>
+                  新增回饋項目
+                </button>
                 <button
                   disabled={isSubmitting}
                   type="submit"
