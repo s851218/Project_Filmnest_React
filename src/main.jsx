@@ -9,11 +9,14 @@ import { Provider } from "react-redux";
 import { store } from "./store";
 // Quill 文字編輯器 theme css
 import "quill/dist/quill.core.css";
+import { HelmetProvider } from "react-helmet-async";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Provider store={store}>
-      <RouterProvider router={router} />
-    </Provider>
+    <HelmetProvider>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
+    </HelmetProvider>
   </StrictMode>
 );

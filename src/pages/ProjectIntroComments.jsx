@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import getNewDateFormatted from "../helpers/getNewDateFormatted";
 import { useParams } from "react-router";
+import { Helmet } from "react-helmet-async";
 
 const BASE_URL = "https://json-server-vercel-tdcc.onrender.com";
 
@@ -12,22 +13,22 @@ export default function ProjectIntroComments() {
   const [projectOwner, setProjectOwner] = useState(null);
   const [sortOrder, setSortOrder] = useState("desc");
   const userId = useSelector((state) => state.user.profile.userId);
-  const { id } = useParams()
-  const [ params , setParams ] = useState({})
+  const { id } = useParams();
+  const [params, setParams] = useState({});
 
   //處理params
-  useEffect(()=>{
+  useEffect(() => {
     if (id) {
-      const paramsArry = id.split("&")
-      let paramsObj = {}
-      paramsArry.forEach((param)=>{
-        let [ key , value ] = param.split("=")
-        paramsObj[key] = Number(value)
-      })
+      const paramsArry = id.split("&");
+      let paramsObj = {};
+      paramsArry.forEach((param) => {
+        let [key, value] = param.split("=");
+        paramsObj[key] = Number(value);
+      });
       console.log(paramsObj);
-      setParams(paramsObj)
+      setParams(paramsObj);
     }
-  },[id])
+  }, [id]);
 
   //初始渲染資料，並處理排序
   useEffect(() => {
@@ -49,7 +50,7 @@ export default function ProjectIntroComments() {
       };
       getCommentsData(params.projectId);
     }
-  }, [sortOrder,params]);
+  }, [sortOrder, params]);
 
   // 重新渲染呼叫用
   const refreshComments = async (id = 1) => {
@@ -149,6 +150,9 @@ export default function ProjectIntroComments() {
 
   return (
     <>
+      <Helmet>
+        <title>留言板</title>
+      </Helmet>
       {/* 留言區塊 */}
       <section className="container py-10">
         <div className="row">

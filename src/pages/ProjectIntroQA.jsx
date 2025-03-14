@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Collapse } from "bootstrap";
 import { useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 
@@ -45,7 +46,9 @@ export default function ProjectIntroQA() {
     if (params.projectId) {
       (async () => {
         try {
-          const response = await axios.get(`${apiBase}/faqs?projectId=${params.projectId}`);
+          const response = await axios.get(
+            `${apiBase}/faqs?projectId=${params.projectId}`
+          );
           setProjectFaqs(response.data);
           setFaqsIsOpen(
             response.data.map((item) => {
@@ -62,14 +65,18 @@ export default function ProjectIntroQA() {
   useEffect(() => {
     faqsCollapseRef.current.forEach((item, index) => {
       if (item) {
-        faqsCollapseInstances.current[index] = new Collapse(item, { toggle: false });
+        faqsCollapseInstances.current[index] = new Collapse(item, {
+          toggle: false,
+        });
       }
     });
   }, [projectFaqs]);
 
   const handleCollapse = (id) => {
     setFaqsIsOpen((prev) => {
-      return prev.map((item) => (item.id === id ? { ...item, isOpen: !item.isOpen } : item));
+      return prev.map((item) =>
+        item.id === id ? { ...item, isOpen: !item.isOpen } : item
+      );
     });
 
     const index = projectFaqs.findIndex((item) => item.id === id);
@@ -78,28 +85,47 @@ export default function ProjectIntroQA() {
 
   return (
     <>
+      <Helmet>
+        <title>常見問題</title>
+      </Helmet>
       <div className="container pt-8 pb-10 py-md-15">
         {projectFaqs.map((item, index) => {
           return (
             <div className="row mb-5" key={item.id}>
-                <div className="col-10 mx-auto">
+              <div className="col-10 mx-auto">
                 <div className="border border-primary-5 rounded box-shadow">
-                  <button className={`text-white py-3 w-100 fs-5 d-flex justify-content-between ${faqsIsOpen[index].isOpen ? "bg-primary-6" : "bg-primary-10"}`} type="button" onClick={() => handleCollapse(item.id)}>
+                  <button
+                    className={`text-white py-3 w-100 fs-5 d-flex justify-content-between ${
+                      faqsIsOpen[index].isOpen
+                        ? "bg-primary-6"
+                        : "bg-primary-10"
+                    }`}
+                    type="button"
+                    onClick={() => handleCollapse(item.id)}
+                  >
                     <span className="fs-base">
                       <span className="fs-base me-3">Q{index + 1}:</span>
                       {item.title}
                     </span>{" "}
                     <span className="d-flex align-items-center">
-                      <span className="fs-base text-primary-5 me-2">{getTime(item.date)}</span>
-                      {faqsIsOpen[index].isOpen ? <i className="bi bi-chevron-up fs-7"></i> : <i className="bi bi-chevron-down fs-7"></i>}
+                      <span className="fs-base text-primary-5 me-2">
+                        {getTime(item.date)}
+                      </span>
+                      {faqsIsOpen[index].isOpen ? (
+                        <i className="bi bi-chevron-up fs-7"></i>
+                      ) : (
+                        <i className="bi bi-chevron-down fs-7"></i>
+                      )}
                     </span>
                   </button>
-                  <div className="collapse " ref={(el) => (faqsCollapseRef.current[index] = el)}>
+                  <div
+                    className="collapse "
+                    ref={(el) => (faqsCollapseRef.current[index] = el)}
+                  >
                     <div className="card card-body">{item.content}</div>
                   </div>
-                  </div>
                 </div>
-              
+              </div>
             </div>
           );
         })}

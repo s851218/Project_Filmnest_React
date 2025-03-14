@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../slice/categorySlice";
 import Card from "../components/Card";
 import { useLocation } from "react-router";
+import { Helmet } from "react-helmet-async";
 
 const apiBase = import.meta.env.VITE_API_BASE;
 
@@ -21,14 +22,16 @@ export default function ProjectExplore() {
       apiUrl = `${apiBase}/projects`;
     } else if (category && category !== "all") {
       apiUrl = `${apiBase}/projects?category=${category}`;
-      dispatch(setCategory(category))
+      dispatch(setCategory(category));
     }
     try {
       const response = await axios.get(apiUrl);
-      if (searchText){
-        const newData = response.data.filter((item)=>item.projectTitle.toLowerCase().includes(searchText.toLowerCase())) //toLowerCase()轉小寫比較
+      if (searchText) {
+        const newData = response.data.filter((item) =>
+          item.projectTitle.toLowerCase().includes(searchText.toLowerCase())
+        ); //toLowerCase()轉小寫比較
         setProjects(newData);
-      }else{
+      } else {
         setProjects(response.data);
       }
     } catch (error) {
@@ -43,7 +46,7 @@ export default function ProjectExplore() {
 
   useEffect(() => {
     getProjectsData();
-  }, [category,searchText,searchValue]);
+  }, [category, searchText, searchValue]);
   useEffect(() => {
     return () => {
       dispatch(setCategory("all"));
@@ -52,13 +55,26 @@ export default function ProjectExplore() {
 
   return (
     <>
+      <Helmet>
+        <title>探索全部專案</title>
+      </Helmet>
       <div className="container pt-20 pb-10">
         <div className="pt-5" style={{ marginTop: "89px" }}>
-          <div className="container" style={{ boxShadow: "0px 20px 20px -20px #ffffff33" }}>
+          <div
+            className="container"
+            style={{ boxShadow: "0px 20px 20px -20px #ffffff33" }}
+          >
             <div className="d-flex pb-5 border-bottom border-primary-9 project-spacing">
               <div className="d-flex align-items-center">
-                <span className="project-select me-md-3 fs-sm fs-md-base">專案分類</span>
-                <select className="form-select fs-sm fs-md-base project-option" aria-label="Default select example" defaultValue={category} onChange={handleSwitchCategory}>
+                <span className="project-select me-md-3 fs-sm fs-md-base">
+                  專案分類
+                </span>
+                <select
+                  className="form-select fs-sm fs-md-base project-option"
+                  aria-label="Default select example"
+                  defaultValue={category}
+                  onChange={handleSwitchCategory}
+                >
                   <option value="all">全部專案</option>
                   <option value="喜劇">喜劇</option>
                   <option value="愛情">愛情</option>
@@ -71,8 +87,13 @@ export default function ProjectExplore() {
                 </select>
               </div>
               <div className="d-flex align-items-center">
-                <span className="project-select me-md-3 fs-sm fs-md-base">專案狀態</span>
-                <select className="form-select fs-sm fs-md-base" aria-label="Default select example">
+                <span className="project-select me-md-3 fs-sm fs-md-base">
+                  專案狀態
+                </span>
+                <select
+                  className="form-select fs-sm fs-md-base"
+                  aria-label="Default select example"
+                >
                   <option value="3">進行中</option>
                   <option value="1">即將開始</option>
                   <option value="2">已結案</option>

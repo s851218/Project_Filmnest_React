@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import FeedbackSwiper from "../components/FeedbackSwiper";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { Helmet } from "react-helmet-async";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -14,22 +15,22 @@ function FeedbackPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  const { id } = useParams()
-  const [ params , setParams ] = useState({})
+  const { id } = useParams();
+  const [params, setParams] = useState({});
   const [projectData, setProjectData] = useState({});
 
   //處理params
-  useEffect(()=>{
+  useEffect(() => {
     if (id) {
-      const paramsArry = id.split("&")
-      let paramsObj = {}
-      paramsArry.forEach((param)=>{
-        let [ key , value ] = param.split("=")
-        paramsObj[key] = Number(value)
-      })
-      setParams(paramsObj)
+      const paramsArry = id.split("&");
+      let paramsObj = {};
+      paramsArry.forEach((param) => {
+        let [key, value] = param.split("=");
+        paramsObj[key] = Number(value);
+      });
+      setParams(paramsObj);
     }
-  },[id])
+  }, [id]);
 
   const getProjectData = async (id) => {
     try {
@@ -90,6 +91,9 @@ function FeedbackPage() {
 
   return (
     <>
+      <Helmet>
+        <title>贊助方案</title>
+      </Helmet>
       <section>
         {/* 背景圖片 */}
         <div
