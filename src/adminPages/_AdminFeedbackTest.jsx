@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 // const API_BASE = import.meta.env.VITE_API_BASE;
@@ -14,8 +14,16 @@ const DEFAULT_FEEDBACK_FORM = {
 };
 
 function FeedbackFormTest() {
-  const { handleSubmit, register, control, watch, setValue } = useForm({
+  const {
+    handleSubmit,
+    register,
+    control,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useForm({
     defaultValues: DEFAULT_FEEDBACK_FORM,
+    mode: "onChange",
   });
   const {
     fields: choiceFields,
@@ -25,36 +33,29 @@ function FeedbackFormTest() {
     control,
     name: "choice",
   });
+
   const onSubmit = (data) => {
-    console.log(data);
+    console.log("提交的資料:", data);
   };
 
-  const [previews, setPreviews] = useState({});
+  // 處理檔案上傳並轉換為 base64
+  const handleFileUpload = (choiceIndex, file) => {
+    if (!file) {
+      setValue(`choice.${choiceIndex}.image`, null);
 
-  // 監聽圖片變化
-  useEffect(() => {
-    const subscription = watch((value, { name }) => {
-      if (name && name.includes("image")) {
-        const match = name.match(/choice\.(\d+)\.image/);
-        if (match) {
-          const index = parseInt(match[1]);
-          const file = value.choice[index].image;
+      return;
+    }
 
-          if (file instanceof File) {
-            const reader = new FileReader();
-            reader.onload = () => {
-              setPreviews((prev) => ({ ...prev, [index]: reader.result }));
-            };
-            reader.readAsDataURL(file);
-          } else {
-            setPreviews((prev) => ({ ...prev, [index]: null }));
-          }
-        }
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [watch]);
+    // 轉換檔案為 base64
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64String = reader.result;
+      setValue(`choice.${choiceIndex}.image`, base64String, {
+        shouldValidate: true,
+      });
+    };
+    reader.readAsDataURL(file);
+  };
 
   const [editingIndex, setEditingIndex] = useState(0);
   const toggleEdit = (index) => {
@@ -72,6 +73,23 @@ function FeedbackFormTest() {
     setEditingIndex(newIndex);
   };
 
+  // 監聽整個表單，檢查是否所有必填欄位都有值
+  const formValues = watch();
+
+  // 檢查所有選項是否都已填寫完整
+  const allFieldsValid = useMemo(() => {
+    // 每個選項
+    return choiceFields.every((_, choiceIndex) => {
+      const choice = formValues.choice[choiceIndex];
+      // 基本欄位
+      if (!choice.image || !choice.title || !choice.price) {
+        return false;
+      }
+      // 所有內容項目
+      return choice.contents.every((content) => !!content.item);
+    });
+  }, [formValues, choiceFields]);
+
   return (
     <>
       <div className="container py-20">
@@ -80,9 +98,9 @@ function FeedbackFormTest() {
             <h5 className="mb-4">回饋項目</h5>
             <form onSubmit={handleSubmit(onSubmit)}>
               {choiceFields.map((choice, choiceIndex) => {
-                // const imageFile = watch(`choice.${choiceIndex}.image`);
+                const imageValue = watch(`choice.${choiceIndex}.image`);
                 const inputId = `feedbackImageInput-${choiceIndex}`;
-                const hasPreview = previews[choiceIndex];
+                const hasImage = !!imageValue;
 
                 return (
                   <section
@@ -90,36 +108,33 @@ function FeedbackFormTest() {
                     className="mb-3 border border-3 border-primary-7 rounded p-5"
                   >
                     <div className="mb-3">
+                      {/* 隱藏的 image 欄位，由 react-hook-form 管理 */}
                       <input
-                        {...register(`choice.${choiceIndex}.image`)}
-                        onChange={(e) => {
-                          const file = e.target.files[0];
-                          setValue(`choice.${choiceIndex}.image`, file);
+                        type="hidden"
+                        {...register(`choice.${choiceIndex}.image`, {
+                          required: "您必須有一張示意圖片",
+                        })}
+                      />
 
-                          if (file) {
-                            const reader = new FileReader();
-                            reader.onload = () => {
-                              setPreviews((prev) => ({
-                                ...prev,
-                                [choiceIndex]: reader.result,
-                              }));
-                            };
-                            reader.readAsDataURL(file);
-                          }
-                        }}
-                        disabled={editingIndex !== choiceIndex}
+                      {/* 實際的檔案上傳元素，但不受 react-hook-form 直接管理 */}
+                      <input
                         id={inputId}
                         type="file"
                         accept="image/*"
                         className="form-control d-none"
+                        disabled={editingIndex !== choiceIndex}
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          handleFileUpload(choiceIndex, file);
+                        }}
                       />
                       <label htmlFor={inputId} className="d-block mb-0">
-                        {hasPreview ? (
-                          // 有預覽圖時顯示預覽圖，點擊可重新上傳
+                        {hasImage ? (
+                          // 有圖片時顯示預覽
                           <div className="position-relative">
                             <img
-                              src={previews[choiceIndex]}
-                              alt="回饋項目預覽圖片"
+                              src={imageValue}
+                              alt="Preview"
                               className="img-thumbnail"
                               style={{
                                 maxWidth: "100%",
@@ -130,7 +145,6 @@ function FeedbackFormTest() {
                               }}
                             />
                             {editingIndex === choiceIndex && (
-                              // 啟用時顯示可編輯示意圖
                               <div className="position-absolute top-0 end-0 p-2">
                                 <button
                                   type="button"
@@ -146,7 +160,7 @@ function FeedbackFormTest() {
                             )}
                           </div>
                         ) : (
-                          // 無預覽圖時顯示上傳區塊
+                          // 無圖片時顯示上傳區塊
                           <div className="d-flex flex-column align-items-center cursor-pointer border border-2 border-dashed p-4 rounded">
                             <i className="bi bi-cloud-arrow-up fs-1 text-secondary mb-2"></i>
                             <p className="mb-1 required">上傳圖片</p>
@@ -156,29 +170,49 @@ function FeedbackFormTest() {
                           </div>
                         )}
                       </label>
+                      {errors.choice?.[choiceIndex]?.image && (
+                        <small className="text-danger mt-1">
+                          {errors.choice[choiceIndex].image.message}
+                        </small>
+                      )}
                     </div>
                     <div className="mb-3">
                       <label htmlFor="" className="form-label required">
                         項目名稱
                       </label>
                       <input
-                        {...register(`choice.${choiceIndex}.title`)}
+                        {...register(`choice.${choiceIndex}.title`, {
+                          required: "您必須填入項目名稱",
+                        })}
                         disabled={editingIndex !== choiceIndex}
                         type="text"
                         className="form-control bg-white text-primary-8"
                       />
+                      {errors.choice?.[choiceIndex]?.title && (
+                        <small className="text-danger mt-1">
+                          {errors.choice[choiceIndex].title.message}
+                        </small>
+                      )}
                     </div>
                     <div className="mb-3">
                       <label htmlFor="" className="form-label required">
                         金額設定
                       </label>
                       <input
-                        {...register(`choice.${choiceIndex}.price`)}
+                        {...register(`choice.${choiceIndex}.price`, {
+                          required: "您必須填入項目金額",
+                          min: { value: 1, message: "項目金額必須大於 0" },
+                        })}
                         disabled={editingIndex !== choiceIndex}
                         type="number"
-                        min={0}
+                        min={1}
                         className="form-control bg-white text-primary-8"
                       />
+                      {errors.choice?.[choiceIndex]?.price && (
+                        <small className="text-danger mt-1">
+                          {errors.choice[choiceIndex].price.message}
+                        </small>
+                      )}
                     </div>
                     {/* 動態欄位 */}
                     <ContentItems
@@ -186,6 +220,8 @@ function FeedbackFormTest() {
                       choiceIndex={choiceIndex}
                       register={register}
                       editingIndex={editingIndex}
+                      errors={errors}
+                      watch={watch}
                     />
 
                     <button
@@ -217,12 +253,18 @@ function FeedbackFormTest() {
                 type="button"
                 className="btn btn-primary"
                 onClick={addNewChoice}
+                disabled={!allFieldsValid}
               >
                 新增回饋項目
               </button>
               <button type="submit" className="btn btn-success ms-2">
                 送出
               </button>
+              {!allFieldsValid && (
+                <small className="text-mute mt-2">
+                  請完成所有欄位才能新增回饋項目
+                </small>
+              )}
             </form>
           </div>
         </div>
@@ -231,7 +273,14 @@ function FeedbackFormTest() {
   );
 }
 
-const ContentItems = ({ control, choiceIndex, register, editingIndex }) => {
+const ContentItems = ({
+  control,
+  choiceIndex,
+  register,
+  editingIndex,
+  errors,
+  watch,
+}) => {
   const {
     fields: contentFields,
     append: appendContent,
@@ -240,39 +289,53 @@ const ContentItems = ({ control, choiceIndex, register, editingIndex }) => {
     control,
     name: `choice.${choiceIndex}.contents`,
   });
-
+  const contents = watch(`choice.${choiceIndex}.contents`);
+  const isLastItemEmpty =
+    contents &&
+    contents.length > 0 &&
+    !contents[contents.length - 1].item.trim();
   return (
     <div className="mt-3">
       <label htmlFor="" className="form-label required">
         項目內容
       </label>
-      {contentFields.map((content, contentIndex) => (
-        <div key={content.id} className="mb-2 d-flex align-items-center">
-          {/* fields */}
-          <input
-            {...register(`choice.${choiceIndex}.contents.${contentIndex}.item`)}
-            disabled={editingIndex !== choiceIndex}
-            type="text"
-            className="form-control bg-white text-primary-8"
-          />
-          <button
-            type="button"
-            className="btn btn-danger ms-2"
-            onClick={() => removeContent(contentIndex)}
-            disabled={
-              contentFields.length === 1 || editingIndex !== choiceIndex
-            }
-          >
-            <i className="bi bi-x"></i>
-          </button>
-        </div>
-      ))}
+      {contentFields.map((content, contentIndex) => {
+        return (
+          <div key={content.id} className="mb-2 d-flex align-items-center">
+            {/* fields */}
+            <input
+              {...register(
+                `choice.${choiceIndex}.contents.${contentIndex}.item`,
+                {
+                  required: "你必須填寫完所有的項目內容",
+                }
+              )}
+              disabled={editingIndex !== choiceIndex}
+              type="text"
+              className="form-control bg-white text-primary-8"
+            />
+            <button
+              type="button"
+              className="btn btn-danger ms-2"
+              onClick={() => removeContent(contentIndex)}
+              disabled={
+                contentFields.length === 1 || editingIndex !== choiceIndex
+              }
+            >
+              <i className="bi bi-x"></i>
+            </button>
+          </div>
+        );
+      })}
+      {errors.choice?.[choiceIndex]?.contents && (
+        <small className="text-danger mt-1">你必須填寫完所有的項目內容</small>
+      )}
       <div className="mb-3">
         <button
           type="button"
           className="btn btn-sm btn-primary"
           onClick={() => appendContent({ item: "" })}
-          disabled={editingIndex !== choiceIndex}
+          disabled={editingIndex !== choiceIndex || isLastItemEmpty}
         >
           新增項目
         </button>
