@@ -12,11 +12,11 @@ export default function ProjectIntro() {
   const [projectInfo, setProjectInfo] = useState({});
 
   const { id } = useParams(); // xiang 2025/02/27 intro路由調整
-  const [ params , setParams ] = useState({})
+  const [params, setParams] = useState({});
   const location = useLocation();
 
   const isAboutStudioPage = location.pathname.includes("/aboutStudio");
-  
+
   //處理params
   useEffect(() => {
     if (id) {
@@ -53,25 +53,34 @@ export default function ProjectIntro() {
 
   return (
     <>
-      {!isAboutStudioPage ? (<><section
-        className="pt-0 pt-md-6 pb-8 pb-mb-10 bg-layer-blur position-relative"
-        style={{ marginTop: 89 }}
-      >
-        <div className="container">
-          <div className="row d-flex flex-column flex-md-row gap-8 gap-xxl-9 align-items-center">
-            {/* 左半部劇照 Swiper */}
-            <ProjectIntroSwiper projectInfo={projectInfo} />
-            {/* 右半部專案資訊、提案人資訊 */}
-            <ProjectIntroInfo projectInfo={projectInfo} />
-          </div>
-        </div>
-      </section>
+      <Helmet>
+        <title>{projectInfo.projectTitle}</title>
+      </Helmet>
+      {!isAboutStudioPage ? (
+        <>
+          <section
+            className="pt-0 pt-md-6 pb-8 pb-mb-10 bg-layer-blur position-relative"
+            style={{ marginTop: 89 }}
+          >
+            <div className="container">
+              <div className="row d-flex flex-column flex-md-row gap-8 gap-xxl-9 align-items-center">
+                {/* 左半部劇照 Swiper */}
+                <ProjectIntroSwiper projectInfo={projectInfo} />
+                {/* 右半部專案資訊、提案人資訊 */}
+                <ProjectIntroInfo projectInfo={projectInfo} />
+              </div>
+            </div>
+          </section>
 
-      {/* 專案介紹 Navbar */}
-      <ProjectIntroNav projectId={projectInfo.id} />
-      <Outlet context={projectInfo} />
-      </>) 
-      : <div><Outlet context={projectInfo} /></div>}
+          {/* 專案介紹 Navbar */}
+          <ProjectIntroNav projectId={projectInfo.id} />
+          <Outlet context={projectInfo} />
+        </>
+      ) : (
+        <div>
+          <Outlet context={projectInfo} />
+        </div>
+      )}
     </>
   );
 }
