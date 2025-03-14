@@ -27,11 +27,11 @@ export default function PaymentInfoFrom ({reference , userData}) {
   
       const userInfo = {
         userName,
-        // userPhone: phone, // 目前電話格式錯誤
+        userPhone: phone,
         userEmail: email,
       }
       setValue("userName",userName)
-      // setValue("userPhone", phone) // 目前電話格式錯誤
+      setValue("userPhone", phone)
       setValue("userEmail", email)
       dispatch(setUserInfo(userInfo))
     }
