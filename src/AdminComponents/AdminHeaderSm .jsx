@@ -26,7 +26,7 @@ export default function AdminHeaderSm() {
         <Link className="p-0 me-3" onClick={() => navigate(-1)}>
           <img src="close_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="logo" style={{ width: "20px" }} />
         </Link>
-        <Link className="p-0 me-12" to="/admin/adminProfile">
+        <Link className="p-0 me-12" to="/admin/adminProjectsHome">
             Studio
           </Link>
       </div>

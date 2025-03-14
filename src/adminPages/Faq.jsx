@@ -9,6 +9,20 @@ export default function Faq() {
   const [isAdd, setIsAdd] = useState(false);
   const { id } = useParams();
 
+  // 時間格式轉換
+  const getTime = (time) =>{
+    const newTime = new Date(time).toLocaleString("zh-TW", {
+      timeZone: "Asia/Taipei",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).replace(/\//g, "-")
+    return newTime
+  }
+
   // 新增問答
   const {
     register,
@@ -24,11 +38,12 @@ export default function Faq() {
       content: data.content,
       date: "date",
     };
-    const now = new Date();
-    const formatDate = now.toISOString().slice(0, 16).replace("T", " ");
+    const now = new Date().toString();
+    console.log(now);
+    
     const newFaq = {
       ...faqData,
-      date: formatDate,
+      date: now,
     };
     try {
       await axios.post(`${apiBase}/faqs`, newFaq);
@@ -50,13 +65,12 @@ export default function Faq() {
   } = useForm({ mode: "onChange" });
 
   const onPutSubmit = async (data, dataId) => {
-    const now = new Date();
-    const formatDate = now.toISOString().slice(0, 16).replace("T", " ");
+    const now = new Date().toString();
     const updataFaq = {
       projectId: id,
       title: data.title,
       content: data.content,
-      date: formatDate, // 設定為當前時間
+      date: now, // 設定為當前時間
     };
     try {
       await axios.put(`${apiBase}/faqs/${dataId}`, updataFaq);
@@ -157,7 +171,7 @@ export default function Faq() {
                     <span className="me-3">{!isEditIng && `Q${parseInt(index) + 1}:`}</span>
                     {faq.title}
                   </label>
-                  <p className="fs-sm">更新日期:{faq.date}</p>
+                  <p className="fs-sm">更新日期:{getTime(faq.date)}</p>
                 </div>
               )}
               {isEditIng && (

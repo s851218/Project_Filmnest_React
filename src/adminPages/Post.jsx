@@ -9,6 +9,20 @@ export default function Post() {
   const [isAdd, setIsAdd] = useState(false);
   const { id } = useParams();
 
+    // 時間格式轉換
+    const getTime = (time) =>{
+      const newTime = new Date(time).toLocaleString("zh-TW", {
+        timeZone: "Asia/Taipei",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      }).replace(/\//g, "-")
+      return newTime
+    }
+
   // 新增最新消息
   const {
     register,
@@ -26,10 +40,10 @@ export default function Post() {
       projectId: id,
       title: data.title,
       content: data.content,
-      date: data.date === "now" ? new Date().toISOString() : data.schedule,
+      date: data.date === "now" ? new Date().toString() : data.schedule,
     };
 
-    const formatDate = postData.date.slice(0, 16).replace("T", " ");
+    const formatDate = postData.date
     const newPost = {
       ...postData,
       date: formatDate,
@@ -55,13 +69,12 @@ export default function Post() {
   } = useForm({ mode: "onChange" });
 
   const onPutSubmit = async (data, dataId) => {
-    const now = new Date();
-    const formatDate = now.toISOString().slice(0, 16).replace("T", " ");
+    const now = new Date().toString();
     const updataPost = {
       projectId: id,
       title: data.title,
       content: data.content,
-      date: formatDate, // 設定為當前時間
+      date: now, // 設定為當前時間
     };
     try {
       await axios.put(`${apiBase}/posts/${dataId}`, updataPost);
@@ -188,7 +201,7 @@ export default function Post() {
                   <label htmlFor="title" className="form-label fs-5">
                     {post.title}
                   </label>
-                  <p className="fs-sm">更新日期:{post.date}</p>
+                  <p className="fs-sm">更新日期:{getTime(post.date)}</p>
                 </div>
               )}
               {isEditIng && (

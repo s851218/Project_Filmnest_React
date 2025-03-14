@@ -33,31 +33,22 @@ export default function PaymentCollapseFrom ({reference}) {
 
   useImperativeHandle(reference,() => ({
     async submitForm() {
-      btnSubmit()
       // // 執行卡號驗證
-      const res = handleCardCodeRequired()
-      console.log("卡號驗證:",res)
+      const codeRequiredRes = handleCardCodeRequired()
       // 執行表單驗證
-      await handleSubmit(onSubmit)()
-
-      if (res) {
-        handleSubmit(onSubmit(res))()
+      try {
+        await handleSubmit(onSubmit)()
+        if (codeRequiredRes) {
+          dispatch(setRequried({name:"paymentType",value:true}))
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
   }))
 
-  const btnSubmit = async() => {
-    const res = handleCardCodeRequired()
-    await handleSubmit(onSubmit)()
-    
-      console.log("卡號驗證:",res)
-  }
+  const onSubmit = (data) => {
 
-  const onSubmit = (codeRequiredRes) => {
-    console.log("有執行submit")
-    if (codeRequiredRes) {
-      dispatch(setRequried({name:"paymentType",value:true}))
-    }
   }
 
   const dispatch = useDispatch()
@@ -112,7 +103,6 @@ export default function PaymentCollapseFrom ({reference}) {
     }
 
     if (cardRequired) {
-      console.log("paymentOption:",paymentOption)
       return true
     } else {
       console.log("驗證失敗")

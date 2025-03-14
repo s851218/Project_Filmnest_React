@@ -7,23 +7,57 @@ const apiBase = import.meta.env.VITE_API_BASE;
 export default function ProjectIntroQA() {
   const { id } = useParams();
   const [projectFaqs, setProjectFaqs] = useState([]);
-  const [faqsIsOpen,setFaqsIsOpen] = useState([]);
+  const [faqsIsOpen, setFaqsIsOpen] = useState([]);
   const faqsCollapseRef = useRef([]);
   const faqsCollapseInstances = useRef([]);
+  const [params, setParams] = useState({});
+
+  //處理params
+  useEffect(() => {
+    if (id) {
+      const paramsArry = id.split("&");
+      let paramsObj = {};
+      paramsArry.forEach((param) => {
+        let [key, value] = param.split("=");
+        paramsObj[key] = Number(value);
+      });
+      console.log(paramsObj);
+      setParams(paramsObj);
+    }
+  }, [id]);
+
+  const getTime = (time) => {
+    const newTime = new Date(time)
+      .toLocaleString("zh-TW", {
+        timeZone: "Asia/Taipei",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+      .replace(/\//g, "-");
+    return newTime;
+  };
 
   useEffect(() => {
-    (async () => {
-      try {
-        const response = await axios.get(`${apiBase}/faqs?projectId=${id}`);
-        setProjectFaqs(response.data);
-        setFaqsIsOpen(response.data.map((item)=>{
-          return ({id:item.id,isOpen:false})
-        }))
-      } catch (error) {
-        alert("最新消息取得失敗");
-      }
-    })();
-  }, []);
+    if (params.projectId) {
+      (async () => {
+        try {
+          const response = await axios.get(`${apiBase}/faqs?projectId=${params.projectId}`);
+          setProjectFaqs(response.data);
+          setFaqsIsOpen(
+            response.data.map((item) => {
+              return { id: item.id, isOpen: false };
+            })
+          );
+        } catch (error) {
+          alert("最新消息取得失敗");
+        }
+      })();
+    }
+  }, [params]);
 
   useEffect(() => {
     faqsCollapseRef.current.forEach((item, index) => {
@@ -35,32 +69,38 @@ export default function ProjectIntroQA() {
 
   const handleCollapse = (id) => {
     setFaqsIsOpen((prev) => {
-      return prev.map((item) =>
-        item.id === id ? { ...item, isOpen: !item.isOpen } : item
-      );
+      return prev.map((item) => (item.id === id ? { ...item, isOpen: !item.isOpen } : item));
     });
 
-    const index = projectFaqs.findIndex((item)=>item.id === id)
+    const index = projectFaqs.findIndex((item) => item.id === id);
     faqsCollapseInstances.current[index].toggle();
-    
   };
-  
 
   return (
     <>
       <div className="container pt-8 pb-10 py-md-15">
-        {projectFaqs.map((item,index) => {
+        {projectFaqs.map((item, index) => {
           return (
-              <div className="row mb-3" key={item.id}>
-                  <div className="col-10 mx-auto">
-                      <button class="btn btn-primary w-100 fs-5 d-flex justify-content-between" type="button" onClick={() => handleCollapse(item.id)}>
-                      <span><span className="me-3">Q{index+1}:</span>{item.title} </span>{(faqsIsOpen[index].isOpen) ? <i class="bi bi-chevron-up"></i> : <i class="bi bi-chevron-down"></i>}
-                      </button>
-                    <div class="collapse " ref={(el) => (faqsCollapseRef.current[index] = el)}>
-                      <div class="card card-body">{item.content}</div>
-                    </div>
+            <div className="row mb-5" key={item.id}>
+                <div className="col-10 mx-auto">
+                <div className="border border-primary-5 rounded box-shadow">
+                  <button className={`text-white py-3 w-100 fs-5 d-flex justify-content-between ${faqsIsOpen[index].isOpen ? "bg-primary-6" : "bg-primary-10"}`} type="button" onClick={() => handleCollapse(item.id)}>
+                    <span className="fs-base">
+                      <span className="fs-base me-3">Q{index + 1}:</span>
+                      {item.title}
+                    </span>{" "}
+                    <span className="d-flex align-items-center">
+                      <span className="fs-base text-primary-5 me-2">{getTime(item.date)}</span>
+                      {faqsIsOpen[index].isOpen ? <i className="bi bi-chevron-up fs-7"></i> : <i className="bi bi-chevron-down fs-7"></i>}
+                    </span>
+                  </button>
+                  <div className="collapse " ref={(el) => (faqsCollapseRef.current[index] = el)}>
+                    <div className="card card-body">{item.content}</div>
                   </div>
-              </div>
+                  </div>
+                </div>
+              
+            </div>
           );
         })}
       </div>

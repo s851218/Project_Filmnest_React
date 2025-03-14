@@ -3,6 +3,7 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import getNewDateFormatted from "../helpers/getNewDateFormatted";
+import { useParams } from "react-router";
 
 const BASE_URL = "https://json-server-vercel-tdcc.onrender.com";
 
@@ -11,26 +12,44 @@ export default function ProjectIntroComments() {
   const [projectOwner, setProjectOwner] = useState(null);
   const [sortOrder, setSortOrder] = useState("desc");
   const userId = useSelector((state) => state.user.profile.userId);
+  const { id } = useParams()
+  const [ params , setParams ] = useState({})
+
+  //處理params
+  useEffect(()=>{
+    if (id) {
+      const paramsArry = id.split("&")
+      let paramsObj = {}
+      paramsArry.forEach((param)=>{
+        let [ key , value ] = param.split("=")
+        paramsObj[key] = Number(value)
+      })
+      console.log(paramsObj);
+      setParams(paramsObj)
+    }
+  },[id])
 
   //初始渲染資料，並處理排序
   useEffect(() => {
-    const getCommentsData = async (id = 1) => {
-      try {
-        const response = await axios.get(
-          `${BASE_URL}/comments?projectId=${id}&_expand=user`
-        );
-        const responseForStudio = await axios.get(
-          `${BASE_URL}/projects/${id}?_expand=studio`
-        );
-        setProjectOwner(responseForStudio.data.studio.studioProfile);
-        const sortedComments = sortCommentsByDate(response.data, sortOrder);
-        setComments(sortedComments);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    getCommentsData();
-  }, [sortOrder]);
+    if (params.projectId) {
+      const getCommentsData = async (id) => {
+        try {
+          const response = await axios.get(
+            `${BASE_URL}/comments?projectId=${id}&_expand=user`
+          );
+          const responseForStudio = await axios.get(
+            `${BASE_URL}/projects/${id}?_expand=studio`
+          );
+          setProjectOwner(responseForStudio.data.studio.studioProfile);
+          const sortedComments = sortCommentsByDate(response.data, sortOrder);
+          setComments(sortedComments);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      getCommentsData(params.projectId);
+    }
+  }, [sortOrder,params]);
 
   // 重新渲染呼叫用
   const refreshComments = async (id = 1) => {

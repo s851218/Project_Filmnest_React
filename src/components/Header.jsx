@@ -1,4 +1,4 @@
-import { useRef, useEffect} from "react";
+import { useRef, useEffect } from "react";
 import { Link, NavLink, useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { setCategory } from "../slice/categorySlice";
@@ -9,12 +9,14 @@ const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Header() {
   const profile = useSelector((state) => state.user.profile);
-  const id = useSelector((state)=>state.user.profile.userId);
+  const id = useSelector((state) => state.user.profile.userId);
   const searchValue = useSelector((state) => state.search.value);
   const isSearchOpen = useSelector((state) => state.search.isSearchOpen);
   const categoryData = ["喜劇", "愛情", "恐怖", "懸疑", "科幻", "紀錄片", "動畫", "實驗電影"];
+  const personalCenterList = ["個人頁面", "收藏專案", "訂單紀錄", "收藏影音", "觀看紀錄"];
   const dispatch = useDispatch();
   const navbarRef = useRef(null);
+  const navbarRef2 = useRef(null);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -22,7 +24,7 @@ export default function Header() {
       await axios.patch(`${apiBase}/users/${id}`, { token: "" });
       document.cookie = "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
       dispatch(setLogout());
-      navigate("/")
+      navigate("/");
       alert("登出成功");
     } catch (error) {
       alert("登出失敗");
@@ -41,9 +43,24 @@ export default function Header() {
     };
 
     window.addEventListener("scroll", handleScroll);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+  useEffect(() => {
+    const handleScroll2 = () => {
+      navbarRef2.current.scrollY = window.scrollY;
+
+      if (navbarRef2.current.scrollY > 0) {
+        navbarRef2.current.classList.add("active");
+      } else {
+        navbarRef2.current.classList.remove("active");
+      }
+    };
+    window.addEventListener("scroll", handleScroll2);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll2);
     };
   }, []);
 
@@ -55,7 +72,7 @@ export default function Header() {
     if (searchValue.trim()) {
       dispatch(setSearchText(searchValue));
       navigate("/projectExplore");
-    }else{
+    } else {
       dispatch(setSearchText(""));
       navigate("/projectExplore");
     }
@@ -119,19 +136,54 @@ export default function Header() {
                 </div>
               </div>
             </div>
-            {profile.hasStudio && <div className={`p-0 me-12 nav-item ${!profile.token && "d-none"}`}>
-              <NavLink to="/admin/adminProfile">工作室</NavLink>
-            </div>}
-            <div className="p-0 me-12 nav-item">
-              <NavLink to="/aboutStudio">提案者頁面</NavLink>
-            </div>
+            {profile.hasStudio && (
+              <div className={`p-0 me-12 nav-item ${!profile.token && "d-none"}`}>
+                <NavLink to="/admin/adminProjectsHome">工作室</NavLink>
+              </div>
+            )}
             <div className="ms-auto d-flex flex-column flex-lg-row align-items-center">
               {profile.token ? (
                 <>
-                  <NavLink to="/personalCenter/profile" className="btn btn-outline-light fw-bolder py-1 px-1 me-8 border-0">
-                    <span className="me-2">{profile.userName}</span> <img src={profile.imageUrl} className="rounded-circle object-fit-cover" style={{ width: "40px", height: "40px" }} alt="" />
-                  </NavLink>
-                  <button type="button" className="btn btn-primary" onClick={handleLogout}>
+                  <div className="collapse navbar-collapse text-white">
+                    <div className="p-0 me-12 dropdown nav-item">
+                      <button className="btn btn-outline-light border-0 fw-bolder" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span className="me-2">{profile.userName}</span> <img src={profile.imageUrl} className="rounded-circle object-fit-cover" style={{ width: "40px", height: "40px" }} alt="" />
+                      </button>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/profile">
+                            <span className="material-symbols-outlined fs-7 me-3">manage_accounts</span>
+                            <span>個人資料</span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/favoriteProject">
+                            <span className="material-symbols-outlined fs-7 me-3">favorite</span>
+                            <span>收藏專案</span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/orderRecords">
+                            <span className="material-symbols-outlined fs-7 me-3">receipt_long</span>
+                            <span>訂單紀錄</span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/favoriteVideo">
+                            <span className="material-symbols-outlined fs-7 me-3">movie</span>
+                            <span>收藏影音</span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/viewRecords">
+                            <span className="material-symbols-outlined fs-7 me-3">subscriptions</span>
+                            <span>觀看紀錄</span>
+                          </Link>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <button type="button" className="btn btn-outline-light fw-bolder py-3 px-5" onClick={handleLogout}>
                     登出
                   </button>
                 </>
@@ -149,7 +201,7 @@ export default function Header() {
           </div>
         </div>
       </nav>
-      <nav ref={navbarRef} className="navbar navbar-expand-md navbar-dark py-5 d-lg-flex d-lg-none">
+      <nav ref={navbarRef2} className="navbar navbar-expand-md navbar-dark py-5 d-lg-flex d-lg-none">
         <div className="container">
           <NavLink className="p-0 me-12" to="/">
             <img src="https://github.com/s851218/Project-FilmNest/blob/main/assets/images/logo.png?raw=true" alt="logo" />

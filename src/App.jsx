@@ -26,6 +26,7 @@ function App() {
           userId: userData.id,
           userName: userData.userProfile.userName,
           imageUrl: userData.userProfile.userImageUrl,
+          hasStudio:userData.hasStudio
         })
       );
     } catch (error) {
