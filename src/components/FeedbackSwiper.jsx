@@ -193,9 +193,9 @@ function FeedbackSwiper() {
                 updateNavigationVisibility(swiper);
 
                 // 監聽視窗大小變化，重新計算是否應該顯示導航
-                window.addEventListener("resize", () => {
-                  updateNavigationVisibility(swiperRef.current);
-                });
+                // window.addEventListener("resize", () => {
+                //   updateNavigationVisibility(swiperRef.current);
+                // });
 
                 // 確保分頁元素正確引用
                 setTimeout(() => {
