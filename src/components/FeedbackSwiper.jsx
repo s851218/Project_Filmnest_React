@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css/navigation";
-import "swiper/css/pagination";
 import { Link, useParams } from "react-router";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -14,29 +13,18 @@ function FeedbackSwiper() {
   const [showNavigation, setShowNavigation] = useState(false);
   const { id } = useParams();
   const [params, setParams] = useState({});
-  const { id } = useParams();
-  const [params, setParams] = useState({});
 
   //處理params
   useEffect(() => {
-    useEffect(() => {
-      if (id) {
-        const paramsArry = id.split("&");
-        let paramsObj = {};
-        paramsArry.forEach((param) => {
-          let [key, value] = param.split("=");
-          paramsObj[key] = Number(value);
-        });
-        setParams(paramsObj);
-        const paramsArry = id.split("&");
-        let paramsObj = {};
-        paramsArry.forEach((param) => {
-          let [key, value] = param.split("=");
-          paramsObj[key] = Number(value);
-        });
-        setParams(paramsObj);
-      }
-    }, [id]);
+    if (id) {
+      const paramsArry = id.split("&");
+      let paramsObj = {};
+      paramsArry.forEach((param) => {
+        let [key, value] = param.split("=");
+        paramsObj[key] = Number(value);
+      });
+      setParams(paramsObj);
+    }
   }, [id]);
 
   const getFeedbackData = async (id) => {
