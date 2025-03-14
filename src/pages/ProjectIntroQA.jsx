@@ -92,17 +92,9 @@ export default function ProjectIntroQA() {
         {projectFaqs.map((item, index) => {
           return (
             <div className="row mb-5" key={item.id}>
-              <div className="col-10 mx-auto">
-                <div className="border border-primary-5 rounded box-shadow">
-                  <button
-                    className={`text-white py-3 w-100 fs-5 d-flex justify-content-between ${
-                      faqsIsOpen[index].isOpen
-                        ? "bg-primary-6"
-                        : "bg-primary-10"
-                    }`}
-                    type="button"
-                    onClick={() => handleCollapse(item.id)}
-                  >
+                <div className="col-10 mx-auto">
+                <div className="border border-0 border-primary-5 rounded box-shadow">
+                  <button className={`text-white py-3 px-4 w-100 fs-5 d-flex justify-content-between border-1 ${faqsIsOpen[index].isOpen ? "bg-primary-6" : "bg-primary-10"}`} type="button" onClick={() => handleCollapse(item.id)}>
                     <span className="fs-base">
                       <span className="fs-base me-3">Q{index + 1}:</span>
                       {item.title}
