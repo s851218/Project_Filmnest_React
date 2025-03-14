@@ -166,7 +166,7 @@ export default function ProjectIntroNav({ projectId }) {
             </li>
             <li>
               <Link
-                to="/feedbackPage"
+                to={`/feedbackPage/projectId=${projectId}`}
                 className="btn btn-primary py-3 fw-bolder"
                 style={{ width: 188 }}
               >
@@ -277,7 +277,7 @@ export default function ProjectIntroNav({ projectId }) {
             </li>
             <li>
               <Link
-                to="/feedbackPage"
+                to={`/feedbackPage/projectId=${projectId}`}
                 className="btn btn-primary py-3 fw-bolder"
                 style={{ width: 291 }}
               >

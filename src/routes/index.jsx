@@ -107,7 +107,7 @@ const routes = [
         element: <CreateProposal />,
       },
       {
-        path: "feedbackPage",
+        path: "feedbackPage/:id",
         element: <FeedbackPage />,
       },
       {
