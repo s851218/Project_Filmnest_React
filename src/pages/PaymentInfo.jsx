@@ -82,7 +82,10 @@ export default function PaymentInfo() {
     try {
       await infoFromRef.current.submitForm();
       await paymentFromRef.current.submitForm();
-      handlePayment(orderData.id);
+      if (paymentFromRef.current.isValid && infoFromRef.current.isValid) {
+        console.log("驗證成功打API");
+        handlePayment(orderData.id);
+      }
     } catch (error) {
       console.log("驗證失敗", error);
     }
@@ -90,11 +93,7 @@ export default function PaymentInfo() {
 
   // 驗證成功後送出付款資料
   const handlePayment = async (id) => {
-    const { paymentInfo, paymentType } = paymentInfoSlice.requried;
-
-    console.log(paymentInfo,paymentType);
-    
-    if (!paymentInfo || !paymentType) return
+    console.log("執行api");
 
     const { recipientInfo, address } = paymentInfoSlice;
 
