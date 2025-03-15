@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import getNewDateFormatted from "../helpers/getNewDateFormatted";
 import { Helmet } from "react-helmet-async";
+import LightScreenLoading from "../AdminComponents/LightScreenLoading";
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
@@ -11,10 +12,12 @@ export default function AdminAnsComment() {
   const [projectOwner, setProjectOwner] = useState(null);
   const [replyingToId, setReplyingToId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
     const getCommentsData = async (id = 1) => {
+      setIsLoading(true);
       try {
         setLoading(true);
         const response = await axios.get(
@@ -30,6 +33,7 @@ export default function AdminAnsComment() {
         console.error(error);
       } finally {
         setLoading(false);
+        setIsLoading(false);
       }
     };
     getCommentsData();
@@ -443,6 +447,7 @@ export default function AdminAnsComment() {
           </div>
         </div>
       </section>
+      <LightScreenLoading isLoading={isLoading} />
     </>
   );
 }

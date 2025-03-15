@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 import Card from "../components/Card";
 import { Helmet } from "react-helmet-async";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 
 export default function AboutStudio() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -12,10 +13,13 @@ export default function AboutStudio() {
   const [projects, setProjects] = useState([]);
   const [length, setlength] = useState("");
   const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(false);
+
   // 提案者資料
   const [studioProfile, setStudioProfile] = useState({});
   // 取得提案者資料
   const getStudioProfile = async () => {
+    setIsLoading(true);
     let idArray = id.split("=");
     let idObj = { [idArray[0]]: Number(idArray[1]) };
     const { projectId } = idObj;
@@ -28,6 +32,8 @@ export default function AboutStudio() {
       setUserId(res.data[0].studio.userId);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -207,6 +213,7 @@ export default function AboutStudio() {
           <Card projects={projects} isSwiper={false} />
         </div>
       </div>
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

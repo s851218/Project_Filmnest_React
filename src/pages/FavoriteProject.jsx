@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Card from "../components/Card";
 import PersonalCenterSidebar from "../components/PersonalCenterSidebar";
 import { Helmet } from "react-helmet-async";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function FavoriteProject() {
@@ -14,16 +15,22 @@ export default function FavoriteProject() {
     window.scrollTo(0, 0);
   }, []);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [favoriteProjects, setFavoriteProjects] = useState([]);
   const id = useSelector((state) => state.user.profile.userId);
 
   const getFavoriteProjects = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `${apiBase}/favorites?_expand=project&userId=${id}`
       );
       setFavoriteProjects(response.data.map((item) => item.project));
-    } catch (error) {}
+    } catch (error) {
+      console.log("取得收藏專案失敗：", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
   useEffect(() => {
     getFavoriteProjects();
@@ -43,6 +50,7 @@ export default function FavoriteProject() {
           <Card projects={favoriteProjects} isSwiper={false} />
         </div>
       </div>
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

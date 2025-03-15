@@ -19,6 +19,7 @@ export default function ProjectIntroNav({ projectId }) {
 
   const [isFavorited, setIsFavorited] = useState(false);
   const [favoriteId, setFavoriteId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,6 +57,7 @@ export default function ProjectIntroNav({ projectId }) {
     }
 
     if (!isFavorited) {
+      setIsLoading(true);
       try {
         const res = await axios.post(
           `${API_BASE}/favorites`,
@@ -67,8 +69,11 @@ export default function ProjectIntroNav({ projectId }) {
         alert("專案已收藏！");
       } catch (error) {
         console.error("新增收藏失敗：", error);
+      } finally {
+        setIsLoading(false);
       }
     } else {
+      setIsLoading(true);
       try {
         await axios.delete(`${API_BASE}/favorites/${favoriteId}`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -78,6 +83,8 @@ export default function ProjectIntroNav({ projectId }) {
         alert("專案已取消收藏！");
       } catch (error) {
         console.error("取消收藏失敗：", error);
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -154,6 +161,7 @@ export default function ProjectIntroNav({ projectId }) {
               <button
                 className="p-3 border border-primary-4 rounded-circle heart-hover"
                 onClick={toggleFavorite}
+                disabled={isLoading}
               >
                 <span
                   className="material-symbols-outlined text-white align-bottom"
@@ -265,6 +273,7 @@ export default function ProjectIntroNav({ projectId }) {
                 type="button"
                 className="p-3 border border-primary-4 rounded-circle heart-hover"
                 onClick={toggleFavorite}
+                disabled={isLoading}
               >
                 <span
                   className="material-symbols-outlined text-white align-bottom"

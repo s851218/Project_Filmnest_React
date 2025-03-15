@@ -3,11 +3,13 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
+import LightScreenLoading from "../AdminComponents/LightScreenLoading";
 const apiBase = import.meta.env.VITE_API_BASE;
 export default function Post() {
   const [postsData, setPostsData] = useState([]);
   const [isEdit, setIsEdit] = useState(null);
   const [isAdd, setIsAdd] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
 
   // 時間格式轉換
@@ -102,14 +104,19 @@ export default function Post() {
 
   // 取得最新消息
   const getPostsData = async (projectId) => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `${apiBase}/posts?projectId=${projectId}`
       );
-      const sortData = response.data.sort((a,b)=>new Date(b.date) - new Date(a.date))
+      const sortData = response.data.sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
       setPostsData(sortData);
     } catch (error) {
       console.log("取得資料失敗");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -340,6 +347,7 @@ export default function Post() {
           </form>
         );
       })}
+      <LightScreenLoading isLoading={isLoading} />
     </>
   );
 }

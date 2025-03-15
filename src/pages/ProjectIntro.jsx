@@ -5,11 +5,13 @@ import ProjectIntroInfo from "../components/ProjectIntroInfo";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet-async";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function ProjectIntro() {
   const [projectInfo, setProjectInfo] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const { id } = useParams(); // xiang 2025/02/27 intro路由調整
   const [params, setParams] = useState({});
@@ -40,13 +42,17 @@ export default function ProjectIntro() {
   useEffect(() => {
     if (params.projectId) {
       const getProjectData = async (id) => {
+        setIsLoading(true);
         try {
           const res = await axios.get(`${API_BASE}/projects/${id}`); // xiang 2025/02/27 intro路由調整
           setProjectInfo(res.data);
         } catch (error) {
           console.log("取得專案資訊失敗：", error);
+        } finally {
+          setIsLoading(false);
         }
       };
+
       getProjectData(params.projectId);
     }
   }, [params]);
@@ -81,6 +87,7 @@ export default function ProjectIntro() {
           <Outlet context={projectInfo} />
         </div>
       )}
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }
