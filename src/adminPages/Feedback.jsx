@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 
@@ -21,12 +21,15 @@ function AdminFeedbackForm() {
   const [feedbackData, setFeedbackData] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null);
 
+  const originalFeedbackRef = useRef([]);
+
   const {
     handleSubmit,
     register,
     control,
     watch,
     setValue,
+    setFocus,
     reset,
     formState: { errors, isSubmitting },
   } = useForm({
@@ -46,33 +49,79 @@ function AdminFeedbackForm() {
   const getFeedbackData = async () => {
     try {
       const response = await axios.get(`${API_BASE}/products?projectId=${id}`);
+      originalFeedbackRef.current = response.data;
       setFeedbackData(response.data);
       reset({ choice: response.data });
     } catch (error) {
       console.error(error);
     }
   };
-
   useEffect(() => {
     getFeedbackData();
   }, [reset]);
 
   const onSubmit = async (data) => {
+    const currentItems = data.choice;
+    const originalItems = originalFeedbackRef.current;
+
+    const updatedItems = currentItems.filter((item) => {
+      const original = originalItems.find((o) => o.id === item.id);
+      return original && JSON.stringify(original) !== JSON.stringify(item);
+    });
+
+    const newItems = currentItems.filter((item) => !item.id);
+    const deletedItems = originalItems.filter(
+      (item) => !currentItems.some((current) => current.id === item.id)
+    );
     try {
-      const datasToSend = data.choice.map((feedback) => ({
-        ...feedback,
-        projectId: id,
-      }));
-      const requests = datasToSend.map((data) => {
-        return axios.put(`${API_BASE}/products/${id}`, data);
+      const requests = [];
+
+      // 更新
+      if (updatedItems.length > 0) {
+        updatedItems.forEach((updatedItem) => {
+          const updateRequest = axios.put(
+            `${API_BASE}/products/${updatedItem.id}`,
+            { ...updatedItem, price: Number(updatedItem.price) }
+          );
+          requests.push(updateRequest);
+        });
+      }
+
+      // 新增
+      if (newItems.length > 0) {
+        newItems.forEach((newItem) => {
+          const postRequest = axios.post(`${API_BASE}/products`, {
+            ...newItem,
+            projectId: id,
+            price: Number(newItem.price),
+          });
+          requests.push(postRequest);
+        });
+      }
+      // 刪除
+      if (deletedItems.length > 0) {
+        deletedItems.forEach((deletedItem) => {
+          const deleteRequest = axios.delete(
+            `${API_BASE}/products/${deletedItem.id}`
+          );
+          requests.push(deleteRequest);
+        });
+      }
+
+      const results = await Promise.allSettled(requests);
+
+      // 處理請求結果
+      results.forEach((result) => {
+        if (result.status === "rejected") {
+          console.error("請求失敗:", result.reason);
+        }
       });
-      const responses = await Promise.all(requests);
-      console.log("全部的請求成功：", responses);
-      alert("已成功提交");
+
+      alert("請求已完成");
       setEditingIndex(null);
       getFeedbackData();
     } catch (error) {
-      alert(`提交失敗: ${error.message}`);
+      console.error(`提交失敗: ${error.message}`);
     }
   };
 
@@ -107,6 +156,8 @@ function AdminFeedbackForm() {
       contents: [{ item: "" }],
     });
     setEditingIndex(newIndex);
+    setTimeout(() => setFocus(`choice.${newIndex}.title`), 0);
+    // setFocus(`choice.${newIndex}.title`);
   };
 
   // 監聽整個表單，檢查是否所有必填欄位都有值
@@ -153,21 +204,44 @@ function AdminFeedbackForm() {
     });
   }, [formValues, choiceFields]);
 
+  const isFormChanged = useMemo(() => {
+    if (!formValues || !originalFeedbackRef.current) return false;
+
+    const currentItems = formValues.choice;
+    const originalItems = originalFeedbackRef.current;
+
+    // 檢查是否有變更（更新、刪除、新增）
+    const hasUpdates = currentItems.some((item) => {
+      const originalItem = originalItems.find((o) => o.id === item.id);
+      return (
+        originalItem && JSON.stringify(originalItem) !== JSON.stringify(item)
+      );
+    });
+
+    const hasNewItems = currentItems.some((item) => !item.id);
+    const hasDeletedItems = originalItems.some(
+      (item) => !currentItems.some((c) => c.id === item.id)
+    );
+
+    return hasUpdates || hasNewItems || hasDeletedItems;
+  }, [formValues, originalFeedbackRef.current]);
+
   return (
     <div className="container py-10">
       <div className="card shadow-sm bg-primary-2 text-primary-8">
-        <div className="card-header bg-primary-3 py-3">
+        <div className="card-header bg-primary-3 py-3 d-flex justify-content-between align-items-center">
           <h4 className="mb-0 fw-bold">回饋方案設定</h4>
+          <button
+            type="button"
+            className="btn btn-primary d-flex justify-content-center align-items-center"
+            onClick={addNewChoice}
+            disabled={!allFieldsValid}
+          >
+            <i className="bi bi-plus-circle me-2"></i>
+            新增回饋項目
+          </button>
         </div>
         <div className="card-body p-4">
-          {/* 表單提交錯誤統一顯示區域 */}
-          {/* {Object.keys(errors).length > 0 && (
-            <div className="alert alert-danger mb-4" role="alert">
-              <i className="bi bi-exclamation-triangle-fill me-2"></i>
-              表單中有錯誤需要修正，請檢查各欄位
-            </div>
-          )} */}
-
           <form onSubmit={handleSubmit(onSubmit)}>
             {choiceFields.map((choice, choiceIndex) => {
               const imageValue = watch(`choice.${choiceIndex}.image`);
@@ -416,7 +490,7 @@ function AdminFeedbackForm() {
                   新增回饋項目
                 </button>
                 <button
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !isFormChanged}
                   type="submit"
                   className="btn btn-primary-8 d-flex justify-content-center align-items-center w-lg-50 w-sm-75 w-100"
                 >
