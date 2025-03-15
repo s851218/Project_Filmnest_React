@@ -4,9 +4,17 @@ import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../slice/userSlice";
 import axios from "axios";
+import { useEffect } from "react";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Login() {
+  // 路由跳轉頁面時，重製滾輪捲軸
+  useEffect(() => {
+    // 將滾動行為設為 auto 避免有捲動過程的動畫
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+  }, []);
+
   const {
     register,
     handleSubmit,
