@@ -13,7 +13,6 @@ export default function Header() {
   const searchValue = useSelector((state) => state.search.value);
   const isSearchOpen = useSelector((state) => state.search.isSearchOpen);
   const categoryData = ["喜劇", "愛情", "恐怖", "懸疑", "科幻", "紀錄片", "動畫", "實驗電影"];
-  const personalCenterList = ["個人頁面", "收藏專案", "訂單紀錄", "收藏影音", "觀看紀錄"];
   const dispatch = useDispatch();
   const navbarRef = useRef(null);
   const navbarRef2 = useRef(null);
@@ -81,7 +80,7 @@ export default function Header() {
 
   const handleSearchToggle = (e) => {
     console.log(buttonRef.current.contains(e.target));
-    
+
     if (buttonRef.current.contains(e.target)) {
       navigate("/headerSm");
     } else {
@@ -111,7 +110,7 @@ export default function Header() {
       <nav ref={navbarRef} className="navbar navbar-expand-md navbar-dark py-5 d-none d-lg-flex">
         <div className="container">
           <NavLink className="p-0 me-12" to="/">
-            <img src="https://github.com/s851218/Project-FilmNest/blob/main/assets/images/logo.png?raw=true" alt="logo" />
+            <img src="data:image/png;base64,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" alt="logo" />
           </NavLink>
           <Link type="button" className="navbar-toggler border-0 ms-auto d-lg-none" to="/headerSm">
             <span className="navbar-toggler-icon"></span>
@@ -121,9 +120,9 @@ export default function Header() {
               <button className="btn btn-outline-light border-0 fw-bolder dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 探索
               </button>
-              <ul className="dropdown-menu">
+              <ul className="dropdown-menu py-0">
                 <li>
-                  <Link className="dropdown-item mb-2" to="/projectExplore" onClick={() => dispatch(setCategory("all"))}>
+                  <Link className="btn btn-outline-secondary text-white border-0 w-100 d-flex align-items-center" to="/projectExplore" onClick={() => dispatch(setCategory("all"))}>
                     <img src="全部專案.png" alt="全部專案" className="me-2" style={{ width: "24px" }} />
                     全部專案
                   </Link>
@@ -131,7 +130,7 @@ export default function Header() {
                 {categoryData.map((item, index) => {
                   return (
                     <li key={index}>
-                      <Link className="dropdown-item mb-2" to="/projectExplore" onClick={() => dispatch(setCategory(item))}>
+                      <Link className="btn btn-outline-secondary text-white border-0 w-100 d-flex align-items-center" to="/projectExplore" onClick={() => dispatch(setCategory(item))}>
                         <img src={`${item}.png`} alt={item} className="me-2" style={{ width: "24px" }} />
                         {item}
                       </Link>
@@ -167,46 +166,49 @@ export default function Header() {
                 <>
                   <div className="collapse navbar-collapse text-white">
                     <div className="p-0 me-12 dropdown nav-item">
-                      <button className="btn btn-outline-light border-0 fw-bolder" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <button className="btn btn-outline-secondary text-white border-0 fw-bolder" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span className="me-2">{profile.userName}</span> <img src={profile.imageUrl} className="rounded-circle object-fit-cover" style={{ width: "40px", height: "40px" }} alt="" />
                       </button>
-                      <ul className="dropdown-menu">
+                      <ul className="dropdown-menu py-0">
                         <li>
-                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/profile">
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/profile">
                             <span className="material-symbols-outlined fs-7 me-3">manage_accounts</span>
                             <span>個人資料</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/favoriteProject">
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/favoriteProject">
                             <span className="material-symbols-outlined fs-7 me-3">favorite</span>
                             <span>收藏專案</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/orderRecords">
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/orderRecords">
                             <span className="material-symbols-outlined fs-7 me-3">receipt_long</span>
                             <span>訂單紀錄</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/favoriteVideo">
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/favoriteVideo">
                             <span className="material-symbols-outlined fs-7 me-3">movie</span>
                             <span>收藏影音</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/viewRecords">
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/viewRecords">
                             <span className="material-symbols-outlined fs-7 me-3">subscriptions</span>
                             <span>觀看紀錄</span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" onClick={handleLogout}>
+                            <span class="material-symbols-outlined fs-7 me-3">exit_to_app</span>
+                            <span>登出</span>
                           </Link>
                         </li>
                       </ul>
                     </div>
                   </div>
-                  <button type="button" className="btn btn-outline-light fw-bolder py-3 px-5" onClick={handleLogout}>
-                    登出
-                  </button>
                 </>
               ) : (
                 <NavLink to="/login" className="btn btn-outline-light fw-bolder py-3 px-5 me-8">

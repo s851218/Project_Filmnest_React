@@ -1,11 +1,12 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PaymentAside from "../components/PaymentAside";
 import PaymentMobileFooter from "../components/PaymentMobileFooter";
 import PaymentInfoFrom from "../components/PaymentInfoFrom";
 import PaymentCollapseFrom from "../components/PaymentCollapseFrom";
+import { setRequried } from "../slice/paymentInfoSlice"
 import { Helmet } from "react-helmet-async";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
@@ -25,6 +26,7 @@ export default function PaymentInfo() {
   const [productData, setProductData] = useState({});
   const [userData, setUserData] = useState({});
   const paymentInfoSlice = useSelector((state) => state.paymentInfo);
+  const dispatch = useDispatch()
 
   // 取得訂單資料
   useEffect(() => {
@@ -71,7 +73,7 @@ export default function PaymentInfo() {
     }
   }, [orderData]);
 
-  // 送出表單 => props傳遞給aside footer
+ // 送出表單 => props傳遞給aside footer
   // 建立ref
   const infoFromRef = useRef();
   const paymentFromRef = useRef();
@@ -80,56 +82,55 @@ export default function PaymentInfo() {
     try {
       await infoFromRef.current.submitForm();
       await paymentFromRef.current.submitForm();
+      handlePayment(orderData.id);
     } catch (error) {
       console.log("驗證失敗", error);
     }
   };
 
   // 驗證成功後送出付款資料
-  useEffect(() => {
+  const handlePayment = async (id) => {
     const { paymentInfo, paymentType } = paymentInfoSlice.requried;
 
-    if (paymentInfo === true && paymentType === true) {
-      const { recipientInfo, address } = paymentInfoSlice;
+    console.log(paymentInfo,paymentType);
+    
+    if (!paymentInfo || !paymentType) return
 
-      // 重組地址字串
-      const newAddress =
-        address.zipcode + address.county + address.district + address.address;
+    const { recipientInfo, address } = paymentInfoSlice;
 
-      // 取得付款時間
-      const createdPaymentTime = new Date().toString();
-      // 重組收件人資料
-      const newOrderFile = {
-        "Recipient": recipientInfo.recipientName,
-        "phone": recipientInfo.recipientPhone,
-        "email": recipientInfo.recipientEmail,
-        "address": newAddress, // 寫入重組後的地址字串
-      };
-      console.log(newOrderFile);
+    // 重組地址字串
+    const newAddress = address.zipcode + address.county + address.district + address.address;
 
-      const newOrderData = {
-        ...orderData, // 展開原訂單內容
-        "orderFile": newOrderFile, // 寫入收件人資料
-        "orderStatus": "訂單成立", // 訂單狀態修改為"成立"
-        "paymentStatus": "已付款", // 付款狀態修改為"已付款"
-        "paymentTime": createdPaymentTime, // 寫入付款時間
-      };
+    // 取得付款時間
+    const createdPaymentTime = new Date().toString();
+    // 重組收件人資料
+    const newOrderFile = {
+      Recipient: recipientInfo.recipientName,
+      phone: recipientInfo.recipientPhone,
+      email: recipientInfo.recipientEmail,
+      address: newAddress, // 寫入重組後的地址字串
+    };
+    console.log(newOrderFile);
 
-      const handlePayment = async (id) => {
-        console.log("NEW", newOrderData);
-        try {
-          await axios.put(`${API_BASE}/orders/${id}`, newOrderData);
-          alert("付款成功");
-          navigate("/"); // 重新導向 暫定首頁 => 之後改付款完成頁面
-        } catch (error) {
-          console.log(error);
-        }
-      };
+    const newOrderData = {
+      ...orderData, // 展開原訂單內容
+      orderFile: newOrderFile, // 寫入收件人資料
+      orderStatus: "訂單成立", // 訂單狀態修改為"成立"
+      paymentStatus: "已付款", // 付款狀態修改為"已付款"
+      paymentTime: createdPaymentTime, // 寫入付款時間
+    };
 
-      handlePayment(orderData.id);
+    console.log("NEW", newOrderData);
+    try {
+      await axios.put(`${API_BASE}/orders/${id}`, newOrderData);
+      alert("付款成功");
+      dispatch(setRequried({name:"paymentInfo",value:false}))
+      dispatch(setRequried({name:"paymentType",value:false}))
+      navigate("/"); // 重新導向 暫定首頁 => 之後改付款完成頁面
+    } catch (error) {
+      console.log(error);
     }
-  }, [paymentInfoSlice.requried]);
-  // 送出表單
+  };
 
   return (
     <>
