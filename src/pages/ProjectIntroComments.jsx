@@ -6,6 +6,7 @@ import getNewDateFormatted from "../helpers/getNewDateFormatted";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
+import { Toast } from "../assets/js/costomSweetAlert"; 
 
 const BASE_URL = "https://json-server-vercel-tdcc.onrender.com";
 
@@ -116,10 +117,17 @@ export default function ProjectIntroComments() {
       };
       await axios.post(`${BASE_URL}/comments`, dataToSend);
       reset();
-      alert("送出成功！感謝您的鼓勵與回饋！");
+      Toast.fire({
+        icon:"success",
+        title: "送出成功！感謝您的鼓勵與回饋！",
+      })
       refreshComments();
     } catch (error) {
-      alert(error.message);
+      console.error(error.message);
+      Toast.fire({
+        icon:"error",
+        title: "送出失敗！請稍後再試！",
+      })
     }
   };
 

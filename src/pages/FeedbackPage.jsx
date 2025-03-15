@@ -4,7 +4,7 @@ import FeedbackSwiper from "../components/FeedbackSwiper";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
-
+import { Toast } from "../assets/js/costomSweetAlert"; 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 function FeedbackPage() {
@@ -40,7 +40,11 @@ function FeedbackPage() {
       console.log(response.data[0]);
       setProjectData(response.data[0]);
     } catch (error) {
-      alert("頁面資料取得失敗：" + error.message);
+      console.error("頁面資料取得失敗：" + error.message);
+      Toast.fire({
+        icon: "success",
+        title: "頁面資料取得失敗",
+      })
     }
   };
 

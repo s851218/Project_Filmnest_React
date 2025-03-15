@@ -6,6 +6,7 @@ import { useParams } from "react-router";
 import ArticleEditor from "../AdminComponents/ArticleEditor";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
+import { AdminCheckModal , Toast } from "../assets/js/costomSweetAlert";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
@@ -162,14 +163,37 @@ export default function Intro() {
       };
 
       const res = await axios.patch(`${API_BASE}/projects/${id}`, updateData);
-      alert("成功更新專案資訊！");
+      Toast.fire({
+        icon: "success",
+        title: "成功更新專案資訊！",
+      })
       console.log("成功更新專案資訊：", res.data);
     } catch (error) {
       console.log("專案資訊編輯失敗", error);
+      Toast.fire({
+        icon: "error",
+        title: "專案資訊編輯失敗",
+      })
     } finally {
       setIsLoading(false);
     }
   };
+
+  const handleRemove = (index) => {
+    AdminCheckModal.fire({
+      title: "是否要刪除此圖片",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<hr><img src="${fields[index].imageUrl}">`
+    }).then((result)=>{
+      console.log(result)
+      if (result.value) {
+        console.log("已確認刪除");
+        remove(index);
+      }
+    })
+  }
 
   return (
     <>
@@ -292,7 +316,8 @@ export default function Intro() {
                           type="button"
                           className="btn btn-sm btn-outline-danger"
                           onClick={() => {
-                            remove(index);
+                            handleRemove(index)
+                            // remove(index);
                           }}
                         >
                           刪除

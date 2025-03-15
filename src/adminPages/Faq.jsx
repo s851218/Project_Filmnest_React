@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
+import { AdminCheckModal , Toast , Alert } from "../assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
+
 export default function Faq() {
   const [faqsData, setFaqsData] = useState([]);
   const [isEdit, setIsEdit] = useState(null);
@@ -50,14 +52,21 @@ export default function Faq() {
       ...faqData,
       date: now,
     };
+    
     try {
       await axios.post(`${apiBase}/faqs`, newFaq);
       setIsAdd(false);
-      alert("新增成功");
+      Toast.fire({
+        icon: "success",
+        title: "新增成功",
+      })
       getFaqData(id);
       reset();
     } catch (error) {
-      alert("新增失敗");
+      Alert.fire({
+        icon: "error",
+        title: "新增失敗",
+      })
     }
   };
 
@@ -80,10 +89,16 @@ export default function Faq() {
     try {
       await axios.put(`${apiBase}/faqs/${dataId}`, updataFaq);
       setIsEdit(null);
-      alert("編輯成功");
+      Toast.fire({
+        icon: "success",
+        title: "編輯成功",
+      })
       getFaqData(id);
     } catch (error) {
-      alert("編輯失敗");
+      Toast.fire({
+        icon: "error",
+        title: "編輯失敗",
+      })
     }
   };
 
@@ -91,10 +106,16 @@ export default function Faq() {
   const handleDelFaqData = async (dataId) => {
     try {
       await axios.delete(`${apiBase}/faqs/${dataId}`);
-      alert("刪除成功");
+      Toast.fire({
+        icon: "success",
+        title: "刪除成功",
+      })
       getFaqData(id);
     } catch (error) {
-      console.log("刪除失敗");
+      Toast.fire({
+        icon: "error",
+        title: "刪除成功",
+      })
     }
   };
 
@@ -117,12 +138,28 @@ export default function Faq() {
     getFaqData(id);
   }, []);
 
+  const handleCreate = () => {
+    console.log("handleCreate");
+    AdminCheckModal.fire({
+      title: "確認新增常見問題",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+    }).then((result)=>{
+      console.log(result)
+      if (result.value) {
+        console.log("已新增");
+        handleSubmit(onSubmit)()
+      }
+    })
+  }
+
   return (
     <>
       {isAdd ? (
         <form
           className="bg-primary-2 p-5 rounded-3 mb-5"
-          onSubmit={handleSubmit(onSubmit)}
+          
         >
           <div className="mb-3">
             <label htmlFor="title" className="form-label">
@@ -168,8 +205,9 @@ export default function Faq() {
           </div>
           <div className="d-flex justify-content-end">
             <button
-              type="submit"
+              type="button"
               className="btn btn-primary rounded-2 px-4 py-2 me-3"
+              onClick={() => handleCreate()}
             >
               確認送出
             </button>

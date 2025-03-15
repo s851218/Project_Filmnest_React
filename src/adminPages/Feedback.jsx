@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
+import { AdminCheckModal , Toast } from "../assets/js/costomSweetAlert"; 
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 const DEFAULT_FEEDBACK_FORM = {
@@ -47,6 +48,28 @@ function AdminFeedbackForm() {
     control,
     name: "choice",
   });
+
+  const handleRemoveChoice = (choiceIndex) => {
+    console.log(choiceIndex);
+    
+    const item = feedbackData[choiceIndex]
+    console.log(item);
+    
+    
+    AdminCheckModal.fire({
+      title: "是否要刪除此回饋項目",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<hr><img src="${item.image}"><p class="fs-4">【${item.title}】</p>`
+    }).then((result)=>{
+      console.log(result)
+      if (result.value) {
+        console.log("已確認刪除");
+        removeChoice(choiceIndex)
+      }
+    })
+  }
 
   const getFeedbackData = async () => {
     setIsLoading(true);
@@ -121,12 +144,18 @@ function AdminFeedbackForm() {
           console.error("請求失敗:", result.reason);
         }
       });
-
-      alert("請求已完成");
+      Toast.fire({
+        icon: "success",
+        title: "請求已完成",
+      })
       setEditingIndex(null);
       getFeedbackData();
     } catch (error) {
       console.error(`提交失敗: ${error.message}`);
+      Toast.fire({
+        icon: "error",
+        title: "提交失敗",
+      })
     }
   };
 
@@ -289,7 +318,7 @@ function AdminFeedbackForm() {
                         <button
                           type="button"
                           className="btn btn-danger btn-sm d-flex align-items-center"
-                          onClick={() => removeChoice(choiceIndex)}
+                          onClick={() => handleRemoveChoice(choiceIndex)}
                           disabled={choiceFields.length === 1 || !isEditing}
                         >
                           <i className="bi bi-trash me-1"></i>
@@ -550,6 +579,25 @@ const ContentItems = ({
     name: `choice.${choiceIndex}.contents`,
   });
 
+  const handleRemoveContent = (contentIndex) => {
+    const itemName = contentFields[contentIndex].item
+    console.log(itemName);
+    
+    AdminCheckModal.fire({
+      title: "是否要刪除此回饋項目",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<hr><p class="fs-6">【${itemName}】</p>`
+    }).then((result)=>{
+      console.log(result)
+      if (result.value) {
+        console.log("已確認刪除");
+        removeContent(contentIndex)
+      }
+    })
+  }
+
   const contents = watch(`choice.${choiceIndex}.contents`);
   const isLastItemEmpty =
     contents &&
@@ -595,7 +643,7 @@ const ContentItems = ({
                   <button
                     type="button"
                     className="btn btn-sm btn-danger border-0 rounded-end"
-                    onClick={() => removeContent(contentIndex)}
+                    onClick={() => handleRemoveContent(contentIndex)}
                     disabled={contentFields.length === 1 || !isEditing}
                   >
                     <i className="bi bi-x-circle"></i>

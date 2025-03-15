@@ -5,6 +5,7 @@ import { setCategory } from "../slice/categorySlice";
 import { setSearchValue, setIsSearchOpen } from "../slice/searchSlice";
 import { setLogout } from "../slice/userSlice";
 import axios from "axios";
+import { Toast } from "../assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function HeaderSm() {
@@ -21,11 +22,18 @@ export default function HeaderSm() {
     try {
       await axios.patch(`${apiBase}/users/${id}`, { token: "" });
       document.cookie = "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+      Toast.fire({
+        icon: "success",
+        title: "登出成功"
+      })
       dispatch(setLogout());
       navigate("/");
-      alert("登出成功");
     } catch (error) {
       console.log(error);
+      Toast.fire({
+        icon: "error",
+        title: "登出失敗"
+      })
     }
   };
   const handleIsExpand = () => {

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
 import GrayScreenLoading from "../components/GrayScreenLoading";
+import { Toast } from "../assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function ProjectIntroNews() {
@@ -61,7 +62,10 @@ export default function ProjectIntroNews() {
             })
           );
         } catch (error) {
-          alert("最新消息取得失敗");
+          Toast.fire({
+            icon: "error",
+            title: "最新消息取得失敗",
+          })
         } finally {
           setIsLoading(false);
         }

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { setLogin } from "../slice/userSlice";
 import GrayScreenLoading from "../components/GrayScreenLoading";
+import { Toast } from "../assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Profile() {
@@ -56,9 +57,16 @@ export default function Profile() {
     try {
       await axios.patch(`${apiBase}/users/${id}`, profileData);
       dispatch(setLogin({ ...profile, imageUrl: file }));
-      alert("修改成功");
+      Toast.fire({
+        icon: "success",
+        title: "修改成功",
+      })
     } catch (error) {
       console.error("儲存資料錯誤:", error);
+      Toast.fire({
+        icon: "error",
+        title: "修改失敗",
+      })
     }
   };
 
