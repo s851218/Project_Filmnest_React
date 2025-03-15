@@ -1,19 +1,15 @@
 import ReactLoading from "react-loading";
 
-export default function GrayScreenLoading({
-  isLoading,
-  studioProfileIsLoading,
-  projectDataIsLoading,
-}) {
+export default function GrayScreenLoading({ isLoading }) {
   return (
     <>
-      {(isLoading || studioProfileIsLoading || projectDataIsLoading) && (
+      {isLoading && (
         <div
           className="d-flex justify-content-center align-items-center"
           style={{
             position: "fixed",
             inset: 0,
-            background: "rgba(63, 63, 63, 0.9)",
+            background: "rgba(35, 35, 35, 0.98)",
             zIndex: 999,
           }}
         >
