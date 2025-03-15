@@ -240,7 +240,10 @@ function FeedbackSwiper() {
                   style={{ borderColor: "#606060" }}
                 >
                   <div className="h-100 d-flex flex-column">
-                    <div className="position-relative card-img-top overflow-hidden">
+                    <div
+                      className="position-relative card-img-top overflow-hidden"
+                      style={{ height: "230px" }}
+                    >
                       <img
                         src={feedback.image}
                         alt={feedback.title}
