@@ -6,8 +6,9 @@ import PaymentAside from "../components/PaymentAside";
 import PaymentMobileFooter from "../components/PaymentMobileFooter";
 import PaymentInfoFrom from "../components/PaymentInfoFrom";
 import PaymentCollapseFrom from "../components/PaymentCollapseFrom";
-import { setRequried } from "../slice/paymentInfoSlice"
+import { setRequried } from "../slice/paymentInfoSlice";
 import { Helmet } from "react-helmet-async";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -25,17 +26,21 @@ export default function PaymentInfo() {
   const [projectData, setProjectData] = useState({});
   const [productData, setProductData] = useState({});
   const [userData, setUserData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const paymentInfoSlice = useSelector((state) => state.paymentInfo);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   // 取得訂單資料
   useEffect(() => {
     const getOrder = async (id) => {
+      setIsLoading(true);
       try {
         const res = await axios.get(`${API_BASE}/orders?orderId=${id}`);
         setOrderData(res.data[0]);
       } catch (error) {
         console.log("訂單資料取得錯誤", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     if (id) {
@@ -73,7 +78,7 @@ export default function PaymentInfo() {
     }
   }, [orderData]);
 
- // 送出表單 => props傳遞給aside footer
+  // 送出表單 => props傳遞給aside footer
   // 建立ref
   const infoFromRef = useRef();
   const paymentFromRef = useRef();
@@ -98,7 +103,8 @@ export default function PaymentInfo() {
     const { recipientInfo, address } = paymentInfoSlice;
 
     // 重組地址字串
-    const newAddress = address.zipcode + address.county + address.district + address.address;
+    const newAddress =
+      address.zipcode + address.county + address.district + address.address;
 
     // 取得付款時間
     const createdPaymentTime = new Date().toString();
@@ -123,8 +129,8 @@ export default function PaymentInfo() {
     try {
       await axios.put(`${API_BASE}/orders/${id}`, newOrderData);
       alert("付款成功");
-      dispatch(setRequried({name:"paymentInfo",value:false}))
-      dispatch(setRequried({name:"paymentType",value:false}))
+      dispatch(setRequried({ name: "paymentInfo", value: false }));
+      dispatch(setRequried({ name: "paymentType", value: false }));
       navigate("/"); // 重新導向 暫定首頁 => 之後改付款完成頁面
     } catch (error) {
       console.log(error);
@@ -171,6 +177,7 @@ export default function PaymentInfo() {
       ) : (
         <div className="vh-100"></div>
       )}
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

@@ -3,6 +3,7 @@ import { Collapse } from "bootstrap";
 import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function ProjectIntroQA() {
@@ -12,6 +13,7 @@ export default function ProjectIntroQA() {
   const faqsCollapseRef = useRef([]);
   const faqsCollapseInstances = useRef([]);
   const [params, setParams] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   //處理params
   useEffect(() => {
@@ -45,6 +47,7 @@ export default function ProjectIntroQA() {
   useEffect(() => {
     if (params.projectId) {
       (async () => {
+        setIsLoading(true);
         try {
           const response = await axios.get(
             `${apiBase}/faqs?projectId=${params.projectId}`
@@ -57,6 +60,8 @@ export default function ProjectIntroQA() {
           );
         } catch (error) {
           alert("最新消息取得失敗");
+        } finally {
+          setIsLoading(false);
         }
       })();
     }
@@ -92,9 +97,17 @@ export default function ProjectIntroQA() {
         {projectFaqs.map((item, index) => {
           return (
             <div className="row mb-5" key={item.id}>
-                <div className="col-10 mx-auto">
+              <div className="col-10 mx-auto">
                 <div className="border border-0 border-primary-5 rounded box-shadow">
-                  <button className={`text-white py-3 px-4 w-100 fs-5 d-flex justify-content-between border-1 ${faqsIsOpen[index].isOpen ? "bg-primary-6" : "bg-primary-10"}`} type="button" onClick={() => handleCollapse(item.id)}>
+                  <button
+                    className={`text-white py-3 px-4 w-100 fs-5 d-flex justify-content-between border-1 ${
+                      faqsIsOpen[index].isOpen
+                        ? "bg-primary-6"
+                        : "bg-primary-10"
+                    }`}
+                    type="button"
+                    onClick={() => handleCollapse(item.id)}
+                  >
                     <span className="fs-base">
                       <span className="fs-base me-3">Q{index + 1}:</span>
                       {item.title}
@@ -122,6 +135,7 @@ export default function ProjectIntroQA() {
           );
         })}
       </div>
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { setLogin } from "../slice/userSlice";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Profile() {
@@ -14,6 +15,7 @@ export default function Profile() {
     window.scrollTo(0, 0);
   }, []);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [userProfile, setUserProfile] = useState({});
   const [userEmail, setUserEmail] = useState("");
   const [file, setFile] = useState(null);
@@ -61,6 +63,7 @@ export default function Profile() {
   };
 
   const getUserProfile = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(`${apiBase}/users/${id}`);
       setUserProfile(response.data.userProfile);
@@ -74,6 +77,8 @@ export default function Profile() {
       setValue("userImageUrl", response.data.userProfile.userImageUrl);
     } catch (error) {
       console.log(error.data);
+    } finally {
+      setIsLoading(false);
     }
   };
   useEffect(() => {
@@ -271,6 +276,7 @@ export default function Profile() {
           </div>
         </form>
       </div>
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setExpanded } from "../slice/adminSidebarExpandSlice";
 import { useLocation, useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
+import LightScreenLoading from "../AdminComponents/LightScreenLoading";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function AdminProjectsHome() {
@@ -14,6 +15,7 @@ export default function AdminProjectsHome() {
     window.scrollTo(0, 0);
   }, []);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [projects, setProjects] = useState([]);
   const [commentsCount, setCommentsCount] = useState({});
   const [favoritesCount, setFavoritesCount] = useState({});
@@ -22,11 +24,14 @@ export default function AdminProjectsHome() {
   const navigate = useNavigate();
 
   const getProjects = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(`${apiBase}/projects?userId=${userId}`);
       setProjects(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
   const getComments = async (id) => {
@@ -413,6 +418,7 @@ export default function AdminProjectsHome() {
           </table>
         </div>
       </div>
+      <LightScreenLoading isLoading={isLoading} />
     </>
   );
 }

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useOutletContext } from "react-router";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -9,11 +10,13 @@ export default function ProjectIntroContent() {
   const projectInfo = useOutletContext();
 
   const [proposerPhoto, setProposerPhoto] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   // 取得提案人照片
   useEffect(() => {
     if (!projectInfo.studioId) return;
     const getProposerData = async () => {
+      setIsLoading(true);
       try {
         const res = await axios.get(
           `${API_BASE}/studios/${projectInfo.studioId}`
@@ -21,6 +24,8 @@ export default function ProjectIntroContent() {
         setProposerPhoto(res.data.studioProfile?.studioImageUrl);
       } catch (error) {
         console.log("取得提案人資料失敗：", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     getProposerData();
@@ -83,6 +88,7 @@ export default function ProjectIntroContent() {
           </section>
         </div>
       </div>
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

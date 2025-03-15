@@ -3,6 +3,7 @@ import { Collapse } from "bootstrap";
 import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function ProjectIntroNews() {
@@ -12,6 +13,7 @@ export default function ProjectIntroNews() {
   const newsCollapseRef = useRef([]);
   const newsCollapseInstances = useRef([]);
   const [params, setParams] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const getTime = (time) => {
     const newTime = new Date(time)
@@ -37,7 +39,6 @@ export default function ProjectIntroNews() {
         let [key, value] = param.split("=");
         paramsObj[key] = Number(value);
       });
-      console.log(paramsObj);
       setParams(paramsObj);
     }
   }, [id]);
@@ -45,11 +46,15 @@ export default function ProjectIntroNews() {
   useEffect(() => {
     if (params.projectId) {
       (async () => {
+        setIsLoading(true);
         try {
           const response = await axios.get(
             `${apiBase}/posts?projectId=${params.projectId}`
           );
-          setProjectPosts(response.data);
+          const sortData = response.data.sort(
+            (a, b) => new Date(b.date) - new Date(a.date)
+          );
+          setProjectPosts(sortData);
           setPostsIsOpen(
             response.data.map((item) => {
               return { id: item.id, isOpen: false };
@@ -57,6 +62,8 @@ export default function ProjectIntroNews() {
           );
         } catch (error) {
           alert("最新消息取得失敗");
+        } finally {
+          setIsLoading(false);
         }
       })();
     }
@@ -94,11 +101,25 @@ export default function ProjectIntroNews() {
             <div className="row mb-5" key={item.id}>
               <div className="col-10 mx-auto">
                 <div className="border border-0 border-primary-5 rounded box-shadow">
-                  <button className={`text-white py-3 px-4 w-100 fs-5 d-flex justify-content-between border-1 ${postsIsOpen[index].isOpen ? "bg-primary-6" : "bg-primary-10"}`} type="button" onClick={() => handleCollapse(item.id)}>
+                  <button
+                    className={`text-white py-3 px-4 w-100 fs-5 d-flex justify-content-between border-1 ${
+                      postsIsOpen[index].isOpen
+                        ? "bg-primary-6"
+                        : "bg-primary-10"
+                    }`}
+                    type="button"
+                    onClick={() => handleCollapse(item.id)}
+                  >
                     <span className="fs-base">{item.title}</span>{" "}
                     <span className="d-flex align-items-center">
-                      <time className="fs-xs fs-md-sm text-primary-5 me-2" >{getTime(item.date)}</time>
-                      {postsIsOpen[index].isOpen ? <i className="bi bi-chevron-up fs-7"></i> : <i className="bi bi-chevron-down fs-7"></i>}
+                      <time className="fs-xs fs-md-sm text-primary-5 me-2">
+                        {getTime(item.date)}
+                      </time>
+                      {postsIsOpen[index].isOpen ? (
+                        <i className="bi bi-chevron-up fs-7"></i>
+                      ) : (
+                        <i className="bi bi-chevron-down fs-7"></i>
+                      )}
                     </span>
                   </button>
                   <div
@@ -113,6 +134,7 @@ export default function ProjectIntroNews() {
           );
         })}
       </div>
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

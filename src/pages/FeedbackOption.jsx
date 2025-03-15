@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router";
 import FeedbackSwiper from "../components/FeedbackSwiper";
 import BonusCalculator from "../components/BonusCalculator";
 import ModalComponent from "../components/ModalComponent";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -27,6 +28,7 @@ export default function FeedbackOption() {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [params, setParams] = useState({});
   const [feedbackData, setFeedbackData] = useState([]);
   const [projectData, setProjectData] = useState([]);
@@ -57,6 +59,7 @@ export default function FeedbackOption() {
   }, [id]);
 
   const getFeedbackData = async (params) => {
+    setIsLoading(true);
     const { projectId, productId } = params;
     try {
       const res = await axios.get(
@@ -66,6 +69,8 @@ export default function FeedbackOption() {
       setOriginPrice(res.data[0].price);
     } catch (error) {
       alert("回饋資料取得失敗：" + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -409,6 +414,7 @@ export default function FeedbackOption() {
           </div>
         </div>
       </div> */}
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

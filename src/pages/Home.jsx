@@ -6,6 +6,9 @@ import { setCategory } from "../slice/categorySlice";
 import Card from "../components/Card";
 import { Link } from "react-router";
 import { Helmet } from "react-helmet-async";
+import { useSpring, animated } from "@react-spring/web"; // 引入 react-spring
+import { useInView } from "react-intersection-observer"; // 用來檢查區塊是否進入視窗
+import GrayScreenLoading from "../components/GrayScreenLoading";
 
 const apiBase = import.meta.env.VITE_API_BASE;
 
@@ -25,8 +28,10 @@ export default function Home() {
   const swiperCategoryRef = useRef(null);
   const swiperSloganRef = useRef(null);
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
   const getProjectsData = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(`${apiBase}/projects`);
       setProjects(response.data.map((item) => item));
@@ -38,6 +43,8 @@ export default function Home() {
       );
     } catch (error) {
       console.log("取得產品失敗");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -148,6 +155,52 @@ export default function Home() {
       indexSlogaSwiper.destroy();
     };
   }, []);
+
+  // slogan 動畫效果
+  const [inView, setInView] = useState([false, false, false]);
+
+  // 設置 IntersectionObserver 來監聽每個數字區域是否進入視窗
+  const observers = useRef([]);
+  const refs = useRef([]);
+
+  const numbers = [42, 4837261, 2947]; // 數字目標值
+
+  const handleIntersection = (index, entries) => {
+    if (entries[0].isIntersecting) {
+      setInView((prev) => {
+        const updated = [...prev];
+        updated[index] = true; // 如果當前區域進入視窗，更新狀態
+        return updated;
+      });
+    }
+  };
+
+  // 創建 IntersectionObserver
+  useEffect(() => {
+    refs.current.forEach((ref, index) => {
+      const observer = new IntersectionObserver(
+        (entries) => handleIntersection(index, entries),
+        {
+          threshold: 0.5, // 達到 50% 才觸發
+        }
+      );
+      observer.observe(ref);
+      observers.current.push(observer);
+    });
+
+    return () => {
+      observers.current.forEach((observer) => observer.disconnect()); // 清除 observer
+    };
+  }, []);
+
+  // 使用 useSpring 創建動畫
+  const springProps = numbers.map((target, index) =>
+    useSpring({
+      from: { number: 0 },
+      to: { number: inView[index] ? target : 0 },
+      config: { mass: 1, tension: 170, friction: 26 },
+    })
+  );
 
   return (
     <>
@@ -488,16 +541,8 @@ export default function Home() {
                           <h3 className="fs-base fs-md-3">開心工作室</h3>
                         </div>
                         <p className="fs-sm fs-md-base">
-                          成功募資電影的經驗讓我深刻理解了市場調研的重要性。了解目標觀眾和投資者的需求,並根據他們的期望來調整計劃,能夠大大提高募資成功的機會。有效的推廣和積極的社交媒體策略也非常重要,它們能夠幫助…
-                          <br />
-                          <br />
-                          成功募資電影的經驗讓我深刻理解了市場調研的重要性。了解目標觀眾和投資者的需求,並根據他們的期望來調整計劃,能夠大大提高募資成功的機會。有效的推廣和積極的社交媒體策略也非常重要,它們能夠幫助…
-                          <br />
-                          <br />
-                          成功募資電影的經驗讓我深刻理解了市場調研的重要性。了解目標觀眾和投資者的需求,並根據他們的期望來調整計劃,能夠大大提高募資成功的機會。有效的推廣和積極的社交媒體策略也非常重要,它們能夠幫助…
-                          <br />
-                          <br />
-                          成功募資電影的經驗讓我深刻理解了市場調研的重要性。了解目標觀眾和投資者的需求,並根據他們的期望來調整計劃,能夠大大提高募資成功的機會。有效的推廣和積極的社交媒體策略也非常重要,它們能夠幫助…
+                          成功募資電影的經驗讓我深刻理解了市場調研的重要性。了解目標觀眾和投資者的需求，並根據他們的期望來調整計劃，能夠大大提高募資成功的機會。透過詳細的市場分析，我能夠更精準地定位潛在支持者，確保電影的題材、風格及敘事方式符合市場趨勢。此外，我也發現，向投資人呈現一個清晰且具有說服力的商業計劃是至關重要的，這不僅能夠提升專案的可信度，也能讓投資人對項目抱有更大的信心。
+                          有效的推廣和積極的社交媒體策略也是成功募資的關鍵因素。社群平台不僅能夠幫助專案獲得更高的曝光度，還能讓創作者與支持者建立更緊密的聯繫，形成良好的互動氛圍。我學會如何透過短片預告、製作幕後花絮以及與粉絲即時交流來提高觀眾的參與度，進一步提升募資的成功率。此外，與媒體、影評人及影展合作，增加專案的公信力和話題性，也是推動募資成功的有效策略。這些經驗讓我深刻體會到，募資不僅僅是獲取資金的過程，更是一個與市場對話、建立品牌形象的重要機會。
                         </p>
                       </div>
                     </div>
@@ -560,16 +605,9 @@ export default function Home() {
                           <h3 className="fs-base fs-md-3">張先生</h3>
                         </div>
                         <p className="fs-sm fs-md-base">
-                          在電影募資過程中，我學到了如何將想法具體化並與投資者建立信任。關鍵在於準備周全的計劃書和展示影片，讓投資者能夠清晰理解項目的潛力和回報。同時，透明的溝通和積極的互動也是成功募資。
-                          <br />
-                          <br />
-                          在電影募資過程中，我學到了如何將想法具體化並與投資者建立信任。關鍵在於準備周全的計劃書和展示影片，讓投資者能夠清晰理解項目的潛力和回報。同時，透明的溝通和積極的互動也是成功募資。
-                          <br />
-                          <br />
-                          在電影募資過程中，我學到了如何將想法具體化並與投資者建立信任。關鍵在於準備周全的計劃書和展示影片，讓投資者能夠清晰理解項目的潛力和回報。同時，透明的溝通和積極的互動也是成功募資。
-                          <br />
-                          <br />
-                          在電影募資過程中，我學到了如何將想法具體化並與投資者建立信任。關鍵在於準備周全的計劃書和展示影片，讓投資者能夠清晰理解項目的潛力和回報。同時，透明的溝通和積極的互動也是成功募資。
+                          在電影募資過程中，我學到了如何將想法具體化並與投資者建立信任。關鍵在於準備周全的計劃書和展示影片，讓投資者能夠清晰理解項目的潛力和回報。同時，透明的溝通和積極的互動也是成功募資的重要因素。投資人希望知道資金的流向、專案的進度以及可能面臨的挑戰，因此，定期更新專案進展、提供詳細的財務預算以及回應投資人的疑問，能夠有效提升募資的可信度與吸引力。
+                          此外，我深刻體會到市場調研與行銷策略在募資過程中的關鍵作用。透過分析市場趨勢與觀眾需求，我能夠調整企劃內容，使其更具吸引力。同時，運用社交媒體進行廣泛宣傳，透過預告片、幕後花絮、線上直播等方式與潛在支持者互動，不僅提高了專案的曝光度，也加強了觀眾的情感連結。與媒體、影評人及影展合作，則能進一步提升專案的話題性與公信力，為募資奠定更穩固的基礎。
+                          最重要的是，募資不只是獲取資金的過程，更是一個建立品牌、拓展人脈、與市場對話的機會。透過這次經驗，我更理解了如何將創意轉化為具體可行的計畫，並成功吸引資金與觀眾的關注，為未來的電影製作打下良好的基礎。
                         </p>
                       </div>
                     </div>
@@ -632,16 +670,9 @@ export default function Home() {
                           <h3 className="fs-base fs-md-3">林先生</h3>
                         </div>
                         <p className="fs-sm fs-md-base">
-                          成功募資電影的經驗讓我深刻體會到創意與實踐的結合至關重要。精心策劃的影片提案和吸引人的預告片能夠有效地展示項目的魅力，而建立專業且有經驗的團隊則增強了投資者的信心。透過與投資者。
-                          <br />
-                          <br />
-                          成功募資電影的經驗讓我深刻體會到創意與實踐的結合至關重要。精心策劃的影片提案和吸引人的預告片能夠有效地展示項目的魅力，而建立專業且有經驗的團隊則增強了投資者的信心。透過與投資者。
-                          <br />
-                          <br />
-                          成功募資電影的經驗讓我深刻體會到創意與實踐的結合至關重要。精心策劃的影片提案和吸引人的預告片能夠有效地展示項目的魅力，而建立專業且有經驗的團隊則增強了投資者的信心。透過與投資者。
-                          <br />
-                          <br />
-                          成功募資電影的經驗讓我深刻體會到創意與實踐的結合至關重要。精心策劃的影片提案和吸引人的預告片能夠有效地展示項目的魅力，而建立專業且有經驗的團隊則增強了投資者的信心。透過與投資者。
+                          成功募資電影的經驗讓我深刻體會到創意與實踐的結合至關重要。精心策劃的影片提案和吸引人的預告片能夠有效地展示項目的魅力，而建立專業且有經驗的團隊則增強了投資者的信心。透過與投資者的溝通，展示我們的專業能力、過往的成功案例以及對項目深刻的理解，能夠讓他們對項目的未來充滿信心。此外，透明且誠實的溝通方式也能夠建立長期的信任關係，投資者更願意參與其中並為專案提供資金支持。
+                          除了這些基本的策略，市場分析和目標觀眾的定位也是成功募資的關鍵。了解觀眾的需求、偏好以及市場趨勢，有助於精準地制定行銷策略。這不僅能夠提高項目的曝光度，還能夠確保電影在推出後獲得觀眾的青睞。此外，積極的社交媒體策略、參加影展與媒體宣傳等方式，也能夠擴大電影的影響力和認知度，吸引更多的投資者與觀眾關注。
+                          最終，募資不僅是為了獲得資金，更是為了確立電影的品牌和價值。我從中學到了如何將創意與實踐相結合，並在過程中不斷調整策略以達到最佳效果。這樣的經歷為未來的電影製作提供了寶貴的經驗，並讓我更加自信地面對未來的挑戰。
                         </p>
                       </div>
                     </div>
@@ -666,24 +697,28 @@ export default function Home() {
             ref={swiperSloganRef}
           >
             <div className="swiper-wrapper">
-              <div className="swiper-slide">
-                <div className="py-2 py-lg-5 text-center slogan-card-bg">
-                  <h3 className="fs-7 fs-lg-1">42</h3>
-                  <h4 className="fs-sm fs-lg-7">累積專案</h4>
+              {numbers.map((target, index) => (
+                <div
+                  className="swiper-slide"
+                  ref={(el) => (refs.current[index] = el)}
+                  key={index}
+                >
+                  <div className="py-2 py-lg-5 text-center slogan-card-bg">
+                    <animated.h3 className="fs-7 fs-lg-1">
+                      {springProps[index].number.to((n) =>
+                        Math.floor(n).toLocaleString()
+                      )}
+                    </animated.h3>
+                    <h4 className="fs-sm fs-lg-7">
+                      {index === 0
+                        ? "累積專案"
+                        : index === 1
+                        ? "累積金額"
+                        : "贊助人數"}
+                    </h4>
+                  </div>
                 </div>
-              </div>
-              <div className="swiper-slide">
-                <div className="py-2 py-lg-5 text-center slogan-card-bg">
-                  <h3 className="fs-7 fs-lg-1">4,837,261</h3>
-                  <h4 className="fs-sm fs-lg-7">累積金額</h4>
-                </div>
-              </div>
-              <div className="swiper-slide">
-                <div className="py-2 py-lg-5 text-center slogan-card-bg">
-                  <h3 className="fs-7 fs-lg-1">2,947</h3>
-                  <h4 className="fs-sm fs-lg-7">贊助人數</h4>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
           <div className="text-center position-relative z-1">
@@ -696,6 +731,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }
