@@ -4,7 +4,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css/navigation";
-import "swiper/css/pagination";
 import { Link, useParams } from "react-router";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -240,12 +239,12 @@ function FeedbackSwiper() {
                   className="card feedbackSlide rounded-2 bg-primary-9 border overflow-hidden h-auto"
                   style={{ borderColor: "#606060" }}
                 >
-                  <div className="h-100 d-flex flex-column ">
-                    <div className="position-relative card-img-top overflow-hidden h-100">
+                  <div className="h-100 d-flex flex-column">
+                    <div className="position-relative card-img-top overflow-hidden">
                       <img
                         src={feedback.image}
                         alt={feedback.title}
-                        className="feedback-image object-fit-cover"
+                        className="feedback-image"
                         style={{
                           transition: "transform 0.3s ease",
                         }}
@@ -253,35 +252,38 @@ function FeedbackSwiper() {
                     </div>
 
                     <div className="card-body p-5 d-flex flex-column h-100">
-                      <h5 className="fw-bold fs-lg-7 mb-1">{feedback.title}</h5>
-                      <h3 className="fw-bold fs-lg-6 fs-7 mb-lg-6 mb-3">{`NT${feedback.price.toLocaleString(
-                        "zh-TW",
-                        {
-                          style: "currency",
-                          currency: "TWD",
-                          minimumFractionDigits: 0,
-                        }
-                      )}`}</h3>
+                      <div>
+                        <h5 className="fw-bold fs-lg-6 mb-1">
+                          {feedback.title}
+                        </h5>
+                        <p className="fw-bold fs-lg-5 fs-7 mb-lg-2 mb-1">{`NT${feedback.price.toLocaleString(
+                          "zh-TW",
+                          {
+                            style: "currency",
+                            currency: "TWD",
+                            minimumFractionDigits: 0,
+                          }
+                        )}`}</p>
 
-                      <hr className="my-3" />
-                      <div className="d-flex flex-column h-100">
-                        <p className="mb-lg-2 mb-1">本方案包含：</p>
-                        <ol className="mb-lg-6 mb-3 text-balance">
-                          {feedback.contents.map((item, index) => (
-                            <li key={index}>{item.item}</li>
-                          ))}
-                        </ol>
-
-                        <div className="mb-0 mt-auto">
-                          <Link
-                            to={`/feedbackOption/projectId=${params.projectId}&productId=${feedback.id}`}
-                            className={`btn btn-primary py-2 fw-bold w-100 ${
-                              params.productId === feedback.id ? "disabled" : ""
-                            }`}
-                          >
-                            選擇此方案
-                          </Link>
+                        <hr className="my-3" />
+                        <div className="d-flex flex-column">
+                          <p className="mb-lg-2 mb-1">本方案包含：</p>
+                          <ol className="mb-lg-6 mb-3 text-balance">
+                            {feedback.contents.map((item, index) => (
+                              <li key={index}>{item.item}</li>
+                            ))}
+                          </ol>
                         </div>
+                      </div>
+                      <div className="mb-0 mt-auto">
+                        <Link
+                          to={`/feedbackOption/projectId=${params.projectId}&productId=${feedback.id}`}
+                          className={`btn btn-primary py-2 fw-bold w-100 ${
+                            params.productId === feedback.id ? "disabled" : ""
+                          }`}
+                        >
+                          選擇此方案
+                        </Link>
                       </div>
                     </div>
                   </div>

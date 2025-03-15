@@ -15,11 +15,9 @@ const DEFAULT_FEEDBACK_FORM = {
   ],
 };
 
-function AdminFeedbackForm() {
-  const { projectId } = useParams();
-  let id = projectId || 1;
+function FeedbackFormSample() {
+  const { projectId } = useParams;
   const [feedbackData, setFeedbackData] = useState([]);
-  const [editingIndex, setEditingIndex] = useState(null);
 
   const {
     handleSubmit,
@@ -45,7 +43,9 @@ function AdminFeedbackForm() {
 
   const getFeedbackData = async () => {
     try {
-      const response = await axios.get(`${API_BASE}/products?projectId=${id}`);
+      const response = await axios.get(
+        `${API_BASE}/products?projectId=${projectId}`
+      );
       setFeedbackData(response.data);
       reset({ choice: response.data });
     } catch (error) {
@@ -61,18 +61,17 @@ function AdminFeedbackForm() {
     try {
       const datasToSend = data.choice.map((feedback) => ({
         ...feedback,
-        projectId: id,
+        projectId,
       }));
       const requests = datasToSend.map((data) => {
-        return axios.put(`${API_BASE}/products/${id}`, data);
+        return axios.put(`${API_BASE}/products?projectId=${projectId}`, data);
       });
       const responses = await Promise.all(requests);
       console.log("全部的請求成功：", responses);
       alert("已成功提交");
       setEditingIndex(null);
-      getFeedbackData();
     } catch (error) {
-      alert(`提交失敗: ${error.message}`);
+      alert("提交失敗:", error);
     }
   };
 
@@ -94,6 +93,7 @@ function AdminFeedbackForm() {
     reader.readAsDataURL(file);
   };
 
+  const [editingIndex, setEditingIndex] = useState(null);
   const toggleEdit = (index) => {
     setEditingIndex(editingIndex === index ? null : index);
   };
@@ -114,42 +114,15 @@ function AdminFeedbackForm() {
 
   // 檢查所有選項是否都已填寫完整
   const allFieldsValid = useMemo(() => {
-    // 確保 choiceFields 存在且不為空
-    if (!choiceFields || choiceFields.length === 0) {
-      return false;
-    }
-
     // 每個選項
     return choiceFields.every((_, choiceIndex) => {
-      // 確保 formValues 和 formValues.choice 以及對應的 choice 對象存在
-      if (
-        !formValues ||
-        !formValues.choice ||
-        !formValues.choice[choiceIndex]
-      ) {
-        return false;
-      }
-
       const choice = formValues.choice[choiceIndex];
-
-      // 基本欄位檢查，確保每個字段存在且有值
+      // 基本欄位
       if (!choice.image || !choice.title || !choice.price) {
         return false;
       }
-
-      // 確保 contents 數組存在
-      if (!Array.isArray(choice.contents) || choice.contents.length === 0) {
-        return false;
-      }
-
-      // 內容項目檢查，確保每個 item 存在且有值
-      return choice.contents.every((content) => {
-        return (
-          content &&
-          typeof content.item === "string" &&
-          content.item.trim() !== ""
-        );
-      });
+      // 內容項目
+      return choice.contents.every((content) => !!content.item);
     });
   }, [formValues, choiceFields]);
 
@@ -423,7 +396,7 @@ function AdminFeedbackForm() {
                   {isSubmitting ? (
                     <>
                       <span
-                        className="spinner-border spinner-border-sm me-2"
+                        className="spinner-border spinner-border-sm"
                         aria-hidden="true"
                       ></span>
                       <span role="status">提交中…</span>
@@ -538,4 +511,4 @@ const ContentItems = ({
   );
 };
 
-export default AdminFeedbackForm;
+export default FeedbackFormSample;

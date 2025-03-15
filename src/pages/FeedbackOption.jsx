@@ -1,101 +1,118 @@
 import axios from "axios";
-import { useEffect , useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router"
+import { useNavigate, useParams } from "react-router";
 import FeedbackSwiper from "../components/FeedbackSwiper";
 import BonusCalculator from "../components/BonusCalculator";
 import ModalComponent from "../components/ModalComponent";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
-export default function FeedbackOption () {
-  const { register , handleSubmit , reset , control , formState:{errors}} = useForm()
-  const navigate = useNavigate()
-  const { id } = useParams()
+export default function FeedbackOption() {
+  // 路由跳轉頁面時，重製滾輪捲軸
+  useEffect(() => {
+    // 將滾動行為設為 auto 避免有捲動過程的動畫
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+  }, []);
 
-  const [ params , setParams ] = useState({})
-  const [ feedbackData, setFeedbackData ] = useState([]);
-  const [ projectData , setProjectData ] = useState([]);
-  const [ isName , setIsName ] = useState(false)
-  const [ originPrice , setOriginPrice ] = useState(0)
-  const [ bonus , setBonse ] = useState(0)
-  const [ totalPrice , setTotalPrice ] = useState(0)
-  const userInfo = useSelector((state) => state.user.profile)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm();
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-  const modalRef = useRef(null)
-  const [ isModalOpen , setIsModalOpen ] = useState(false)
+  const [params, setParams] = useState({});
+  const [feedbackData, setFeedbackData] = useState([]);
+  const [projectData, setProjectData] = useState([]);
+  const [isName, setIsName] = useState(false);
+  const [originPrice, setOriginPrice] = useState(0);
+  const [bonus, setBonse] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
+  const userInfo = useSelector((state) => state.user.profile);
+
+  const modalRef = useRef(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   // 處理modal開關
-  useEffect(()=>{
-    setIsModalOpen(false)
-  },[id])
+  useEffect(() => {
+    setIsModalOpen(false);
+  }, [id]);
 
   //處理params
-  useEffect(()=>{
+  useEffect(() => {
     if (id) {
-      const paramsArry = id.split("&")
-      let paramsObj = {}
-      paramsArry.forEach((param)=>{
-        let [ key , value ] = param.split("=")
-        paramsObj[key] = Number(value)
-      })
-      setParams(paramsObj)
+      const paramsArry = id.split("&");
+      let paramsObj = {};
+      paramsArry.forEach((param) => {
+        let [key, value] = param.split("=");
+        paramsObj[key] = Number(value);
+      });
+      setParams(paramsObj);
     }
-  },[id])
+  }, [id]);
 
-  const getFeedbackData = async(params) => {
-    const { projectId , productId } = params
+  const getFeedbackData = async (params) => {
+    const { projectId, productId } = params;
     try {
-      const res = await axios.get(`${API_BASE}/products?projectId=${projectId}&id=${productId}`)
+      const res = await axios.get(
+        `${API_BASE}/products?projectId=${projectId}&id=${productId}`
+      );
       setFeedbackData(res.data[0]);
-      setOriginPrice(res.data[0].price)
+      setOriginPrice(res.data[0].price);
     } catch (error) {
       alert("回饋資料取得失敗：" + error.message);
     }
-  }
+  };
 
-  const getProjectData = async(params) => {
-    const { projectId } = params
+  const getProjectData = async (params) => {
+    const { projectId } = params;
     try {
-      const res = await axios.get(`${API_BASE}/projects?projectId=${projectId}`)
+      const res = await axios.get(
+        `${API_BASE}/projects?projectId=${projectId}`
+      );
       setProjectData(res.data[0]);
     } catch (error) {
       alert("專案資料取得失敗：" + error.message);
     }
-  }
+  };
 
-  useEffect(()=> {
+  useEffect(() => {
     if (Object.keys(params).length !== 0) {
-      getFeedbackData(params)
-      getProjectData(params)
+      getFeedbackData(params);
+      getProjectData(params);
     }
-  },[params])
+  }, [params]);
   //處理params
 
   // 處理總金額totalPrice
-  useEffect(()=>{
-    setTotalPrice(originPrice+bonus)
-  },[originPrice,bonus])
-  
+  useEffect(() => {
+    setTotalPrice(originPrice + bonus);
+  }, [originPrice, bonus]);
+
   // 處理訂單送出
-  const onSubmit = async(data) => {
-    const { messageToTeam } = data
-    console.log("驗證成功",data);
-    
+  const onSubmit = async (data) => {
+    const { messageToTeam } = data;
+    console.log("驗證成功", data);
+
     // 建立order
 
     // 取得建立訂單時間
-    const createdAt = new Date().toString()
+    const createdAt = new Date().toString();
     // 創建orderId
-    const orderId = "WINDS" + new Date().getTime()
-    
+    const orderId = "WINDS" + new Date().getTime();
+
     // 組建orderData
     const orderData = {
       "orderFile": {
         "Recipient": "",
         "phone": "",
         "email": "",
-        "address": ""
+        "address": "",
       },
       "orderStatus": "建立訂單",
       "paymentStatus": "未付款",
@@ -113,22 +130,22 @@ export default function FeedbackOption () {
       "orderId": orderId,
       "message": messageToTeam,
       "isIncognito": watch.isAnonymous,
-    }
-    
+    };
+
     console.log(orderData);
 
     // 發送api
     try {
-      const res = await axios.post(`${API_BASE}/orders`,orderData)
-      navigate(`/paymentInfo/${orderId}`)
+      const res = await axios.post(`${API_BASE}/orders`, orderData);
+      navigate(`/paymentInfo/${orderId}`);
     } catch (error) {
-      console.log("建立訂單失敗",error);
+      console.log("建立訂單失敗", error);
     }
 
     // if (messageToTeam.length !== 0) {
     //   console.log("有留言，打留言版api");
     // }
-  }
+  };
 
   // 處理訂單送出
 
@@ -136,19 +153,19 @@ export default function FeedbackOption () {
   const handleChangeOption = () => {
     console.log("更改方案");
     // 開啟更改方案modal
-    setIsModalOpen(true)
-  }
+    setIsModalOpen(true);
+  };
 
   // 監控是否匿名
-  const watch = useWatch({control})
-  useEffect(()=>{
+  const watch = useWatch({ control });
+  useEffect(() => {
     if (watch.isAnonymous === "false") {
-      setIsName(true)
+      setIsName(true);
     } else {
-      setIsName(false)
+      setIsName(false);
     }
-  },[watch.isAnonymous])
-  
+  }, [watch.isAnonymous]);
+
   return (
     <>
       <header className="mt-20 mb-12">
@@ -156,11 +173,17 @@ export default function FeedbackOption () {
           <div className="row align-items-center">
             {/* <!-- 左半部（圖片） --> */}
             <div className="col-lg-8 col-md-7">
-              <img className="img-fluid w-100 object-fit-cover rounded-lg-1" src={feedbackData.image} alt={feedbackData.title} />
+              <img
+                className="img-fluid w-100 object-fit-cover rounded-lg-1"
+                src={feedbackData.image}
+                alt={feedbackData.title}
+              />
             </div>
             {/* <!-- 右半部（標題） --> */}
             <div className="col-lg-4 col-md-5 d-flex flex-column justify-content-center align-items-md-start align-items-center p-4">
-              <h2 className="fs-lg-6 fs-md-7 fs-sm text-primary-2">{projectData.projectTitle}</h2>
+              <h2 className="fs-lg-6 fs-md-7 fs-sm text-primary-2">
+                {projectData.projectTitle}
+              </h2>
               <h1 className="fs-lg-4 fs-md-3 fs-2 mb-lg-3 mb-1">{`【 ${feedbackData.title}】`}</h1>
             </div>
           </div>
@@ -176,14 +199,16 @@ export default function FeedbackOption () {
               <table className="table table-dark table-hover text-center my-6">
                 <thead>
                   <tr className="fs-7 fw-bolder">
-                    <th scope="col" style={{width: "30%"}}></th>
-                    <th scope="col" className="text-start text-nowrap w-auto">回饋項目</th>
+                    <th scope="col" style={{ width: "30%" }}></th>
+                    <th scope="col" className="text-start text-nowrap w-auto">
+                      回饋項目
+                    </th>
                   </tr>
                 </thead>
                 <tbody className="table-group-divider">
-                  {feedbackData?.contents?.map(({item},index) => (
+                  {feedbackData?.contents?.map(({ item }, index) => (
                     <tr key={item}>
-                      <th scope="row">{index+1}</th>
+                      <th scope="row">{index + 1}</th>
                       <td className="text-start">{item}</td>
                     </tr>
                   ))}
@@ -192,78 +217,130 @@ export default function FeedbackOption () {
               <button
                 type="button"
                 className="btn btn-secondary align-self-end"
-                onClick={() => handleChangeOption()}>
+                onClick={() => handleChangeOption()}
+              >
                 更改方案
-                <span className="material-symbols-outlined ms-1 align-bottom">undo</span>
+                <span className="material-symbols-outlined ms-1 align-bottom">
+                  undo
+                </span>
               </button>
             </section>
             {/* 感謝名稱 */}
             <section>
               {/* <button type="button" onClick={}>測試</button> */}
               <h3 className="fs-lg-3 fw-bolder mb-3 required">感謝名稱</h3>
-              <p>請留下您的大名或暱稱，我們會將您的名字置入電影片尾感謝名單。</p>
+              <p>
+                請留下您的大名或暱稱，我們會將您的名字置入電影片尾感謝名單。
+              </p>
               <p>※如不願露出，選擇匿名即可</p>
               <form action="">
-                <div className={`${errors?.isAnonymous ? "row fit-content py-3 border border-danger rounded-2" : ""}`}>
+                <div
+                  className={`${
+                    errors?.isAnonymous
+                      ? "row fit-content py-3 border border-danger rounded-2"
+                      : ""
+                  }`}
+                >
                   <div className="d-flex align-items-center mb-3">
                     <input
-                      type="radio" id="chooseInputName" name="nameOption" className="me-2"
+                      type="radio"
+                      id="chooseInputName"
+                      name="nameOption"
+                      className="me-2"
                       value={false}
-                      {...register("isAnonymous",{
+                      {...register("isAnonymous", {
                         required: {
                           value: true,
-                          message: "請選擇感謝名稱類型"
-                        }
+                          message: "請選擇感謝名稱類型",
+                        },
                       })}
                     />
-                    <input type="text" id="supporterNameInput" className={`supporter-name-input rounded-1 p-2 ${errors.supporterName && "is-invalid"}`} placeholder="填入您希望的稱呼"
-                      disabled={ (isName) ? false : true }
-                      {...register("supporterName",{
+                    <input
+                      type="text"
+                      id="supporterNameInput"
+                      className={`supporter-name-input rounded-1 p-2 ${
+                        errors.supporterName && "is-invalid"
+                      }`}
+                      placeholder="填入您希望的稱呼"
+                      disabled={isName ? false : true}
+                      {...register("supporterName", {
                         required: {
-                          value: isName ? true : false ,
-                          message: isName && "*請填寫您希望的稱呼"
-                        }
+                          value: isName ? true : false,
+                          message: isName && "*請填寫您希望的稱呼",
+                        },
                       })}
                     />
                   </div>
-                    { isName && errors?.supporterName && <div className="invalid-feedback d-block">{errors?.supporterName?.message}</div>}
+                  {isName && errors?.supporterName && (
+                    <div className="invalid-feedback d-block">
+                      {errors?.supporterName?.message}
+                    </div>
+                  )}
                   <div>
-                    <input type="radio" id="chooseHideName" name="nameOption" className="me-2"
+                    <input
+                      type="radio"
+                      id="chooseHideName"
+                      name="nameOption"
+                      className="me-2"
                       value={true}
-                      {...register("isAnonymous",{
+                      {...register("isAnonymous", {
                         required: {
                           value: true,
-                          message: "*請選擇感謝名稱類型"
-                        }
+                          message: "*請選擇感謝名稱類型",
+                        },
                       })}
                     />
                     <label htmlFor="chooseHideName">我想匿名</label>
                   </div>
                 </div>
-                { errors?.isAnonymous && <div className="invalid-feedback d-block">{errors?.isAnonymous?.message}</div>}
+                {errors?.isAnonymous && (
+                  <div className="invalid-feedback d-block">
+                    {errors?.isAnonymous?.message}
+                  </div>
+                )}
 
                 <hr />
                 <div className="d-flex flex-column">
-                  <label htmlFor="messageToTeam" className="mb-3 fs-lg-6">想跟團隊說的話</label>
-                  <textarea name="messageToTeam" id="messageToTeam" rows="6" cols="33" placeholder="您的留言會出現在留言板（選填）" className="rounded-1 p-2" style={{resize: "none"}}
+                  <label htmlFor="messageToTeam" className="mb-3 fs-lg-6">
+                    想跟團隊說的話
+                  </label>
+                  <textarea
+                    name="messageToTeam"
+                    id="messageToTeam"
+                    rows="6"
+                    cols="33"
+                    placeholder="您的留言會出現在留言板（選填）"
+                    className="rounded-1 p-2"
+                    style={{ resize: "none" }}
                     {...register("messageToTeam")}
                   ></textarea>
                 </div>
               </form>
             </section>
           </main>
-          
+
           {/* 加碼功能 */}
-          <aside className="col-4 feedback-confirmation-sidebar d-lg-block d-none" >            
-            <div className="card bg-primary-9 p-3  border rounded-1 h-auto" style={{border: "1px sold #606060"}}>
+          <aside className="col-4 feedback-confirmation-sidebar d-lg-block d-none">
+            <div
+              className="card bg-primary-9 p-3  border rounded-1 h-auto"
+              style={{ border: "1px sold #606060" }}
+            >
               <div className="card-body">
                 <h3 className="card-title fs-5 fw-bolder mb-6">隨喜加碼</h3>
                 <BonusCalculator bonus={bonus} setBonse={setBonse} />
                 <div className="bg-primary-8 p-3 rounded-1 mb-4">
                   <p className="mb-1">總計金額</p>
-                  <h4 className="fs-6 fw-bolder mb-1">NT$ {totalPrice.toLocaleString()}</h4>
+                  <h4 className="fs-6 fw-bolder mb-1">
+                    NT$ {totalPrice.toLocaleString()}
+                  </h4>
                 </div>
-                <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>下一步</button>
+                <button
+                  type="button"
+                  className="btn btn-primary ms-auto"
+                  onClick={handleSubmit(onSubmit)}
+                >
+                  下一步
+                </button>
               </div>
             </div>
           </aside>
@@ -315,7 +392,7 @@ export default function FeedbackOption () {
           </div>
         </div>
       </div> */}
-    {/* </div> */}
+      {/* </div> */}
 
       {/* #feedbackModal 內容 */}
       {/* <div className="modal fade" id="feedbackModal" tabIndex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
@@ -333,5 +410,5 @@ export default function FeedbackOption () {
         </div>
       </div> */}
     </>
-  )
+  );
 }

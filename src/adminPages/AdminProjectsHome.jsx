@@ -7,6 +7,13 @@ import { Helmet } from "react-helmet-async";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function AdminProjectsHome() {
+  // 路由跳轉至專案介紹頁時，重製滾輪捲軸
+  useEffect(() => {
+    // 將滾動行為設為 auto 避免有捲動過程的動畫
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, 0);
+  }, []);
+
   const [projects, setProjects] = useState([]);
   const [commentsCount, setCommentsCount] = useState({});
   const [favoritesCount, setFavoritesCount] = useState({});
