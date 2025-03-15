@@ -13,7 +13,6 @@ export default function Header() {
   const searchValue = useSelector((state) => state.search.value);
   const isSearchOpen = useSelector((state) => state.search.isSearchOpen);
   const categoryData = ["喜劇", "愛情", "恐怖", "懸疑", "科幻", "紀錄片", "動畫", "實驗電影"];
-  const personalCenterList = ["個人頁面", "收藏專案", "訂單紀錄", "收藏影音", "觀看紀錄"];
   const dispatch = useDispatch();
   const navbarRef = useRef(null);
   const navbarRef2 = useRef(null);
@@ -81,7 +80,7 @@ export default function Header() {
 
   const handleSearchToggle = (e) => {
     console.log(buttonRef.current.contains(e.target));
-    
+
     if (buttonRef.current.contains(e.target)) {
       navigate("/headerSm");
     } else {
@@ -121,9 +120,9 @@ export default function Header() {
               <button className="btn btn-outline-light border-0 fw-bolder dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                 探索
               </button>
-              <ul className="dropdown-menu">
+              <ul className="dropdown-menu py-0">
                 <li>
-                  <Link className="dropdown-item mb-2" to="/projectExplore" onClick={() => dispatch(setCategory("all"))}>
+                  <Link className="btn btn-outline-secondary text-white border-0 w-100 d-flex align-items-center" to="/projectExplore" onClick={() => dispatch(setCategory("all"))}>
                     <img src="全部專案.png" alt="全部專案" className="me-2" style={{ width: "24px" }} />
                     全部專案
                   </Link>
@@ -131,7 +130,7 @@ export default function Header() {
                 {categoryData.map((item, index) => {
                   return (
                     <li key={index}>
-                      <Link className="dropdown-item mb-2" to="/projectExplore" onClick={() => dispatch(setCategory(item))}>
+                      <Link className="btn btn-outline-secondary text-white border-0 w-100 d-flex align-items-center" to="/projectExplore" onClick={() => dispatch(setCategory(item))}>
                         <img src={`${item}.png`} alt={item} className="me-2" style={{ width: "24px" }} />
                         {item}
                       </Link>
@@ -167,46 +166,49 @@ export default function Header() {
                 <>
                   <div className="collapse navbar-collapse text-white">
                     <div className="p-0 me-12 dropdown nav-item">
-                      <button className="btn btn-outline-light border-0 fw-bolder" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <button className="btn btn-outline-secondary text-white border-0 fw-bolder" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span className="me-2">{profile.userName}</span> <img src={profile.imageUrl} className="rounded-circle object-fit-cover" style={{ width: "40px", height: "40px" }} alt="" />
                       </button>
-                      <ul className="dropdown-menu">
+                      <ul className="dropdown-menu py-0">
                         <li>
-                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/profile">
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/profile">
                             <span className="material-symbols-outlined fs-7 me-3">manage_accounts</span>
                             <span>個人資料</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/favoriteProject">
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/favoriteProject">
                             <span className="material-symbols-outlined fs-7 me-3">favorite</span>
                             <span>收藏專案</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/orderRecords">
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/orderRecords">
                             <span className="material-symbols-outlined fs-7 me-3">receipt_long</span>
                             <span>訂單紀錄</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/favoriteVideo">
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/favoriteVideo">
                             <span className="material-symbols-outlined fs-7 me-3">movie</span>
                             <span>收藏影音</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="dropdown-item mb-2 d-flex align-items-center" to="/personalCenter/viewRecords">
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/viewRecords">
                             <span className="material-symbols-outlined fs-7 me-3">subscriptions</span>
                             <span>觀看紀錄</span>
+                          </Link>
+                        </li>
+                        <li>
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" onClick={handleLogout}>
+                            <span class="material-symbols-outlined fs-7 me-3">exit_to_app</span>
+                            <span>登出</span>
                           </Link>
                         </li>
                       </ul>
                     </div>
                   </div>
-                  <button type="button" className="btn btn-outline-light fw-bolder py-3 px-5" onClick={handleLogout}>
-                    登出
-                  </button>
                 </>
               ) : (
                 <NavLink to="/login" className="btn btn-outline-light fw-bolder py-3 px-5 me-8">
