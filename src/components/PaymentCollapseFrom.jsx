@@ -146,15 +146,9 @@ export default function PaymentCollapseFrom ({reference}) {
   // 處理卡號連續輸入 (OK)
   useEffect(()=> {
     if (enabledCardType) {
-      console.log("當前欄位index",cardCodeIndex);
       const codeIndexLength = creditCardFormContent.cardTypes[enabledCardType].patterns.length
-      console.log("欄位數",codeIndexLength);
-      
       const thisInputId = `codeInput${cardCodeIndex+1}`
-      console.log("當前欄位id",thisInputId);
-  
       const thisInput = document.getElementById(thisInputId)
-      console.log("當前欄位DOM",thisInput);
 
       if ((thisInput.value.length === thisInput.maxLength) && (cardCodeIndex < codeIndexLength-1)) {
         // 當前input填滿
@@ -276,7 +270,7 @@ export default function PaymentCollapseFrom ({reference}) {
                             }}
                             inputMode="numeric"
                             placeholder={placeholderText}
-                            pattern={`^\d{${pattern}$`}
+                            pattern={regex}
                             maxLength={pattern}
                             disabled={cardCodeIndex !== index}
                             // onChange={(e) => handleCardNumInputChange(e ,index, "creditCard")}
