@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux"
 export default function PaymentInfoFrom ({reference , userData}) {
   const dispatch = useDispatch()
   const { userInfo , recipientInfo } = useSelector((state) => state.paymentInfo)
-  const { register , setValue , control , formState:{errors} , handleSubmit } = useForm({
+  const { register , setValue , control , formState:{errors,isValid} , handleSubmit , reset} = useForm({
     defaultValues: {
       ...userInfo,
       sameAsMember: false,
@@ -38,13 +38,12 @@ export default function PaymentInfoFrom ({reference , userData}) {
   },[userData.userProfile])
 
   useImperativeHandle(reference, () => ({
-    async submitForm() {
-      await handleSubmit(onSubmit)()
-    }
+    submitForm : handleSubmit(onSubmit),
+    resetForm : reset,
+    isValid,
   }))
-
   const onSubmit = (data) => {
-    dispatch(setRequried({name:"paymentInfo",value:true}))
+    console.log("驗證成功",data);
   }
   
   const watch = useWatch({control})
