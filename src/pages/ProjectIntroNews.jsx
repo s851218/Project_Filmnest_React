@@ -37,7 +37,6 @@ export default function ProjectIntroNews() {
         let [key, value] = param.split("=");
         paramsObj[key] = Number(value);
       });
-      console.log(paramsObj);
       setParams(paramsObj);
     }
   }, [id]);
@@ -49,7 +48,8 @@ export default function ProjectIntroNews() {
           const response = await axios.get(
             `${apiBase}/posts?projectId=${params.projectId}`
           );
-          setProjectPosts(response.data);
+          const sortData = response.data.sort((a,b)=>new Date(b.date) - new Date(a.date))
+          setProjectPosts(sortData);
           setPostsIsOpen(
             response.data.map((item) => {
               return { id: item.id, isOpen: false };

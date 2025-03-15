@@ -8,7 +8,7 @@ export default function Footer() {
             <li className="w-md-50 mb-10 mb-md-0">
               <ul className="list-unstyled d-flex flex-md-column justify-content-between h-100">
                 <li>
-                  <Link>首頁</Link>
+                  <Link><img src="https://s851218.github.io/Project-FilmNest/assets/logo-lg-d75594b8.png" alt="" /></Link>
                 </li>
                 <li className="d-flex me-4" style={{ gap: "12px" }}>
                   <i className="bi bi-facebook"></i>
