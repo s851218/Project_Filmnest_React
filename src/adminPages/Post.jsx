@@ -106,7 +106,8 @@ export default function Post() {
       const response = await axios.get(
         `${apiBase}/posts?projectId=${projectId}`
       );
-      setPostsData(response.data);
+      const sortData = response.data.sort((a,b)=>new Date(b.date) - new Date(a.date))
+      setPostsData(sortData);
     } catch (error) {
       console.log("取得資料失敗");
     }
