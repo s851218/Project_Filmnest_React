@@ -135,7 +135,7 @@ export default function ProjectIntroQA() {
           );
         })}
       </div>
-      <GrayScreenLoading isLoading={isLoading} />
+      {/* <GrayScreenLoading isLoading={isLoading} /> */}
     </>
   );
 }

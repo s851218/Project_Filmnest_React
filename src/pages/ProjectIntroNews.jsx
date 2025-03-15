@@ -134,7 +134,7 @@ export default function ProjectIntroNews() {
           );
         })}
       </div>
-      <GrayScreenLoading isLoading={isLoading} />
+      {/* <GrayScreenLoading isLoading={isLoading} /> */}
     </>
   );
 }

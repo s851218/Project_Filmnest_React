@@ -429,7 +429,7 @@ export default function ProjectIntroComments() {
           }`}
       </style>
 
-      <GrayScreenLoading isLoading={isLoading} />
+      {/* <GrayScreenLoading isLoading={isLoading} /> */}
     </>
   );
 }

@@ -88,7 +88,7 @@ export default function ProjectIntroContent() {
           </section>
         </div>
       </div>
-      <GrayScreenLoading isLoading={isLoading} />
+      {/* <GrayScreenLoading isLoading={isLoading} /> */}
     </>
   );
 }

@@ -350,7 +350,7 @@ function FeedbackSwiper() {
           </div>
         </div>
       </div>
-      <GrayScreenLoading isLoading={isLoading} />
+      {/* <GrayScreenLoading isLoading={isLoading} /> */}
     </>
   );
 }
