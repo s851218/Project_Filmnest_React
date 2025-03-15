@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router";
 import axios from "axios";
+import { Toast , Alert } from "../assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function SignUp() {
@@ -32,15 +33,24 @@ export default function SignUp() {
     };
     try {
       await axios.post(`${apiBase}/signUp`, userData);
-      alert("註冊成功");
+      Toast.fire({
+        icon: "success",
+        title: "新增成功",
+      })
       reset;
       navigate("/login");
     } catch (error) {
       const { data, status } = error.response;
       if (status === 400 && data === "Email already exists") {
-        alert("此帳號已存在");
+        Alert.fire({
+          icon: "error",
+          title: "此帳號已存在",
+        })
       } else {
-        alert("註冊失敗");
+        Alert.fire({
+          icon: "error",
+          title: "此帳號已存在",
+        })
       }
     }
   };

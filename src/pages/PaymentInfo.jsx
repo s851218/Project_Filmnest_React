@@ -9,6 +9,7 @@ import PaymentCollapseFrom from "../components/PaymentCollapseFrom";
 import { setRequried } from "../slice/paymentInfoSlice";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
+import { CheckModal , Alert } from "../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -67,14 +68,22 @@ export default function PaymentInfo() {
   useEffect(() => {
     if (orderData) {
       if (orderData.paymentStatus === "已付款") {
-        alert("訂單已付款");
-        navigate("/");
+        Alert.fire({
+          icon: "error",
+          title: "訂單已付款",
+        },setTimeout(() => {
+          navigate("/");
+        }, 1500))
       } else {
         getData(orderData);
       }
     } else {
-      alert("訂單不存在");
-      navigate("/");
+      Alert.fire({
+        icon: "error",
+        title: "訂單不存在",
+      },setTimeout(() => {
+        navigate("/");
+      }, 1500))
     }
   }, [orderData]);
 
@@ -128,14 +137,39 @@ export default function PaymentInfo() {
     console.log("NEW", newOrderData);
     try {
       await axios.put(`${API_BASE}/orders/${id}`, newOrderData);
-      alert("付款成功");
       dispatch(setRequried({ name: "paymentInfo", value: false }));
       dispatch(setRequried({ name: "paymentType", value: false }));
-      navigate("/"); // 重新導向 暫定首頁 => 之後改付款完成頁面
+      Alert.fire({
+        icon: "success",
+        title: "付款成功",
+      },
+      setTimeout(() => {
+        navigate("/") // 重新導向 暫定首頁 => 之後改付款完成頁面
+      }, 1500));
     } catch (error) {
       console.log(error);
+      Alert.fire({
+        icon: "error",
+        title: "付款失敗",
+      })
     }
   };
+
+  // 點擊確認付款
+  const handleConfirmPayment = () => {
+    CheckModal.fire({
+      title: "確認付款",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<hr><p class="fs-7">${projectData.projectTitle}</p><p class="fs-4">【 ${productData.title}】</p><p class="fs-7">總金額：$${orderData.totalPrice}</p>`,
+    }).then((result)=>{
+      console.log(result)
+      if (result.value) {
+        handleFormsSubmit()
+      }
+    })
+  }
 
   return (
     <>
@@ -159,7 +193,7 @@ export default function PaymentInfo() {
               </main>
 
               <PaymentAside
-                handleFormsSubmit={handleFormsSubmit}
+                handleFormsSubmit={handleConfirmPayment}
                 orderData={orderData}
                 projectData={projectData}
                 productData={productData}
@@ -168,7 +202,7 @@ export default function PaymentInfo() {
           </div>
 
           <PaymentMobileFooter
-            handleFormsSubmit={handleFormsSubmit}
+            handleFormsSubmit={handleConfirmPayment}
             orderData={orderData}
             projectData={projectData}
             productData={productData}

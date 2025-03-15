@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useLocation, useNavigate } from "react-router";
+import { Toast } from "../assets/js/costomSweetAlert";
 
 // import Swiper core and required modules
 import { FreeMode } from "swiper/modules";
@@ -66,9 +67,16 @@ export default function ProjectIntroNav({ projectId }) {
         );
         setIsFavorited(true);
         setFavoriteId(res.data.id);
-        alert("專案已收藏！");
+        Toast.fire({
+          icon: "success",
+          title: "專案已收藏！",
+        })
       } catch (error) {
         console.error("新增收藏失敗：", error);
+        Toast.fire({
+          icon: "error",
+          title: "新增收藏失敗",
+        })
       } finally {
         setIsLoading(false);
       }
@@ -80,9 +88,16 @@ export default function ProjectIntroNav({ projectId }) {
         });
         setIsFavorited(false);
         setFavoriteId(null);
-        alert("專案已取消收藏！");
+        Toast.fire({
+          icon: "success",
+          title: "專案已取消收藏！",
+        })
       } catch (error) {
         console.error("取消收藏失敗：", error);
+        Toast.fire({
+          icon: "error",
+          title: "取消收藏失敗",
+        })
       } finally {
         setIsLoading(false);
       }

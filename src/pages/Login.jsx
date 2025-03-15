@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "../slice/userSlice";
 import axios from "axios";
 import { useEffect } from "react";
+import { Toast , Alert } from "../assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Login() {
@@ -48,19 +49,30 @@ export default function Login() {
           imageUrl: user.userProfile.userImageUrl,
         })
       );
-      alert("登入成功");
+      Toast.fire({
+        icon: "success",
+        title: "登入成功",
+      },navigate(redirectTo))
       //  登入成功後導回來源頁面，沒有來源頁面，導回首頁
-      navigate(redirectTo);
       reset;
       // navigate("/");
     } catch (error) {
       const { data, status } = error.response;
       if (status === 400 && data === "Cannot find user") {
-        alert("帳號不存在");
+        Alert.fire({
+          icon: "error",
+          title: "帳號不存在",
+        })
       } else if (status === 400 && data === "Incorrect password") {
-        alert("密碼錯誤");
+        Alert.fire({
+          icon: "error",
+          title: "密碼錯誤",
+        })
       } else {
-        alert("登入失敗");
+        Alert.fire({
+          icon: "error",
+          title: "登入失敗",
+        })
       }
     }
   };

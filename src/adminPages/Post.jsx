@@ -4,7 +4,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
+import { AdminCheckModal , Toast } from "../assets/js/costomSweetAlert"; 
 const apiBase = import.meta.env.VITE_API_BASE;
+
 export default function Post() {
   const [postsData, setPostsData] = useState([]);
   const [isEdit, setIsEdit] = useState(null);
@@ -57,11 +59,17 @@ export default function Post() {
     try {
       await axios.post(`${apiBase}/posts`, newPost);
       setIsAdd(false);
-      alert("新增成功");
+      Toast.fire({
+        icon: "success",
+        title: "新增成功",
+      })
       getPostsData(id);
       reset();
     } catch (error) {
-      alert("新增失敗");
+      Toast.fire({
+        icon: "error",
+        title: "新增失敗",
+      })
     }
   };
 
@@ -84,23 +92,53 @@ export default function Post() {
     try {
       await axios.put(`${apiBase}/posts/${dataId}`, updataPost);
       setIsEdit(null);
-      alert("編輯成功");
+      Toast.fire({
+        icon: "success",
+        title: "編輯成功",
+      })
       getPostsData(id);
     } catch (error) {
-      alert("編輯失敗");
+      Toast.fire({
+        icon: "error",
+        title: "編輯失敗",
+      })
     }
   };
 
   // 刪除最新消息
-  const handleDelPostData = async (dataId) => {
+  const handleDelPostData = (dataId) => {
+    const thisPost = postsData.filter((item)=> item.id === dataId)[0]
+
+    AdminCheckModal.fire({
+      title: "是否要刪除此消息",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<hr><p class="fs-6">【${thisPost.title}】</p>`
+    }).then((result)=>{
+      console.log(result)
+      if (result.value) {
+        console.log("已確認刪除");
+        delPostData(dataId)
+      }
+    })
+  };
+
+  const delPostData = async(dataId) => {
     try {
       await axios.delete(`${apiBase}/posts/${dataId}`);
-      alert("刪除成功");
+      Toast.fire({
+        icon: "success",
+        title: "刪除成功",
+      })
       getPostsData(id);
     } catch (error) {
-      console.log("刪除失敗");
+      Toast.fire({
+        icon: "error",
+        title: "刪除失敗",
+      })
     }
-  };
+  }
 
   // 取得最新消息
   const getPostsData = async (projectId) => {

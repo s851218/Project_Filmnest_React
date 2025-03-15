@@ -7,6 +7,7 @@ import FeedbackSwiper from "../components/FeedbackSwiper";
 import BonusCalculator from "../components/BonusCalculator";
 import ModalComponent from "../components/ModalComponent";
 import GrayScreenLoading from "../components/GrayScreenLoading";
+import { CheckModal , Alert , Toast } from "../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -68,7 +69,11 @@ export default function FeedbackOption() {
       setFeedbackData(res.data[0]);
       setOriginPrice(res.data[0].price);
     } catch (error) {
-      alert("回饋資料取得失敗：" + error.message);
+      console.log("回饋資料取得失敗：" + error.message);
+      Toast.fire({
+        icon: "error",
+        title: "回饋資料取得失敗：",
+      })
     } finally {
       setIsLoading(false);
     }
@@ -82,7 +87,11 @@ export default function FeedbackOption() {
       );
       setProjectData(res.data[0]);
     } catch (error) {
-      alert("專案資料取得失敗：" + error.message);
+      console.log("專案資料取得失敗：" + error.message);
+      Toast.fire({
+        icon: "error",
+        title: "專案資料取得失敗：",
+      })
     }
   };
 
@@ -139,13 +148,33 @@ export default function FeedbackOption() {
 
     console.log(orderData);
 
-    // 發送api
-    try {
-      const res = await axios.post(`${API_BASE}/orders`, orderData);
-      navigate(`/paymentInfo/${orderId}`);
-    } catch (error) {
-      console.log("建立訂單失敗", error);
+    const createOrder = async() => {
+      try {
+        await axios.post(`${API_BASE}/orders`, orderData);
+        navigate(`/paymentInfo/${orderId}`);
+      } catch (error) {
+        console.log("建立訂單失敗", error);
+        Alert.fire({
+          icon: "error",
+          title: "建立訂單失敗",
+        });
+      }
     }
+
+    // 發送api
+    CheckModal.fire({
+      title: "確認選擇",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<hr><p class="fs-7">${projectData.projectTitle}</p><p class="fs-4">【 ${feedbackData.title}】</p><p class="fs-7">總金額：$${totalPrice}</p>`,
+    }).then((result)=>{
+      console.log(result)
+      if (result.value) {
+        console.log("已確認選擇，打API");
+        createOrder()
+      }
+    })
 
     // if (messageToTeam.length !== 0) {
     //   console.log("有留言，打留言版api");
