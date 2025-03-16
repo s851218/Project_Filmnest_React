@@ -4,7 +4,8 @@ import { Outlet, useLocation } from "react-router";
 import { useDispatch } from "react-redux";
 import { setLogin } from "./slice/userSlice";
 import axios from "axios";
-import { useEffect} from "react";
+import { useEffect } from "react";
+import { ScrollRestoration } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 function App() {
@@ -19,14 +20,14 @@ function App() {
   const checkLogin = async (token) => {
     try {
       const response = await axios.get(`${apiBase}/users?token=${token}`);
-      const userData = response.data[0]
+      const userData = response.data[0];
       dispatch(
         setLogin({
           token: userData.token,
           userId: userData.id,
           userName: userData.userProfile.userName,
           imageUrl: userData.userProfile.userImageUrl,
-          hasStudio:userData.hasStudio
+          hasStudio: userData.hasStudio,
         })
       );
     } catch (error) {
@@ -36,13 +37,14 @@ function App() {
 
   useEffect(() => {
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)loginToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    
+
     if (token) {
       checkLogin(token);
     }
   }, []);
   return (
     <>
+      <ScrollRestoration />
       {!shouldHideLayout && <Header />}
       <Outlet />
       {!shouldHideLayout && <Footer />}
