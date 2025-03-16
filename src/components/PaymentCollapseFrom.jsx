@@ -145,7 +145,7 @@ export default function PaymentCollapseFrom ({reference}) {
 
   // 處理卡號連續輸入 (OK)
   useEffect(()=> {
-    if (enabledCardType) {
+    if ((enabledCardType)&& accordionIndex === 0) {
       const codeIndexLength = creditCardFormContent.cardTypes[enabledCardType].patterns.length
       const thisInputId = `codeInput${cardCodeIndex+1}`
       const thisInput = document.getElementById(thisInputId)
