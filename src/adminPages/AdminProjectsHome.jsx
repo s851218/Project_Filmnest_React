@@ -22,6 +22,22 @@ export default function AdminProjectsHome() {
   const dispatch = useDispatch();
   const userId = useSelector((item) => item.user.profile.userId);
   const navigate = useNavigate();
+  
+  const getTime = (time) => {
+    const newTime = new Date(time)
+      .toLocaleString("zh-TW", {
+        timeZone: "Asia/Taipei",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+      .replace(/\//g, "-")
+      .slice("0","10")
+    return newTime;
+  };
 
   const getProjects = async () => {
     setIsLoading(true);
@@ -399,10 +415,10 @@ export default function AdminProjectsHome() {
                       {remainDays < 0 ? "進行中" : "已結案"}
                     </td>
                     <td className="nowrap-table">
-                      {project.createdAt.slice(0, 10)}
+                      {getTime(project.createdAt)}
                     </td>
                     <td className="nowrap-table">
-                      {project.endAt.slice(0, 10)}
+                      {getTime(project.endAt)}
                     </td>
                     <td className="nowrap-table">{project.viewNum}</td>
                     <td className="nowrap-table">
