@@ -490,7 +490,7 @@ export default function Home() {
           <div className="row g-0 mb-10 mb-lg-40">
             <div className="col-lg-6 mb-4 mb-lg-0">
               <div className="pe-lg-13">
-                <img src="/image45.png" className="img-fluid" alt="image 46" />
+                <img src="image45.png" className="img-fluid" alt="image 46" />
               </div>
             </div>
             <div className="col-lg-6">
@@ -554,7 +554,7 @@ export default function Home() {
           <div className="row flex-row-reverse g-0 mb-10 mb-lg-40">
             <div className="col-lg-6 mb-4 mb-lg-0">
               <div className="ps-lg-13">
-                <img src="/image46.png" className="img-fluid" alt="image 46" />
+                <img src="image46.png" className="img-fluid" alt="image 46" />
               </div>
             </div>
             <div className="col-lg-6">
@@ -619,7 +619,7 @@ export default function Home() {
           <div className="row g-0">
             <div className="col-lg-6 mb-4 mb-lg-0">
               <div className="pe-lg-13">
-                <img src="/image44.png" className="img-fluid" alt="image 46" />
+                <img src="image44.png" className="img-fluid" alt="image 46" />
               </div>
             </div>
             <div className="col-lg-6">
