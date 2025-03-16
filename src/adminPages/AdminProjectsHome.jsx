@@ -82,7 +82,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-base mb-0 text-primary-6">募資金額</h3>
-                  <p className="fs-2 fw-bolder mb-0">9999</p>
+                  <p className="fs-2 fw-bolder mb-0">5,511,654</p>
                 </div>
               </div>
             </div>
@@ -97,7 +97,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-base mb-0 text-primary-6">觀看次數</h3>
-                  <p className="fs-2 fw-bolder mb-0">9999</p>
+                  <p className="fs-2 fw-bolder mb-0">5.3K</p>
                 </div>
               </div>
             </div>
@@ -112,7 +112,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-base mb-0 text-primary-6">瀏覽量</h3>
-                  <p className="fs-2 fw-bolder mb-0">9999</p>
+                  <p className="fs-2 fw-bolder mb-0">8.2K</p>
                 </div>
               </div>
             </div>
@@ -129,7 +129,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">專案數量</h3>
-                  <p className="fs-6 fw-bolder mb-0">9999</p>
+                  <p className="fs-6 fw-bolder mb-0">4</p>
                 </div>
               </div>
             </div>
@@ -144,7 +144,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">影音數量</h3>
-                  <p className="fs-6 fw-bolder mb-0">9999</p>
+                  <p className="fs-6 fw-bolder mb-0">4</p>
                 </div>
               </div>
             </div>
@@ -159,7 +159,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">收藏數量</h3>
-                  <p className="fs-6 fw-bolder mb-0">9999</p>
+                  <p className="fs-6 fw-bolder mb-0">672</p>
                 </div>
               </div>
             </div>
@@ -174,7 +174,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">觀看時間</h3>
-                  <p className="fs-6 fw-bolder mb-0">9999</p>
+                  <p className="fs-6 fw-bolder mb-0">368 hr</p>
                 </div>
               </div>
             </div>
@@ -189,7 +189,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">留言數</h3>
-                  <p className="fs-6 fw-bolder mb-0">9999</p>
+                  <p className="fs-6 fw-bolder mb-0">368</p>
                 </div>
               </div>
             </div>
