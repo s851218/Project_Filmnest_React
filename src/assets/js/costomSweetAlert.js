@@ -17,12 +17,12 @@ export const AdminCheckModal = Swal.mixin({
   buttonsStyling: false, // 取消預設按鈕樣式
   heightAuto: false, // 取消預設自適應高度
   customClass: {
-    confirmButton: "btn btn-primary-1 border-white px-8 me-2",
-    cancelButton: "btn btn-primary-0 border-white px-8 ms-2",
+    confirmButton: "btn btn-outline-primary-10 border-white px-8 me-2",
+    cancelButton: "btn btn-outline-primary-10 border-white px-8 ms-2",
     container: "",
-    popup: "bg-primary-10 border border-white pt-5 pb-10",
-    title: "text-white fs-5 pt-0",
-    htmlContainer: "text-white pt-0 pb-10",
+    popup: "bg-primary-2 border border-white pt-5 pb-10 shadow-lg",
+    title: "text-primary-10 fs-5 pt-0",
+    htmlContainer: "text-primary-10 pt-0 pb-10",
   }
 })
 
