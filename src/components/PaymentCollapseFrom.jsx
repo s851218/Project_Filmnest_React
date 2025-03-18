@@ -1,7 +1,7 @@
 import { Fragment , useEffect, useImperativeHandle, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
-import { setPaymentOption , setRequried} from "../slice/paymentInfoSlice"
+import { setPaymentOption } from "../slice/paymentInfoSlice"
 import PaymentAccordion from "./PaymentAccordion" // 手風琴元件
 
 const requiredChecked = [
@@ -36,7 +36,7 @@ const creditCardFormContent = {
   },
 }
 
-export default function PaymentCollapseFrom ({reference}) {
+export default function PaymentCollapseFrom ({reference , showError}) {
   
   const { register , control , setValue , formState:{errors,isValid} , reset , handleSubmit } = useForm({
     shouldUnregister:true, // 不寫入未被渲染的表單內容
@@ -60,7 +60,6 @@ export default function PaymentCollapseFrom ({reference}) {
   const [ enabledPayMethod, setEnabledPayMethod ] = useState(null) // 當前啟用的付款方式
   const [ cardCodeIndex , setCardCodeIndex ] = useState(0) // 當前的input位置
   const [ isPasswordVisibility , setIsPasswordVisibility ] = useState(false) // 密碼是否可視
-  const [ cardCodeRequired , setCardCodeRequired ] = useState(null) // 卡號驗證狀態
 
   const watch = useWatch({control})
   // 監控表單
@@ -263,19 +262,20 @@ export default function PaymentCollapseFrom ({reference}) {
                           <input
                             id={inputName}
                             type={`${((index === 0) || (index === maxIndex)) ? "text" : ( isPasswordVisibility ? "text" : "password")}`}
-                            className={`card-number-input form-control text-center ${(cardCodeIndex !== index) ? "bg-dark text-primary-3" : ""}`}
+                            className={`card-number-input form-control text-center ${(cardCodeIndex !== index) ? "bg-dark text-primary-3" : ""} ${ showError && (Object.keys(errors).some((error)=> error.includes("codeInput"))) ? "border-danger" : ""}`}
                             style={{
                               width: inputWidth,
-                              // borderColor: cardCodeRequired === false && "red",
                             }}
                             inputMode="numeric"
                             placeholder={placeholderText}
                             pattern={regex}
                             maxLength={pattern}
                             disabled={cardCodeIndex !== index}
-                            // onChange={(e) => handleCardNumInputChange(e ,index, "creditCard")}
                             autoComplete="one-time-code"
                             {...register(inputName,{
+                              required: {
+                                value: true
+                              },
                               pattern: {
                                 value: regex,
                                 message: "*卡號格式錯誤"
@@ -287,7 +287,7 @@ export default function PaymentCollapseFrom ({reference}) {
                       )
                     }) }
                   </div>
-                  { cardCodeRequired === false && <div className="invalid-feedback d-block">*卡號格式錯誤</div> }
+                  { showError && (Object.keys(errors).some((error)=> error.includes("codeInput"))) && <div className="invalid-feedback d-block">*卡號格式錯誤</div>}
                   { (enabledCardType === "creditCard") && (
                     <ul className="checkout-card-list list-unstyled mb-0">
                       <li><i className="fa-brands fa-cc-visa" /></li>
@@ -315,8 +315,8 @@ export default function PaymentCollapseFrom ({reference}) {
                             type="text"
                             className={`form-control text-center ms-2 
                               ${(id==="cvv") ? "gap-2" : ""}
-                              ${errors.expiryDate && id === "expiryDate" && "border-danger"}
-                              ${errors.cvv && id==="cvv" && "border-danger"}`}
+                              ${errors.expiryDate && id === "expiryDate" ? "is-invalid no-icon" : ""}
+                              ${errors.cvv && id==="cvv" ? "is-invalid no-icon" : ""}`}
                             style={{width: inputWidth}}
                             inputMode="numeric"
                             placeholder={placeholderText}
@@ -355,11 +355,11 @@ export default function PaymentCollapseFrom ({reference}) {
               <label htmlFor="bankSelect" className="form-label mb-0 required">選擇銀行</label>
               <select 
                 id="bankSelect"
-                className={`form-select d-inline-block fit-content ${errors.bankSelect && "is-invalid"}`}
+                className={`form-select d-inline-block fit-content ${errors.bankSelect ? "is-invalid no-icon" : ""}`}
                 defaultValue={"請選擇轉帳銀行"}
                 {...register("bankSelect",{
                   validate: {
-                    value: value => value !== "請選擇轉帳銀行" || "請選擇有效銀行",
+                    value: value => value !== "請選擇轉帳銀行" || "*請選擇有效銀行",
                   }
                 })}
               >
