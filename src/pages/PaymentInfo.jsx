@@ -29,15 +29,31 @@ export default function PaymentInfo() {
   const [isLoading, setIsLoading] = useState(false);
   const paymentInfoSlice = useSelector((state) => state.paymentInfo);
   const [showError , setShowError] = useState(false)
-  const dispatch = useDispatch();
 
+  // 初始化
+  const init = () => {
+    setOrderData({})
+    setProjectData({})
+    setProductData({})
+  }
   // 取得訂單資料
   useEffect(() => {
+    init()
     const getOrder = async (id) => {
       setIsLoading(true);
       try {
         const res = await axios.get(`${API_BASE}/orders?orderId=${id}`);
-        setOrderData(res.data[0]);
+        console.log(res.data.length);
+        if (res.data.length !== 0) {
+          setOrderData(res.data[0]);
+        } else {
+          Alert.fire({
+            icon: "error",
+            title: "訂單不存在",
+          },setTimeout(() => {
+            navigate("/");
+          }, 1500))
+        }
       } catch (error) {
         console.log("訂單資料取得錯誤", error);
       } finally {
@@ -66,7 +82,7 @@ export default function PaymentInfo() {
 
   // 判斷訂單是否付款
   useEffect(() => {
-    if (orderData) {
+    if (Object.keys(orderData).length !== 0) {
       if (orderData.paymentStatus === "已付款") {
         Alert.fire({
           icon: "error",
@@ -77,13 +93,6 @@ export default function PaymentInfo() {
       } else {
         getData(orderData);
       }
-    } else {
-      Alert.fire({
-        icon: "error",
-        title: "訂單不存在",
-      },setTimeout(() => {
-        navigate("/");
-      }, 1500))
     }
   }, [orderData]);
 
@@ -99,12 +108,10 @@ export default function PaymentInfo() {
       
       if (paymentFromRef.current.isValid && infoFromRef.current.isValid) {
         setShowError(false)
-        console.log("驗證成功打API");
         handlePayment(orderData.id);
       } else {
         setShowError(true)
       }
-
     } catch (error) {
       console.log("驗證失敗", error);
     }
@@ -112,8 +119,6 @@ export default function PaymentInfo() {
 
   // 驗證成功後送出付款資料
   const handlePayment = async (id) => {
-    console.log("執行api");
-
     const { recipientInfo, address } = paymentInfoSlice;
 
     // 重組地址字串
