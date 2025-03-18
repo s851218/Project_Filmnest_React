@@ -6,7 +6,6 @@ import PaymentAside from "../components/PaymentAside";
 import PaymentMobileFooter from "../components/PaymentMobileFooter";
 import PaymentInfoFrom from "../components/PaymentInfoFrom";
 import PaymentCollapseFrom from "../components/PaymentCollapseFrom";
-import { setRequried } from "../slice/paymentInfoSlice";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 import { CheckModal , Alert } from "../assets/js/costomSweetAlert";
@@ -29,6 +28,7 @@ export default function PaymentInfo() {
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const paymentInfoSlice = useSelector((state) => state.paymentInfo);
+  const [showError , setShowError] = useState(false)
   const dispatch = useDispatch();
 
   // 取得訂單資料
@@ -96,10 +96,15 @@ export default function PaymentInfo() {
     try {
       await infoFromRef.current.submitForm();
       await paymentFromRef.current.submitForm();
+      
       if (paymentFromRef.current.isValid && infoFromRef.current.isValid) {
+        setShowError(false)
         console.log("驗證成功打API");
         handlePayment(orderData.id);
+      } else {
+        setShowError(true)
       }
+
     } catch (error) {
       console.log("驗證失敗", error);
     }
@@ -137,8 +142,6 @@ export default function PaymentInfo() {
     console.log("NEW", newOrderData);
     try {
       await axios.put(`${API_BASE}/orders/${id}`, newOrderData);
-      dispatch(setRequried({ name: "paymentInfo", value: false }));
-      dispatch(setRequried({ name: "paymentType", value: false }));
       Alert.fire({
         icon: "success",
         title: "付款成功",
@@ -186,10 +189,10 @@ export default function PaymentInfo() {
               <main className="col-lg-8">
                 {/* 付款資料 V */}
                 <h2 className="fs-lg-3 fs-4 text-primary-2 mb-4">付款資料</h2>
-                <PaymentInfoFrom reference={infoFromRef} userData={userData} />
+                <PaymentInfoFrom reference={infoFromRef} userData={userData} showError={showError} />
                 {/* 付款方式 V */}
                 <h2 className="fs-lg-3 fs-4 text-primary-2 mb-4">付款方式</h2>
-                <PaymentCollapseFrom reference={paymentFromRef} />
+                <PaymentCollapseFrom reference={paymentFromRef} showError={showError} />
               </main>
 
               <PaymentAside
