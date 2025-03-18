@@ -1,10 +1,10 @@
 import axios from "axios"
 import { useEffect, useImperativeHandle, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
-import { setUserInfo , setAddress, setRecipientInfo, setSameAsMember , setRequried } from "../slice/paymentInfoSlice"
+import { setUserInfo , setAddress, setRecipientInfo, setSameAsMember } from "../slice/paymentInfoSlice"
 import { useDispatch, useSelector } from "react-redux"
 
-export default function PaymentInfoFrom ({reference , userData}) {
+export default function PaymentInfoFrom ({reference , userData , showError}) {
   const dispatch = useDispatch()
   const { userInfo , recipientInfo } = useSelector((state) => state.paymentInfo)
   const { register , setValue , control , formState:{errors,isValid} , handleSubmit , reset} = useForm({
@@ -19,6 +19,11 @@ export default function PaymentInfoFrom ({reference , userData}) {
     },
     mode: "onTouched"
   })
+
+  useEffect(()=>{
+    console.log(errors);
+    
+  },[errors])
 
   useEffect(()=>{
     if (userData.userProfile) {
@@ -231,27 +236,26 @@ export default function PaymentInfoFrom ({reference , userData}) {
         <div className="row mb-3">
           <div className="col-lg-4 mb-lg-0 mb-3">
             <label htmlFor="county" className="form-label required">縣市</label>
-            <select className="form-select" id="county" defaultValue={"請選擇縣市"}
+            <select className={`form-select ${errors.county ? "is-invalid no-icon" : ""}`} id="county" defaultValue={"請選擇縣市"}
               {...register("county",{
-                required: {
-                  value: true,
-                  message: "*必填欄位"
-                },
+                validate: {
+                  value: value => value !== "請選擇縣市" || "*請選擇有效縣市",
+                }
               })}>
               <option value="請選擇縣市" disabled>請選擇縣市</option>
               {countys.map((county)=>(
                 <option key={county.name} value={county.name}>{county.name}</option>
               ))}
             </select>
+            { errors.county && <div className="invalid-feedback">{errors?.county.message}</div>}
           </div>
           <div className="col-lg-4 mb-lg-0 mb-3">
             <label htmlFor="district" className="form-label required">鄉鎮市區</label>
-            <select className="form-select" id="district" defaultValue={"請選擇鄉鎮市區"} 
+            <select className={`form-select ${errors.district ? "is-invalid no-icon" : ""}`} id="district" defaultValue={"請選擇鄉鎮市區"} 
               {...register("district",{
-                required: {
-                  value: true,
-                  message: "*必填欄位"
-                },
+                validate: {
+                  value: value => value !== "請選擇鄉鎮市區" || "*請選擇有效鄉鎮市區",
+                }
               })}>
               <option value="請選擇鄉鎮市區" disabled>請選擇鄉鎮市區</option>
               {(watch.county !== "請選擇縣市") && 
@@ -259,13 +263,17 @@ export default function PaymentInfoFrom ({reference , userData}) {
                 <option key={district.name} value={district.name}>{district.name}</option>
               ))}
             </select>
+            { districts.length !== 0 && errors.district && <div className="invalid-feedback">{errors?.district.message}</div>}
+            { districts.length === 0 && errors.district && <div className="invalid-feedback">*請先選擇縣市</div>}
           </div>
           <div className="col-lg-4">
             <label htmlFor="zipcode" className="form-label">郵遞區號</label>
-            <input type="text" id="zipcode" className="form-control bg-primary-10"
+            <input type="text" id="zipcode" className={`form-control bg-dark text-primary-3 ${errors.district ? "is-invalid no-icon" : ""}`}
               {...register("zipcode")}
               disabled
               />
+            { districts.length !== 0 && errors.district && <div className="invalid-feedback">{errors?.district.message}</div>}
+            { districts.length === 0 && errors.district && <div className="invalid-feedback">*請先選擇縣市</div>}
           </div>
         </div>
 
