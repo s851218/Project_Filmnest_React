@@ -1,0 +1,11 @@
+.was-validated .form-select:invalid:not([multiple]):not([size]),
+.was-validated .form-select:invalid:not([multiple])[size="1"],
+.form-select.is-invalid:not([multiple]):not([size]),
+.form-select.is-invalid:not([multiple])[size="1"] .no-icon {
+  --bs-form-select-bg-icon: none
+}
+
+.was-validated .form-control:invalid, .form-control.is-invalid.no-icon{
+    background-image: none;
+    padding-right: 0.75rem ;
+}
