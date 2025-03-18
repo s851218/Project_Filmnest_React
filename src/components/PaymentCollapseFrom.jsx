@@ -69,8 +69,13 @@ export default function PaymentCollapseFrom ({reference , showError}) {
 
   // 手風琴切換，重設表單reset (OK)
   useEffect(()=>{
-    if (accordionIndex !== 0) {
-      reset()
+    reset()
+    if (accordionIndex === 0) {
+      setEnabledCardType("creditCard")
+      setValue("cardType","creditCard")
+      setEnabledPayMethod("oneTime")
+      setValue("payMethod","oneTime")
+      setCardCodeIndex(0)
     }
   },[accordionIndex])
 
