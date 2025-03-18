@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 
 export const CheckModal = Swal.mixin({
-  buttonsStyling: false, // 接受按鈕樣式：false => 開啟自訂
+  buttonsStyling: false, // 取消預設按鈕樣式
   heightAuto: false, // 取消預設自適應高度
   customClass: {
     confirmButton: "btn btn-primary-1 border-white px-8 me-2",
@@ -14,7 +14,7 @@ export const CheckModal = Swal.mixin({
 })
 
 export const AdminCheckModal = Swal.mixin({
-  buttonsStyling: false, // 接受按鈕樣式：false => 開啟自訂
+  buttonsStyling: false, // 取消預設按鈕樣式
   heightAuto: false, // 取消預設自適應高度
   customClass: {
     confirmButton: "btn btn-primary-1 border-white px-8 me-2",
