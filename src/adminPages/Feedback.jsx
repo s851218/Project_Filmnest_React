@@ -3,7 +3,7 @@ import { useEffect, useState, useRef, useMemo } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { AdminCheckModal , Toast } from "../assets/js/costomSweetAlert"; 
+import { AdminCheckModal, Toast } from "../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 const DEFAULT_FEEDBACK_FORM = {
@@ -51,25 +51,39 @@ function AdminFeedbackForm() {
 
   const handleRemoveChoice = (choiceIndex) => {
     console.log(choiceIndex);
-    
-    const item = feedbackData[choiceIndex]
+
+    const item = feedbackData[choiceIndex];
     console.log(item);
-    
-    
-    AdminCheckModal.fire({
-      title: "是否要刪除此回饋項目",
-      showCancelButton: true,
-      confirmButtonText: "確認",
-      cancelButtonText: "取消",
-      html: `<hr><img src="${item.image}"><p class="fs-4">【${item.title}】</p>`
-    }).then((result)=>{
-      console.log(result)
-      if (result.value) {
-        console.log("已確認刪除");
-        removeChoice(choiceIndex)
-      }
-    })
-  }
+
+    if (!item) {
+      AdminCheckModal.fire({
+        title: "是否要刪除此回饋項目",
+        showCancelButton: true,
+        confirmButtonText: "確認",
+        cancelButtonText: "取消",
+      }).then((result) => {
+        console.log(result);
+        if (result.value) {
+          console.log("已確認刪除");
+          removeChoice(choiceIndex);
+        }
+      });
+    } else {
+      AdminCheckModal.fire({
+        title: "是否要刪除此回饋項目",
+        showCancelButton: true,
+        confirmButtonText: "確認",
+        cancelButtonText: "取消",
+        html: `<hr><img src="${item.image}"><p class="fs-4">【${item.title}】</p>`,
+      }).then((result) => {
+        console.log(result);
+        if (result.value) {
+          console.log("已確認刪除");
+          removeChoice(choiceIndex);
+        }
+      });
+    }
+  };
 
   const getFeedbackData = async () => {
     setIsLoading(true);
@@ -153,7 +167,7 @@ function AdminFeedbackForm() {
       Toast.fire({
         icon: "success",
         title: "請求已完成",
-      })
+      });
       setEditingIndex(null);
       getFeedbackData();
     } catch (error) {
@@ -161,7 +175,7 @@ function AdminFeedbackForm() {
       Toast.fire({
         icon: "error",
         title: "提交失敗",
-      })
+      });
     }
   };
 
@@ -585,23 +599,23 @@ const ContentItems = ({
   });
 
   const handleRemoveContent = (contentIndex) => {
-    const itemName = contentFields[contentIndex].item
+    const itemName = contentFields[contentIndex].item;
     console.log(itemName);
-    
+
     AdminCheckModal.fire({
       title: "是否要刪除此回饋項目",
       showCancelButton: true,
       confirmButtonText: "確認",
       cancelButtonText: "取消",
-      html: `<hr><p class="fs-6">【${itemName}】</p>`
-    }).then((result)=>{
-      console.log(result)
+      html: `<hr><p class="fs-6">【${itemName}】</p>`,
+    }).then((result) => {
+      console.log(result);
       if (result.value) {
         console.log("已確認刪除");
-        removeContent(contentIndex)
+        removeContent(contentIndex);
       }
-    })
-  }
+    });
+  };
 
   const contents = watch(`choice.${choiceIndex}.contents`);
   const isLastItemEmpty =
