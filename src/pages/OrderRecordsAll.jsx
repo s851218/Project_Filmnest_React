@@ -108,13 +108,13 @@ export default function OrderRecordsAll() {
           <tbody>
             {ordersData.map((order) => (
               <tr key={order.id}>
-                <td className="d-none d-lg-block text-white">
+                <td className="d-none d-lg-table-cell text-white">
                   <div className="row align-items-center">
                     <div className="col-4">
                       <img src={order.project.projectImage} className="rounded-2" alt="專案數量" />
                     </div>
                     <div className="col-8">
-                      <h3 className="fs-6 fw-bolder">{order.project.projectTitle}</h3>
+                      <h3 className="fs-6 fw-bolder text-truncate" title={order.project.projectTitle}>{order.project.projectTitle}</h3>
                       <p className="fs-base">{order.project.summary}</p>
                     </div>
                   </div>
@@ -123,7 +123,7 @@ export default function OrderRecordsAll() {
                   <img src={order.project.projectImage} className="rounded-2" alt="專案數量" />
                 </td>
                 <td className="nowrap-table d-lg-none text-white">
-                  <h3 className="fs-7 fw-bolder">{order.project.projectTitle}</h3>
+                  <h3 className="fs-7 fw-bolder text-truncate" title={order.project.projectTitle}>{order.project.projectTitle}</h3>
                   <p className="fs-sm">{order.project.summary}</p>
                 </td>
                 <td className="nowrap-table text-white">{getTime(order.createdAt)}</td>
