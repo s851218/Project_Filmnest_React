@@ -237,7 +237,7 @@ function FeedbackSwiper() {
                 <SwiperSlide
                   key={feedback.id}
                   className="card feedbackSlide rounded-2 bg-primary-9 border overflow-hidden h-auto"
-                  style={{ borderColor: "#606060" }}
+                  style={{ borderColor: "#606060", minWidth: "250px" }}
                 >
                   <div className="h-100 d-flex flex-column">
                     <div
@@ -247,9 +247,10 @@ function FeedbackSwiper() {
                       <img
                         src={feedback.image}
                         alt={feedback.title}
-                        className="feedback-image"
+                        className="feedback-image object-fit-cover"
                         style={{
                           transition: "transform 0.3s ease",
+                          // height: "230px",
                         }}
                       />
                     </div>

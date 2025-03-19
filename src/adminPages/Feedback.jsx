@@ -61,22 +61,27 @@ function AdminFeedbackForm() {
   }, [reset]);
 
   const onSubmit = async (data) => {
+    // 處理批量請求：比對資料
     const currentItems = data.choice;
     const originalItems = originalFeedbackRef.current;
 
+    // 更新項目：id 相同，且內容不同者
     const updatedItems = currentItems.filter((item) => {
       const original = originalItems.find((o) => o.id === item.id);
       return original && JSON.stringify(original) !== JSON.stringify(item);
     });
 
+    // 新增項目：沒有 id 者
     const newItems = currentItems.filter((item) => !item.id);
+
+    // 刪除項目：之前有 id，但現在沒有者
     const deletedItems = originalItems.filter(
       (item) => !currentItems.some((current) => current.id === item.id)
     );
     try {
       const requests = [];
 
-      // 更新
+      // 更新請求
       if (updatedItems.length > 0) {
         updatedItems.forEach((updatedItem) => {
           const updateRequest = axios.put(
@@ -87,7 +92,7 @@ function AdminFeedbackForm() {
         });
       }
 
-      // 新增
+      // 新增請求
       if (newItems.length > 0) {
         newItems.forEach((newItem) => {
           const postRequest = axios.post(`${API_BASE}/products`, {
@@ -98,7 +103,8 @@ function AdminFeedbackForm() {
           requests.push(postRequest);
         });
       }
-      // 刪除
+
+      // 刪除請求
       if (deletedItems.length > 0) {
         deletedItems.forEach((deletedItem) => {
           const deleteRequest = axios.delete(
@@ -165,12 +171,10 @@ function AdminFeedbackForm() {
 
   // 檢查所有選項是否都已填寫完整
   const allFieldsValid = useMemo(() => {
-    // 確保 choiceFields 存在且不為空
+    // 確保 choiceFields 存在
     if (!choiceFields || choiceFields.length === 0) {
       return false;
     }
-
-    // 每個選項
     return choiceFields.every((_, choiceIndex) => {
       // 確保 formValues 和 formValues.choice 以及對應的 choice 對象存在
       if (
@@ -183,12 +187,12 @@ function AdminFeedbackForm() {
 
       const choice = formValues.choice[choiceIndex];
 
-      // 基本欄位檢查，確保每個字段存在且有值
+      // 基本欄位檢查
       if (!choice.image || !choice.title || !choice.price) {
         return false;
       }
 
-      // 確保 contents 數組存在
+      // 檢查 contents 陣列存在
       if (!Array.isArray(choice.contents) || choice.contents.length === 0) {
         return false;
       }
@@ -204,6 +208,7 @@ function AdminFeedbackForm() {
     });
   }, [formValues, choiceFields]);
 
+  // 檢查表單是否變更過
   const isFormChanged = useMemo(() => {
     if (!formValues || !originalFeedbackRef.current) return false;
 
@@ -224,7 +229,7 @@ function AdminFeedbackForm() {
     );
 
     return hasUpdates || hasNewItems || hasDeletedItems;
-  }, [formValues, originalFeedbackRef.current]);
+  }, [formValues]);
 
   return (
     <div className="container py-10">
