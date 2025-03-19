@@ -21,11 +21,6 @@ export default function PaymentInfoFrom ({reference , userData , showError}) {
   })
 
   useEffect(()=>{
-    console.log(errors);
-    
-  },[errors])
-
-  useEffect(()=>{
     if (userData.userProfile) {
       const {userName , phone} = userData?.userProfile
       const {email} = userData

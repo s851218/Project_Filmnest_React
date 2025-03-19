@@ -17,7 +17,7 @@ shippingStatus 出貨狀態:
 "canRefund": false, // 已付款後啟用，可否取消付款
 "canReturn": false, // 已出貨後啟用，可否退貨
 
-paymentMethod 付款方式 = {
+paymentMethod = {
 type: {
 0：信用卡付款
 1：ATM 轉帳

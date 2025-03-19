@@ -128,9 +128,9 @@ export default function FeedbackOption() {
         "email": "",
         "address": "",
       },
-      "orderStatus": "建立訂單",
-      "paymentStatus": "未付款",
-      "shippingStatus": "未出貨",
+      "orderStatus": 0,
+      "paymentStatus": 0,
+      "shippingStatus": 0,
       "bonus": bonus,
       "totalPrice": totalPrice,
       "createdAt": createdAt,
@@ -143,7 +143,7 @@ export default function FeedbackOption() {
       "productId": params.productId,
       "orderId": orderId,
       "message": messageToTeam,
-      "isIncognito": watch.isAnonymous,
+      "isIncognito": Boolean(watch.isAnonymous),
     };
 
     console.log(orderData);
