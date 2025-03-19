@@ -135,9 +135,9 @@ export default function FeedbackOption() {
       "totalPrice": totalPrice,
       "createdAt": createdAt,
       "paymentTime": "付款時間",
-      "canCancel": false,
-      "canRefund": false,
-      "canReturn": false,
+      "canCancel": true, // 可否取消訂單，已付款後false
+      "canRefund": false, // 已付款後啟用，可否取消付款
+      "canReturn": false, // 已出貨後啟用，可否退貨
       "userId": userInfo.userId,
       "projectId": params.projectId,
       "productId": params.productId,
