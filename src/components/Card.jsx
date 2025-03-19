@@ -40,7 +40,7 @@ export default function Card({ projects, isSwiper, isDelete, getData }) {
     return isSwiper ? (
       <div className="swiper-slide h-auto" key={project.id}>
         <div className="card index-card rounded-0 h-100">
-          <img src={project.projectImage} className="card-img-top rounded-0 mb-3" alt="" />
+          <img src={project.projectImage} className="card-img-top rounded-0 mb-3" style={{height:"250px"}} alt="" />
           <div className="card-body p-3 d-flex flex-column">
             <Link to={`/projects/projectId=${project.id}`} className="link-light stretched-link">
               <h3 className="fs-sm fs-lg-base mb-4">{project.projectTitle}</h3>
@@ -64,7 +64,7 @@ export default function Card({ projects, isSwiper, isDelete, getData }) {
     ) : (
       <div className="col-md-6 col-lg-4 g-5 h-auto" key={project.id}>
         <div className="card index-card rounded-0 h-100 position-reletive">
-          <img src={project.projectImage} className="card-img-top rounded-0 mb-3" alt="" />
+          <img src={project.projectImage} className="card-img-top rounded-0 mb-3" style={{height:"250px"}} alt="" />
           {isDelete && (
             <button onClick={() => handleDelete(project.id,project.projectTitle)} className="btn btn-danger fs-sm" style={{ position: "absolute", top: "0", right: "0",zIndex:"10"}}>
               移除收藏
