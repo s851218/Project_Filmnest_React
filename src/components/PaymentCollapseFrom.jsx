@@ -3,6 +3,10 @@ import { useForm, useWatch } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
 import { setPaymentOption } from "../slice/paymentInfoSlice"
 import PaymentAccordion from "./PaymentAccordion" // 手風琴元件
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' // 載入react-fontawesome元件
+import { fab } from "@fortawesome/free-brands-svg-icons";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { far } from "@fortawesome/free-regular-svg-icons";
 
 const requiredChecked = [
   "我已再次確認「訂單資訊」及「付款資訊」，付款完成後藍新金流將發送通知信至付款人電子信箱",
@@ -266,7 +270,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
                         <Fragment key={inputName}>
                           <input
                             id={inputName}
-                            type={`${((index === 0) || (index === maxIndex)) ? "text" : ( isPasswordVisibility ? "text" : "password")}`}
+                            type={`${((index === 0) || (index === maxIndex-1)) ? "text" : ( isPasswordVisibility ? "text" : "password")}`}
                             className={`card-number-input form-control text-center ${(cardCodeIndex !== index) ? "bg-dark text-primary-3" : ""} ${ showError && (Object.keys(errors).some((error)=> error.includes("codeInput"))) ? "border-danger" : ""}`}
                             style={{
                               width: inputWidth,
@@ -287,7 +291,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
                               },
                             })}
                           />
-                          { (index !== (maxIndex-1) ) ? (<span>-</span>) : (<button type="button" className="btn ms-1" onMouseDown={handleMouseDown} onMouseUp={handleMouseIp}><i className="fa-solid fa-eye"/></button>) }
+                          { (index !== (maxIndex-1) ) ? (<span>-</span>) : (<button type="button" className="btn ms-1" onMouseDown={handleMouseDown} onMouseUp={handleMouseIp}><FontAwesomeIcon icon={fas.faEye} /></button>) }
                         </Fragment>
                       )
                     }) }
@@ -295,9 +299,9 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
                   { showError && (Object.keys(errors).some((error)=> error.includes("codeInput"))) && <div className="invalid-feedback d-block">*卡號格式錯誤</div>}
                   { (enabledCardType === "creditCard") && (
                     <ul className="checkout-card-list list-unstyled mb-0">
-                      <li><i className="fa-brands fa-cc-visa" /></li>
-                      <li><i className="fa-brands fa-cc-mastercard" /></li>
-                      <li><i className="fa-brands fa-cc-jcb" /></li>
+                      <li><FontAwesomeIcon icon={fab.faCcVisa} /></li>
+                      <li><FontAwesomeIcon icon={fab.faCcMastercard} /></li>
+                      <li><FontAwesomeIcon icon={fab.faCcJcb} /></li>
                     </ul>
                   )}
                 </div>
@@ -338,7 +342,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
                               },
                             })}
                           />
-                          { id==="cvv" && <i className="fa-regular fa-credit-card" /> }
+                          { id==="cvv" && <FontAwesomeIcon className="ms-4" icon={far.faCreditCard} /> }
                           { id==="cvv" && enabledCardType === "unionPay" &&
                             <small className="ms-2 text-warning">※ 若您的卡片無末三碼，可不填寫</small> }
                         </div>
