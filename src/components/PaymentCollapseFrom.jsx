@@ -387,7 +387,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
         {/* 付款人電子信箱 */}
         <div className="d-flex flex-wrap align-items-center gap-2 mb-4">
           <label htmlFor="payerEmail" className="form-label mb-0 required">付款人電子信箱</label>
-          <input type="email" id="payerEmail" className={`form-control d-inline-block fit-content ${errors.payerEmail && "is-invalid"}`}
+          <input type="email" id="payerEmail" className={`form-control d-inline-block w-sm-50 w-100 ${errors.payerEmail && "is-invalid"}`}
             {...register("payerEmail",{
               required: {
                 value: true,
