@@ -215,19 +215,25 @@ export default function OrderRecordsDetail() {
               </ol>
             </div>
             <p className="mb-3">額外加碼：{String(orderData.bonus)}</p>
-            <p className="mb-3">付款方式：{orderData.paymentStatus === "未付款" ? "未付款" : "信用卡"}</p>
-            <p className="mb-3">訂單成立時間：{getTime(orderData.createdAt)}</p>
-            <p className="mb-3">付款時間：{orderData.paymentStatus === "未付款" ? "未付款" : getTime(orderData.paymentTime)}</p>
+            <p className="mb-3">訂單總額：{String(orderData.totalPrice)}</p>
             <p className="mb-3">訂單狀態：{orderData.paymentStatus}</p>
+            <p className="mb-3">訂單成立時間：{getTime(orderData.createdAt)}</p>
+            <p className="mb-3">付款方式：{orderData.paymentStatus === "未付款" ? "尚未選擇付款方式" : "信用卡"}</p>
+            <p className="mb-3">付款狀態：{orderData.paymentStatus === 0 ? "未付款" : orderData.paymentStatus === 1 ? "已付款" : "已退款"}</p>
+            {orderData.paymentStatus === 1 && <p className="mb-3">付款時間：{getTime(orderData.paymentTime)}</p>}
+            {orderData.paymentStatus === 1 && <p className="mb-3">出貨狀態：{orderData.shippingStatus === 0 ? "未出貨" : orderData.shippingStatus === 1 ? "已出貨" : "已退貨"}</p>}
             <div className="d-flex justify-content-between align-items-center">
               <button type="button" className="btn btn-outline-light w-50 me-2" onClick={() => navigate(-1)}>
                 返回
               </button>
-              {orderData.canCancel ? (
+              {orderData.canCancel ? (<>
                 <button type="button" className="btn btn-outline-light w-50" onClick={handleToPayment}>
-                  前往付款
+                  取消訂單
                 </button>
-              ) : orderData.canRefund ? (
+                {orderData.orderStatus === 0 && <button type="button" className="btn btn-outline-light w-50" onClick={handleToPayment}>
+                  前往付款
+                </button>}
+              </>) : orderData.canRefund ? (
                 <button type="button" className="btn btn-outline-light w-50" onClick={() => handleRefund(orderData)}>
                   申請退款
                 </button>
