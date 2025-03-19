@@ -16,3 +16,20 @@ shippingStatus 出貨狀態:
 "canCancel": true, // 可否取消訂單，已付款後 false
 "canRefund": false, // 已付款後啟用，可否取消付款
 "canReturn": false, // 已出貨後啟用，可否退貨
+
+
+paymentMethod = {
+  type: {
+    0：信用卡付款
+    1：ATM轉帳
+    2：超商代碼付款
+  }
+  "cardType": "creditCard" "信用卡" / "unionPay" "銀聯卡"
+  "method": "oneTime": "一次付清" / "installments": "分期付款",
+  ---
+  "bankCode": "700", // 銀行代碼
+  "bankName": "中華郵政", // 銀行名稱
+  "accountNumber": "7003956781285716" // 帳戶號碼
+  ---
+  paymentCode 超商繳費代碼
+}

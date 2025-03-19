@@ -36,7 +36,7 @@ const creditCardFormContent = {
   },
 }
 
-export default function PaymentCollapseFrom ({reference , showError}) {
+export default function PaymentCollapseFrom ({reference , showError , banksData}) {
   
   const { register , control , setValue , formState:{errors,isValid} , reset , handleSubmit } = useForm({
     shouldUnregister:true, // 不寫入未被渲染的表單內容
@@ -367,12 +367,10 @@ export default function PaymentCollapseFrom ({reference , showError}) {
                     value: value => value !== "請選擇轉帳銀行" || "*請選擇有效銀行",
                   }
                 })}
+                onChange={(e) => setValue("bankSelect", e.target.value)}
               >
                 <option value="請選擇轉帳銀行" disabled>請選擇轉帳銀行</option>
-                <option value="中華郵政">中華郵政</option>
-                <option value="台灣銀行">台灣銀行</option>
-                <option value="台新銀行">台新銀行</option>
-                <option value="國泰世華銀行">國泰世華銀行</option>
+                {banksData.map((bank)=>(<option key={bank.bankCode} value={bank.bankCode} >{bank.bankName}</option>))}
               </select>
               { errors.bankSelect && <div className="invalid-feedback d-inline-block fit-content">{errors?.bankSelect?.message}</div> }
             </div>

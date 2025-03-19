@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import PaymentAside from "../components/PaymentAside";
 import PaymentMobileFooter from "../components/PaymentMobileFooter";
 import PaymentInfoFrom from "../components/PaymentInfoFrom";
@@ -11,6 +11,29 @@ import GrayScreenLoading from "../components/GrayScreenLoading";
 import { CheckModal , Alert } from "../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
+
+const banksData = [
+  {
+    bankCode: "700",
+    bankName: "中華郵政",
+    accountNumber: "7003956781285716",
+  },
+  {
+    bankCode: "004",
+    bankName: "台灣銀行",
+    accountNumber: "329817460195",
+  },
+  {
+    bankCode: "812",
+    bankName: "台新銀行",
+    accountNumber: "18452693071834",
+  },
+  {
+    bankCode: "013",
+    bankName: "國泰世華銀行",
+    accountNumber: "581023764895",
+  }
+]
 
 export default function PaymentInfo() {
   // 路由跳轉頁面時，重製滾輪捲軸
@@ -29,6 +52,7 @@ export default function PaymentInfo() {
   const [isLoading, setIsLoading] = useState(false);
   const paymentInfoSlice = useSelector((state) => state.paymentInfo);
   const [showError , setShowError] = useState(false)
+  const accordionIndex = useSelector((state)=>state.paymentInfo.accordion.index)
 
   // 初始化
   const init = () => {
@@ -43,7 +67,6 @@ export default function PaymentInfo() {
       setIsLoading(true);
       try {
         const res = await axios.get(`${API_BASE}/orders?orderId=${id}`);
-        console.log(res.data.length);
         if (res.data.length !== 0) {
           setOrderData(res.data[0]);
         } else {
@@ -119,14 +142,12 @@ export default function PaymentInfo() {
 
   // 驗證成功後送出付款資料
   const handlePayment = async (id) => {
-    const { recipientInfo, address } = paymentInfoSlice;
+    const { recipientInfo, address , paymentOption } = paymentInfoSlice;
 
     // 重組地址字串
     const newAddress =
       address.zipcode + address.county + address.district + address.address;
-
-    // 取得付款時間
-    const createdPaymentTime = new Date().toString();
+    
     // 重組收件人資料
     const newOrderFile = {
       Recipient: recipientInfo.recipientName,
@@ -134,14 +155,51 @@ export default function PaymentInfo() {
       email: recipientInfo.recipientEmail,
       address: newAddress, // 寫入重組後的地址字串
     };
-    console.log(newOrderFile);
+    
+    let paymentStatu // 付款狀態
+    let paymentMethod // 付款別
+    let createdPaymentTime // 取得付款時間
+    
+    switch (accordionIndex) {
+      case 0: // 信用卡付款
+        paymentStatu = 1 // 已付款
+        paymentMethod = {
+          type: accordionIndex,
+          cardType: paymentOption.cardType,
+          method: paymentOption.payMethod,
+        }
+        createdPaymentTime = new Date().toString(); // 取得付款時間
+        break;
+
+      case 1: // ATM轉帳
+        const bankSelect = banksData.filter((bank)=> (bank.bankCode === paymentOption.bankSelect))
+        paymentStatu = 0 // 未付款
+        paymentMethod = {
+          type: accordionIndex,
+          ...bankSelect[0]
+        }
+        break;
+
+      case 2: // 信用卡付款
+        paymentStatu = 0 // 未付款
+        paymentMethod = {
+          type: accordionIndex,
+          paymentCode: "FNEC942335764",
+        }
+        break;
+    
+      default:
+        break;
+    }
 
     const newOrderData = {
       ...orderData, // 展開原訂單內容
       orderFile: newOrderFile, // 寫入收件人資料
-      orderStatus: "訂單成立", // 訂單狀態修改為"成立"
-      paymentStatus: "已付款", // 付款狀態修改為"已付款"
-      paymentTime: createdPaymentTime, // 寫入付款時間
+      orderStatus: 1, // 訂單狀態修改為"成立"
+      paymentStatus: paymentStatu, // 付款狀態修改
+      paymentMethod, // 付款別
+      paymentTime: accordionIndex === 0 ? createdPaymentTime : "付款時間", // 寫入付款時間
+      canCancel: accordionIndex === 0 ? false : true
     };
 
     console.log("NEW", newOrderData);
@@ -179,6 +237,8 @@ export default function PaymentInfo() {
     })
   }
 
+  
+
   return (
     <>
       <Helmet>
@@ -197,7 +257,7 @@ export default function PaymentInfo() {
                 <PaymentInfoFrom reference={infoFromRef} userData={userData} showError={showError} />
                 {/* 付款方式 V */}
                 <h2 className="fs-lg-3 fs-4 text-primary-2 mb-4">付款方式</h2>
-                <PaymentCollapseFrom reference={paymentFromRef} showError={showError} />
+                <PaymentCollapseFrom reference={paymentFromRef} showError={showError} banksData={banksData} />
               </main>
 
               <PaymentAside
