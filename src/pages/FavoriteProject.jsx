@@ -34,7 +34,7 @@ export default function FavoriteProject() {
   };
   useEffect(() => {
     getFavoriteProjects();
-  }, []);
+  }, [id]);
   return (
     <>
       <Helmet>
@@ -47,7 +47,7 @@ export default function FavoriteProject() {
         </div>
         <div className="row row-lg">
           <h1 className="fs-6 mb-5">收藏專案</h1>
-          <Card projects={favoriteProjects} isSwiper={false} />
+          <Card projects={favoriteProjects} isSwiper={false} isDelete={true} getData={getFavoriteProjects} />
         </div>
       </div>
       <GrayScreenLoading isLoading={isLoading} />
