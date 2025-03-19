@@ -5,6 +5,8 @@ import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css/navigation";
 import { Link, useParams } from "react-router";
+import GrayScreenLoading from "./GrayScreenLoading";
+import { Toast } from "../assets/js/costomSweetAlert";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 function FeedbackSwiper() {
@@ -13,6 +15,7 @@ function FeedbackSwiper() {
   const [showNavigation, setShowNavigation] = useState(false);
   const { id } = useParams();
   const [params, setParams] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   //處理params
   useEffect(() => {
@@ -28,11 +31,18 @@ function FeedbackSwiper() {
   }, [id]);
 
   const getFeedbackData = async (id) => {
+    setIsLoading(true);
     try {
       const response = await axios.get(`${API_BASE}/products?projectId=${id}`);
       setFeedbackData(response.data);
     } catch (error) {
-      alert("回饋資料取得失敗：" + error.message);
+      console.error("回饋資料取得失敗：" + error.message);
+      Toast.fire({
+        icon: "success",
+        title: "回饋資料取得失敗",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -111,194 +121,197 @@ function FeedbackSwiper() {
   };
 
   return (
-    <div className="container py-4 my-10">
-      <div className="row">
-        <div className="col-12 position-relative">
-          {/* 自定義導航按鈕 - 根據 showNavigation 狀態決定是否顯示 */}
-          {showNavigation && (
-            <div style={navigationStyles.navigationContainer}>
-              <button
-                ref={prevNavRef}
-                style={navigationStyles.navigationButton}
-                aria-label="上一張"
-              >
-                <i className="bi bi-chevron-left"></i>
-              </button>
-
-              {/* 自定義分頁指示器 */}
-              <div
-                ref={paginationRef}
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  gap: "4px",
-                  margin: "0 16px",
-                }}
-                className="pagination-container"
-              >
-                {/* Swiper 會自動在這裡生成分頁指示器 */}
-              </div>
-
-              <button
-                ref={nextNavRef}
-                style={navigationStyles.navigationButton}
-                aria-label="下一張"
-              >
-                <i className="bi bi-chevron-right"></i>
-              </button>
-            </div>
-          )}
-
-          {/* Swiper 本體 */}
-          {feedbackData.length > 0 && (
-            <Swiper
-              modules={[Navigation, Pagination]}
-              breakpoints={{
-                // 1200: {
-                //   slidesPerView: 4,
-                //   spaceBetween: 20,
-                // },
-                992: {
-                  slidesPerView: 3,
-                  spaceBetween: 16,
-                },
-                768: {
-                  slidesPerView: 2,
-                  spaceBetween: 8,
-                },
-              }}
-              slidesPerView={1}
-              spaceBetween={4}
-              pagination={{
-                el: ".pagination-container",
-                clickable: true,
-                bulletClass: "custom-bullet",
-                bulletActiveClass: "custom-bullet-active",
-                renderBullet: function (index, className) {
-                  return `<span className="${className}" style="display: block; width: 8px; height: 8px; border-radius: 50%; background-color: #ccc; margin: 0 4px; cursor: pointer;"></span>`;
-                },
-              }}
-              navigation={{
-                prevEl: ".swiper-button-prev-custom",
-                nextEl: ".swiper-button-next-custom",
-                disabledClass: "custom-nav-disabled",
-              }}
-              onSwiper={(swiper) => {
-                // 保存 swiper 實例供後續使用
-                swiperRef.current = swiper;
-
-                // 在 swiper 初始化後，判斷是否應該顯示導航功能
-                updateNavigationVisibility(swiper);
-
-                // 監聽視窗大小變化，重新計算是否應該顯示導航
-                // window.addEventListener("resize", () => {
-                //   updateNavigationVisibility(swiperRef.current);
-                // });
-
-                // 確保分頁元素正確引用
-                setTimeout(() => {
-                  if (paginationRef.current) {
-                    paginationRef.current.className = "pagination-container";
-                  }
-                  if (prevNavRef.current) {
-                    prevNavRef.current.className = "swiper-button-prev-custom";
-                  }
-                  if (nextNavRef.current) {
-                    nextNavRef.current.className = "swiper-button-next-custom";
-                  }
-
-                  swiper.navigation?.init();
-                  swiper.navigation?.update();
-                  swiper.pagination?.init();
-                  swiper.pagination?.update();
-                }, 10);
-              }}
-              onSlideChange={(swiper) => {
-                setActiveIndex(swiper.activeIndex);
-
-                // 更新活動指示器的樣式
-                const bullets = document.querySelectorAll(".custom-bullet");
-                bullets.forEach((bullet, index) => {
-                  if (index === activeIndex) {
-                    bullet.style.backgroundColor = "#fff";
-                  } else {
-                    bullet.style.backgroundColor = "#ccc";
-                  }
-                });
-              }}
-              onBreakpoint={(swiper) => {
-                // 在斷點變化時重新判斷是否應該顯示導航
-                updateNavigationVisibility(swiper);
-              }}
-              className="position-relative p-5"
-            >
-              {feedbackData.map((feedback) => (
-                <SwiperSlide
-                  key={feedback.id}
-                  className="card feedbackSlide rounded-2 bg-primary-9 border overflow-hidden h-auto"
-                  style={{ borderColor: "#606060", minWidth: "250px" }}
+    <>
+      <div className="container py-4 my-10">
+        <div className="row">
+          <div className="col-12 position-relative">
+            {/* 自定義導航按鈕 - 根據 showNavigation 狀態決定是否顯示 */}
+            {showNavigation && (
+              <div style={navigationStyles.navigationContainer}>
+                <button
+                  ref={prevNavRef}
+                  style={navigationStyles.navigationButton}
+                  aria-label="上一張"
                 >
-                  <div className="h-100 d-flex flex-column">
-                    <div
-                      className="position-relative card-img-top overflow-hidden"
-                      style={{ height: "230px" }}
-                    >
-                      <img
-                        src={feedback.image}
-                        alt={feedback.title}
-                        className="feedback-image object-fit-cover"
-                        style={{
-                          transition: "transform 0.3s ease",
-                          // height: "230px",
-                        }}
-                      />
-                    </div>
+                  <i className="bi bi-chevron-left"></i>
+                </button>
 
-                    <div className="card-body p-5 d-flex flex-column h-100">
-                      <div>
-                        <h5 className="fw-bold fs-lg-6 mb-1">
-                          {feedback.title}
-                        </h5>
-                        <p className="fw-bold fs-lg-5 fs-7 mb-lg-2 mb-1">{`NT${feedback.price.toLocaleString(
-                          "zh-TW",
-                          {
-                            style: "currency",
-                            currency: "TWD",
-                            minimumFractionDigits: 0,
-                          }
-                        )}`}</p>
+                {/* 自定義分頁指示器 */}
+                <div
+                  ref={paginationRef}
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    gap: "4px",
+                    margin: "0 16px",
+                  }}
+                  className="pagination-container"
+                >
+                  {/* Swiper 會自動在這裡生成分頁指示器 */}
+                </div>
 
-                        <hr className="my-3" />
-                        <div className="d-flex flex-column">
-                          <p className="mb-lg-2 mb-1">本方案包含：</p>
-                          <ol className="mb-lg-6 mb-3 text-balance">
-                            {feedback.contents.map((item, index) => (
-                              <li key={index}>{item.item}</li>
-                            ))}
-                          </ol>
+                <button
+                  ref={nextNavRef}
+                  style={navigationStyles.navigationButton}
+                  aria-label="下一張"
+                >
+                  <i className="bi bi-chevron-right"></i>
+                </button>
+              </div>
+            )}
+
+            {/* Swiper 本體 */}
+            {feedbackData.length > 0 && (
+              <Swiper
+                modules={[Navigation, Pagination]}
+                breakpoints={{
+                  // 1200: {
+                  //   slidesPerView: 4,
+                  //   spaceBetween: 20,
+                  // },
+                  992: {
+                    slidesPerView: 3,
+                    spaceBetween: 16,
+                  },
+                  768: {
+                    slidesPerView: 2,
+                    spaceBetween: 8,
+                  },
+                }}
+                slidesPerView={1}
+                spaceBetween={4}
+                pagination={{
+                  el: ".pagination-container",
+                  clickable: true,
+                  bulletClass: "custom-bullet",
+                  bulletActiveClass: "custom-bullet-active",
+                  renderBullet: function (index, className) {
+                    return `<span className="${className}" style="display: block; width: 8px; height: 8px; border-radius: 50%; background-color: #ccc; margin: 0 4px; cursor: pointer;"></span>`;
+                  },
+                }}
+                navigation={{
+                  prevEl: ".swiper-button-prev-custom",
+                  nextEl: ".swiper-button-next-custom",
+                  disabledClass: "custom-nav-disabled",
+                }}
+                onSwiper={(swiper) => {
+                  // 保存 swiper 實例供後續使用
+                  swiperRef.current = swiper;
+
+                  // 在 swiper 初始化後，判斷是否應該顯示導航功能
+                  updateNavigationVisibility(swiper);
+
+                  // 監聽視窗大小變化，重新計算是否應該顯示導航
+                  // window.addEventListener("resize", () => {
+                  //   updateNavigationVisibility(swiperRef.current);
+                  // });
+
+                  // 確保分頁元素正確引用
+                  setTimeout(() => {
+                    if (paginationRef.current) {
+                      paginationRef.current.className = "pagination-container";
+                    }
+                    if (prevNavRef.current) {
+                      prevNavRef.current.className =
+                        "swiper-button-prev-custom";
+                    }
+                    if (nextNavRef.current) {
+                      nextNavRef.current.className =
+                        "swiper-button-next-custom";
+                    }
+
+                    swiper.navigation?.init();
+                    swiper.navigation?.update();
+                    swiper.pagination?.init();
+                    swiper.pagination?.update();
+                  }, 10);
+                }}
+                onSlideChange={(swiper) => {
+                  setActiveIndex(swiper.activeIndex);
+
+                  // 更新活動指示器的樣式
+                  const bullets = document.querySelectorAll(".custom-bullet");
+                  bullets.forEach((bullet, index) => {
+                    if (index === activeIndex) {
+                      bullet.style.backgroundColor = "#fff";
+                    } else {
+                      bullet.style.backgroundColor = "#ccc";
+                    }
+                  });
+                }}
+                onBreakpoint={(swiper) => {
+                  // 在斷點變化時重新判斷是否應該顯示導航
+                  updateNavigationVisibility(swiper);
+                }}
+                className="position-relative p-5"
+              >
+                {feedbackData.map((feedback) => (
+                  <SwiperSlide
+                    key={feedback.id}
+                    className="card feedbackSlide rounded-2 bg-primary-9 border overflow-hidden h-auto"
+                    style={{ borderColor: "#606060", minWidth: "250px" }}
+                  >
+                    <div className="h-100 d-flex flex-column">
+                      <div
+                        className="position-relative card-img-top overflow-hidden"
+                        style={{ height: "230px" }}
+                      >
+                        <img
+                          src={feedback.image}
+                          alt={feedback.title}
+                          className="feedback-image object-fit-cover"
+                          style={{
+                            transition: "transform 0.3s ease",
+                            // height: "230px",
+                          }}
+                        />
+                      </div>
+
+                      <div className="card-body p-5 d-flex flex-column h-100">
+                        <div>
+                          <h5 className="fw-bold fs-lg-6 mb-1">
+                            {feedback.title}
+                          </h5>
+                          <p className="fw-bold fs-lg-5 fs-7 mb-lg-2 mb-1">{`NT${feedback.price.toLocaleString(
+                            "zh-TW",
+                            {
+                              style: "currency",
+                              currency: "TWD",
+                              minimumFractionDigits: 0,
+                            }
+                          )}`}</p>
+
+                          <hr className="my-3" />
+                          <div className="d-flex flex-column">
+                            <p className="mb-lg-2 mb-1">本方案包含：</p>
+                            <ol className="mb-lg-6 mb-3 text-balance">
+                              {feedback.contents.map((item, index) => (
+                                <li key={index}>{item.item}</li>
+                              ))}
+                            </ol>
+                          </div>
+                        </div>
+                        <div className="mb-0 mt-auto">
+                          <Link
+                            to={`/feedbackOption/projectId=${params.projectId}&productId=${feedback.id}`}
+                            className={`btn btn-primary py-2 fw-bold w-100 ${
+                              params.productId === feedback.id ? "disabled" : ""
+                            }`}
+                          >
+                            選擇此方案
+                          </Link>
                         </div>
                       </div>
-                      <div className="mb-0 mt-auto">
-                        <Link
-                          to={`/feedbackOption/projectId=${params.projectId}&productId=${feedback.id}`}
-                          className={`btn btn-primary py-2 fw-bold w-100 ${
-                            params.productId === feedback.id ? "disabled" : ""
-                          }`}
-                        >
-                          選擇此方案
-                        </Link>
-                      </div>
                     </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          )}
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
 
-          {/* 導航按鈕 CSS */}
-          <style>
-            {`
+            {/* 導航按鈕 CSS */}
+            <style>
+              {`
               .custom-bullet {
                 display: block;
                 width: 8px;
@@ -339,10 +352,12 @@ function FeedbackSwiper() {
                 transform: scale(1.1);
               }
             `}
-          </style>
+            </style>
+          </div>
         </div>
       </div>
-    </div>
+      {/* <GrayScreenLoading isLoading={isLoading} /> */}
+    </>
   );
 }
 

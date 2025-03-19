@@ -24,10 +24,6 @@ const paymentInfoSlice = createSlice({
     paymentOption: {
 
     },
-    requried: {
-      paymentInfo: false,
-      paymentType: false,
-    },
   },
   reducers: {
     setUserInfo(state, action) {
@@ -54,24 +50,9 @@ const paymentInfoSlice = createSlice({
       // 寫入付款方式內容
       state.paymentOption = action.payload
     },
-    setRequried(state,action) {
-      console.log(action.payload)
-      const { name , value } = action.payload
-      switch (name) {
-        case "paymentInfo":
-          state.requried.paymentInfo = value
-          break;
-        case "paymentType":
-          state.requried.paymentType = value
-          break;
-      
-        default:
-          break;
-      }
-    },
   }
 })
 
-export const { setUserInfo , setAddress , setRecipientInfo , setSameAsMember , setAccordionIndex , setPaymentOption , setRequried } = paymentInfoSlice.actions
+export const { setUserInfo , setAddress , setRecipientInfo , setSameAsMember , setAccordionIndex , setPaymentOption } = paymentInfoSlice.actions
 
 export default paymentInfoSlice.reducer

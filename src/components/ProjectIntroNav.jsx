@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink, useLocation, useNavigate } from "react-router";
+import { Toast } from "../assets/js/costomSweetAlert";
 
 // import Swiper core and required modules
 import { FreeMode } from "swiper/modules";
@@ -19,6 +20,7 @@ export default function ProjectIntroNav({ projectId }) {
 
   const [isFavorited, setIsFavorited] = useState(false);
   const [favoriteId, setFavoriteId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,6 +58,7 @@ export default function ProjectIntroNav({ projectId }) {
     }
 
     if (!isFavorited) {
+      setIsLoading(true);
       try {
         const res = await axios.post(
           `${API_BASE}/favorites`,
@@ -64,20 +67,39 @@ export default function ProjectIntroNav({ projectId }) {
         );
         setIsFavorited(true);
         setFavoriteId(res.data.id);
-        alert("專案已收藏！");
+        Toast.fire({
+          icon: "success",
+          title: "專案已收藏！",
+        })
       } catch (error) {
         console.error("新增收藏失敗：", error);
+        Toast.fire({
+          icon: "error",
+          title: "新增收藏失敗",
+        })
+      } finally {
+        setIsLoading(false);
       }
     } else {
+      setIsLoading(true);
       try {
         await axios.delete(`${API_BASE}/favorites/${favoriteId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setIsFavorited(false);
         setFavoriteId(null);
-        alert("專案已取消收藏！");
+        Toast.fire({
+          icon: "success",
+          title: "專案已取消收藏！",
+        })
       } catch (error) {
         console.error("取消收藏失敗：", error);
+        Toast.fire({
+          icon: "error",
+          title: "取消收藏失敗",
+        })
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -154,6 +176,7 @@ export default function ProjectIntroNav({ projectId }) {
               <button
                 className="p-3 border border-primary-4 rounded-circle heart-hover"
                 onClick={toggleFavorite}
+                disabled={isLoading}
               >
                 <span
                   className="material-symbols-outlined text-white align-bottom"
@@ -265,6 +288,7 @@ export default function ProjectIntroNav({ projectId }) {
                 type="button"
                 className="p-3 border border-primary-4 rounded-circle heart-hover"
                 onClick={toggleFavorite}
+                disabled={isLoading}
               >
                 <span
                   className="material-symbols-outlined text-white align-bottom"

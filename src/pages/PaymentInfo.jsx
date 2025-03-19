@@ -6,8 +6,9 @@ import PaymentAside from "../components/PaymentAside";
 import PaymentMobileFooter from "../components/PaymentMobileFooter";
 import PaymentInfoFrom from "../components/PaymentInfoFrom";
 import PaymentCollapseFrom from "../components/PaymentCollapseFrom";
-import { setRequried } from "../slice/paymentInfoSlice"
 import { Helmet } from "react-helmet-async";
+import GrayScreenLoading from "../components/GrayScreenLoading";
+import { CheckModal , Alert } from "../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -25,17 +26,38 @@ export default function PaymentInfo() {
   const [projectData, setProjectData] = useState({});
   const [productData, setProductData] = useState({});
   const [userData, setUserData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const paymentInfoSlice = useSelector((state) => state.paymentInfo);
-  const dispatch = useDispatch()
+  const [showError , setShowError] = useState(false)
 
+  // 初始化
+  const init = () => {
+    setOrderData({})
+    setProjectData({})
+    setProductData({})
+  }
   // 取得訂單資料
   useEffect(() => {
+    init()
     const getOrder = async (id) => {
+      setIsLoading(true);
       try {
         const res = await axios.get(`${API_BASE}/orders?orderId=${id}`);
-        setOrderData(res.data[0]);
+        console.log(res.data.length);
+        if (res.data.length !== 0) {
+          setOrderData(res.data[0]);
+        } else {
+          Alert.fire({
+            icon: "error",
+            title: "訂單不存在",
+          },setTimeout(() => {
+            navigate("/");
+          }, 1500))
+        }
       } catch (error) {
         console.log("訂單資料取得錯誤", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     if (id) {
@@ -60,20 +82,21 @@ export default function PaymentInfo() {
 
   // 判斷訂單是否付款
   useEffect(() => {
-    if (orderData) {
+    if (Object.keys(orderData).length !== 0) {
       if (orderData.paymentStatus === "已付款") {
-        alert("訂單已付款");
-        navigate("/");
+        Alert.fire({
+          icon: "error",
+          title: "訂單已付款",
+        },setTimeout(() => {
+          navigate("/");
+        }, 1500))
       } else {
         getData(orderData);
       }
-    } else {
-      alert("訂單不存在");
-      navigate("/");
     }
   }, [orderData]);
 
- // 送出表單 => props傳遞給aside footer
+  // 送出表單 => props傳遞給aside footer
   // 建立ref
   const infoFromRef = useRef();
   const paymentFromRef = useRef();
@@ -82,7 +105,13 @@ export default function PaymentInfo() {
     try {
       await infoFromRef.current.submitForm();
       await paymentFromRef.current.submitForm();
-      handlePayment(orderData.id);
+      
+      if (paymentFromRef.current.isValid && infoFromRef.current.isValid) {
+        setShowError(false)
+        handlePayment(orderData.id);
+      } else {
+        setShowError(true)
+      }
     } catch (error) {
       console.log("驗證失敗", error);
     }
@@ -90,16 +119,11 @@ export default function PaymentInfo() {
 
   // 驗證成功後送出付款資料
   const handlePayment = async (id) => {
-    const { paymentInfo, paymentType } = paymentInfoSlice.requried;
-
-    console.log(paymentInfo,paymentType);
-    
-    if (!paymentInfo || !paymentType) return
-
     const { recipientInfo, address } = paymentInfoSlice;
 
     // 重組地址字串
-    const newAddress = address.zipcode + address.county + address.district + address.address;
+    const newAddress =
+      address.zipcode + address.county + address.district + address.address;
 
     // 取得付款時間
     const createdPaymentTime = new Date().toString();
@@ -123,14 +147,37 @@ export default function PaymentInfo() {
     console.log("NEW", newOrderData);
     try {
       await axios.put(`${API_BASE}/orders/${id}`, newOrderData);
-      alert("付款成功");
-      dispatch(setRequried({name:"paymentInfo",value:false}))
-      dispatch(setRequried({name:"paymentType",value:false}))
-      navigate("/"); // 重新導向 暫定首頁 => 之後改付款完成頁面
+      Alert.fire({
+        icon: "success",
+        title: "付款成功",
+      },
+      setTimeout(() => {
+        navigate("/") // 重新導向 暫定首頁 => 之後改付款完成頁面
+      }, 1500));
     } catch (error) {
       console.log(error);
+      Alert.fire({
+        icon: "error",
+        title: "付款失敗",
+      })
     }
   };
+
+  // 點擊確認付款
+  const handleConfirmPayment = () => {
+    CheckModal.fire({
+      title: "確認付款",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<hr><p class="fs-7">${projectData.projectTitle}</p><p class="fs-4">【 ${productData.title}】</p><p class="fs-7">總金額：$${orderData.totalPrice}</p>`,
+    }).then((result)=>{
+      console.log(result)
+      if (result.value) {
+        handleFormsSubmit()
+      }
+    })
+  }
 
   return (
     <>
@@ -147,14 +194,14 @@ export default function PaymentInfo() {
               <main className="col-lg-8">
                 {/* 付款資料 V */}
                 <h2 className="fs-lg-3 fs-4 text-primary-2 mb-4">付款資料</h2>
-                <PaymentInfoFrom reference={infoFromRef} userData={userData} />
+                <PaymentInfoFrom reference={infoFromRef} userData={userData} showError={showError} />
                 {/* 付款方式 V */}
                 <h2 className="fs-lg-3 fs-4 text-primary-2 mb-4">付款方式</h2>
-                <PaymentCollapseFrom reference={paymentFromRef} />
+                <PaymentCollapseFrom reference={paymentFromRef} showError={showError} />
               </main>
 
               <PaymentAside
-                handleFormsSubmit={handleFormsSubmit}
+                handleFormsSubmit={handleConfirmPayment}
                 orderData={orderData}
                 projectData={projectData}
                 productData={productData}
@@ -163,7 +210,7 @@ export default function PaymentInfo() {
           </div>
 
           <PaymentMobileFooter
-            handleFormsSubmit={handleFormsSubmit}
+            handleFormsSubmit={handleConfirmPayment}
             orderData={orderData}
             projectData={projectData}
             productData={productData}
@@ -172,6 +219,7 @@ export default function PaymentInfo() {
       ) : (
         <div className="vh-100"></div>
       )}
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

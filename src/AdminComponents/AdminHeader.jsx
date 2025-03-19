@@ -2,6 +2,7 @@ import { NavLink, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import { setLogout } from "../slice/userSlice";
 import axios from "axios";
+import { Toast } from "../assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function AdminHeader() {
@@ -14,12 +15,19 @@ export default function AdminHeader() {
       await axios.patch(`${apiBase}/users/${id}`, { token: "" });
       document.cookie = "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
       dispatch(setLogout());
+      Toast.fire({
+        icon: "success",
+        title: "登出成功",
+      })
       navigate("/");
-      alert("登出成功");
     } catch (error) {
-      alert("登出失敗");
+      Toast.fire({
+        icon: "error",
+        title: "登出失敗",
+      })
     }
   };
+
   return (
     <>
       <nav className="navbar navbar-expand-lg navbar-dark py-4 bg-primary-10">

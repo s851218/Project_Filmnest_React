@@ -42,6 +42,11 @@ import FavoriteVideo from "../pages/FavoriteVideo";
 import ViewRecords from "../pages/ViewRecords";
 import FeedbackOption from "../pages/FeedbackOption";
 import AdminFeedbackForm from "../adminPages/Feedback";
+import OrderRecordsAll from "../pages/OrderRecordsAll";
+import OrderRecordsSuccess from "../pages/OrderRecordsSuccess";
+import OrderRecordsFailed from "../pages/OrderRecordsFailed";
+import OrderRecordsDetail from "../pages/OrderRecordsDetail";
+import OrderRecordsUnpaid from "../pages/OrderRecordsUnpaid";
 
 const routes = [
   {
@@ -75,6 +80,28 @@ const routes = [
           {
             path: "orderRecords",
             element: <OrderRecords />,
+            children:[
+              {
+                path: "orderRecordsAll",
+                element: <OrderRecordsAll />,
+              },
+              {
+                path: "orderRecordsSuccess",
+                element: <OrderRecordsSuccess />,
+              },
+              {
+                path: "orderRecordsFailed",
+                element: <OrderRecordsFailed />,
+              },
+              {
+                path: "orderRecordsUnpaid",
+                element: <OrderRecordsUnpaid />,
+              },
+              {
+                path: ":id",
+                element: <OrderRecordsDetail />,
+              },
+            ]
           },
           {
             path: "favoriteVideo",

@@ -5,6 +5,7 @@ import { setCategory } from "../slice/categorySlice";
 import { setSearchText, setSearchValue, setIsSearchOpen } from "../slice/searchSlice";
 import { setLogout } from "../slice/userSlice";
 import axios from "axios";
+import { Toast } from "../assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Header() {
@@ -25,10 +26,15 @@ export default function Header() {
       await axios.patch(`${apiBase}/users/${id}`, { token: "" });
       document.cookie = "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
       dispatch(setLogout());
-      navigate("/");
-      alert("登出成功");
+      Toast.fire({
+        icon: "success",
+        title: "登出成功",
+      },navigate("/"))
     } catch (error) {
-      alert("登出失敗");
+      Toast.fire({
+        icon: "error",
+        title: "登出失敗",
+      })
     }
   };
 
@@ -183,7 +189,7 @@ export default function Header() {
                           </Link>
                         </li>
                         <li>
-                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/orderRecords">
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/orderRecords/orderRecordsAll">
                             <span className="material-symbols-outlined fs-7 me-3">receipt_long</span>
                             <span>訂單紀錄</span>
                           </Link>

@@ -29,7 +29,7 @@ export default function PersonalCenterSidebar() {
               </NavLink>
             </li>
             <li className="mb-3">
-              <NavLink to="/personalCenter/orderRecords" className="btn btn-outline-light border-0 py-3 px-5 rounded-3 d-flex align-items-center">
+              <NavLink to="/personalCenter/orderRecords/orderRecordsAll" className="btn btn-outline-light border-0 py-3 px-5 rounded-3 d-flex align-items-center">
                 <span className="material-symbols-outlined fs-7 me-3">receipt_long</span>
                 <span>訂單紀錄</span>
               </NavLink>
@@ -76,7 +76,7 @@ export default function PersonalCenterSidebar() {
               </NavLink>
             </li>
             <li className="mb-3">
-              <NavLink to="/personalCenter/orderRecords" className="btn btn-outline-light border-0 rounded-3 d-flex align-items-center">
+              <NavLink to="/personalCenter/orderRecords/orderRecordsAll" className="btn btn-outline-light border-0 rounded-3 d-flex align-items-center">
                 <span className="material-symbols-outlined fs-7 me-3">receipt_long</span>
                 <span>訂單紀錄</span>
               </NavLink>
