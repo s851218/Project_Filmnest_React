@@ -31,6 +31,24 @@ function ModalComponent({
     }
   },[isModalOpen])
 
+  let modalTitle
+  switch (modalType) {
+    case "change":
+      modalTitle = "更改方案"
+      break;
+
+    case "bonus":
+      modalTitle = "我要加碼"
+      break;
+      
+    case "check":
+      modalTitle = "訂單資訊"
+      break;
+  
+    default:
+      break;
+  }
+
   return (
     <div className="modal fade" tabIndex="-1" ref={modalRef}>
       <div className="modal-dialog modal-dialog-centered modal-lg">
@@ -38,7 +56,7 @@ function ModalComponent({
         <div className="modal-content bg-primary-9 rounded-1 border-1 border-white">
           <div className="modal-header border-0">
             <h1 className="modal-title fs-5">
-              { modalType === "change" ? "更改方案" : "我要加碼"}
+              {modalTitle}
             </h1>
             <button
               type="button"
@@ -47,7 +65,8 @@ function ModalComponent({
             />
           </div>
           <div className="modal-body px-5 px-lg-10 pb-5 pb-lg-10 pt-0">
-            { modalType === "change" ? (<FeedbackSwiper />) : (
+            { modalType === "change" && <FeedbackSwiper />}
+            { modalType === "bonus" && (
               <>
                 <div className="d-flex align-items-center mb-4">
                   <p className="mb-0">多給一點點，讓夢想早日實現</p> 
@@ -59,11 +78,17 @@ function ModalComponent({
                 </div>
               </>
             )}
+            { modalType === "check" && <>{children}</> }
           </div>
           { modalType === "bonus" && (
             <div className="modal-footer">
               <button type="button" className="btn btn-secondary" onClick={handleBonusReset}>取消</button>
               <button type="button" className="btn btn-primary" onClick={handleBonusCheck}>確認加碼</button>
+            </div>
+          )}
+          { modalType === "check" && (
+            <div className="modal-footer">
+              <button type="button" className="btn btn-primary w-100" onClick={() => setIsModalOpen(false)}>確認訂單</button>
             </div>
           )}
         </div>
