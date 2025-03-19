@@ -189,7 +189,7 @@ export default function Header() {
                           </Link>
                         </li>
                         <li>
-                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/orderRecords">
+                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/orderRecords/orderRecordsAll">
                             <span className="material-symbols-outlined fs-7 me-3">receipt_long</span>
                             <span>訂單紀錄</span>
                           </Link>

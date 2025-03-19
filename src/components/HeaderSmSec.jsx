@@ -53,7 +53,7 @@ export default function HeaderSmSec() {
         )}
         <Link to="/personalCenter/profile" className="nav-item px-5 py-3 border-bottom">個人頁面</Link>
         <Link to="/personalCenter/favoriteProject" className="nav-item px-5 py-3">收藏專案</Link>
-        <Link to="/personalCenter/orderRecords" className="nav-item px-5 py-3">訂單紀錄</Link>
+        <Link to="/personalCenter/orderRecords/orderRecordsAll" className="nav-item px-5 py-3">訂單紀錄</Link>
         <Link to="/personalCenter/favoriteVideo" className="nav-item px-5 py-3 border-bottom">收藏影音</Link>
         <Link to="/personalCenter/viewRecords" className="nav-item px-5 py-3 border-bottom">觀看紀錄</Link>
         <Link className="nav-item px-5 py-3" onClick={handleLogout}>
