@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { NavLink, Outlet, useLocation } from "react-router";
+import PersonalCenterSidebar from "../components/PersonalCenterSidebar";
 
 export default function OrderRecords() {
   // 路由跳轉至專案介紹頁時，重製滾輪捲軸
@@ -24,7 +25,10 @@ export default function OrderRecords() {
       <Helmet>
         <title>訂單紀錄</title>
       </Helmet>
-      {shouldOnePageLayout ? (
+      {shouldOnePageLayout ? (<>
+        <div className="d-block d-lg-none w-100 mb-5 bg-primary-8">
+            <PersonalCenterSidebar />
+        </div>
         <div className="container">
           <h1 className="pb-5 border-bottom border-secondary fs-6">訂單紀錄</h1>
           <div className="border-bottom border-secondary">
@@ -55,7 +59,7 @@ export default function OrderRecords() {
             <Outlet />
           </div>
         </div>
-      ) : (
+      </>) : (
         <div>
           <Outlet />
         </div>
