@@ -6,7 +6,7 @@ import getNewDateFormatted from "../helpers/getNewDateFormatted";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
-import { Toast } from "../assets/js/costomSweetAlert"; 
+import { Toast } from "../assets/js/costomSweetAlert";
 
 const BASE_URL = "https://json-server-vercel-tdcc.onrender.com";
 
@@ -118,16 +118,16 @@ export default function ProjectIntroComments() {
       await axios.post(`${BASE_URL}/comments`, dataToSend);
       reset();
       Toast.fire({
-        icon:"success",
+        icon: "success",
         title: "送出成功！感謝您的鼓勵與回饋！",
-      })
+      });
       refreshComments();
     } catch (error) {
       console.error(error.message);
       Toast.fire({
-        icon:"error",
+        icon: "error",
         title: "送出失敗！請稍後再試！",
-      })
+      });
     }
   };
 
@@ -169,7 +169,7 @@ export default function ProjectIntroComments() {
       {/* 留言區塊 */}
       <section className="container py-10">
         <div className="row">
-          <div className="col-lg-9 col-10 mx-auto">
+          <div className="col-lg-9 col-md-10 mx-auto">
             <div
               className="card mb-4 shadow-sm"
               style={{
@@ -252,7 +252,7 @@ export default function ProjectIntroComments() {
 
       <div className="container">
         <div className="row">
-          <div className="col-lg-9 col-10 mx-auto">
+          <div className="col-lg-9 col-md-10 mx-auto">
             <div className="d-flex mb-4">
               <button
                 className="btn btn-secondary d-flex align-items-center gap-1"
@@ -338,12 +338,12 @@ export default function ProjectIntroComments() {
                         <>
                           <hr />
                           <div className="bg-primary-9 rounded-1 p-3">
-                            <div className="d-flex align-items-center mb-6">
+                            <div className="d-flex align-items-center gap-2 mb-6">
                               <div className="comment-avatar me-3">
                                 {projectOwner.studioImageUrl ? (
                                   <img
                                     src={projectOwner.studioImageUrl}
-                                    className="img-fluid object-fit-cover me-1"
+                                    className="img-fluid object-fit-cover me-md-1"
                                     alt={
                                       projectOwner.groupName ||
                                       projectOwner.personResponsible
@@ -356,7 +356,7 @@ export default function ProjectIntroComments() {
                                   />
                                 ) : (
                                   <div
-                                    className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
+                                    className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-md-1"
                                     style={{ width: 50, height: 50 }}
                                   >
                                     <i className="bi bi-person"></i>
@@ -365,7 +365,7 @@ export default function ProjectIntroComments() {
                               </div>
                               <div className="d-flex flex-column">
                                 {/* 名稱 */}
-                                <h6 className="mb-1">
+                                <h6 className="mb-1 fs-lg-6 fs-md-7 fs-9">
                                   {projectOwner.groupName ||
                                     projectOwner.personResponsible}
                                 </h6>

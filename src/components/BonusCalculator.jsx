@@ -1,7 +1,12 @@
+import { useImperativeHandle } from "react"
 import { useForm } from "react-hook-form"
 
-export default function BonusCalculator ({ bonus , setBonse }) {
+export default function BonusCalculator ({ bonus , setBonse , type , reference }) {
   const { register , reset , handleSubmit } = useForm({defaultValues:{customized:""}})
+
+  useImperativeHandle(reference,() => ({
+    submit : handleSubmit(onsubmit),
+  }))
 
   // 處理按鈕金額
   const handleAddBonus = (e) => {
@@ -32,10 +37,9 @@ export default function BonusCalculator ({ bonus , setBonse }) {
       </div>
       <div className="input-group mb-4">
         <input type="text" name="customized" id="customized" placeholder="自訂金額" className="form-control rounded-start-1" {...register("customized")} />
-        <button type="button" className="btn btn-primary border-white" id="addCustomAmount" onClick={handleSubmit(onsubmit)}>加碼</button>
+        { (type === "layout") && <button type="button" className="btn btn-primary border-white" id="addCustomAmount" onClick={handleSubmit(onsubmit)}>加碼</button> }
         <button type="button" className="btn btn-secondary rounded-end-1" id="resetCustomAmount" onClick={handleResetBonus}>重設</button>
       </div>
-      
     </>
   )
 }

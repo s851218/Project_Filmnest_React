@@ -17,6 +17,17 @@ function App() {
 
   const shouldHideLayout = layoutHiddenRoutes.includes(location.pathname);
 
+  useEffect(() => {
+    // 阻止滾動到頂部
+    window.history.scrollRestoration = "manual"; 
+
+    // 判斷是否是子路由，不滾動到頂部
+    const isChildRoute = location.pathname.startsWith("/projects");
+    if (!isChildRoute) {
+      window.scrollTo(0, 0); // 只有在非子路由時才滾動到頂部
+    }
+  }, [location.pathname]);
+
   const checkLogin = async (token) => {
     try {
       const response = await axios.get(`${apiBase}/users?token=${token}`);
@@ -44,7 +55,6 @@ function App() {
   }, []);
   return (
     <>
-      <ScrollRestoration />
       {!shouldHideLayout && <Header />}
       <Outlet />
       {!shouldHideLayout && <Footer />}

@@ -1,64 +1,19 @@
-import { useRef, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Modal } from "bootstrap";
-import { useForm } from "react-hook-form";
-import axios from "axios";
-import { useParams } from "react-router";
+import FeedbackSwiper from "../components/FeedbackSwiper";
 
-// const BASE_URL = "https://json-server-vercel-tdcc.onrender.com";
-
-function ModalComponent({modalRef,isModalOpen,setIsModalOpen,children}) {
-
-  const { id } = useParams
-  // const [messages, setMessages] = useState([]);
-
-  // const getMessage = async (id = 1) => {
-  //   try {
-  //     const response = await axios.get(`${BASE_URL}/comments?projectId=${id}`);
-  //     console.log(response.data);
-  //     setMessages(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-  // useEffect(() => {
-  //   getMessage();
-  // }, []);
-
-  // const {
-  //   register,
-  //   handleSubmit,
-  //   reset,
-  //   setError,
-  //   formState: { errors, isSubmitting },
-  // } = useForm();
-
-  // const onSubmit = async (data) => {
-  //   try {
-  //     const timestamp = new Date().toLocaleString();
-  //     const dataToSend = {
-  //       ...data,
-  //       date: timestamp,
-  //     };
-  //     const response = await axios.post(`${BASE_URL}/comments`, dataToSend);
-  //     console.log("送出成功：", response.data);
-  //     reset();
-  //     hideModal();
-  //     alert("送出成功！感謝您的鼓勵與回饋！");
-  //     getMessage();
-  //   } catch (error) {
-  //     console.error("錯誤：", error);
-  //     setError("root", {
-  //       message: "噢，有地方出錯了…",
-  //     });
-  //   }
-  // };
-
-  // const modalRef = useRef(null);
-  // const modalInstance = useRef(null);
-
-  useEffect(() => {
-    console.log("初始化",modalRef.current);
-    
+function ModalComponent({
+  modalRef,
+  isModalOpen,
+  setIsModalOpen,
+  modalType,
+  totalPrice,
+  handleBonusCheck,
+  handleBonusReset,
+  children,
+}) {
+  
+  useEffect(() => {    
     // 建立Modal實例
     new Modal(modalRef.current , {
       backdrop : false,
@@ -69,7 +24,6 @@ function ModalComponent({modalRef,isModalOpen,setIsModalOpen,children}) {
   },[])
 
   useEffect(() => {
-    console.log(isModalOpen);
     if (isModalOpen) {
       Modal.getInstance(modalRef.current).show()
     } else {
@@ -77,13 +31,33 @@ function ModalComponent({modalRef,isModalOpen,setIsModalOpen,children}) {
     }
   },[isModalOpen])
 
+  let modalTitle
+  switch (modalType) {
+    case "change":
+      modalTitle = "更改方案"
+      break;
+
+    case "bonus":
+      modalTitle = "我要加碼"
+      break;
+      
+    case "check":
+      modalTitle = "訂單資訊"
+      break;
+  
+    default:
+      break;
+  }
+
   return (
     <div className="modal fade" tabIndex="-1" ref={modalRef}>
       <div className="modal-dialog modal-dialog-centered modal-lg">
       
         <div className="modal-content bg-primary-9 rounded-1 border-1 border-white">
           <div className="modal-header border-0">
-            <h1 className="modal-title fs-5" id="exampleModalLabel">更改方案</h1>
+            <h1 className="modal-title fs-5">
+              {modalTitle}
+            </h1>
             <button
               type="button"
               className="btn-close btn-close-white p-2"
@@ -91,10 +65,32 @@ function ModalComponent({modalRef,isModalOpen,setIsModalOpen,children}) {
             />
           </div>
           <div className="modal-body px-5 px-lg-10 pb-5 pb-lg-10 pt-0">
-
-            {children}
-
+            { modalType === "change" && <FeedbackSwiper />}
+            { modalType === "bonus" && (
+              <>
+                <div className="d-flex align-items-center mb-4">
+                  <p className="mb-0">多給一點點，讓夢想早日實現</p> 
+                  <span className="material-symbols-outlined ms-1 fs-base icon-fill text-danger">favorite</span>
+                </div>
+                {children}
+                <div className="bg-primary-8 p-6 rounded-1">
+                  <p className="mb-0 text-center">總計：NT$ {totalPrice.toLocaleString()}</p>
+                </div>
+              </>
+            )}
+            { modalType === "check" && <>{children}</> }
           </div>
+          { modalType === "bonus" && (
+            <div className="modal-footer">
+              <button type="button" className="btn btn-secondary" onClick={handleBonusReset}>取消</button>
+              <button type="button" className="btn btn-primary" onClick={handleBonusCheck}>確認加碼</button>
+            </div>
+          )}
+          { modalType === "check" && (
+            <div className="modal-footer">
+              <button type="button" className="btn btn-primary w-100" onClick={() => setIsModalOpen(false)}>確認訂單</button>
+            </div>
+          )}
         </div>
       </div>
     </div>

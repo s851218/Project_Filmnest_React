@@ -1,5 +1,5 @@
 .aboutProposal-banner-bg {
-  background: url(/assets/images/image48.png) ;
+  background: url(image48.png) ;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center 0;
@@ -56,11 +56,11 @@
   &::before , &::after {
     position: absolute;
     content: "";
-    background-image: url(/assets/images/deco/Line9.png);
+    background-image: url(Line9.png);
     height: 60px;
     width: 2px;
     @media (min-width:992px) {
-      background-image: url(/assets/images/deco/Line10.png);
+      background-image: url(Line10.png);
       height: 174px;
       width: 1px;
     }
@@ -81,13 +81,13 @@
 
 .process-bg {
   &-1 {
-    background-image: url(/assets/images/image53.png);
+    background-image: url(image53.png);
   }
   &-2 {
-    background-image: url(/assets/images/image54.png);
+    background-image: url(image54.png);
   }
   &-3 {
-    background-image: url(/assets/images/image55.png);
+    background-image: url(image55.png);
   }
   &-1 , &-2 , &-3 {
     background-size: cover;
@@ -101,11 +101,11 @@
   @media (min-width:768px) {
     padding-top: 69px;
   }
-  background-image: url(/assets/images/image49-2.png);
+  background-image: url(image49-2.png);
   background-repeat: no-repeat;
   background-position: center 0;
   @media (min-width: 375px) {
-    background-image: url(/assets/images/image49-1.png);
+    background-image: url(image49-1.png);
     background-size: cover;
   }
 }

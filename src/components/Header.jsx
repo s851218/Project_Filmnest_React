@@ -171,7 +171,7 @@ export default function Header() {
               {profile.token ? (
                 <>
                   <div className="collapse navbar-collapse text-white">
-                    <div className="p-0 me-12 dropdown nav-item">
+                    <div className="p-0 me-8 dropdown nav-item">
                       <button className="btn btn-outline-secondary text-white border-0 fw-bolder" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span className="me-2">{profile.userName}</span> <img src={profile.imageUrl} className="rounded-circle object-fit-cover" style={{ width: "40px", height: "40px" }} alt="" />
                       </button>
