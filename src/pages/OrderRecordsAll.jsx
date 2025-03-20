@@ -28,23 +28,21 @@ export default function OrderRecordsAll() {
         hour12: false,
       })
       .replace(/\//g, "-")
-      .slice("0", "10");
     return newTime;
   };
   // 取得訂單
   const getOrderData = async () => {
     setIsLoading(true)
-    console.log(sortOrderData);
     
     try {
-      const response = await axios.get(`${apiBase}/orders?_expand=project&userId=${userId}`);
+      const response = await axios.get(`${apiBase}/orders?_expand=project&_expand=product&userId=${userId}`);
       if(sortOrderData){
-        const OrderData = response.data.sort((a,b)=> getSortTime(a.createdAt) - getSortTime(b.createdAt))
-        setOrdersData(OrderData);
+        const orderData = response.data.sort((a,b)=> getSortTime(a.createdAt) - getSortTime(b.createdAt))
+        setOrdersData(orderData);
         
       }else{
-        const OrderData = response.data.sort((a,b)=> getSortTime(b.createdAt) - getSortTime(a.createdAt))
-        setOrdersData(OrderData);
+        const orderData = response.data.sort((a,b)=> getSortTime(b.createdAt) - getSortTime(a.createdAt))
+        setOrdersData(orderData);
       }
       
     } catch (error) {
@@ -58,21 +56,63 @@ export default function OrderRecordsAll() {
   }, [sortOrderData]);
 
 
-  // 刪除訂單
-  const handleDeleteOrder = (id,title)=>{
+  // 取消訂單
+  const handleCancelOrder = (order)=>{
     CheckModal.fire({
-      title:`是否要刪除訂單`,
+      title:`是否要取消訂單`,
       showCancelButton:true,
+      input: "textarea",
+      inputLabel: "請輸入取消訂單原因",
+      inputPlaceholder: "請描述您的取消訂單原因...",
+      inputAttributes: {
+        "aria-label": "請輸入取消訂單原因",
+      },
       confirmButtonText:"確認",
       cancelButtonText:"取消",
-      html:`<hr><p class="text-danger">${title}</p>`
+      html: `<hr><h1 class="fs-6 text-start">取消項目</h1>
+        <div class="border p-3">
+          <div class="row flex-column">
+            <div class="col">
+              <div class="row pb-3 mb-3 align-items-center border-bottom">
+                <div class="col-7">
+                  <img src=${order.project?.projectImage} alt="" />
+                </div>
+                <div class="col-5">
+                  <h2 class="fs-base text-balance">${order.project?.projectTitle}</h2>
+                </div>
+            </div>
+          
+            <div class="col-6 mx-auto">
+              <div class="mb-6">
+                <p class="mb-1">方案 - ${order.product?.title}</p>
+                <p>NT$ ${order.product?.price.toLocaleString()}</p>
+              </div>
+              <div class="mb-6">
+                <h3 class="fs-base">本方案包含：</h3>
+                <ol>
+                ${order.product?.contents?.map((item) => `<li>${item.item}</li>`).join("")}
+                </ol>
+              </div>
+            </div>
+          </div>
+          </div>`,
+      preConfirm: (reason) => {
+        if (!reason) {
+          CheckModal.fire("請輸入取消訂單原因", "", "error");
+          return false;
+        }
+        return reason;
+      },
     }).then(async(result)=>{
-      if(result.value){ 
-        await axios.delete(`${apiBase}/orders/${id}`)
-        getOrderData();
-      }
       if (result.isConfirmed) {
-        CheckModal.fire("刪除訂單成功", "", "success");
+        const reason = result.value
+        try {
+          await axios.patch(`${apiBase}/orders/${order.id}`,{canCancel:false,reason:reason,orderStatus:2})
+          CheckModal.fire("取消申請成功", "我們將儘快處理您的申請", "success");
+          getOrderData();
+        } catch (error) {
+          CheckModal.fire("取消申請失敗", "請稍後再試", "error");
+        }
       } 
     })
   }
@@ -90,50 +130,29 @@ export default function OrderRecordsAll() {
                 訂單項目
               </th>
               <th scope="col" className="d-lg-none"></th>
-              <th scope="col" className="text-white">
-                訂單成立時間
-              </th>
-              <th scope="col" className="text-white">
-                付款時間
-              </th>
-              <th scope="col" className="text-white">
-                付款方式
-              </th>
-              <th scope="col" className="text-white">
-                實付金額
-              </th>
               <th scope="col" className="text-white"></th>
             </tr>
           </thead>
           <tbody>
             {ordersData.map((order) => (
               <tr key={order.id}>
-                <td className="d-none d-lg-table-cell text-white">
+                <td className="text-white">
                   <div className="row align-items-center">
                     <div className="col-4">
                       <img src={order.project.projectImage} className="rounded-2" alt="專案數量" />
                     </div>
                     <div className="col-8">
-                      <h3 className="fs-6 fw-bolder text-truncate" title={order.project.projectTitle}>{order.project.projectTitle}</h3>
-                      <p className="fs-base">{order.project.summary}</p>
+                      <span className="badge text-bg-danger mb-1">{order.orderStatus === 2 ? "已取消" : order.paymentStatus === 2 ? "已退款" : order.shippingStatus === 2 ? "已退貨" : ""}</span>
+                      <p className="fs-sm fs-lg-base text-secondary">訂單建立時間：{getTime(order.createdAt)}</p>
+                      <h3 className="fs-base fs-lg-6 fw-bolder text-truncate" title={order.project.projectTitle}>{order.project.projectTitle}</h3>
+                      <p className="fs-sm fs-lg-base">購買回饋方案項目：{order.product.title}</p>
                     </div>
                   </div>
                 </td>
-                <td className="nowrap-table d-lg-none p-1 text-white">
-                  <img src={order.project.projectImage} className="rounded-2" alt="專案數量" />
-                </td>
-                <td className="nowrap-table d-lg-none text-white">
-                  <h3 className="fs-7 fw-bolder text-truncate" title={order.project.projectTitle}>{order.project.projectTitle}</h3>
-                  <p className="fs-sm">{order.project.summary}</p>
-                </td>
-                <td className="nowrap-table text-white">{getTime(order.createdAt)}</td>
-                <td className="nowrap-table text-white">{order.paymentStatus === "未付款" ? "未付款" : getTime(order.paymentTime)}</td>
-                <td className="nowrap-table text-white">{order.paymentStatus === "未付款" ? "未付款" : "信用卡"}</td>
-                <td className="nowrap-table text-white">{order.totalPrice}</td>
                 <td className="nowrap-table text-white">
                   <div className="d-flex flex-column">
-                    {order.canCancel && <button type="button" className="btn btn-danger mb-2"  onClick={()=>handleDeleteOrder(order.id,order.project.projectTitle)}>
-                      刪除訂單
+                    {order.canCancel && <button type="button" className="btn btn-danger mb-2"  onClick={()=>handleCancelOrder(order)}>
+                      訂單取消
                     </button>}
                     <button type="button" className="btn btn-primary" onClick={() => navigate(`/personalCenter/orderRecords/${order.id}`)}>
                       訂單詳細
