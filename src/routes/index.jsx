@@ -47,6 +47,9 @@ import OrderRecordsSuccess from "../pages/OrderRecordsSuccess";
 import OrderRecordsFailed from "../pages/OrderRecordsFailed";
 import OrderRecordsDetail from "../pages/OrderRecordsDetail";
 import OrderRecordsUnpaid from "../pages/OrderRecordsUnpaid";
+import AboutStudioFin from "../pages/AboutStudioFin";
+import AboutStudioOngoing from "../pages/AboutStudioOngoing";
+import AboutStudioOthers from "../pages/AboutStudioOthers";
 
 const routes = [
   {
@@ -164,6 +167,20 @@ const routes = [
           {
             path: "aboutStudio",
             element: <AboutStudio />,
+            children:[
+              {
+                path: "aboutStudioOngoing",
+                element: <AboutStudioOngoing />,
+              },
+              {
+                path: "aboutStudioFin",
+                element: <AboutStudioFin />,
+              },
+              {
+                path: "aboutStudioOthers",
+                element: <AboutStudioOthers />,
+              }
+            ]
           }
         ],
       },
