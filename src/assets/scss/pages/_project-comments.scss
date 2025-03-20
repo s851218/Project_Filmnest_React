@@ -23,12 +23,48 @@
   color: gray;
 }
 
-.comment-headshot {
-  height: 32px;
-  width: 32px;
-  border-radius: 50px;
-  @include xs {
-    height: 48px;
-    width: 48px;
+@media (max-width: 375px) {
+  .comment-btn {
+    font-size: 14px;
+    padding: 8px 12px;
+    border-radius: 50px;
+  }
+
+  .comment-title {
+    font-size: 20px;
+  }
+  .comment-name {
+    font-size: 16px;
+  }
+  .comment-avatar img {
+    width: 32px;
+    height: 32px;
+  }
+  .default-avatar {
+    width: 32px;
+    height: 32px;
+  }
+  .comment-card {
+    padding: 4px;
+  }
+  .small.text-muted {
+    font-size: 12px;
+  }
+  .comment-textarea {
+    min-height: 60px;
+    max-height: 150px;
+    font-size: 14px;
+  }
+  .d-flex.align-items-center {
+    gap: 8px;
+  }
+  .comment-content {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 250px;
+  }
+  .floating-button.show {
+    transform: translateY(-50px);
   }
 }

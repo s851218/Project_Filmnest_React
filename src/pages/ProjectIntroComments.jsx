@@ -182,7 +182,7 @@ export default function ProjectIntroComments() {
                   onSubmit={handleSubmit(onSubmit)}
                 >
                   <div className="d-flex align-items-center justify-content-between mb-4">
-                    <h5>留下一句話</h5>
+                    <h5 className="comment-title">留下一句話</h5>
                     <div>
                       <div className="form-check form-check-inline">
                         <input
@@ -206,7 +206,7 @@ export default function ProjectIntroComments() {
                         required: "請輸入留言內容",
                         minLength: { value: 2, message: "留言內容太短囉" },
                       })}
-                      className={`form-control ${
+                      className={`form-control comment-textarea ${
                         errors.commentContent ? "is-invalid" : ""
                       }`}
                       id=""
@@ -227,13 +227,13 @@ export default function ProjectIntroComments() {
                     }}
                   >
                     <button
-                      className={`btn btn-primary-8 ${
+                      className={`btn btn-primary-8 comment-btn ${
                         errors.commentContent ? "text-danger border-danger" : ""
                       }`}
                       disabled={isSubmitting}
                       type="submit"
                       style={{
-                        borderRadius: "100px",
+                        borderRadius: "50px",
                       }}
                     >
                       {isSubmitting ? (
@@ -273,7 +273,7 @@ export default function ProjectIntroComments() {
       {/* 展示留言區塊 */}
       <section className="container">
         <div className="row">
-          <div className="col-10 col-lg-9 mx-auto">
+          <div className="col-md-10 col-lg-9 mx-auto">
             {comments.map((comment) => {
               const commentTime = getNewDateFormatted(comment.date);
               let replyTime;
@@ -283,11 +283,11 @@ export default function ProjectIntroComments() {
 
               return (
                 <div key={comment.id} className="mb-6">
-                  <div className="card shadow-sm border border-primary-7 rounded-1">
+                  <div className="card comment-card shadow-sm border border-primary-7 rounded-1">
                     <div className="card-body">
                       <div className="d-flex align-items-center mb-6">
                         {/* 頭像 */}
-                        <div className="comment-avatar me-3">
+                        <div className="comment-avatar me-md-3 me-1">
                           {!comment.isIncognito &&
                           comment.user?.userProfile?.userImageUrl ? (
                             <img
@@ -305,7 +305,7 @@ export default function ProjectIntroComments() {
                             />
                           ) : (
                             <div
-                              className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
+                              className="default-avatar bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
                               style={{ width: 50, height: 50 }}
                             >
                               <i className="bi bi-person"></i>
@@ -314,7 +314,7 @@ export default function ProjectIntroComments() {
                         </div>
                         <div className="d-flex flex-column">
                           {/* 名稱 */}
-                          <h6 className="mb-1">
+                          <h6 className="mb-1 comment-name">
                             {comment.isIncognito
                               ? "匿名"
                               : comment.user?.userProfile?.nickName ||
@@ -356,7 +356,7 @@ export default function ProjectIntroComments() {
                                   />
                                 ) : (
                                   <div
-                                    className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-md-1"
+                                    className="default-avatar bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-md-1"
                                     style={{ width: 50, height: 50 }}
                                   >
                                     <i className="bi bi-person"></i>
@@ -428,7 +428,7 @@ export default function ProjectIntroComments() {
           }
         .floating-button.show {
             opacity: 1;
-            transform: translateY(-100px);
+            transform: translateY(-350px);
           }
 
           .floating-button.hide {
