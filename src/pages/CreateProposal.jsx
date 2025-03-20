@@ -35,7 +35,7 @@ export default function CreatePropsal() {
   */
   }
 
-  const { register, handleSubmit, control } = useForm({
+  const { register, handleSubmit, control , formState:{errors} } = useForm({
     defaultValues: {
       groupName: "",
       personResponsible: "",
@@ -58,11 +58,16 @@ export default function CreatePropsal() {
 
   const onSubmit = () => {};
 
+  useEffect(()=>{
+    console.log(errors);
+    
+  },[errors])
+
   return (
     <>
       <div className="container pt-20 pt-xl-40 pb-10 pb-md-15 pb-xl-30 text-center">
         <h1 className="text-center mb-5 mb-sm-8 mb-md-10">發起專案</h1>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form>
           <div className="container">
             <div className="row justify-content-center mb-5 mb-sm-8 mb-md-10 text-start">
               <fieldset className="payment-fieldset col-12 col-md-10">
@@ -73,20 +78,34 @@ export default function CreatePropsal() {
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className={`form-control ${errors.projectName ? "is-invalid": ""}`}
                     id="projectName"
-                    {...register("projectName")}
+                    {...register("projectName",{
+                      required: {
+                        value: true,
+                        message: "*必填欄位，限制30字"
+                      },
+                      maxLength: {
+                        value: 30,
+                        message: "*超出字數上限，限制30字"
+                      }
+                    })}
                   />
+                  { errors.projectName ? (<div className="invalid-feedback">{errors?.projectName?.message}</div>) : (<p className="fs-sm mb-0 mt-1">限制30字</p>) }
                 </div>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="projectType" className="form-label required">
                     專案類型
                   </label>
                   <select
-                    className="form-select"
+                    className={`form-select ${errors.projectType ? "is-invalid": ""}`}
                     id="projectType"
                     defaultValue="請選擇專案類型"
-                    {...register("projectType")}
+                    {...register("projectType",{
+                      validate: {
+                        value: value => value !== "請選擇專案類型" || "*請選擇有效專案類型",
+                      }
+                    })}
                   >
                     <option selected>請選擇專案類型</option>
                     <option value="喜劇">喜劇</option>
@@ -98,6 +117,7 @@ export default function CreatePropsal() {
                     <option value="動畫">動畫</option>
                     <option value="實驗電影">實驗電影</option>
                   </select>
+                  { errors.projectType && <div className="invalid-feedback">{errors?.projectType?.message}</div> }
                 </div>
                 <div className="mb-3 mb-md-5">
                   <label
@@ -107,29 +127,46 @@ export default function CreatePropsal() {
                     專案簡介
                   </label>
                   <textarea
-                    className="form-control"
+                    className={`form-control ${errors.projectdIntroduction ? "is-invalid": ""}`}
                     name="projectdIntroduction"
                     id="projectdIntroduction"
-                    {...register("projectdIntroduction")}
+                    {...register("projectdIntroduction",{
+                      required: {
+                        value: true,
+                        message: "*必填欄位，限制80字"
+                      },
+                      maxLength: {
+                        value: 80,
+                        message: "*超出字數上限，限制80字"
+                      }
+                    })}
                   />
-                  <p className="fs-sm mb-0 mt-1">限制30字</p>
+                  { errors.projectdIntroduction ? (<div className="invalid-feedback">{errors?.projectdIntroduction?.message}</div>) : (<p className="fs-sm mb-0 mt-1">限制80字</p>) }
                 </div>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="target" className="form-label required">
                     目標金額
                   </label>
                   <input
-                    type="number"
-                    className="form-control"
+                    type="text"
+                    inputMode="numeric"
+                    className={`form-control ${errors.target ? "is-invalid": ""}`}
                     id="target"
-                    {...register("target")}
+                    {...register("target",{
+                      required: {
+                        value: true,
+                        message: "*必填欄位"
+                      },
+                      pattern: {
+                        value: /^[1-9]\d*$/,
+                        message: "*格式錯誤，只能輸入大於0的整數"
+                      }
+                    })}
                   />
+                  { errors.target && (<div className="invalid-feedback">{errors?.target?.message}</div>) }
                 </div>
                 <div className="mb-3 mb-md-5">
-                  <label htmlFor="inputDate1" className="form-label required">
-                    募資時間
-                  </label>
-
+                  <h3 className="fs-base fw-normal lh-base required">募資時間</h3>
                   <div className="container px-0">
                     <div className="row daterange">
                       <div className="col-6">
@@ -166,26 +203,6 @@ export default function CreatePropsal() {
                       </div>
                     </div>
                   </div>
-
-                  {/* {
-                    const fundraisingTime = {
-                      language: 'zh-TW', //語言
-                      autoclose: true, //選擇後自動關閉
-                      format: "yyyy-mm-dd",//日期格式
-                    };
-            
-                    $("#inputDate1").datepicker(fundraisingTime);
-                    $("#inputDate2").datepicker(fundraisingTime);
-            
-                    //第一個輸入選中日期後，設置第二個輸入框的開始日期
-                    $("#inputDate1").datepicker().on("changeDate", function (e) {
-                        $("#inputDate2").datepicker('setStartDate', e.date);
-                    });
-                    $("#inputDate2").datepicker().on("changeDate", function (e) {
-                        $("#inputDate1").datepicker('setEndDate', e.date);
-                    });
-                  } */}
-                  {/* 參考文章：https://www.itxst.com/bootstrap-datepicker/tutorial.html */}
                 </div>
               </fieldset>
             </div>
@@ -195,40 +212,63 @@ export default function CreatePropsal() {
                 <legend className="payment-lengend">提案人資訊</legend>
                 <div className="mb-3 mb-md-5">
                   <label
-                    htmlFor="proposalLeader"
+                    htmlFor="personResponsible"
                     className="form-label required"
                   >
                     提案負責人
                   </label>
                   <input
                     type="text"
-                    className="form-control"
-                    id="proposalLeader"
-                    {...register("personResponsible")}
+                    className={`form-control ${errors.personResponsible ? "is-invalid": ""}`}
+                    id="personResponsible"
+                    {...register("personResponsible",{
+                      required: {
+                        value: true,
+                        message: "*必填欄位"
+                      }
+                    })}
                   />
+                  { errors.personResponsible && (<div className="invalid-feedback">{errors?.personResponsible?.message}</div>) }
                 </div>
                 <div className="mb-3 mb-md-5">
-                  <label htmlFor="proposalUnit" className="form-label required">
+                  <label htmlFor="groupName" className="form-label required">
                     提案單位
                   </label>
                   <input
                     type="text"
-                    className="form-control"
-                    id="proposalUnit"
-                    {...register("groupName")}
+                    className={`form-control ${errors.groupName ? "is-invalid": ""}`}
+                    id="groupName"
+                    {...register("groupName",{
+                      required: {
+                        value: true,
+                        message: "*必填欄位"
+                      }
+                    })}
                   />
+                  { errors.groupName && (<div className="invalid-feedback">{errors?.groupName?.message}</div>) }
                 </div>
                 <div className="mb-3 mb-md-5">
-                  <label htmlFor="Introduction" className="form-label required">
+                  <label htmlFor="teamIntro" className="form-label required">
                     提案人/團隊介紹
                   </label>
                   <textarea
-                    className="form-control"
-                    name="Introduction"
-                    id="Introduction"
+                    className={`form-control ${errors.teamIntro ? "is-invalid": ""}`}
+                    name="teamIntro"
+                    id="teamIntro"
                     rows={3}
-                    {...register("teamIntro")}
+                    {...register("teamIntro",{
+                      required: {
+                        value: true,
+                        message: "*必填欄位，限制300字"
+                      },
+                      maxLength: {
+                        value: 300,
+                        message: "*超出字數上限，限制300字"
+                      }
+                    })}
                   />
+                  {/* <p className="fs-sm mb-0 mt-1">限制300字</p> */}
+                  { errors.teamIntro ? (<div className="invalid-feedback">{errors?.teamIntro?.message}</div>) : (<p className="fs-sm mb-0 mt-1">限制300字</p>) }
                 </div>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="email" className="form-label required">
@@ -236,10 +276,20 @@ export default function CreatePropsal() {
                   </label>
                   <input
                     type="email"
-                    className="form-control"
+                    className={`form-control ${errors.email ? "is-invalid": ""}`}
                     id="email"
-                    {...register("email")}
+                    {...register("email",{
+                      required: {
+                        value: true,
+                        message: "*必填欄位"
+                      },
+                      pattern: {
+                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                        message: "*Email 格式錯誤"
+                      }
+                    })}
                   />
+                  { errors.email && <div className="invalid-feedback">{errors?.email?.message}</div> }
                 </div>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="tel" className="form-label required">
@@ -247,22 +297,33 @@ export default function CreatePropsal() {
                   </label>
                   <input
                     type="tel"
-                    className="form-control"
+                    className={`form-control ${errors.phone ? "is-invalid": ""}`}
                     id="tel"
-                    {...register("phone")}
+                    {...register("phone",{
+                      required: {
+                        value: true,
+                        message: "*必填欄位"
+                      },
+                      pattern: {
+                        value: /^(0[2-8]\d{7}|09\d{8})$/,
+                        message: "電話格式錯誤，請輸入有效的台灣電話號碼"
+                      }
+                    })}
                   />
+                  { errors.phone && (<div className="invalid-feedback">{errors?.phone?.message}</div>) }
                 </div>
               </fieldset>
             </div>
           </div>
         </form>
 
-        <a
-          href="completeProposal.html"
+        <button
+          type="button"
           className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto"
+          onClick={handleSubmit(onSubmit)}
         >
           送出
-        </a>
+        </button>
       </div>
     </>
   );
