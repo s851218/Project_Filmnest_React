@@ -199,7 +199,8 @@ export default function PaymentInfo() {
       paymentStatus: paymentStatu, // 付款狀態修改
       paymentMethod, // 付款別
       paymentTime: accordionIndex === 0 ? createdPaymentTime : "付款時間", // 寫入付款時間
-      canCancel: accordionIndex === 0 ? false : true
+      canCancel: accordionIndex === 0 ? false : true,
+      canRefund: accordionIndex === 0 ? true : false   // 2025.03.20 xiang
     };
 
     console.log("NEW", newOrderData);
