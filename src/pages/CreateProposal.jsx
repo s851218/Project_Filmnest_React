@@ -1,15 +1,13 @@
-import { useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { Controller, useForm, useWatch } from "react-hook-form";
+import DateTimePicker from 'react-datetime-picker';
+import 'react-calendar/dist/Calendar.css';
+import 'react-clock/dist/Clock.css';
+import { Alert } from "../assets/js/costomSweetAlert";
 
-{
-  /* <script src="https://code.jquery.com/jquery-3.7.1.js" />
-<!-- Bootstrap DatePicker 日期選擇器模組.JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js" />
-<!-- Bootstrap DatePicker 日期選擇器模組.中文 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/locales/bootstrap-datepicker.zh-TW.min.js" />
-<!-- Bootstrap DatePicker 日期選擇器模組.CSS -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css" rel="stylesheet" /> */
-}
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function CreatePropsal() {
   // 路由跳轉至專案介紹頁時，重製滾輪捲軸
@@ -19,36 +17,28 @@ export default function CreatePropsal() {
     window.scrollTo(0, 0);
   }, []);
 
-  {
-    /*
-    email: "電子信箱"
-    endTime: "服務時間(迄)"
-    groupName: "團隊名稱"
-    personResponsible: "負責人"
-    phone: "電話"
-    startTime: "服務時間(起)"
-    studioFb: "FB"
-    studioIg: "IG"
-    studioImageUrl: "大頭貼"
-    studioLine: "LINE"
-    teamIntro: "團隊簡介"
-  */
-  }
+  const navigate = useNavigate();
 
-  const { register, handleSubmit, control , formState:{errors} } = useForm({
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState:{errors},
+    setValue,
+    trigger, // 手動觸發驗證的函式
+  } = useForm({
     defaultValues: {
       groupName: "",
       personResponsible: "",
       email: "",
       phone: "",
       studioImageUrl: "",
-      startTime: "",
-      endTime: "",
       studioFb: "",
       studioIg: "",
       studioLine: "",
       teamIntro: "",
     },
+    mode: "onTouched"
   });
 
   const watch = useWatch({ control });
@@ -56,13 +46,72 @@ export default function CreatePropsal() {
     console.log(watch);
   }, [watch]);
 
-  const onSubmit = () => {};
+  const onSubmit = async(data) => {
+    console.log("onSubmit",watch);
+    try {
+      await axios.post(`${API_BASE}/createProjects`, data);
+      Alert.fire({
+        icon: "success",
+        title: "提交成功",
+      },
+      setTimeout(() => {
+        navigate("/") // 重新導向 暫定首頁 => 之後改付款完成頁面
+      }, 1500));
+    } catch (error) {
+      console.log(error);
+      Alert.fire({
+        icon: "error",
+        title: "提交失敗",
+      })
+    }
+  };
 
   useEffect(()=>{
     console.log(errors);
-    
   },[errors])
 
+  const [endMinDate , setEndMinDate] = useState(null)
+
+  Date.prototype.clone=function() {
+    return new Date(this.valueOf())
+  }
+
+  const handleChange = (newDateTime,type) => {
+    if (newDateTime) {
+      switch (type) {
+        case "created":
+          // 設置時間為當日 00:00
+          newDateTime.setHours(0, 0, 0, 0);
+          setValue("createdAt", newDateTime); // 更新日期與時間
+          
+          const defaultEndTime = newDateTime.clone()
+          defaultEndTime.setMonth(defaultEndTime.getMonth() + 1)
+          defaultEndTime.setHours(23, 59, 59, 999);
+          setValue("endAt", defaultEndTime); // 預設截止日期為一個月後
+          setEndMinDate(defaultEndTime)
+          break;
+
+        case "end":
+          // 設置時間為當日 23:59
+          newDateTime.setHours(23, 59, 59, 999);
+          setValue("endAt", newDateTime); // 更新日期與時間
+          break;
+      
+        default:
+          break;
+      }
+    }
+
+    if (errors.createdAt || errors.endAt) {
+      trigger("createdAt")
+      trigger("endAt")
+    }
+  }
+
+  const nextDay = new Date();
+  nextDay.setDate(nextDay.getDate() + 1) // 將日期設為明天，但時間為當前時間
+  nextDay.setHours(0, 0, 0, 0); // 因此重置時間為00:00
+  
   return (
     <>
       <div className="container pt-20 pt-xl-40 pb-10 pb-md-15 pb-xl-30 text-center">
@@ -107,7 +156,7 @@ export default function CreatePropsal() {
                       }
                     })}
                   >
-                    <option selected>請選擇專案類型</option>
+                    <option value="請選擇專案類型" disabled>請選擇專案類型</option>
                     <option value="喜劇">喜劇</option>
                     <option value="愛情">愛情</option>
                     <option value="恐怖">恐怖</option>
@@ -172,37 +221,84 @@ export default function CreatePropsal() {
                       <div className="col-6">
                         <small>
                           <label
-                            htmlFor="inputDate1"
+                            htmlFor="createdAt"
                             className="form-label required"
                           >
                             起始時間
                           </label>
                         </small>
-                        <input
-                          type="text"
-                          id="inputDate1"
-                          placeholder="起始時間"
-                          className="form-control"
+                        <Controller 
+                          name="createdAt"
+                          control={control}
+                          defaultValue={null}
+                          rules={{
+                            required: "*請填入有效日期"
+                          }}
+                          render={({ field }) => (
+                            <DateTimePicker
+                              {...field}
+                              id="createdAt"
+                              className={`form-control ${errors.createdAt ? "is-invalid" : ""}`}
+                              value={field.value}
+                              format="y-MM-dd HH:mm"
+                              clearIcon={null}
+                              onChange={(date) => handleChange(date,"created")}
+                              minDate={nextDay}
+                              maxDetail={"minute"}
+                              disableClock={true}
+                            />
+                          )}
                         />
+
                       </div>
                       <div className="col-6">
                         <small>
                           <label
-                            htmlFor="inputDate2"
+                            htmlFor="endAt"
                             className="form-label required"
                           >
                             結束時間
                           </label>
                         </small>
-                        <input
-                          type="text"
-                          id="inputDate2"
-                          placeholder="結束時間"
-                          className="form-control"
+                        <Controller 
+                          name="endAt"
+                          control={control}
+                          defaultValue={null}
+                          rules={{
+                            required: "*請填入有效日期"
+                          }}
+                          render={({ field }) => (
+                            <DateTimePicker
+                              {...field}
+                              id="endAt"
+                              className={`form-control ${errors?.endAt ? "is-invalid" : ""}`}
+                              value={field.value}
+                              format="y-MM-dd HH:mm"
+                              clearIcon={null}
+                              onChange={(date) => handleChange(date,"end")}
+                              minDate={endMinDate}
+                              maxDetail={"minute"}
+                              disableClock={true}
+                            />
+                          )}
                         />
                       </div>
                     </div>
                   </div>
+                  { errors?.createdAt || errors?.endAt ? (
+                    <div className="row">
+                      <div className="col-6">
+                        <div className="invalid-feedback d-inline-block">
+                          {errors?.createdAt?.message}
+                        </div>
+                      </div>
+                      <div className="col-6">
+                        <div className="invalid-feedback d-inline-block">
+                          {errors?.endAt?.message}
+                        </div>
+                      </div>
+                    </div>
+                    ) : <></> }
                 </div>
               </fieldset>
             </div>
