@@ -70,6 +70,7 @@ export default function ProjectIntroSwiper({ projectInfo }) {
             setIsEnd(swiper.isEnd);
           }}
           className="rounded overflow-hidden mb-0 mb-md-1 mb-lg-2 mb-xxl-3"
+          style={{ maxHeight: "366px" }}
         >
           {otherImages.map((image) => (
             <SwiperSlide
