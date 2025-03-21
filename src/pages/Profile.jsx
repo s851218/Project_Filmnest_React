@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { setLogin } from "../slice/userSlice";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 import { Toast } from "../assets/js/costomSweetAlert";
+import { useNavigate } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Profile() {
@@ -23,6 +24,7 @@ export default function Profile() {
   const id = useSelector((state) => state.user.profile.userId);
   const profile = useSelector((state) => state.user.profile);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // 圖片處理
   const handleFileChange = (event) => {
@@ -158,6 +160,7 @@ export default function Profile() {
                   <button
                     type="button"
                     className="btn btn-primary-9 border d-flex align-items-center py-2 px-4"
+                    onClick={()=>navigate("/personalCenter/profilePassword")}
                   >
                     <span className="fs-sm">變更密碼</span>
                     <span className="material-symbols-outlined ms-1 fs-base ">
