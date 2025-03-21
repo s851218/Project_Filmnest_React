@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
+import ProjectIntroSimpleInfo from "../components/ProjectIntroSimpleInfo";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -17,9 +18,17 @@ export default function ProjectIntro() {
   const [params, setParams] = useState({});
   const location = useLocation();
 
+  // 路徑判斷目前頁面是在哪一個子路由
+  const currentPage = location.pathname;
+
+  // 判斷是不是預設頁面(專案介紹內文)，路徑有 news, supportFeedback, QA...等，就回傳 true，前面再加 ! 代表不是預設頁面
+  const isDefaultRoute =
+    !/(news|supportFeedback|QA|comments|infoDisclosure)/.test(currentPage);
+
+  // 判斷路由使否是提案人介紹頁面
   const isAboutStudioPage = location.pathname.includes("/aboutStudio");
 
-  //處理params
+  // 處理 params
   useEffect(() => {
     if (id) {
       const paramsArry = id.split("&");
@@ -39,6 +48,7 @@ export default function ProjectIntro() {
     window.scrollTo(0, 0);
   }, []);
 
+  // 取得專案資訊
   useEffect(() => {
     if (params.projectId) {
       const getProjectData = async (id) => {
@@ -64,18 +74,23 @@ export default function ProjectIntro() {
       </Helmet>
       {!isAboutStudioPage ? (
         <>
-          <section
-            className="pt-0 pt-md-6 pb-8 pb-mb-10 bg-layer-blur position-relative"
-            style={{ marginTop: 89 }}
-          >
-            <div className="container">
-              <div className="row d-flex flex-column flex-md-row gap-8 gap-xxl-9 align-items-center">
-                {/* 左半部劇照 Swiper */}
-                <ProjectIntroSwiper projectInfo={projectInfo} />
-                {/* 右半部專案資訊、提案人資訊 */}
-                <ProjectIntroInfo projectInfo={projectInfo} />
+          <section className="pt-0 pt-md-4 pt-lg-6 pb-5 pb-md-8 pb-lg-10 bg-layer-blur position-relative">
+            {isDefaultRoute ? (
+              <div className="container">
+                <div className="row d-flex flex-column flex-md-row gap-8 gap-xxl-9 align-items-center">
+                  {/* 左半部劇照 Swiper */}
+                  <ProjectIntroSwiper projectInfo={projectInfo} />
+                  {/* 右半部專案資訊、提案人資訊 */}
+                  <ProjectIntroInfo projectInfo={projectInfo} />
+                </div>
               </div>
-            </div>
+            ) : (
+              // 簡單專案資訊
+              <ProjectIntroSimpleInfo
+                projectInfo={projectInfo}
+                studioId={projectInfo.studioId}
+              />
+            )}
           </section>
 
           {/* 專案介紹 Navbar */}
