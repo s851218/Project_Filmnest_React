@@ -1,18 +1,18 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import UploadProjectImage from "../AdminComponents/UploadProjectImage";
 import { useParams } from "react-router";
 import ArticleEditor from "../AdminComponents/ArticleEditor";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { AdminCheckModal , Toast } from "../assets/js/costomSweetAlert";
+import { AdminCheckModal, Toast } from "../assets/js/costomSweetAlert";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
   return (
-    <section className="mb-5">
-      <label htmlFor={id} className="form-label fw-bolder fs-sm fs-md-base">
+    <>
+      <label htmlFor={id} className="form-label fw-bolder fs-base">
         {labelText}
       </label>
       <input
@@ -27,18 +27,11 @@ const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
       {errors[id] && (
         <p className="invalid-feedback my-2">{errors?.[id]?.message}</p>
       )}
-    </section>
+    </>
   );
 };
 
 export default function Intro() {
-  // 路由跳轉頁面時，重製滾輪捲軸
-  useEffect(() => {
-    // 將滾動行為設為 auto 避免有捲動過程的動畫
-    document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-  }, []);
-
   const [isLoading, setIsLoading] = useState(false);
 
   const { id } = useParams();
@@ -66,11 +59,17 @@ export default function Intro() {
       goalMoney: "",
       otherImages: [],
       content: "",
+      team: [],
     },
   });
 
   // 透過 useFieldArray 來管理 otherImages 的修改、新增、刪除
-  const { fields, append, remove, update } = useFieldArray({
+  const {
+    fields: otherImagesFields,
+    append: appendOtherImages,
+    remove: removeOtherImages,
+    update: updateOtherImages,
+  } = useFieldArray({
     control,
     name: "otherImages",
   });
@@ -83,7 +82,6 @@ export default function Intro() {
         const res = await axios.get(`${API_BASE}/projects/${id}`);
 
         const projectData = res.data;
-
         reset({
           projectTitle: projectData.projectTitle,
           projectImage: projectData.projectImage,
@@ -92,6 +90,7 @@ export default function Intro() {
           goalMoney: projectData.goalMoney,
           otherImages: projectData.otherImages,
           content: projectData.content,
+          team: projectData.team,
         });
 
         // 封面圖片狀態
@@ -107,8 +106,8 @@ export default function Intro() {
     getProjectInfo();
   }, [reset, id]);
 
-  // 圖片檔案選擇 input
-  const handleOtherImagesFileChange = (e, index) => {
+  // 更換劇照圖片 input
+  const handleChangeOtherImages = (e, index) => {
     const selectedfile = e.target.files[0]; //取目標files的內容
     if (selectedfile) {
       const reader = new FileReader();
@@ -117,13 +116,16 @@ export default function Intro() {
         //事件處理器，於每一次讀取結束之後觸發（不論成功或失敗）
         const fileUrl = reader.result;
 
-        update(index, { ...fields[index], imageUrl: fileUrl });
+        updateOtherImages(index, {
+          ...otherImagesFields[index],
+          imageUrl: fileUrl,
+        });
       };
     }
   };
 
-  // 圖片新增 input
-  const handleAddImage = (e) => {
+  // 新增劇照圖片 input
+  const handleAddOtherImages = (e) => {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
@@ -131,12 +133,105 @@ export default function Intro() {
     reader.onloadend = () => {
       // 新增圖片，這裡直接使用 Base64 字串
       const fileUrl = reader.result;
-      append({ imageUrl: fileUrl });
+      appendOtherImages({ imageUrl: fileUrl });
       e.target.value = ""; // 重置 input
     };
   };
 
-  console.log(fields);
+  // 刪除劇照圖片
+  const handleRemoveOtherImages = (index) => {
+    AdminCheckModal.fire({
+      title: "是否要刪除此圖片？",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<hr><img src="${otherImagesFields[index].imageUrl}">`,
+    }).then((result) => {
+      console.log(result);
+      if (result.value) {
+        console.log("已確認刪除");
+        removeOtherImages(index);
+      }
+    });
+  };
+
+  const teamContainerRef = useRef(null);
+
+  // 透過 useFieldArray 來管理 team(製作團隊) 的修改、新增、刪除
+  const {
+    fields: teamFields,
+    append: appendTeam,
+    remove: removeTeam,
+    update: updateTeam,
+  } = useFieldArray({ control, name: "team" });
+
+  // 新增團隊人員
+  const handleAddMember = () => {
+    appendTeam({
+      name: "",
+      jobTitle: "",
+      introduction: "",
+      photo: "",
+      temp: true,
+    });
+
+    setTimeout(() => {
+      if (teamContainerRef.current) {
+        const lastChild = teamContainerRef.current.lastElementChild;
+        if (lastChild) {
+          lastChild.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    }, 100);
+  };
+
+  // 取消編輯團隊人員
+  const handleCancelEditMember = (index) => {
+    AdminCheckModal.fire({
+      title: "是否取消編輯此團隊人員？",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+    }).then((result) => {
+      if (result.value) {
+        removeTeam(index);
+      }
+    });
+  };
+
+  // 刪除團隊人員
+  const handleRemoveMember = (index) => {
+    AdminCheckModal.fire({
+      title: "是否要刪除此團隊人員？",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<div class="d-flex flex-column align-items-center mt-2"><img class="rounded mb-2" src="${teamFields[index].photo}" ><p>${teamFields[index].jobTitle} ${teamFields[index].name}</p></div>`,
+    }).then((result) => {
+      if (result.value) {
+        removeTeam(index);
+      }
+    });
+  };
+
+  // 更換團隊人員個人照片
+  const handleChangeTeamMemberPhoto = (e, index) => {
+    const file = e.target.files[0];
+    if (!file) {
+      // 若沒有選擇圖片，photo 為空字串
+      updateTeam(index, { ...getValues(`team.${index}`), photo: "" });
+      return;
+    }
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      const fileUrl = reader.result;
+      // 更新團隊人員的 photo 欄位
+      updateTeam(index, { ...getValues(`team.${index}`), photo: fileUrl });
+    };
+  };
+
+  console.log(teamFields);
 
   const onSubmit = (data) => {
     const editData = {
@@ -159,60 +254,51 @@ export default function Intro() {
         summary: data.summary,
         goalMoney: parseInt(data.goalMoney),
         otherImages: data.otherImages,
-        content: getValues("content"),
+        content: data.content,
+        team: data.team,
       };
 
       const res = await axios.patch(`${API_BASE}/projects/${id}`, updateData);
       Toast.fire({
         icon: "success",
         title: "成功更新專案資訊！",
-      })
+      });
       console.log("成功更新專案資訊：", res.data);
     } catch (error) {
       console.log("專案資訊編輯失敗", error);
       Toast.fire({
         icon: "error",
         title: "專案資訊編輯失敗",
-      })
+      });
     } finally {
       setIsLoading(false);
     }
   };
-
-  const handleRemove = (index) => {
-    AdminCheckModal.fire({
-      title: "是否要刪除此圖片",
-      showCancelButton: true,
-      confirmButtonText: "確認",
-      cancelButtonText: "取消",
-      html: `<hr><img src="${fields[index].imageUrl}">`
-    }).then((result)=>{
-      console.log(result)
-      if (result.value) {
-        console.log("已確認刪除");
-        remove(index);
-      }
-    })
-  }
 
   return (
     <>
       <Helmet>
         <title>專案資訊編輯</title>
       </Helmet>
-      <section className="p-3 py-md-4 py-lg-7 px-md-8 px-lg-10 bg-white mb-5 rounded-4">
-        <form action="" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        action=""
+        className="mb-3 mb-md-6 mb-lg-8"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <section className="p-4 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white mb-3 mb-md-4 mb-lg-5 rounded-4">
           {/* 專案名稱 */}
-          <IntroInput
-            register={register}
-            errors={errors}
-            id="projectTitle"
-            labelText="專案名稱"
-            type="text"
-            rules={{ required: "專案名稱為必填" }}
-          />
+          <div className="mb-5">
+            <IntroInput
+              register={register}
+              errors={errors}
+              id="projectTitle"
+              labelText="專案名稱"
+              type="text"
+              rules={{ required: "專案名稱為必填" }}
+            />
+          </div>
           {/* 專案類型 */}
-          <section className="mb-5">
+          <div className="mb-5">
             <label
               htmlFor="category"
               className="form-label fw-bolder fs-sm fs-md-base"
@@ -243,16 +329,18 @@ export default function Intro() {
                 {errors?.category.message}
               </p>
             )}
-          </section>
+          </div>
           {/* 專案簡介 */}
-          <IntroInput
-            register={register}
-            errors={errors}
-            id="summary"
-            labelText="專案簡介"
-            type="text"
-            rules={{ required: "專案簡介為必填" }}
-          />
+          <div className="mb-5">
+            <IntroInput
+              register={register}
+              errors={errors}
+              id="summary"
+              labelText="專案簡介"
+              type="text"
+              rules={{ required: "專案簡介為必填" }}
+            />
+          </div>
           {/* 目標金額 */}
           <IntroInput
             register={register}
@@ -263,8 +351,10 @@ export default function Intro() {
             rules={{ required: "目標金額為必填" }}
             min="1"
           />
-          {/* 更換封面圖片 */}
-          <div className="mt-5">
+        </section>
+        {/* 更換封面圖片 */}
+        <section className="p-4 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white mb-3 mb-md-4 mb-lg-5 rounded-4">
+          <div>
             <UploadProjectImage
               onUploadSuccess={(img) => setProjectImage(img)}
             />
@@ -277,105 +367,226 @@ export default function Intro() {
               className="img-fluid object-fit-cover rounded w-100"
               style={{ maxWidth: "600px" }}
             />
-            <p className="fs-xs text-primary-5 mt-1">
+            <p className="fs-xs text-primary-5 mt-1 mb-0">
               封面圖片會顯示在專案圖片、首頁輪播與第一張劇照等位置
             </p>
           </div>
-          {/* 專案介紹頁劇照 */}
-          <div className="mt-5">
-            <h2 className="fs-base fw-bolder">專案介紹頁劇照</h2>
-            <div className="container">
-              <ul className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 g-lg-3 list-unstyled">
-                {fields.map((img, index) => (
-                  <li key={img.id} className="col">
-                    <h3 className="fs-xs fs-md-sm text-primary-6">{`第 ${
-                      index + 1
-                    } 張劇照`}</h3>
-                    <label
-                      htmlFor={`change-image-input-${index}`}
-                      className="mb-2"
-                      style={{ cursor: "pointer" }}
-                    >
-                      <img
-                        src={img.imageUrl}
-                        alt={`第 ${index + 1} 張劇照`}
-                        className="img-fluid object-fit-cover rounded"
-                      />
-                    </label>
-                    <input
-                      id={`change-image-input-${index}`}
-                      type="file"
-                      accept="image/*"
-                      className="w-100"
-                      onChange={(e) => handleOtherImagesFileChange(e, index)}
+        </section>
+        {/* 專案介紹頁劇照 */}
+        <section className="p-4 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white mb-3 mb-md-4 mb-lg-5 rounded-4">
+          <h2 className="fs-base fw-bolder">專案介紹頁劇照</h2>
+          <div className="container">
+            <ul className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 g-lg-3 list-unstyled">
+              {otherImagesFields.map((img, index) => (
+                <li key={img.id} className="col">
+                  <h3 className="fs-sm text-primary-6">{`第 ${
+                    index + 1
+                  } 張劇照`}</h3>
+                  <label
+                    htmlFor={`change-image-input-${index}`}
+                    className="mb-2"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <img
+                      src={img.imageUrl}
+                      alt={`第 ${index + 1} 張劇照`}
+                      className="img-fluid object-fit-cover rounded"
                     />
-                    <div className="d-flex justify-content-center mt-2">
-                      {/* 當圖片數量超過 3 張時，才顯示刪除按鈕 */}
-                      {fields.length > 3 && (
-                        <button
-                          type="button"
-                          className="btn btn-sm btn-outline-danger"
-                          onClick={() => {
-                            handleRemove(index)
-                            // remove(index);
-                          }}
-                        >
-                          刪除
-                        </button>
-                      )}
-                    </div>
-                  </li>
-                ))}
-                {/* 僅當圖片數量少於 10 張時顯示新增圖片按鈕 */}
-                {fields.length < 10 && (
-                  <li className="col mt-2">
-                    <p className="fs-xs fs-md-sm text-primary-6 mb-2">
-                      選擇圖片新增劇照 (最多十張)
-                    </p>
-                    <label
-                      htmlFor="add-image-input"
-                      className="mb-2"
-                      style={{ cursor: "pointer" }}
-                    >
-                      <img
-                        className="img-fluid object-cover rounded"
-                        src="假圖.jpg"
-                      />
-                    </label>
-                    <input
-                      type="file"
-                      id="add-image-input"
-                      accept="image/*"
-                      className="w-100"
-                      onChange={handleAddImage}
+                  </label>
+                  <input
+                    id={`change-image-input-${index}`}
+                    type="file"
+                    accept="image/*"
+                    className="w-100"
+                    onChange={(e) => handleChangeOtherImages(e, index)}
+                  />
+                  <div className="d-flex justify-content-center mt-2">
+                    {/* 當圖片數量超過 3 張時，才顯示刪除按鈕 */}
+                    {otherImagesFields.length > 3 && (
+                      <button
+                        type="button"
+                        className="btn btn-outline-danger rounded"
+                        onClick={() => {
+                          handleRemoveOtherImages(index);
+                        }}
+                      >
+                        <i className="bi bi-trash me-1"></i>
+                        刪除
+                      </button>
+                    )}
+                  </div>
+                </li>
+              ))}
+              {/* 僅當圖片數量少於 10 張時顯示新增圖片按鈕 */}
+              {otherImagesFields.length < 10 && (
+                <li className="col mt-2">
+                  <p className="fs-sm text-primary-6 mb-2">
+                    選擇圖片新增劇照 (最多十張)
+                  </p>
+                  <label
+                    htmlFor="add-image-input"
+                    className="mb-2"
+                    style={{ cursor: "pointer" }}
+                  >
+                    <img
+                      className="img-fluid object-cover rounded"
+                      src="假圖.jpg"
                     />
-                  </li>
-                )}
-              </ul>
-            </div>
+                  </label>
+                  <input
+                    type="file"
+                    id="add-image-input"
+                    accept="image/*"
+                    className="w-100"
+                    onChange={handleAddOtherImages}
+                  />
+                </li>
+              )}
+            </ul>
           </div>
-          {/* 專案介紹圖文 */}
-          <section className="mt-5 mb-5">
-            <h2 className="fs-base fw-bolder">專案介紹</h2>
-            <ArticleEditor
-              projectId={id}
-              setValue={setValue}
-              defaultContent={content}
-            />
-          </section>
-          {/* 製作團隊介紹 */}
-          {/* <section className="my-5">
-            <h2 className="fs-base fw-bolder">製作團隊介紹</h2>
-          </section> */}
-          <button
-            type="submit"
-            className="btn btn-primary d-flex align-items-center gap-2"
-            disabled={isLoading}
-          >
-            儲存
-          </button>
-        </form>
-      </section>
+        </section>
+        {/* 專案介紹圖文 */}
+        <section className="p-4 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white mb-3 mb-md-4 mb-lg-5 rounded-4">
+          <h2 className="fs-base fw-bolder">專案介紹</h2>
+          <ArticleEditor
+            projectId={id}
+            setValue={setValue}
+            defaultContent={content}
+          />
+        </section>
+        {/* 製作團隊介紹 */}
+        <section className="p-3 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white mb-3 mb-md-4 mb-lg-5 rounded-4">
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <h2 className="fs-base fw-bolder mb-0">製作團隊介紹</h2>
+            <button
+              type="button"
+              className="btn btn-primary rounded"
+              onClick={handleAddMember}
+            >
+              <i className="bi bi-plus-circle me-1 me-lg-2"></i>新增團隊人員
+            </button>
+          </div>
+          <div ref={teamContainerRef}>
+            {teamFields.map((member, index) => (
+              <div
+                key={member.id}
+                className="border border-primary-3 rounded-2 p-4 mb-5"
+              >
+                <section className="d-flex justify-content-between">
+                  <h3 className="fs-base text-primary-6 mb-0">{`團隊人員 #${
+                    index + 1
+                  }`}</h3>
+                  {member.temp ? (
+                    <button
+                      type="button"
+                      className="btn btn-outline-secondary rounded"
+                      onClick={() => handleCancelEditMember(index)}
+                    >
+                      <i className="bi bi-x-circle me-1 me-lg-2"></i>
+                      取消
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-outline-danger rounded"
+                      onClick={() => handleRemoveMember(index)}
+                    >
+                      <i className="bi bi-trash me-1 me-lg-2"></i>
+                      刪除
+                    </button>
+                  )}
+                </section>
+                <div className="container">
+                  <div className="row">
+                    <div className="col-md-4">
+                      {/* 個人相片 */}
+                      <section className="d-flex flex-column mb-5 mb-md-0">
+                        <h4 className="fs-base">個人相片</h4>
+                        <label
+                          htmlFor={`edit-member-photo-${index}`}
+                          className="form-label"
+                          style={{ cursor: "pointer" }}
+                        >
+                          <img
+                            src={member.photo || "假圖.jpg"}
+                            className="img-fluid object-fit-cover rounded"
+                            alt={`團隊人員 #${index + 1}`}
+                          />
+                        </label>
+                        <input
+                          id={`edit-member-photo-${index}`}
+                          type="file"
+                          accept="image/*"
+                          className="w-100"
+                          onChange={(e) =>
+                            handleChangeTeamMemberPhoto(e, index)
+                          }
+                        />
+                      </section>
+                    </div>
+                    <div className="col-md-8">
+                      {/* 名稱與職稱 */}
+                      <section className="d-flex gap-6">
+                        <div className="mb-5">
+                          <IntroInput
+                            register={register}
+                            errors={errors}
+                            id={`team.${index}.name`}
+                            labelText="名稱"
+                            type="text"
+                            rules={{ required: "名稱為必填" }}
+                          />
+                        </div>
+                        <div>
+                          <IntroInput
+                            register={register}
+                            errors={errors}
+                            id={`team.${index}.jobTitle`}
+                            labelText="職稱"
+                            type="text"
+                            rules={{ required: "職稱為必填" }}
+                          />
+                        </div>
+                      </section>
+                      {/* 個人介紹 */}
+                      <section>
+                        <label className="form-label fs-base fw-bolder">
+                          個人介紹
+                        </label>
+                        <textarea
+                          type="textArea"
+                          rows="7"
+                          className={`form-control bg-light text-dark h-100 ${
+                            errors.team?.[index]?.introduction
+                              ? "is-invalid"
+                              : ""
+                          }`}
+                          {...register(`team.${index}.introduction`, {
+                            required: "個人介紹為必填",
+                          })}
+                        />
+                        {errors.team?.[index]?.introduction && (
+                          <p className="invalid-feedback my-2">
+                            {errors.team[index].introduction.message}
+                          </p>
+                        )}
+                      </section>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+        <button
+          type="submit"
+          className="btn btn-primary rounded d-block mx-auto"
+          disabled={isLoading}
+        >
+          <i className="bi bi-floppy me-2"></i>
+          儲存
+        </button>
+      </form>
       <LightScreenLoading isLoading={isLoading} />
     </>
   );
