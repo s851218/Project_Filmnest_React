@@ -79,7 +79,10 @@ export default function ProjectIntroSimpleInfo({ projectInfo, studioId }) {
             <h3 className="fs-xs fs-md-base">
               <span>
                 提案人{" "}
-                <Link to="aboutStudio" className="text-primary-3">
+                <Link
+                  to="aboutStudio"
+                  className="text-primary-3 text-decoration-underline"
+                >
                   {proposerData.groupName}
                 </Link>
               </span>
