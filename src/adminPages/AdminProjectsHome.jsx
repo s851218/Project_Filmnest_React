@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setExpanded } from "../slice/adminSidebarExpandSlice";
 import { useLocation, useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
+import LightScreenLoading from "../AdminComponents/LightScreenLoading";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function AdminProjectsHome() {
@@ -14,19 +15,39 @@ export default function AdminProjectsHome() {
     window.scrollTo(0, 0);
   }, []);
 
+  const [isLoading, setIsLoading] = useState(false);
   const [projects, setProjects] = useState([]);
   const [commentsCount, setCommentsCount] = useState({});
   const [favoritesCount, setFavoritesCount] = useState({});
   const dispatch = useDispatch();
   const userId = useSelector((item) => item.user.profile.userId);
   const navigate = useNavigate();
+  
+  const getTime = (time) => {
+    const newTime = new Date(time)
+      .toLocaleString("zh-TW", {
+        timeZone: "Asia/Taipei",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      })
+      .replace(/\//g, "-")
+      .slice("0","10")
+    return newTime;
+  };
 
   const getProjects = async () => {
+    setIsLoading(true);
     try {
       const response = await axios.get(`${apiBase}/projects?userId=${userId}`);
       setProjects(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
   const getComments = async (id) => {
@@ -77,7 +98,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-base mb-0 text-primary-6">募資金額</h3>
-                  <p className="fs-2 fw-bolder mb-0">9999</p>
+                  <p className="fs-2 fw-bolder mb-0">5,511,654</p>
                 </div>
               </div>
             </div>
@@ -92,7 +113,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-base mb-0 text-primary-6">觀看次數</h3>
-                  <p className="fs-2 fw-bolder mb-0">9999</p>
+                  <p className="fs-2 fw-bolder mb-0">5.3K</p>
                 </div>
               </div>
             </div>
@@ -107,7 +128,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-base mb-0 text-primary-6">瀏覽量</h3>
-                  <p className="fs-2 fw-bolder mb-0">9999</p>
+                  <p className="fs-2 fw-bolder mb-0">8.2K</p>
                 </div>
               </div>
             </div>
@@ -124,7 +145,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">專案數量</h3>
-                  <p className="fs-6 fw-bolder mb-0">9999</p>
+                  <p className="fs-6 fw-bolder mb-0">4</p>
                 </div>
               </div>
             </div>
@@ -139,7 +160,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">影音數量</h3>
-                  <p className="fs-6 fw-bolder mb-0">9999</p>
+                  <p className="fs-6 fw-bolder mb-0">4</p>
                 </div>
               </div>
             </div>
@@ -154,7 +175,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">收藏數量</h3>
-                  <p className="fs-6 fw-bolder mb-0">9999</p>
+                  <p className="fs-6 fw-bolder mb-0">672</p>
                 </div>
               </div>
             </div>
@@ -169,7 +190,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">觀看時間</h3>
-                  <p className="fs-6 fw-bolder mb-0">9999</p>
+                  <p className="fs-6 fw-bolder mb-0">368 hr</p>
                 </div>
               </div>
             </div>
@@ -184,7 +205,7 @@ export default function AdminProjectsHome() {
                 </div>
                 <div>
                   <h3 className="fs-sm mb-0 text-primary-6">留言數</h3>
-                  <p className="fs-6 fw-bolder mb-0">9999</p>
+                  <p className="fs-6 fw-bolder mb-0">368</p>
                 </div>
               </div>
             </div>
@@ -394,10 +415,10 @@ export default function AdminProjectsHome() {
                       {remainDays < 0 ? "進行中" : "已結案"}
                     </td>
                     <td className="nowrap-table">
-                      {project.createdAt.slice(0, 10)}
+                      {getTime(project.createdAt)}
                     </td>
                     <td className="nowrap-table">
-                      {project.endAt.slice(0, 10)}
+                      {getTime(project.endAt)}
                     </td>
                     <td className="nowrap-table">{project.viewNum}</td>
                     <td className="nowrap-table">
@@ -413,6 +434,7 @@ export default function AdminProjectsHome() {
           </table>
         </div>
       </div>
+      <LightScreenLoading isLoading={isLoading} />
     </>
   );
 }

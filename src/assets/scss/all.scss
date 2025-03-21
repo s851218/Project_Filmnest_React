@@ -17,12 +17,15 @@
 // components
 @import "./components/buttons";
 @import "./components/project-card";
+@import "./components/invalidStyle";
 
 //helpers
 @import "./mixins/breakpoints";
 
 // vendors
 @import "./vendors/swiper";
+@import "react-datetime-picker/dist/DateTimePicker.css";
+@import "./vendors/react-datetime-piker";
 
 //layout
 @import "./layout/header.scss";

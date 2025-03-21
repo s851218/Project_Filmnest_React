@@ -1,21 +1,26 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router";
+import { Link, Outlet, useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
-import Card from "../components/Card";
 import { Helmet } from "react-helmet-async";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 
 export default function AboutStudio() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const navItems = ["進行中", "已結案", "其他作品集"];
-  const [userId, setUserId] = useState(null);
   const [projects, setProjects] = useState([]);
+  const [finProjects, setFinProjects] = useState([]);
+  const [userId, setUserId] = useState(null);
   const [length, setlength] = useState("");
+  const [finLength, setFinLength] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
+
   // 提案者資料
   const [studioProfile, setStudioProfile] = useState({});
   // 取得提案者資料
   const getStudioProfile = async () => {
+    setIsLoading(true);
     let idArray = id.split("=");
     let idObj = { [idArray[0]]: Number(idArray[1]) };
     const { projectId } = idObj;
@@ -28,21 +33,37 @@ export default function AboutStudio() {
       setUserId(res.data[0].studio.userId);
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // 取得專案資料
   const getProjectData = async () => {
+    setIsLoading(true)
     try {
       const response = await axios.get(
         `${apiBase}/projects?studioId=${userId}`
       );
-      setProjects(response.data);
-      setlength(response.data.length);
+      const finFilterData = response.data.filter((item)=>item.isfin)
+      const filterData = response.data.filter((item)=>!item.isfin)
+      setProjects(filterData);
+      setFinProjects(finFilterData);
+      setlength(filterData.length)
+      setFinLength(finFilterData.length);
     } catch (error) {
       console.log(error);
+    } finally{
+        setIsLoading(false)
     }
   };
+  useEffect(() => {
+    if (userId) {
+      getProjectData();
+    }
+  }, [userId]);
+
+ 
 
   // 路由跳轉至專案介紹頁時，重製滾輪捲軸
   useEffect(() => {
@@ -55,11 +76,7 @@ export default function AboutStudio() {
   useEffect(() => {
     getStudioProfile();
   }, []);
-  useEffect(() => {
-    if (userId) {
-      getProjectData();
-    }
-  }, [userId]);
+
 
   const {
     email,
@@ -166,8 +183,9 @@ export default function AboutStudio() {
         <ul className="nav bg-primary-6 justify-content-center">
           {navItems.map((item, index) => (
             <li className="nav-item border-0" key={index}>
-              <button
+              <Link
                 className="nav-link link-primary-1 text-center border-0 position-relative"
+                to={`${item === "進行中" ? "aboutStudioOngoing" : item === "已結案" ? "aboutStudioFin" : "aboutStudioOthers"}`}
                 style={{
                   backgroundColor: "transparent",
                   overflow: "hidden",
@@ -183,7 +201,7 @@ export default function AboutStudio() {
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
                   {item}
-                  {item === "進行中" && `(${length})`}
+                  {item === "進行中" ? `(${length})` : item === "已結案" ?  `(${finLength})` :""}
                   <span
                     className="underline-effect"
                     style={{
@@ -197,16 +215,13 @@ export default function AboutStudio() {
                     }}
                   ></span>
                 </span>
-              </button>
+              </Link>
             </li>
           ))}
         </ul>
       </nav>
-      <div className="container py-5 py-lg-20">
-        <div className="row">
-          <Card projects={projects} isSwiper={false} />
-        </div>
-      </div>
+      <Outlet context={{isLoading,finProjects,projects}}/>
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

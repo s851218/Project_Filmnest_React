@@ -3,9 +3,10 @@ import { useEffect, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
-import FeedbackSwiper from "../components/FeedbackSwiper";
 import BonusCalculator from "../components/BonusCalculator";
 import ModalComponent from "../components/ModalComponent";
+import GrayScreenLoading from "../components/GrayScreenLoading";
+import { CheckModal , Alert , Toast } from "../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -27,6 +28,7 @@ export default function FeedbackOption() {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const [isLoading, setIsLoading] = useState(false);
   const [params, setParams] = useState({});
   const [feedbackData, setFeedbackData] = useState([]);
   const [projectData, setProjectData] = useState([]);
@@ -34,7 +36,9 @@ export default function FeedbackOption() {
   const [originPrice, setOriginPrice] = useState(0);
   const [bonus, setBonse] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [modalType , setModalType] = useState(null)
   const userInfo = useSelector((state) => state.user.profile);
+  const bonusCalculatorRef = useRef();
 
   const modalRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,6 +61,7 @@ export default function FeedbackOption() {
   }, [id]);
 
   const getFeedbackData = async (params) => {
+    setIsLoading(true);
     const { projectId, productId } = params;
     try {
       const res = await axios.get(
@@ -65,7 +70,13 @@ export default function FeedbackOption() {
       setFeedbackData(res.data[0]);
       setOriginPrice(res.data[0].price);
     } catch (error) {
-      alert("回饋資料取得失敗：" + error.message);
+      console.log("回饋資料取得失敗：" + error.message);
+      Toast.fire({
+        icon: "error",
+        title: "回饋資料取得失敗：",
+      })
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -77,7 +88,11 @@ export default function FeedbackOption() {
       );
       setProjectData(res.data[0]);
     } catch (error) {
-      alert("專案資料取得失敗：" + error.message);
+      console.log("專案資料取得失敗：" + error.message);
+      Toast.fire({
+        icon: "error",
+        title: "專案資料取得失敗：",
+      })
     }
   };
 
@@ -114,33 +129,53 @@ export default function FeedbackOption() {
         "email": "",
         "address": "",
       },
-      "orderStatus": "建立訂單",
-      "paymentStatus": "未付款",
-      "shippingStatus": "未出貨",
+      "orderStatus": 0,
+      "paymentStatus": 0,
+      "shippingStatus": 0,
       "bonus": bonus,
       "totalPrice": totalPrice,
       "createdAt": createdAt,
       "paymentTime": "付款時間",
-      "canCancel": false,
-      "canRefund": false,
-      "canReturn": false,
+      "canCancel": true, // 可否取消訂單，已付款後false
+      "canRefund": false, // 已付款後啟用，可否取消付款
+      "canReturn": false, // 已出貨後啟用，可否退貨
       "userId": userInfo.userId,
       "projectId": params.projectId,
       "productId": params.productId,
       "orderId": orderId,
       "message": messageToTeam,
-      "isIncognito": watch.isAnonymous,
+      "isIncognito": Boolean(watch.isAnonymous),
     };
 
     console.log(orderData);
 
-    // 發送api
-    try {
-      const res = await axios.post(`${API_BASE}/orders`, orderData);
-      navigate(`/paymentInfo/${orderId}`);
-    } catch (error) {
-      console.log("建立訂單失敗", error);
+    const createOrder = async() => {
+      try {
+        await axios.post(`${API_BASE}/orders`, orderData);
+        navigate(`/paymentInfo/${orderId}`);
+      } catch (error) {
+        console.log("建立訂單失敗", error);
+        Alert.fire({
+          icon: "error",
+          title: "建立訂單失敗",
+        });
+      }
     }
+
+    // 發送api
+    CheckModal.fire({
+      title: "確認選擇",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<hr><p class="fs-7">${projectData.projectTitle}</p><p class="fs-4">【 ${feedbackData.title}】</p><p class="fs-7">總金額：$${totalPrice}</p>`,
+    }).then((result)=>{
+      console.log(result)
+      if (result.value) {
+        console.log("已確認選擇，打API");
+        createOrder()
+      }
+    })
 
     // if (messageToTeam.length !== 0) {
     //   console.log("有留言，打留言版api");
@@ -149,10 +184,10 @@ export default function FeedbackOption() {
 
   // 處理訂單送出
 
-  // 處理更改方案
-  const handleChangeOption = () => {
-    console.log("更改方案");
-    // 開啟更改方案modal
+  // 處理開啟Modal
+  const handleOpenModal = (type) => {
+    setModalType(type)
+    // 開啟modal
     setIsModalOpen(true);
   };
 
@@ -165,6 +200,21 @@ export default function FeedbackOption() {
       setIsName(false);
     }
   }, [watch.isAnonymous]);
+
+  useEffect(()=> {
+    if (!isModalOpen) {
+      setModalType(null)
+    }
+  },[isModalOpen])
+
+  const handleBonusCheck = async() => {
+    await bonusCalculatorRef.current.submit()
+    setIsModalOpen(false)
+  }
+
+  const handleBonusReset = async() => {
+    setIsModalOpen(false)
+  }
 
   return (
     <>
@@ -217,7 +267,7 @@ export default function FeedbackOption() {
               <button
                 type="button"
                 className="btn btn-secondary align-self-end"
-                onClick={() => handleChangeOption()}
+                onClick={() => handleOpenModal("change")}
               >
                 更改方案
                 <span className="material-symbols-outlined ms-1 align-bottom">
@@ -227,7 +277,6 @@ export default function FeedbackOption() {
             </section>
             {/* 感謝名稱 */}
             <section>
-              {/* <button type="button" onClick={}>測試</button> */}
               <h3 className="fs-lg-3 fw-bolder mb-3 required">感謝名稱</h3>
               <p>
                 請留下您的大名或暱稱，我們會將您的名字置入電影片尾感謝名單。
@@ -258,7 +307,7 @@ export default function FeedbackOption() {
                     <input
                       type="text"
                       id="supporterNameInput"
-                      className={`supporter-name-input rounded-1 p-2 ${
+                      className={`supporter-name-input w-sm-50 w-100 rounded-1 p-2 ${
                         errors.supporterName && "is-invalid"
                       }`}
                       placeholder="填入您希望的稱呼"
@@ -327,7 +376,7 @@ export default function FeedbackOption() {
             >
               <div className="card-body">
                 <h3 className="card-title fs-5 fw-bolder mb-6">隨喜加碼</h3>
-                <BonusCalculator bonus={bonus} setBonse={setBonse} />
+                <BonusCalculator bonus={bonus} setBonse={setBonse} type={"layout"} />
                 <div className="bg-primary-8 p-3 rounded-1 mb-4">
                   <p className="mb-1">總計金額</p>
                   <h4 className="fs-6 fw-bolder mb-1">
@@ -346,69 +395,40 @@ export default function FeedbackOption() {
           </aside>
         </div>
       </div>
-
-      <ModalComponent
-        modalRef={modalRef}
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-      >
-        <FeedbackSwiper />
-      </ModalComponent>
-
-      {/* 手機版：aside 變成 footer */}
-      {/* <footer className="checkout-confirmation-footer d-lg-none d-block p-6 bg-primary-8 fixed-bottom">
+      
+      {/* 手機版：加碼功能 */}
+      <footer className="checkout-confirmation-footer d-lg-none d-block p-6 bg-primary-8 fixed-bottom">
         <div className="d-flex justify-content-between flex-wrap gap-3">
           <div className="d-flex align-items-center">
             <p className="mb-0 d-sm-block d-none">總計：</p>
-            <p className="total-amount fs-7 mb-0">NT$ 2,000</p>
+            <p className="total-amount fs-7 mb-0">NT$ {totalPrice.toLocaleString()}</p>
           </div>
           <div className="amount-confirm-mobile d-flex align-items-center gap-3">
-            <button className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#extraSupportModal">我要加碼</button>
+            <button
+                type="button"
+                className="btn btn-secondary align-self-end"
+                onClick={() => handleOpenModal("bonus")}
+              >
+                我要加碼
+              </button>
             <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>下一步</button>
           </div>
         </div>
-      </footer> */}
-      {/* footer 加碼功能 */}
-      {/* <div className="modal" id="extraSupportModal" tabindex="-1" aria-labelledby="extraSupportModal" aria-hidden="true"> */}
-      {/* <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content rounded-1 bg-primary-9 border border-primary-1">
-          <div className="modal-header align-items-center">
-            <h1 className="modal-title fs-5" id="extraSupportModal">我要加碼</h1>
-            <button type="button" className="material-symbols-outlined text-white border-0 ms-auto" data-bs-dismiss="modal" aria-label="Close" style={{backgroundColor: "transparent"}}>close</button>
-          </div>
-          <div className="modal-body d-flex flex-column justify-content-center gap-3">
-            <div className="d-flex align-items-center">
-              <p className="mb-0">多給一點點，讓夢想早日實現</p> 
-              <span className="material-symbols-outlined ms-1 fs-base icon-fill text-danger">favorite</span>
-            </div>
-            <BonusCalculator />
-            <div className="bg-primary-8 p-6 rounded-1">
-              <p className="mb-0 text-center">總計：NT$ {totalPrice.toLocaleString()}</p>
-            </div>
-          </div>
-          <div className="modal-footer">
-            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-            <button type="button" className="btn btn-primary" data-bs-dismiss="modal">確認加碼</button>
-          </div>
-        </div>
-      </div> */}
-      {/* </div> */}
+      </footer>
 
-      {/* #feedbackModal 內容 */}
-      {/* <div className="modal fade" id="feedbackModal" tabIndex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-        <div className="modal-dialog modal-xl modal-fullscreen-sm-down ">
-          <div className="modal-content border rounded-1" style={{borderColor: "#606060"}}>
-            <div className="modal-header">
-              <button type="button" className="material-symbols-outlined border-0 ms-auto opacity-0" data-bs-dismiss="modal" aria-label="Close" style={{backgroundColor: "transparent"}} disabled>close</button>
-              <h1 className="modal-title fs-5" id="feedbackModalLabel">方案選擇</h1>
-              <button type="button" className="material-symbols-outlined text-white border-0 ms-auto" data-bs-dismiss="modal" aria-label="Close" style={{backgroundColor: "transparent"}}>close</button>
-            </div>
-            <div className="modal-body">
-              <FeedbackSwiper />
-            </div>
-          </div>
-        </div>
-      </div> */}
+      <ModalComponent
+        modalType={modalType}
+        modalRef={modalRef}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        totalPrice={totalPrice}
+        handleBonusCheck={handleBonusCheck}
+        handleBonusReset={handleBonusReset}
+      >
+        { (modalType === "bonus") && <BonusCalculator reference={bonusCalculatorRef} bonus={bonus} setBonse={setBonse} type={"bouns"} /> } 
+      </ModalComponent>
+
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

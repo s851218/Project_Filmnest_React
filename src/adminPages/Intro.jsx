@@ -5,7 +5,8 @@ import UploadProjectImage from "../AdminComponents/UploadProjectImage";
 import { useParams } from "react-router";
 import ArticleEditor from "../AdminComponents/ArticleEditor";
 import { Helmet } from "react-helmet-async";
-
+import LightScreenLoading from "../AdminComponents/LightScreenLoading";
+import { AdminCheckModal , Toast } from "../assets/js/costomSweetAlert";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
@@ -37,6 +38,8 @@ export default function Intro() {
     document.documentElement.style.scrollBehavior = "auto";
     window.scrollTo(0, 0);
   }, []);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const { id } = useParams();
 
@@ -75,6 +78,7 @@ export default function Intro() {
   // 取得專案資訊 API
   useEffect(() => {
     const getProjectInfo = async () => {
+      setIsLoading(true);
       try {
         const res = await axios.get(`${API_BASE}/projects/${id}`);
 
@@ -96,6 +100,8 @@ export default function Intro() {
         setContent(projectData.content);
       } catch (error) {
         console.log("取得專案資訊失敗", error);
+      } finally {
+        setIsLoading(false);
       }
     };
     getProjectInfo();
@@ -143,6 +149,7 @@ export default function Intro() {
 
   // 編輯完儲存 API
   const introSave = async (data) => {
+    setIsLoading(true);
     try {
       // 要更新的屬性的值
       const updateData = {
@@ -156,12 +163,37 @@ export default function Intro() {
       };
 
       const res = await axios.patch(`${API_BASE}/projects/${id}`, updateData);
-      alert("成功更新專案資訊！");
+      Toast.fire({
+        icon: "success",
+        title: "成功更新專案資訊！",
+      })
       console.log("成功更新專案資訊：", res.data);
     } catch (error) {
       console.log("專案資訊編輯失敗", error);
+      Toast.fire({
+        icon: "error",
+        title: "專案資訊編輯失敗",
+      })
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const handleRemove = (index) => {
+    AdminCheckModal.fire({
+      title: "是否要刪除此圖片",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<hr><img src="${fields[index].imageUrl}">`
+    }).then((result)=>{
+      console.log(result)
+      if (result.value) {
+        console.log("已確認刪除");
+        remove(index);
+      }
+    })
+  }
 
   return (
     <>
@@ -284,7 +316,8 @@ export default function Intro() {
                           type="button"
                           className="btn btn-sm btn-outline-danger"
                           onClick={() => {
-                            remove(index);
+                            handleRemove(index)
+                            // remove(index);
                           }}
                         >
                           刪除
@@ -334,11 +367,16 @@ export default function Intro() {
           {/* <section className="my-5">
             <h2 className="fs-base fw-bolder">製作團隊介紹</h2>
           </section> */}
-          <button type="submit" className="btn btn-primary">
+          <button
+            type="submit"
+            className="btn btn-primary d-flex align-items-center gap-2"
+            disabled={isLoading}
+          >
             儲存
           </button>
         </form>
       </section>
+      <LightScreenLoading isLoading={isLoading} />
     </>
   );
 }

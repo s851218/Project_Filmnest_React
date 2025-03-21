@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import getNewDateFormatted from "../helpers/getNewDateFormatted";
 import { Helmet } from "react-helmet-async";
+import LightScreenLoading from "../AdminComponents/LightScreenLoading";
+import { AdminCheckModal , Toast } from "../assets/js/costomSweetAlert";
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
@@ -11,10 +13,12 @@ export default function AdminAnsComment() {
   const [projectOwner, setProjectOwner] = useState(null);
   const [replyingToId, setReplyingToId] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [sortOrder, setSortOrder] = useState("desc");
 
   useEffect(() => {
     const getCommentsData = async (id = 1) => {
+      setIsLoading(true);
       try {
         setLoading(true);
         const response = await axios.get(
@@ -30,6 +34,7 @@ export default function AdminAnsComment() {
         console.error(error);
       } finally {
         setLoading(false);
+        setIsLoading(false);
       }
     };
     getCommentsData();
@@ -100,7 +105,10 @@ export default function AdminAnsComment() {
       setReplyingToId(null);
     } catch (error) {
       console.error("提交回覆時發生錯誤：", error);
-      alert("提交回覆失敗，請稍後再試");
+      Toast.fire({
+        icon: "error",
+        title: "提交回覆失敗，請稍後再試",
+      })
     } finally {
       setLoading(false);
     }
@@ -111,6 +119,23 @@ export default function AdminAnsComment() {
   const [editContent, setEditContent] = useState("");
 
   // 刪除回覆
+  const handleDeleteReply = (commentId) => {
+    AdminCheckModal.fire({
+      title: "是否要刪除此回覆",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+    }).then((result)=>{
+      console.log(result)
+      if (result.value) {
+        console.log("已確認刪除");
+        deleteReply(commentId)
+      }
+    })
+    
+  }
+
+
   const deleteReply = async (commentId) => {
     try {
       setLoading(true);
@@ -129,9 +154,16 @@ export default function AdminAnsComment() {
             : comment
         )
       );
+      Toast.fire({
+        icon: "success",
+        title: "刪除回覆成功",
+      })
     } catch (error) {
       console.error("刪除回覆失敗：", error);
-      alert("刪除回覆失敗，請稍後再試");
+      Toast.fire({
+        icon: "error",
+        title: "刪除回覆失敗，請稍後再試",
+      })
     } finally {
       setLoading(false);
     }
@@ -167,7 +199,10 @@ export default function AdminAnsComment() {
       setEditContent("");
     } catch (error) {
       console.error("儲存回覆失敗：", error);
-      alert("儲存回覆失敗，請稍後再試");
+      Toast.fire({
+        icon: "error",
+        title: "儲存回覆失敗，請稍後再試",
+      })
     } finally {
       setLoading(false);
     }
@@ -392,7 +427,7 @@ export default function AdminAnsComment() {
                                     <button
                                       className="btn btn-outline-danger btn-sm d-flex align-items-center"
                                       disabled={loading}
-                                      onClick={() => deleteReply(comment.id)}
+                                      onClick={() => handleDeleteReply(comment.id)}
                                     >
                                       <i className="bi bi-trash me-1"></i> 刪除
                                     </button>
@@ -443,6 +478,7 @@ export default function AdminAnsComment() {
           </div>
         </div>
       </section>
+      <LightScreenLoading isLoading={isLoading} />
     </>
   );
 }

@@ -5,11 +5,13 @@ import { setCategory } from "../slice/categorySlice";
 import Card from "../components/Card";
 import { useLocation } from "react-router";
 import { Helmet } from "react-helmet-async";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function ProjectExplore() {
   const [projects, setProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const location = useLocation();
   const dispatch = useDispatch();
   const category = useSelector((state) => state.category.type);
@@ -17,6 +19,7 @@ export default function ProjectExplore() {
   const searchValue = useSelector((state) => state.search.value);
 
   const getProjectsData = async () => {
+    setIsLoading(true);
     let apiUrl;
     if (!category || category === "all") {
       apiUrl = `${apiBase}/projects`;
@@ -36,6 +39,8 @@ export default function ProjectExplore() {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -46,7 +51,7 @@ export default function ProjectExplore() {
 
   useEffect(() => {
     getProjectsData();
-  }, [category, searchText, searchValue]);
+  }, [category, searchText]);
   useEffect(() => {
     return () => {
       dispatch(setCategory("all"));
@@ -108,6 +113,7 @@ export default function ProjectExplore() {
           </div>
         </div>
       </div>
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

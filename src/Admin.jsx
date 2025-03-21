@@ -5,6 +5,7 @@ import { Outlet, useLocation } from "react-router";
 import { setExpanded } from "./slice/adminSidebarExpandSlice";
 import { setLogin } from "./slice/userSlice";
 import { useEffect } from "react";
+import { ScrollRestoration } from "react-router";
 import axios from "axios";
 const apiBase = import.meta.env.VITE_API_BASE;
 function Admin() {
@@ -24,7 +25,7 @@ function Admin() {
   const checkLogin = async (token) => {
     try {
       const response = await axios.get(`${apiBase}/users?token=${token}`);
-      const userData = response.data[0]
+      const userData = response.data[0];
       dispatch(
         setLogin({
           token: userData.token,
@@ -40,13 +41,14 @@ function Admin() {
 
   useEffect(() => {
     const token = document.cookie.replace(/(?:(?:^|.*;\s*)loginToken\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-    
+
     if (token) {
       checkLogin(token);
     }
   }, []);
   return (
     <>
+      <ScrollRestoration />
       <AdminHeader />
       <div className="admin">
         <div className="container mt-20">
