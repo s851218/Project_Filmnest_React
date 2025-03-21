@@ -50,6 +50,7 @@ import OrderRecordsUnpaid from "../pages/OrderRecordsUnpaid";
 import AboutStudioFin from "../pages/AboutStudioFin";
 import AboutStudioOngoing from "../pages/AboutStudioOngoing";
 import AboutStudioOthers from "../pages/AboutStudioOthers";
+import ProfilePassword from "../pages/ProfilePassword";
 
 const routes = [
   {
@@ -75,6 +76,10 @@ const routes = [
           {
             path: "profile",
             element: <Profile />,
+          },
+          {
+            path: "profilePassword",
+            element: <ProfilePassword />
           },
           {
             path: "favoriteProject",
