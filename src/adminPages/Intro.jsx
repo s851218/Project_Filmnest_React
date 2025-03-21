@@ -231,8 +231,6 @@ export default function Intro() {
     };
   };
 
-  console.log(teamFields);
-
   const onSubmit = (data) => {
     const editData = {
       ...data,
@@ -245,7 +243,14 @@ export default function Intro() {
   // 編輯完儲存 API
   const introSave = async (data) => {
     setIsLoading(true);
+
     try {
+      // 將團隊人員的 fields 中的 temp 屬性移除
+      const updatedTeam = data.team.map((member) => {
+        const { temp, ...rest } = member;
+        return rest;
+      });
+
       // 要更新的屬性的值
       const updateData = {
         projectTitle: data.projectTitle,
@@ -255,7 +260,7 @@ export default function Intro() {
         goalMoney: parseInt(data.goalMoney),
         otherImages: data.otherImages,
         content: data.content,
-        team: data.team,
+        team: updatedTeam,
       };
 
       const res = await axios.patch(`${API_BASE}/projects/${id}`, updateData);
@@ -264,6 +269,8 @@ export default function Intro() {
         title: "成功更新專案資訊！",
       });
       console.log("成功更新專案資訊：", res.data);
+      // 更新表單狀態，讓 UI 顯示刪除按鈕（因 temp 屬性已移除）
+      setValue("team", updatedTeam);
     } catch (error) {
       console.log("專案資訊編輯失敗", error);
       Toast.fire({
