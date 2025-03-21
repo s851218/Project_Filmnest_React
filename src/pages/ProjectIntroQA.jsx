@@ -104,7 +104,7 @@ export default function ProjectIntroQA() {
               <div className="col-10 mx-auto">
                 <div className="border border-0 border-primary-5 rounded box-shadow">
                   <button
-                    className={`text-white py-3 px-4 w-100 fs-5 d-flex justify-content-between border-1 ${
+                    className={`text-white py-3 px-4 w-100 fs-5 d-flex flex-column flex-lg-row justify-content-start justify-content-lg-between border-1 ${
                       faqsIsOpen[index].isOpen
                         ? "bg-primary-6"
                         : "bg-primary-10"
@@ -112,18 +112,22 @@ export default function ProjectIntroQA() {
                     type="button"
                     onClick={() => handleCollapse(item.id)}
                   >
-                    <span className="fs-base">
-                      <span className="fs-base me-3">Q{index + 1}:</span>
-                      {item.title}
-                    </span>{" "}
-                    <span className="d-flex align-items-center">
-                      <span className="fs-base text-primary-5 me-2">
+                    <span className="d-flex justify-content-between">
+                      <span className="fs-base">Q{index + 1}:<span className="fs-base ms-lg-3">{item.title}</span></span>
+                      {faqsIsOpen[index].isOpen ? (
+                        <i className="bi bi-chevron-up fs-sm d-lg-none"></i>
+                      ) : (
+                        <i className="bi bi-chevron-down fs-sm d-lg-none"></i>
+                      )}
+                    </span>
+                    <span className="d-flex align-self-start align-items-center">
+                      <span className="fs-sm text-primary-5 me-2">
                         {getTime(item.date)}
                       </span>
                       {faqsIsOpen[index].isOpen ? (
-                        <i className="bi bi-chevron-up fs-7"></i>
+                        <i className="bi bi-chevron-up fs-7 d-none d-lg-block"></i>
                       ) : (
-                        <i className="bi bi-chevron-down fs-7"></i>
+                        <i className="bi bi-chevron-down fs-7 d-none d-lg-block"></i>
                       )}
                     </span>
                   </button>

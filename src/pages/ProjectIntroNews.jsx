@@ -106,7 +106,7 @@ export default function ProjectIntroNews() {
               <div className="col-10 mx-auto">
                 <div className="border border-0 border-primary-5 rounded box-shadow">
                   <button
-                    className={`text-white py-3 px-4 w-100 fs-5 d-flex justify-content-between border-1 ${
+                    className={`text-white py-3 px-4 w-100 fs-5 d-flex flex-column flex-lg-row justify-content-start justify-content-lg-between border-1 ${
                       postsIsOpen[index].isOpen
                         ? "bg-primary-6"
                         : "bg-primary-10"
@@ -114,15 +114,23 @@ export default function ProjectIntroNews() {
                     type="button"
                     onClick={() => handleCollapse(item.id)}
                   >
-                    <span className="fs-base">{item.title}</span>{" "}
-                    <span className="d-flex align-items-center">
+                    <span className="fs-base d-flex justify-content-between">
+                      {item.title}
+                      {postsIsOpen[index].isOpen ? (
+                        <i className="bi bi-chevron-up fs-sm d-lg-none"></i>
+                      ) : (
+                        <i className="bi bi-chevron-down fs-sm d-lg-none"></i>
+                      )}
+                    </span>
+                    
+                    <span className="d-flex align-self-start align-items-center">
                       <time className="fs-xs fs-md-sm text-primary-5 me-2">
                         {getTime(item.date)}
                       </time>
                       {postsIsOpen[index].isOpen ? (
-                        <i className="bi bi-chevron-up fs-7"></i>
+                        <i className="bi bi-chevron-up fs-7 d-none d-lg-block"></i>
                       ) : (
-                        <i className="bi bi-chevron-down fs-7"></i>
+                        <i className="bi bi-chevron-down fs-7 d-none d-lg-block"></i>
                       )}
                     </span>
                   </button>
