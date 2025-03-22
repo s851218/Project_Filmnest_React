@@ -59,7 +59,7 @@ export default function ProjectIntroComments() {
   }, [sortOrder, params]);
 
   // 重新渲染呼叫用
-  const refreshComments = async (id = 1) => {
+  const refreshComments = async (id) => {
     try {
       const response = await axios.get(
         `${BASE_URL}/comments?projectId=${id}&_expand=user`
