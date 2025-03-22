@@ -107,7 +107,7 @@ export default function ProjectIntroComments() {
     try {
       const timeString = new Date();
       const dataToSend = {
-        projectId: 1,
+        projectId: params.projectId,
         userId,
         content: data.commentContent,
         isIncognito: data.isIncognito,
