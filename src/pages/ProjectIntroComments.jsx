@@ -121,7 +121,7 @@ export default function ProjectIntroComments() {
         icon: "success",
         title: "送出成功！感謝您的鼓勵與回饋！",
       });
-      refreshComments();
+      refreshComments(params.projectId);
     } catch (error) {
       console.error(error.message);
       Toast.fire({
