@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import { Toast , Alert } from "../assets/js/costomSweetAlert";
+import { Toast, Alert } from "../assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function SignUp() {
@@ -36,7 +36,7 @@ export default function SignUp() {
       Toast.fire({
         icon: "success",
         title: "新增成功",
-      })
+      });
       reset;
       navigate("/login");
     } catch (error) {
@@ -45,12 +45,12 @@ export default function SignUp() {
         Alert.fire({
           icon: "error",
           title: "此帳號已存在",
-        })
+        });
       } else {
         Alert.fire({
           icon: "error",
           title: "此帳號已存在",
-        })
+        });
       }
     }
   };
@@ -74,14 +74,15 @@ export default function SignUp() {
               </div>
               <div className="mb-10">
                 <button type="button" className="btn btn-info text-light w-100 rounded-4 fw-bolder mb-5 py-2">
-                  <img src="https://s3-alpha-sig.figma.com/img/6806/7dc6/46c3528958e7f331d055e6b735d0d032?Expires=1742169600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=dcUMQHlNPnocApZUB-IoLwbV0Jc9I6zT-DKxe68~D42-srCcOI85lAh1izVgwxpFxdUnvp6cEsA3vFurtQEiuvhalqbvUqqIaAErfALufIPU1OHagAKGbQCOg7zX6iXsYHrBwUVk6IuG0IcrNNB8m2UsB1qZwF3hN99h3JvxWAZoDIeHo3~IF25TGgAN7z8O3XRWwN79gPtRf05px4ejkb2ypRQwI7gOow7E3XcsSR~2QA1otLJABr0ergLE-h5f18rjdqwpE8v2SFijgT9NUFljNQ1MbU9QGYgvMOm1TPcZkxaF2e-AzyyPriBgCLGMQHZ0ty3uJxcPb3w9NjiGfg__" alt="fb" className="me-2 " style={{ width: "24px", height: "24px" }} /> 使用 facebook 帳號繼續
+                  <img src="46c3528958e7f331d055e6b735d0d032.png" alt="fb" className="me-2 " style={{ width: "24px", height: "24px" }} /> 
+                  使用 facebook 帳號繼續
                 </button>
                 <button type="button" className="btn btn-success w-100 rounded-4 fw-bolder mb-5 py-2">
-                  <img src="https://s3-alpha-sig.figma.com/img/d7bc/c6e0/6c2c184012a38a8dbf129cae0d16b308?Expires=1742169600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=garJ2hqup~CW0U1f8Xvz~FF3j2Flt9qo-lCZ-HJTxH28v-4qaHLxIuwSqW6pixqqvnDGI4WlOpXcJCZ9L~HV9wEWU5AwO-FxiDY9OYepQd5v5Y1ePDw8rWSwa71mZ1aUCy5trO2CL1zb8KPzC~YUoiQnq0~PnZ~TPA3khwqZC5wqtQA6eZcRpCzh0UtBRpoQcQszYDwqW6KRMugOhSbZsDtHr-TyUihwTGettAOZsd09W3vhX0MESc6hn2343DYlYKhXvnUqTmfS4zizzUP6-XwjcgBcJf7iuXNXgB2qvvxhG8CfK3HL1tPLEhcLCyhgd-gcmqZySIPSmm9ul~lEGg__" alt="fb" className="me-2 " style={{ width: "24px", height: "24px" }} />
+                  <img src="6c2c184012a38a8dbf129cae0d16b308.png" alt="Line" className="me-2 " style={{ width: "24px", height: "24px" }} />
                   使用 Line 帳號繼續
                 </button>
                 <button type="button" className="btn btn-light w-100 rounded-4 fw-bolder mb-5 py-2">
-                  <img src="https://s3-alpha-sig.figma.com/img/fd6c/8c0e/a0b4a34ebb9bf63926751b620f06967d?Expires=1742169600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=DdqtMYEPUzvRinbJpNKtqUH54ryvPzKjf~43En4Qvdmd4dsT0SS1zcSsF9WX-~QFq33oSMVTd50yS5E9~u3xyP94SBfXG3QG5A0JhqDjzN5ucNJRFMz-ZAOYaGhUsojsv1H1rEX7ucvvyq0y7bMf5XTY7xmVlkE9NhfGqMjqMLlZelYf974t-9dZ31UcK3eM9qOflexidyopiKerC5TtQ3sC~zx6ZZwqCe4UBn-Ym0spUApoA5e2azl-JUfrWs9Ifd1hl-gemT9wjikETsI3LlDDYF7fTZJ3h-YPdbfBiji~HXDoMohT1EHp5cJRJW9ePp3wCrQ-XBdxWFrUXJygtQ__" alt="fb" className="me-2 " style={{ width: "24px", height: "24px" }} />
+                  <img src="a0b4a34ebb9bf63926751b620f06967d.png" alt="Google" className="me-2 " style={{ width: "24px", height: "24px" }} />
                   使用 Google 帳號繼續
                 </button>
               </div>
