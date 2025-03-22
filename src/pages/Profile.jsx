@@ -62,13 +62,13 @@ export default function Profile() {
       Toast.fire({
         icon: "success",
         title: "修改成功",
-      })
+      });
     } catch (error) {
       console.error("儲存資料錯誤:", error);
       Toast.fire({
         icon: "error",
         title: "修改失敗",
-      })
+      });
     }
   };
 
@@ -108,7 +108,7 @@ export default function Profile() {
               </span>
             </button>
           </div>
-          <div className="bg-primary-8 rounded-lg-4 d-flex flex-column flex-lg-row align-items-center p-lg-10">
+          <div className="bg-primary-8 rounded-lg-4 d-flex flex-column flex-lg-row align-items-center p-3 p-lg-10">
             <div className="d-block d-lg-none w-100 mb-5">
               <PersonalCenterSidebar />
             </div>
@@ -160,7 +160,7 @@ export default function Profile() {
                   <button
                     type="button"
                     className="btn btn-primary-9 border d-flex align-items-center py-2 px-4"
-                    onClick={()=>navigate("/personalCenter/profilePassword")}
+                    onClick={() => navigate("/personalCenter/profilePassword")}
                   >
                     <span className="fs-sm">變更密碼</span>
                     <span className="material-symbols-outlined ms-1 fs-base ">
