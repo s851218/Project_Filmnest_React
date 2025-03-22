@@ -109,7 +109,13 @@ export default function ProjectExplore() {
         </div>
         <div>
           <div className="row">
-            <Card projects={projects} isSwiper={false} />
+            {projects.length !== 0 ?<Card projects={projects} isSwiper={false} /> : <div className="row justify-content-center mt-15">
+          <div className="col-8 bg-primary-6 rounded-3">
+            <div className="d-flex justify-content-center py-15">
+              <h2 className="fs-base fs-lg-6">無任何資料</h2>
+            </div>
+          </div>
+        </div>}
           </div>
         </div>
       </div>

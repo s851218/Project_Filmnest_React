@@ -59,7 +59,7 @@ export default function ProjectIntroComments() {
   }, [sortOrder, params]);
 
   // 重新渲染呼叫用
-  const refreshComments = async (id = 1) => {
+  const refreshComments = async (id) => {
     try {
       const response = await axios.get(
         `${BASE_URL}/comments?projectId=${id}&_expand=user`
@@ -107,7 +107,7 @@ export default function ProjectIntroComments() {
     try {
       const timeString = new Date();
       const dataToSend = {
-        projectId: 1,
+        projectId: params.projectId,
         userId,
         content: data.commentContent,
         isIncognito: data.isIncognito,
@@ -121,7 +121,7 @@ export default function ProjectIntroComments() {
         icon: "success",
         title: "送出成功！感謝您的鼓勵與回饋！",
       });
-      refreshComments();
+      refreshComments(params.projectId);
     } catch (error) {
       console.error(error.message);
       Toast.fire({

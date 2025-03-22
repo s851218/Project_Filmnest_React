@@ -70,13 +70,13 @@ export default function ProjectIntroNav({ projectId }) {
         Toast.fire({
           icon: "success",
           title: "專案已收藏！",
-        })
+        });
       } catch (error) {
         console.error("新增收藏失敗：", error);
         Toast.fire({
           icon: "error",
           title: "新增收藏失敗",
-        })
+        });
       } finally {
         setIsLoading(false);
       }
@@ -91,13 +91,13 @@ export default function ProjectIntroNav({ projectId }) {
         Toast.fire({
           icon: "success",
           title: "專案已取消收藏！",
-        })
+        });
       } catch (error) {
         console.error("取消收藏失敗：", error);
         Toast.fire({
           icon: "error",
           title: "取消收藏失敗",
-        })
+        });
       } finally {
         setIsLoading(false);
       }
@@ -106,7 +106,10 @@ export default function ProjectIntroNav({ projectId }) {
 
   return (
     <>
-      <section className="py-3 bg-primary-8 d-none d-lg-block">
+      <section
+        className="py-3 bg-primary-8 d-none d-lg-block"
+        style={{ position: "sticky", top: "0", zIndex: "100" }}
+      >
         <div className="container d-flex justify-content-between">
           <ul className="list-unstyled mb-0 d-flex gap-8 align-items-center">
             <li>
@@ -204,7 +207,10 @@ export default function ProjectIntroNav({ projectId }) {
       </section>
 
       {/* 專案介紹頁導覽列-手機版 */}
-      <section className="py-2 bg-primary-8 d-block d-lg-none">
+      <section
+        className="py-2 bg-primary-8 d-block d-lg-none"
+        style={{ position: "sticky", top: "0", zIndex: "200" }}
+      >
         <div className="container d-flex">
           <Swiper
             modules={[FreeMode]}
@@ -280,7 +286,10 @@ export default function ProjectIntroNav({ projectId }) {
         </div>
       </section>
       {/* 專案介紹頁導覽列-收藏和立即贊助-手機版 */}
-      <section className="py-5 bg-collect-support w-100 d-block d-lg-none position-fixed bottom-0 z-2">
+      <section
+        className="py-5 bg-collect-support w-100 d-block d-lg-none position-fixed bottom-0"
+        style={{ zIndex: "200" }}
+      >
         <div className="container">
           <ul className="list-unstyled mb-0 d-flex gap-3 align-items-center justify-content-center">
             <li>
