@@ -1,10 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import FeedbackSwiper from "../components/FeedbackSwiper";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
-import { Toast } from "../assets/js/costomSweetAlert"; 
+import { Toast } from "../assets/js/costomSweetAlert";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 function FeedbackPage() {
@@ -44,7 +43,7 @@ function FeedbackPage() {
       Toast.fire({
         icon: "success",
         title: "頁面資料取得失敗",
-      })
+      });
     }
   };
 

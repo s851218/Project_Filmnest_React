@@ -5,10 +5,9 @@ import { useSelector } from "react-redux";
 import getNewDateFormatted from "../helpers/getNewDateFormatted";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
-import GrayScreenLoading from "../components/GrayScreenLoading";
 import { Toast } from "../assets/js/costomSweetAlert";
 
-const BASE_URL = "https://json-server-vercel-tdcc.onrender.com";
+const BASE_URL = import.meta.env.VITE_API_BASE;
 
 export default function ProjectIntroComments() {
   const [comments, setComments] = useState([]);
