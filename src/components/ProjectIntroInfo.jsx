@@ -79,21 +79,23 @@ export default function ProjectIntroInfo({ projectInfo }) {
       <section className="mx-auto px-xxl-0 mt-xxl-1" style={{ maxWidth: 576 }}>
         <div className="mb-3">
           <Link to="/projectExplore">
-            <span className="py-1 px-2 bg-primary-8 rounded me-2 tag-hover-category">
+            <span className="py-1 px-2 bg-primary-8 rounded me-2 tag-hover-category fs-sm fs-md-base">
               {projectInfo.category}
             </span>
           </Link>
           <Link to="/projectExplore">
-            <span className="py-1 px-2 bg-primary-6 rounded tag-hover-status">
+            <span className="py-1 px-2 bg-primary-6 rounded tag-hover-status fs-sm fs-md-base">
               {countDown.days < 7 && countDown.days > 0 ? "即將結束" : "進行中"}
             </span>
           </Link>
         </div>
-        <h2 className="fs-6 fs-md-3 fw-bolder mb-1 mb-md-3">
+        <h2 className="fs-7 fs-md-6 fs-lg-3 fw-bolder mb-1 mb-md-3">
           {projectInfo.projectTitle}
         </h2>
-        <p className="fs-md-7 text-primary-2">{projectInfo.summary}</p>
-        <div className="my-8 my-md-10">
+        <p className="fs-sm fs-md-base fs-lg-7 text-primary-2">
+          {projectInfo.summary}
+        </p>
+        <div className="my-6 my-md-8 my-lg-10">
           {/* 募資金額 */}
           <section className="d-flex justify-content-between align-items-center mb-3 mb-md-4">
             <p className="fs-7 fs-md-6 mb-0">
