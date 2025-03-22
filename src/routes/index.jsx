@@ -15,7 +15,6 @@ import AdminChart from "../adminPages/AdminChart";
 import Post from "../adminPages/Post";
 import Intro from "../adminPages/Intro";
 import Faq from "../adminPages/Faq";
-import Feedback from "../adminPages/Feedback";
 import SignUp from "../pages/Signup";
 import PersonalCenter from "../pages/PersonalCenter";
 import AboutStudio from "../pages/AboutStudio";
@@ -79,7 +78,7 @@ const routes = [
           },
           {
             path: "profilePassword",
-            element: <ProfilePassword />
+            element: <ProfilePassword />,
           },
           {
             path: "favoriteProject",
@@ -88,7 +87,7 @@ const routes = [
           {
             path: "orderRecords",
             element: <OrderRecords />,
-            children:[
+            children: [
               {
                 path: "orderRecordsAll",
                 element: <OrderRecordsAll />,
@@ -109,7 +108,7 @@ const routes = [
                 path: ":id",
                 element: <OrderRecordsDetail />,
               },
-            ]
+            ],
           },
           {
             path: "favoriteVideo",
@@ -172,7 +171,7 @@ const routes = [
           {
             path: "aboutStudio",
             element: <AboutStudio />,
-            children:[
+            children: [
               {
                 path: "aboutStudioOngoing",
                 element: <AboutStudioOngoing />,
@@ -184,9 +183,9 @@ const routes = [
               {
                 path: "aboutStudioOthers",
                 element: <AboutStudioOthers />,
-              }
-            ]
-          }
+              },
+            ],
+          },
         ],
       },
       {

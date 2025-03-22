@@ -4,6 +4,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
 import { AdminCheckModal, Toast } from "../assets/js/costomSweetAlert";
+import PropTypes from "prop-types";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 const DEFAULT_FEEDBACK_FORM = {
@@ -695,6 +696,15 @@ const ContentItems = ({
       </div>
     </>
   );
+};
+
+ContentItems.propTypes = {
+  control: PropTypes.object,
+  choiceIndex: PropTypes.number,
+  register: PropTypes.func,
+  editingIndex: PropTypes.number,
+  errors: PropTypes.object,
+  watch: PropTypes.func,
 };
 
 export default AdminFeedbackForm;
