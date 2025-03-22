@@ -331,7 +331,7 @@ export default function Header() {
                             className="btn btn-outline-secondary text-white border-0 d-flex align-items-center"
                             onClick={handleLogout}
                           >
-                            <span class="material-symbols-outlined fs-7 me-3">
+                            <span className="material-symbols-outlined fs-7 me-3">
                               exit_to_app
                             </span>
                             <span>登出</span>
