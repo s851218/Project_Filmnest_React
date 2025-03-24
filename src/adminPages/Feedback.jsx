@@ -635,12 +635,13 @@ const ContentItems = ({
             const contentInputID = `item-${content.id}`;
             return (
               <div key={content.id} className="mb-2 d-flex align-items-center">
-                <div
+                <label
                   className="me-2 text-primary-8 fw-bold"
                   style={{ width: "24px" }}
+                  htmlFor={contentInputID}
                 >
                   {contentIndex + 1}.
-                </div>
+                </label>
                 <div className="input-group">
                   <input
                     {...register(
