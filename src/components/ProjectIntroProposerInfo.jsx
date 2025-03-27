@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import PropTypes from "prop-types"; // prop validation
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -105,3 +106,10 @@ export default function ProjectIntroProposerInfo({ studioId }) {
     </>
   );
 }
+
+ProjectIntroProposerInfo.propTypes = {
+  studioId: PropTypes.oneOfType([
+    PropTypes.number.isRequired,
+    PropTypes.string.isRequired,
+  ]),
+};

@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { Toast } from "../assets/js/costomSweetAlert";
+import PropTypes from "prop-types";
 
 // import Swiper core and required modules
 import { FreeMode } from "swiper/modules";
@@ -326,3 +327,10 @@ export default function ProjectIntroNav({ projectId }) {
     </>
   );
 }
+
+ProjectIntroNav.propTypes = {
+  projectId: PropTypes.oneOfType([
+    PropTypes.number.isRequired,
+    PropTypes.string.isRequired,
+  ]),
+};

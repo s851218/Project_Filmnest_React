@@ -7,6 +7,8 @@ import ArticleEditor from "../AdminComponents/ArticleEditor";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
 import { AdminCheckModal, Toast } from "../assets/js/costomSweetAlert";
+import PropTypes from "prop-types";
+
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
@@ -231,6 +233,21 @@ export default function Intro() {
     };
   };
 
+  // 刪除團隊個人相片
+  const handleRemoveTeamMemberPhoto = (index) => {
+    AdminCheckModal.fire({
+      title: "是否要刪除個人相片？",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<div class="mt-2"><img class="rounded" src="${teamFields[index].photo}" ></div>`,
+    }).then((result) => {
+      if (result.value) {
+        updateTeam(index, { ...getValues(`team.${index}`), photo: "" });
+      }
+    });
+  };
+
   const onSubmit = (data) => {
     const editData = {
       ...data,
@@ -355,7 +372,10 @@ export default function Intro() {
             id="goalMoney"
             labelText="目標金額"
             type="number"
-            rules={{ required: "目標金額為必填" }}
+            rules={{
+              required: "目標金額為必填",
+              min: { value: 1, message: "目標金額必須大於零" },
+            }}
             min="1"
           />
         </section>
@@ -529,30 +549,63 @@ export default function Intro() {
                             handleChangeTeamMemberPhoto(e, index)
                           }
                         />
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger btn-sm rounded mt-2"
+                          onClick={() => handleRemoveTeamMemberPhoto(index)}
+                        >
+                          刪除相片
+                        </button>
                       </section>
                     </div>
                     <div className="col-md-8">
                       {/* 名稱與職稱 */}
                       <section className="d-flex gap-6">
                         <div className="mb-5">
-                          <IntroInput
-                            register={register}
-                            errors={errors}
-                            id={`team.${index}.name`}
-                            labelText="名稱"
+                          <label
+                            htmlFor={`team-name-${index}`}
+                            className="form-label fw-bolder fs-base"
+                          >
+                            名稱
+                          </label>
+                          <input
                             type="text"
-                            rules={{ required: "名稱為必填" }}
+                            id={`team-name-${index}`}
+                            className={`form-control bg-light text-dark fs-sm fs-md-base ${
+                              errors.team?.[index]?.name ? "is-invalid" : ""
+                            }`}
+                            {...register(`team.${index}.name`, {
+                              required: "名稱為必填",
+                            })}
                           />
+                          {errors.team?.[index]?.name && (
+                            <p className="invalid-feedback my-2">
+                              {errors.team[index].name.message}
+                            </p>
+                          )}
                         </div>
                         <div>
-                          <IntroInput
-                            register={register}
-                            errors={errors}
-                            id={`team.${index}.jobTitle`}
-                            labelText="職稱"
+                          <label
+                            htmlFor={`team-jobTitle-${index}`}
+                            className="form-label fw-bolder fs-base"
+                          >
+                            名稱
+                          </label>
+                          <input
                             type="text"
-                            rules={{ required: "職稱為必填" }}
+                            id={`team-jobTitle-${index}`}
+                            className={`form-control bg-light text-dark fs-sm fs-md-base ${
+                              errors.team?.[index]?.jobTitle ? "is-invalid" : ""
+                            }`}
+                            {...register(`team.${index}.jobTitle`, {
+                              required: "職稱為必填",
+                            })}
                           />
+                          {errors.team?.[index]?.jobTitle && (
+                            <p className="invalid-feedback my-2">
+                              {errors.team[index].jobTitle.message}
+                            </p>
+                          )}
                         </div>
                       </section>
                       {/* 個人介紹 */}
@@ -598,3 +651,17 @@ export default function Intro() {
     </>
   );
 }
+
+IntroInput.propTypes = {
+  register: PropTypes.func.isRequired,
+  errors: PropTypes.objectOf(
+    PropTypes.shape({
+      message: PropTypes.string,
+    })
+  ),
+  id: PropTypes.string.isRequired,
+  labelText: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  rules: PropTypes.object,
+  min: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};

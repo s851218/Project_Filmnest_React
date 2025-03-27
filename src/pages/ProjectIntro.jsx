@@ -1,8 +1,13 @@
-import { Outlet, useLocation, useParams } from "react-router";
+import {
+  Outlet,
+  ScrollRestoration,
+  useLocation,
+  useParams,
+} from "react-router";
 import ProjectIntroNav from "../components/ProjectIntroNav";
 import ProjectIntroSwiper from "../components/ProjectIntroSwiper";
 import ProjectIntroInfo from "../components/ProjectIntroInfo";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
@@ -29,11 +34,11 @@ export default function ProjectIntro() {
   const isAboutStudioPage = location.pathname.includes("/aboutStudio");
 
   // 處理 params
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (id) {
-      const paramsArry = id.split("&");
+      const paramsArray = id.split("&");
       let paramsObj = {};
-      paramsArry.forEach((param) => {
+      paramsArray.forEach((param) => {
         let [key, value] = param.split("=");
         paramsObj[key] = Number(value);
       });
@@ -41,15 +46,8 @@ export default function ProjectIntro() {
     }
   }, [id]);
 
-  // 路由跳轉至專案介紹頁時，重製滾輪捲軸
-  useEffect(() => {
-    // 將滾動行為設為 auto 避免有捲動過程的動畫
-    document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-  }, []);
-
   // 取得專案資訊
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (params.projectId) {
       const getProjectData = async (id) => {
         setIsLoading(true);
@@ -69,6 +67,7 @@ export default function ProjectIntro() {
 
   return (
     <>
+      <ScrollRestoration />
       <Helmet>
         <title>{projectInfo.projectTitle}</title>
       </Helmet>
