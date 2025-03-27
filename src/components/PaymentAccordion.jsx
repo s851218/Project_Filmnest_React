@@ -2,6 +2,7 @@ import { Collapse } from 'bootstrap';
 import { useEffect, useRef } from 'react';
 import { setAccordionIndex } from "../slice/paymentInfoSlice"
 import { useDispatch, useSelector } from "react-redux"
+import PropTypes from 'prop-types';
 
 const paymentMessage = {
   paymentType: [
@@ -45,6 +46,10 @@ const paymentMessage = {
 }
 
 export default function PaymentAccordion ({children}) {
+
+  PaymentAccordion.propTypes = {
+    children : PropTypes.any,
+  }
 
   const dispatch = useDispatch()
   const { accordion : accordionSlice} = useSelector((state)=>state.paymentInfo)

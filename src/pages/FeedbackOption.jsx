@@ -26,7 +26,7 @@ export default function FeedbackOption() {
   const [projectData, setProjectData] = useState([]);
   const [isName, setIsName] = useState(false);
   const [originPrice, setOriginPrice] = useState(0);
-  const [bonus, setBonse] = useState(0);
+  const [bonus, setBonus] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [modalType, setModalType] = useState(null);
   const userInfo = useSelector((state) => state.user.profile);
@@ -371,7 +371,7 @@ export default function FeedbackOption() {
                 <h3 className="card-title fs-5 fw-bolder mb-6">隨喜加碼</h3>
                 <BonusCalculator
                   bonus={bonus}
-                  setBonse={setBonse}
+                  setBonus={setBonus}
                   type={"layout"}
                 />
                 <div className="bg-primary-8 p-3 rounded-1 mb-4">
@@ -434,7 +434,7 @@ export default function FeedbackOption() {
           <BonusCalculator
             reference={bonusCalculatorRef}
             bonus={bonus}
-            setBonse={setBonse}
+            setBonus={setBonus}
             type={"bouns"}
           />
         )}
