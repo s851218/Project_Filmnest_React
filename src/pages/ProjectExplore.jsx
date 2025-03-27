@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../slice/categorySlice";
 import Card from "../components/Card";
-import { useLocation } from "react-router";
+import { ScrollRestoration, useLocation } from "react-router";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 
@@ -49,9 +49,10 @@ export default function ProjectExplore() {
     dispatch(setCategory(value));
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getProjectsData();
   }, [category, searchText]);
+
   useEffect(() => {
     return () => {
       dispatch(setCategory("all"));
@@ -60,11 +61,12 @@ export default function ProjectExplore() {
 
   return (
     <>
+      <ScrollRestoration />
       <Helmet>
         <title>探索全部專案</title>
       </Helmet>
       <div className="container pt-20 pb-10">
-        <div className="pt-5" style={{ marginTop: "89px" }}>
+        <div className="pt-5">
           <div
             className="container"
             style={{ boxShadow: "0px 20px 20px -20px #ffffff33" }}
@@ -109,13 +111,17 @@ export default function ProjectExplore() {
         </div>
         <div>
           <div className="row">
-            {projects.length !== 0 ?<Card projects={projects} isSwiper={false} /> : <div className="row justify-content-center mt-15">
-          <div className="col-8 bg-primary-6 rounded-3">
-            <div className="d-flex justify-content-center py-15">
-              <h2 className="fs-base fs-lg-6">無任何資料</h2>
-            </div>
-          </div>
-        </div>}
+            {projects.length !== 0 ? (
+              <Card projects={projects} isSwiper={false} />
+            ) : (
+              <div className="row justify-content-center mt-15">
+                <div className="col-8 bg-primary-6 rounded-3">
+                  <div className="d-flex justify-content-center py-15">
+                    <h2 className="fs-base fs-lg-6">無任何資料</h2>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

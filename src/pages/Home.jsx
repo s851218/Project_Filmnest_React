@@ -1,10 +1,10 @@
 import axios from "axios";
 import Swiper from "swiper/bundle";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useLayoutEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setCategory } from "../slice/categorySlice";
 import Card from "../components/Card";
-import { Link } from "react-router";
+import { Link, ScrollRestoration } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { useSpring, animated } from "@react-spring/web"; // 引入 react-spring
 import { useInView } from "react-intersection-observer"; // 用來檢查區塊是否進入視窗
@@ -13,13 +13,6 @@ import GrayScreenLoading from "../components/GrayScreenLoading";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Home() {
-  // 路由跳轉頁面時，重製滾輪捲軸
-  useEffect(() => {
-    // 將滾動行為設為 auto 避免有捲動過程的動畫
-    document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-  }, []);
-
   const [projects, setProjects] = useState([]);
   const [sortProjects, setSortProjects] = useState([]);
   const swiperBannerRef = useRef(null);
@@ -48,7 +41,7 @@ export default function Home() {
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     getProjectsData();
   }, []);
 
@@ -176,7 +169,7 @@ export default function Home() {
   };
 
   // 創建 IntersectionObserver
-  useEffect(() => {
+  useLayoutEffect(() => {
     refs.current.forEach((ref, index) => {
       const observer = new IntersectionObserver(
         (entries) => handleIntersection(index, entries),
@@ -204,6 +197,7 @@ export default function Home() {
 
   return (
     <>
+      <ScrollRestoration />
       <Helmet>
         <title>影巢 FilmNest</title>
         <meta
@@ -731,7 +725,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <GrayScreenLoading isLoading={isLoading} />
+      {/* <GrayScreenLoading isLoading={isLoading} /> */}
     </>
   );
 }
