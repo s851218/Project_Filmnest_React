@@ -3,8 +3,17 @@ import { useEffect, useImperativeHandle, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { setUserInfo , setAddress, setRecipientInfo, setSameAsMember } from "../slice/paymentInfoSlice"
 import { useDispatch, useSelector } from "react-redux"
+import PropTypes from 'prop-types';
 
-export default function PaymentInfoFrom ({reference , userData , showError}) {
+export default function PaymentInfoFrom ({reference , userData }) {
+
+  PaymentInfoFrom.propTypes = {
+    reference : PropTypes.shape({
+      current: PropTypes.any
+    }),
+    userData : PropTypes.array,
+  }
+
   const dispatch = useDispatch()
   const { userInfo , recipientInfo } = useSelector((state) => state.paymentInfo)
   const { register , setValue , control , formState:{errors,isValid} , handleSubmit , reset} = useForm({
@@ -22,7 +31,7 @@ export default function PaymentInfoFrom ({reference , userData , showError}) {
 
   useEffect(()=>{
     if (userData.userProfile) {
-      const {userName , phone} = userData?.userProfile
+      const {userName , phone} = userData.userProfile
       const {email} = userData
   
       const userInfo = {
@@ -35,15 +44,15 @@ export default function PaymentInfoFrom ({reference , userData , showError}) {
       setValue("userEmail", email)
       dispatch(setUserInfo(userInfo))
     }
-  },[userData.userProfile])
+  },[userData,dispatch,setValue])
 
   useImperativeHandle(reference, () => ({
     submitForm : handleSubmit(onSubmit),
     resetForm : reset,
     isValid,
   }))
-  const onSubmit = (data) => {
-    console.log("驗證成功",data);
+  
+  const onSubmit = () => {
   }
   
   const watch = useWatch({control})
@@ -77,19 +86,18 @@ export default function PaymentInfoFrom ({reference , userData , showError}) {
       setDistricts(res[0].districts)
       setValue("district" , "請選擇鄉鎮市區")
     }
-  },[watch.county])
+  },[watch.county,countys,setValue])
   // 行政區選擇 (OK)
   useEffect(() => {
     if ((watch.district !== "請選擇鄉鎮市區")) {
       const zip = (districts.find((item) => item.name === watch.district)).zip
-      console.log(zip)
       if (watch.zipcode !== zip) {
         setValue("zipcode" , zip)
       }
     } else {
       setValue("zipcode" , "")
     }
-  },[watch.district])
+  },[watch.district , districts , setValue , watch.zipcode])
   // 寫入地址 to slice
   useEffect(()=>{
     const addressData = {
@@ -99,7 +107,7 @@ export default function PaymentInfoFrom ({reference , userData , showError}) {
       "zipcode":watch.zipcode,
     }
     dispatch(setAddress(addressData))
-  },[watch.address])
+  },[watch.address, dispatch , watch.county, watch.district , watch.zipcode])
   // 收件人 同會員資料 (OK)
   useEffect(() => {
     dispatch(setSameAsMember(watch.sameAsMember))
@@ -112,7 +120,7 @@ export default function PaymentInfoFrom ({reference , userData , showError}) {
       setValue("recipientPhone", "")
       setValue("recipientEmail", "")
     }
-  },[watch.sameAsMember])
+  },[watch.sameAsMember , dispatch , setValue , watch.userName , watch.userPhone , watch.userEmail])
   // 寫入收件人資料 to slice
   useEffect(()=>{
     const recipientInfoData = {
@@ -121,7 +129,7 @@ export default function PaymentInfoFrom ({reference , userData , showError}) {
       recipientEmail: watch.recipientEmail,
     }
     dispatch(setRecipientInfo(recipientInfoData))
-  },[watch.recipientName , watch.recipientPhone , watch.recipientEmail])
+  },[watch.recipientName , watch.recipientPhone , watch.recipientEmail , dispatch])
 
   return (
     <form>

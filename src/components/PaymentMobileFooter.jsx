@@ -1,7 +1,15 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import ModalComponent from "../components/ModalComponent"
+import PropTypes from 'prop-types';
 
 export default function PaymentMobileFooter ({handleFormsSubmit , orderData , projectData , productData }) {
+
+  PaymentMobileFooter.propTypes = {
+    handleFormsSubmit : PropTypes.func,
+    orderData : PropTypes.object,
+    projectData : PropTypes.object,
+    productData : PropTypes.object,
+  }
 
   const modalRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
