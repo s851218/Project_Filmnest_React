@@ -1,7 +1,7 @@
 import { useImperativeHandle } from "react"
 import { useForm } from "react-hook-form"
 
-export default function BonusCalculator ({ bonus , setBonse , type , reference }) {
+export default function BonusCalculator ({ bonus , setBonus , type , reference }) {
   const { register , reset , handleSubmit } = useForm({defaultValues:{customized:""}})
 
   useImperativeHandle(reference,() => ({
@@ -12,19 +12,19 @@ export default function BonusCalculator ({ bonus , setBonse , type , reference }
   const handleAddBonus = (e) => {
     const addBonus = Number(e.target.value)
     const newBonus = bonus + addBonus
-    setBonse(newBonus)
+    setBonus(newBonus)
   }
 
   // 處理重製
   const handleResetBonus = () => {
-    setBonse(0)
+    setBonus(0)
   }
   
   // 處理自訂金額
   const onsubmit = (data) => {
     const addBouns = Number(data.customized)
     const newBonus = bonus + addBouns
-    setBonse(newBonus)
+    setBonus(newBonus)
     reset()
   }
 

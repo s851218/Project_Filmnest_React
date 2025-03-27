@@ -21,7 +21,6 @@ export default function FeedbackOption() {
   const {
     register,
     handleSubmit,
-    reset,
     control,
     formState: { errors },
   } = useForm();
@@ -34,7 +33,7 @@ export default function FeedbackOption() {
   const [projectData, setProjectData] = useState([]);
   const [isName, setIsName] = useState(false);
   const [originPrice, setOriginPrice] = useState(0);
-  const [bonus, setBonse] = useState(0);
+  const [bonus, setBonus] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [modalType , setModalType] = useState(null)
   const userInfo = useSelector((state) => state.user.profile);
@@ -376,7 +375,7 @@ export default function FeedbackOption() {
             >
               <div className="card-body">
                 <h3 className="card-title fs-5 fw-bolder mb-6">隨喜加碼</h3>
-                <BonusCalculator bonus={bonus} setBonse={setBonse} type={"layout"} />
+                <BonusCalculator bonus={bonus} setBonus={setBonus} type={"layout"} />
                 <div className="bg-primary-8 p-3 rounded-1 mb-4">
                   <p className="mb-1">總計金額</p>
                   <h4 className="fs-6 fw-bolder mb-1">
@@ -425,7 +424,7 @@ export default function FeedbackOption() {
         handleBonusCheck={handleBonusCheck}
         handleBonusReset={handleBonusReset}
       >
-        { (modalType === "bonus") && <BonusCalculator reference={bonusCalculatorRef} bonus={bonus} setBonse={setBonse} type={"bouns"} /> } 
+        { (modalType === "bonus") && <BonusCalculator reference={bonusCalculatorRef} bonus={bonus} setBonus={setBonus} type={"bouns"} /> } 
       </ModalComponent>
 
       <GrayScreenLoading isLoading={isLoading} />

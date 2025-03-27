@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Modal } from "bootstrap";
 import FeedbackSwiper from "../components/FeedbackSwiper";
+import PropTypes from 'prop-types';
 
 function ModalComponent({
   modalRef,
@@ -12,6 +13,19 @@ function ModalComponent({
   handleBonusReset,
   children,
 }) {
+
+  ModalComponent.propTypes = {
+    modalRef : PropTypes.shape({
+      current: PropTypes.any
+    }),
+    isModalOpen : PropTypes.bool,
+    setIsModalOpen : PropTypes.func,
+    modalType : PropTypes.string,
+    totalPrice : PropTypes.number,
+    handleBonusCheck : PropTypes.func,
+    handleBonusReset : PropTypes.func,
+    children : PropTypes.any,
+  }
   
   useEffect(() => {    
     // 建立Modal實例
@@ -21,7 +35,7 @@ function ModalComponent({
       keyboard : false
       // 取消Modal使用鍵盤操控
     });
-  },[])
+  },[modalRef])
 
   useEffect(() => {
     if (isModalOpen) {
@@ -29,7 +43,7 @@ function ModalComponent({
     } else {
       Modal.getInstance(modalRef.current).hide()
     }
-  },[isModalOpen])
+  },[isModalOpen,modalRef])
 
   let modalTitle
   switch (modalType) {

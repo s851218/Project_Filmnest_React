@@ -79,7 +79,7 @@ export default function CreatePropsal() {
   const handleChange = (newDateTime,type) => {
     if (newDateTime) {
       switch (type) {
-        case "created":
+        case "created": {
           // 設置時間為當日 00:00
           newDateTime.setHours(0, 0, 0, 0);
           setValue("createdAt", newDateTime); // 更新日期與時間
@@ -90,6 +90,7 @@ export default function CreatePropsal() {
           setValue("endAt", defaultEndTime); // 預設截止日期為一個月後
           setEndMinDate(defaultEndTime)
           break;
+        }
 
         case "end":
           // 設置時間為當日 23:59
