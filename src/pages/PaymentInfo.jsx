@@ -86,7 +86,7 @@ export default function PaymentInfo() {
     if (id) {
       getOrder(id);
     }
-  }, [id]);
+  }, [id,navigate]);
 
   // 取得資料
   const getData = async (order) => {
@@ -117,7 +117,7 @@ export default function PaymentInfo() {
         getData(orderData);
       }
     }
-  }, [orderData]);
+  }, [orderData,navigate]);
 
   // 送出表單 => props傳遞給aside footer
   // 建立ref
@@ -172,12 +172,12 @@ export default function PaymentInfo() {
         break;
 
       case 1: // ATM轉帳
-        const bankSelect = banksData.filter((bank)=> (bank.bankCode === paymentOption.bankSelect))
+        {const bankSelect = banksData.filter((bank)=> (bank.bankCode === paymentOption.bankSelect))
         paymentStatu = 0 // 未付款
         paymentMethod = {
           type: accordionIndex,
           ...bankSelect[0]
-        }
+        }}
         break;
 
       case 2: // 信用卡付款

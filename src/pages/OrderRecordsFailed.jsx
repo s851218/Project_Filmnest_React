@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { CheckModal } from "../assets/js/costomSweetAlert";
@@ -31,7 +31,7 @@ export default function OrderRecordsFailed() {
     return newTime;
   };
   // 取得訂單
-  const getOrderData = async () => {
+  const getOrderData = useCallback( async () => {
     setIsLoading(true);
 
     try {
@@ -50,10 +50,10 @@ export default function OrderRecordsFailed() {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[sortOrderData,userId])
   useEffect(() => {
     getOrderData();
-  }, [sortOrderData]);
+  }, [sortOrderData,getOrderData]);
 
   // 取消訂單
   const handleCancelOrder = (order) => {

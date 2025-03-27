@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Link, Outlet, useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
@@ -19,7 +19,7 @@ export default function AboutStudio() {
   // 提案者資料
   const [studioProfile, setStudioProfile] = useState({});
   // 取得提案者資料
-  const getStudioProfile = async () => {
+  const getStudioProfile = useCallback (async () => {
     setIsLoading(true);
     let idArray = id.split("=");
     let idObj = { [idArray[0]]: Number(idArray[1]) };
@@ -36,10 +36,10 @@ export default function AboutStudio() {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[id])
 
   // 取得專案資料
-  const getProjectData = async () => {
+  const getProjectData = useCallback( async () => {
     setIsLoading(true)
     try {
       const response = await axios.get(
@@ -56,12 +56,12 @@ export default function AboutStudio() {
     } finally{
         setIsLoading(false)
     }
-  };
+  },[userId])
   useEffect(() => {
     if (userId) {
       getProjectData();
     }
-  }, [userId]);
+  }, [userId,getProjectData]);
 
  
 
@@ -75,7 +75,7 @@ export default function AboutStudio() {
   // 元件初始化
   useEffect(() => {
     getStudioProfile();
-  }, []);
+  }, [getStudioProfile]);
 
 
   const {

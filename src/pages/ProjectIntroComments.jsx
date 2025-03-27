@@ -6,6 +6,7 @@ import getNewDateFormatted from "../helpers/getNewDateFormatted";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { Toast } from "../assets/js/costomSweetAlert";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
@@ -436,7 +437,7 @@ export default function ProjectIntroComments() {
           }`}
       </style>
 
-      {/* <GrayScreenLoading isLoading={isLoading} /> */}
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

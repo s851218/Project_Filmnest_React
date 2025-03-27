@@ -7,7 +7,7 @@ import {
 import ProjectIntroNav from "../components/ProjectIntroNav";
 import ProjectIntroSwiper from "../components/ProjectIntroSwiper";
 import ProjectIntroInfo from "../components/ProjectIntroInfo";
-import { useEffect, useLayoutEffect, useState } from "react";
+import {  useLayoutEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";

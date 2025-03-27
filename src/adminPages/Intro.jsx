@@ -264,7 +264,7 @@ export default function Intro() {
     try {
       // 將團隊人員的 fields 中的 temp 屬性移除
       const updatedTeam = data.team.map((member) => {
-        const { temp, ...rest } = member;
+        const { ...rest } = member;
         return rest;
       });
 

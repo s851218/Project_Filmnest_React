@@ -10,6 +10,7 @@ export default function HeaderSmSec() {
   const profile = useSelector((state) => state.user.profile);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const id = useSelector((state)=> state.user.profile.userId)
   const handleLogout = async () => {
     try {
       await axios.patch(`${apiBase}/users/${id}`, { token: "" });

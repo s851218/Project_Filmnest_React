@@ -1,3 +1,4 @@
+import PropTypes from "prop-types";
 import ReactLoading from "react-loading";
 
 export default function LightScreenLoading({ isLoading }) {
@@ -19,3 +20,6 @@ export default function LightScreenLoading({ isLoading }) {
     </>
   );
 }
+LightScreenLoading.propTypes = {
+  isLoading: PropTypes.bool,
+};

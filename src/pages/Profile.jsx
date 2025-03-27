@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import PersonalCenterSidebar from "../components/PersonalCenterSidebar";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { setLogin } from "../slice/userSlice";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 import { Toast } from "../assets/js/costomSweetAlert";
@@ -72,7 +72,7 @@ export default function Profile() {
     }
   };
 
-  const getUserProfile = async () => {
+  const getUserProfile = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(`${apiBase}/users/${id}`);
@@ -90,10 +90,10 @@ export default function Profile() {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[id,setValue])
   useEffect(() => {
     getUserProfile();
-  }, [id]);
+  }, [id,getUserProfile]);
 
   return (
     <>
@@ -142,7 +142,7 @@ export default function Profile() {
             <div className="container">
               <div className="row g-3">
                 <div className="col-md-6">
-                  <label for="inputEmail4" className="form-label">
+                  <label htmlFor="inputEmail4" className="form-label">
                     帳號
                   </label>
                   <input
@@ -154,7 +154,7 @@ export default function Profile() {
                   />
                 </div>
                 <div className="col-md-6">
-                  <label for="inputEmail4" className="form-label">
+                  <label htmlFor="inputEmail4" className="form-label">
                     密碼
                   </label>
                   <button
@@ -169,7 +169,7 @@ export default function Profile() {
                   </button>
                 </div>
                 <div className="col-md-6">
-                  <label for="inputAddress" className="form-label">
+                  <label htmlFor="inputAddress" className="form-label">
                     真實姓名
                   </label>
                   <input
@@ -194,7 +194,7 @@ export default function Profile() {
                   )}
                 </div>
                 <div className="col-md-6">
-                  <label for="inputAddress2" className="form-label">
+                  <label htmlFor="inputAddress2" className="form-label">
                     暱稱
                   </label>
                   <input
@@ -214,7 +214,7 @@ export default function Profile() {
                   )}
                 </div>
                 <div className="col-6">
-                  <label for="inputAddress3" className="form-label">
+                  <label htmlFor="inputAddress3" className="form-label">
                     聯絡電話
                   </label>
                   <input
@@ -234,7 +234,7 @@ export default function Profile() {
                   )}
                 </div>
                 <div className="col-6">
-                  <label for="inputAddress4" className="form-label">
+                  <label htmlFor="inputAddress4" className="form-label">
                     出生日期
                   </label>
                   <input
@@ -254,7 +254,7 @@ export default function Profile() {
                   )}
                 </div>
                 <div className="col">
-                  <label for="inputAddress5" className="form-label">
+                  <label htmlFor="inputAddress5" className="form-label">
                     自我介紹
                   </label>
                   <textarea

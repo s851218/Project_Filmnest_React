@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import Quill from "quill";
 import "quill/dist/quill.snow.css";
+import PropTypes from "prop-types";
 
 export default function ArticleEditor({ setValue, defaultContent }) {
   const editorRef = useRef(null);
@@ -12,13 +13,7 @@ export default function ArticleEditor({ setValue, defaultContent }) {
       quillRef.current = new Quill(editorRef.current, {
         theme: "snow",
         modules: {
-          toolbar: [
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
-            ["bold", "italic", "underline", "strike"],
-            ["link", "image"],
-            [{ list: "ordered" }, { list: "bullet" }],
-            ["clean"],
-          ],
+          toolbar: [[{ header: [1, 2, 3, 4, 5, 6, false] }], ["bold", "italic", "underline", "strike"], ["link", "image"], [{ list: "ordered" }, { list: "bullet" }], ["clean"]],
         },
       });
       // 送出編輯後內容
@@ -43,3 +38,7 @@ export default function ArticleEditor({ setValue, defaultContent }) {
     </>
   );
 }
+ArticleEditor.propTypes = {
+  setValue: PropTypes.func,
+  defaultContent: PropTypes.string,
+};

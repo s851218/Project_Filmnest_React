@@ -43,7 +43,7 @@ export default function ProjectIntroSwiper({ projectInfo }) {
     if (thumbsSwiper && swiperRef.current) {
       swiperRef.current.update();
     }
-  }, [otherImages]);
+  }, [otherImages,thumbsSwiper]);
 
   // 手機版 Navigation
   const handlePrevSlide = () => {

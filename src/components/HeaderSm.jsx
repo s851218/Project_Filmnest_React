@@ -11,7 +11,6 @@ const apiBase = import.meta.env.VITE_API_BASE;
 export default function HeaderSm() {
   const profile = useSelector((state) => state.user.profile);
   const id = useSelector((state) => state.user.profile.userId);
-  const searchValue = useSelector((state) => state.search.value);
   const isSearchOpen = useSelector((state) => state.search.isSearchOpen);
   const categoryData = ["喜劇", "愛情", "恐怖", "懸疑", "科幻", "紀錄片", "動畫", "實驗電影"];
   const [isExpand, setIsExpand] = useState({ category: false });

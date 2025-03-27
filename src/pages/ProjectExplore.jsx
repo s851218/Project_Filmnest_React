@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setCategory } from "../slice/categorySlice";
 import Card from "../components/Card";
@@ -16,9 +16,8 @@ export default function ProjectExplore() {
   const dispatch = useDispatch();
   const category = useSelector((state) => state.category.type);
   const searchText = useSelector((state) => state.search.text);
-  const searchValue = useSelector((state) => state.search.value);
 
-  const getProjectsData = async () => {
+  const getProjectsData = useCallback( async () => {
     setIsLoading(true);
     let apiUrl;
     if (!category || category === "all") {
@@ -42,7 +41,7 @@ export default function ProjectExplore() {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[category,searchText,dispatch])
 
   const handleSwitchCategory = (e) => {
     const { value } = e.target;
@@ -51,13 +50,13 @@ export default function ProjectExplore() {
 
   useLayoutEffect(() => {
     getProjectsData();
-  }, [category, searchText]);
+  }, [getProjectsData,category, searchText]);
 
   useEffect(() => {
     return () => {
       dispatch(setCategory("all"));
     };
-  }, [location.pathname]);
+  }, [location.pathname,dispatch]);
 
   return (
     <>

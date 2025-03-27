@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../slice/userSlice";
 import axios from "axios";
 import { Toast } from "../assets/js/costomSweetAlert";
@@ -9,6 +9,7 @@ export default function AdminHeader() {
   const profile = useSelector((state) => state.user.profile);
   const id = useSelector((state) => state.user.profile.userId);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     try {
@@ -21,10 +22,12 @@ export default function AdminHeader() {
       });
       navigate("/");
     } catch (error) {
-      Toast.fire({
-        icon: "error",
-        title: "登出失敗",
-      });
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "登出失敗",
+        });
+      }
     }
   };
 
@@ -41,7 +44,7 @@ export default function AdminHeader() {
             Studio
           </NavLink>
           <div className="ms-auto d-none d-lg-block">
-          <div className="ms-auto d-flex flex-column flex-lg-row align-items-center">
+            <div className="ms-auto d-flex flex-column flex-lg-row align-items-center">
               {profile.token ? (
                 <>
                   <div className="collapse navbar-collapse text-white">
@@ -82,7 +85,7 @@ export default function AdminHeader() {
                         </li>
                         <li>
                           <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" onClick={handleLogout}>
-                            <span class="material-symbols-outlined fs-7 me-3">exit_to_app</span>
+                            <span className="material-symbols-outlined fs-7 me-3">exit_to_app</span>
                             <span>登出</span>
                           </Link>
                         </li>

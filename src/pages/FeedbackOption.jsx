@@ -21,7 +21,6 @@ export default function FeedbackOption() {
   const {
     register,
     handleSubmit,
-    reset,
     control,
     formState: { errors },
   } = useForm();

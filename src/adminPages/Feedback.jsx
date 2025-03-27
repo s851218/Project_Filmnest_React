@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
@@ -86,7 +86,7 @@ function AdminFeedbackForm() {
     }
   };
 
-  const getFeedbackData = async () => {
+  const getFeedbackData = useCallback( async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(`${API_BASE}/products?projectId=${id}`);
@@ -98,10 +98,10 @@ function AdminFeedbackForm() {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[id,reset])
   useEffect(() => {
     getFeedbackData();
-  }, [reset]);
+  }, [reset,getFeedbackData]);
 
   const onSubmit = async (data) => {
     // 處理批量請求：比對資料

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Card from "../components/Card";
 import PersonalCenterSidebar from "../components/PersonalCenterSidebar";
@@ -19,7 +19,7 @@ export default function FavoriteProject() {
   const [favoriteProjects, setFavoriteProjects] = useState([]);
   const id = useSelector((state) => state.user.profile.userId);
 
-  const getFavoriteProjects = async () => {
+  const getFavoriteProjects = useCallback( async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
@@ -31,10 +31,10 @@ export default function FavoriteProject() {
     } finally {
       setIsLoading(false);
     }
-  };
+  },[id])
   useEffect(() => {
     getFavoriteProjects();
-  }, [id]);
+  }, [id,getFavoriteProjects]);
   return (
     <>
       <Helmet>

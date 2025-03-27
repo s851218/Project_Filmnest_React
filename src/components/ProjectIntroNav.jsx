@@ -48,7 +48,7 @@ export default function ProjectIntroNav({ projectId }) {
       }
     };
     getFavoritesData();
-  }, [projectId, userId]);
+  }, [projectId, userId,token]);
 
   // 收藏與取消收藏
   const toggleFavorite = async (e) => {
