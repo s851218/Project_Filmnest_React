@@ -90,7 +90,7 @@ export default function Header() {
   }, [dispatch]);
 
   const handleSearchToggle = (e) => {
-    console.log(buttonRef.current.contains(e.target));
+    
 
     if (buttonRef.current.contains(e.target)) {
       navigate("/headerSm");

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { CheckModal } from "../assets/js/costomSweetAlert";
+import { Alert, CheckModal } from "../assets/js/costomSweetAlert";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 
 const apiBase = import.meta.env.VITE_API_BASE;
@@ -44,7 +44,12 @@ export default function OrderRecordsAll() {
         setOrdersData(orderData);
       }
     } catch (error) {
-      console.log(error);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "取得訂單失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }

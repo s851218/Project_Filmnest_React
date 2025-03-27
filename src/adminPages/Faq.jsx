@@ -46,7 +46,7 @@ export default function Faq() {
       date: "date",
     };
     const now = new Date().toString();
-    console.log(now);
+    
 
     const newFaq = {
       ...faqData,
@@ -148,16 +148,13 @@ export default function Faq() {
   }, [id]);
 
   const handleCreate = () => {
-    console.log("handleCreate");
     AdminCheckModal.fire({
       title: "確認新增常見問題",
       showCancelButton: true,
       confirmButtonText: "確認",
       cancelButtonText: "取消",
     }).then((result) => {
-      console.log(result);
       if (result.value) {
-        console.log("已新增");
         handleSubmit(onSubmit)();
       }
     });

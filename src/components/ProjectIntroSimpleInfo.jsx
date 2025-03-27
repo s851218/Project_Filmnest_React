@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import PropTypes from "prop-types";
+import { Alert } from "../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -19,7 +20,12 @@ export default function ProjectIntroSimpleInfo({ projectInfo, studioId }) {
         const res = await axios.get(`${API_BASE}/studios/${studioId}`);
         setProposerData(res.data.studioProfile);
       } catch (error) {
-        console.log("取得提案人資料失敗：", error);
+        if (error) {
+          Alert.fire({
+            icon: "error",
+            title: "取得提案人資料失敗",
+          });
+        }
       }
     };
     getProposerData();
@@ -53,37 +59,22 @@ export default function ProjectIntroSimpleInfo({ projectInfo, studioId }) {
       <div className="container">
         <section className="d-flex flex-column flex-xl-row gap-3 gap-md-6">
           <div className="project-image-container">
-            <img
-              src={projectInfo.projectImage}
-              alt={`${projectInfo.projectTitle}封面劇照`}
-              className="img-fluid object-fit-cover rounded"
-            />
+            <img src={projectInfo.projectImage} alt={`${projectInfo.projectTitle}封面劇照`} className="img-fluid object-fit-cover rounded" />
           </div>
           <div className="py-0 py-xl-2">
             <div className="mb-3">
               <Link to="/projectExplore">
-                <span className="py-1 px-2 bg-primary-8 rounded me-2 tag-hover-category fs-xs fs-md-base">
-                  {projectInfo.category}
-                </span>
+                <span className="py-1 px-2 bg-primary-8 rounded me-2 tag-hover-category fs-xs fs-md-base">{projectInfo.category}</span>
               </Link>
               <Link to="/projectExplore">
-                <span className="py-1 px-2 bg-primary-6 rounded tag-hover-status fs-xs fs-md-base">
-                  {countDown.days < 7 && countDown.days > 0
-                    ? "即將結束"
-                    : "進行中"}
-                </span>
+                <span className="py-1 px-2 bg-primary-6 rounded tag-hover-status fs-xs fs-md-base">{countDown.days < 7 && countDown.days > 0 ? "即將結束" : "進行中"}</span>
               </Link>
             </div>
-            <h2 className="fs-base fs-sm-7 fs-md-6">
-              {projectInfo.projectTitle}
-            </h2>
+            <h2 className="fs-base fs-sm-7 fs-md-6">{projectInfo.projectTitle}</h2>
             <h3 className="fs-xs fs-md-base">
               <span>
                 提案人{" "}
-                <Link
-                  to="aboutStudio"
-                  className="text-primary-3 text-decoration-underline"
-                >
+                <Link to="aboutStudio" className="text-primary-3 text-decoration-underline">
                   {proposerData.groupName}
                 </Link>
               </span>

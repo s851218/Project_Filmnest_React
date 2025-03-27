@@ -120,9 +120,7 @@ export default function Post() {
       cancelButtonText: "取消",
       html: `<hr><p class="fs-6">【${thisPost.title}】</p>`,
     }).then((result) => {
-      console.log(result);
       if (result.value) {
-        console.log("已確認刪除");
         delPostData(dataId);
       }
     });

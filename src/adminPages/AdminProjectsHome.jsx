@@ -5,6 +5,7 @@ import { setExpanded } from "../slice/adminSidebarExpandSlice";
 import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
+import { Alert } from "../assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function AdminProjectsHome() {
@@ -45,7 +46,12 @@ export default function AdminProjectsHome() {
       const response = await axios.get(`${apiBase}/projects?userId=${userId}`);
       setProjects(response.data);
     } catch (error) {
-      console.log(error);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "專案取得失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -55,7 +61,12 @@ export default function AdminProjectsHome() {
       const response = await axios.get(`${apiBase}/comments?projectId=${id}`);
       setCommentsCount((prev) => ({ ...prev, [id]: response.data.length }));
     } catch (error) {
-      console.log(error);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "留言取得失敗",
+        });
+      }
     }
   };
 
@@ -64,7 +75,12 @@ export default function AdminProjectsHome() {
       const response = await axios.get(`${apiBase}/favorites?projectId=${id}`);
       setFavoritesCount((prev) => ({ ...prev, [id]: response.data.length }));
     } catch (error) {
-      console.log(error);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "收藏取得失敗",
+        });
+      }
     }
   };
 

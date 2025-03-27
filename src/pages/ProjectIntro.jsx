@@ -1,9 +1,4 @@
-import {
-  Outlet,
-  ScrollRestoration,
-  useLocation,
-  useParams,
-} from "react-router";
+import { Outlet, ScrollRestoration, useLocation, useParams } from "react-router";
 import ProjectIntroNav from "../components/ProjectIntroNav";
 import ProjectIntroSwiper from "../components/ProjectIntroSwiper";
 import ProjectIntroInfo from "../components/ProjectIntroInfo";
@@ -12,6 +7,7 @@ import axios from "axios";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 import ProjectIntroSimpleInfo from "../components/ProjectIntroSimpleInfo";
+import { Alert } from "../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -27,8 +23,7 @@ export default function ProjectIntro() {
   const currentPage = location.pathname;
 
   // 判斷是不是預設頁面(專案介紹內文)，路徑有 news, supportFeedback, QA...等，就回傳 true，前面再加 ! 代表不是預設頁面
-  const isDefaultRoute =
-    !/(news|supportFeedback|QA|comments|infoDisclosure)/.test(currentPage);
+  const isDefaultRoute = !/(news|supportFeedback|QA|comments|infoDisclosure)/.test(currentPage);
 
   // 判斷路由使否是提案人介紹頁面
   const isAboutStudioPage = location.pathname.includes("/aboutStudio");
@@ -55,7 +50,12 @@ export default function ProjectIntro() {
           const res = await axios.get(`${API_BASE}/projects/${id}`); // xiang 2025/02/27 intro路由調整
           setProjectInfo(res.data);
         } catch (error) {
-          console.log("取得專案資訊失敗：", error);
+          if (error) {
+            Alert.fire({
+              icon: "error",
+              title: "取得專案資訊失敗",
+            });
+          }
         } finally {
           setIsLoading(false);
         }
@@ -85,10 +85,7 @@ export default function ProjectIntro() {
               </div>
             ) : (
               // 簡單專案資訊
-              <ProjectIntroSimpleInfo
-                projectInfo={projectInfo}
-                studioId={projectInfo.studioId}
-              />
+              <ProjectIntroSimpleInfo projectInfo={projectInfo} studioId={projectInfo.studioId} />
             )}
           </section>
 

@@ -2,7 +2,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
-import { CheckModal } from "../assets/js/costomSweetAlert";
+import { Alert, CheckModal } from "../assets/js/costomSweetAlert";
 import { useNavigate, useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 
@@ -39,7 +39,12 @@ export default function OrderRecordsDetail() {
       const response = await axios.get(`${apiBase}/orders?_expand=project&_expand=product&id=${id}`);
       setOrdersData(response.data[0]);
     } catch (error) {
-      console.log(error);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "取得訂單失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }

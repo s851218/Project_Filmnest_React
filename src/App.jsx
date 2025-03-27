@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "./slice/userSlice";
 import axios from "axios";
 import { useCallback, useEffect } from "react";
+import { Alert } from "./assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 function App() {
@@ -46,7 +47,12 @@ function App() {
         })
       );
     } catch (error) {
-      console.log(error.data);
+      if(error){
+        Alert.fire({
+          icon: "error",
+          title: "驗證失敗",
+        })
+      }
     }
   },[dispatch])
 

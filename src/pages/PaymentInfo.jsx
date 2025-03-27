@@ -8,7 +8,7 @@ import PaymentInfoFrom from "../components/PaymentInfoFrom";
 import PaymentCollapseFrom from "../components/PaymentCollapseFrom";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
-import { CheckModal , Alert } from "../assets/js/costomSweetAlert";
+import { CheckModal, Alert } from "../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -32,8 +32,8 @@ const banksData = [
     bankCode: "013",
     bankName: "國泰世華銀行",
     accountNumber: "581023764895",
-  }
-]
+  },
+];
 
 export default function PaymentInfo() {
   // 路由跳轉頁面時，重製滾輪捲軸
@@ -51,18 +51,18 @@ export default function PaymentInfo() {
   const [userData, setUserData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const paymentInfoSlice = useSelector((state) => state.paymentInfo);
-  const [showError , setShowError] = useState(false)
-  const accordionIndex = useSelector((state)=>state.paymentInfo.accordion.index)
+  const [showError, setShowError] = useState(false);
+  const accordionIndex = useSelector((state) => state.paymentInfo.accordion.index);
 
   // 初始化
   const init = () => {
-    setOrderData({})
-    setProjectData({})
-    setProductData({})
-  }
+    setOrderData({});
+    setProjectData({});
+    setProductData({});
+  };
   // 取得訂單資料
   useEffect(() => {
-    init()
+    init();
     const getOrder = async (id) => {
       setIsLoading(true);
       try {
@@ -70,15 +70,23 @@ export default function PaymentInfo() {
         if (res.data.length !== 0) {
           setOrderData(res.data[0]);
         } else {
-          Alert.fire({
-            icon: "error",
-            title: "訂單不存在",
-          },setTimeout(() => {
-            navigate("/");
-          }, 1500))
+          Alert.fire(
+            {
+              icon: "error",
+              title: "訂單不存在",
+            },
+            setTimeout(() => {
+              navigate("/");
+            }, 1500)
+          );
         }
       } catch (error) {
-        console.log("訂單資料取得錯誤", error);
+        if (error) {
+          Alert.fire({
+            icon: "error",
+            title: "訂單資料取得失敗",
+          });
+        }
       } finally {
         setIsLoading(false);
       }
@@ -86,7 +94,7 @@ export default function PaymentInfo() {
     if (id) {
       getOrder(id);
     }
-  }, [id,navigate]);
+  }, [id, navigate]);
 
   // 取得資料
   const getData = async (order) => {
@@ -99,7 +107,12 @@ export default function PaymentInfo() {
       setProductData(productRes.data);
       setUserData(userRes.data);
     } catch (error) {
-      console.log("資料取得錯誤", error);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "資料取得失敗",
+        });
+      }
     }
   };
 
@@ -107,17 +120,20 @@ export default function PaymentInfo() {
   useEffect(() => {
     if (Object.keys(orderData).length !== 0) {
       if (orderData.paymentStatus === "已付款") {
-        Alert.fire({
-          icon: "error",
-          title: "訂單已付款",
-        },setTimeout(() => {
-          navigate("/");
-        }, 1500))
+        Alert.fire(
+          {
+            icon: "error",
+            title: "訂單已付款",
+          },
+          setTimeout(() => {
+            navigate("/");
+          }, 1500)
+        );
       } else {
         getData(orderData);
       }
     }
-  }, [orderData,navigate]);
+  }, [orderData, navigate]);
 
   // 送出表單 => props傳遞給aside footer
   // 建立ref
@@ -128,26 +144,30 @@ export default function PaymentInfo() {
     try {
       await infoFromRef.current.submitForm();
       await paymentFromRef.current.submitForm();
-      
+
       if (paymentFromRef.current.isValid && infoFromRef.current.isValid) {
-        setShowError(false)
+        setShowError(false);
         handlePayment(orderData.id);
       } else {
-        setShowError(true)
+        setShowError(true);
       }
     } catch (error) {
-      console.log("驗證失敗", error);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "驗證失敗",
+        });
+      }
     }
   };
 
   // 驗證成功後送出付款資料
   const handlePayment = async (id) => {
-    const { recipientInfo, address , paymentOption } = paymentInfoSlice;
+    const { recipientInfo, address, paymentOption } = paymentInfoSlice;
 
     // 重組地址字串
-    const newAddress =
-      address.zipcode + address.county + address.district + address.address;
-    
+    const newAddress = address.zipcode + address.county + address.district + address.address;
+
     // 重組收件人資料
     const newOrderFile = {
       Recipient: recipientInfo.recipientName,
@@ -155,39 +175,41 @@ export default function PaymentInfo() {
       email: recipientInfo.recipientEmail,
       address: newAddress, // 寫入重組後的地址字串
     };
-    
-    let paymentStatu // 付款狀態
-    let paymentMethod // 付款別
-    let createdPaymentTime // 取得付款時間
-    
+
+    let paymentStatu; // 付款狀態
+    let paymentMethod; // 付款別
+    let createdPaymentTime; // 取得付款時間
+
     switch (accordionIndex) {
       case 0: // 信用卡付款
-        paymentStatu = 1 // 已付款
+        paymentStatu = 1; // 已付款
         paymentMethod = {
           type: accordionIndex,
           cardType: paymentOption.cardType,
           method: paymentOption.payMethod,
-        }
+        };
         createdPaymentTime = new Date().toString(); // 取得付款時間
         break;
 
       case 1: // ATM轉帳
-        {const bankSelect = banksData.filter((bank)=> (bank.bankCode === paymentOption.bankSelect))
-        paymentStatu = 0 // 未付款
-        paymentMethod = {
-          type: accordionIndex,
-          ...bankSelect[0]
-        }}
+        {
+          const bankSelect = banksData.filter((bank) => bank.bankCode === paymentOption.bankSelect);
+          paymentStatu = 0; // 未付款
+          paymentMethod = {
+            type: accordionIndex,
+            ...bankSelect[0],
+          };
+        }
         break;
 
       case 2: // 信用卡付款
-        paymentStatu = 0 // 未付款
+        paymentStatu = 0; // 未付款
         paymentMethod = {
           type: accordionIndex,
           paymentCode: "FNEC942335764",
-        }
+        };
         break;
-    
+
       default:
         break;
     }
@@ -200,25 +222,27 @@ export default function PaymentInfo() {
       paymentMethod, // 付款別
       paymentTime: accordionIndex === 0 ? createdPaymentTime : "付款時間", // 寫入付款時間
       canCancel: accordionIndex === 0 ? false : true,
-      canRefund: accordionIndex === 0 ? true : false   // 2025.03.20 xiang
+      canRefund: accordionIndex === 0 ? true : false, // 2025.03.20 xiang
     };
 
-    console.log("NEW", newOrderData);
     try {
       await axios.put(`${API_BASE}/orders/${id}`, newOrderData);
-      Alert.fire({
-        icon: "success",
-        title: "付款成功",
-      },
-      setTimeout(() => {
-        navigate("/") // 重新導向 暫定首頁 => 之後改付款完成頁面
-      }, 1500));
+      Alert.fire(
+        {
+          icon: "success",
+          title: "付款成功",
+        },
+        setTimeout(() => {
+          navigate("/"); // 重新導向 暫定首頁 => 之後改付款完成頁面
+        }, 1500)
+      );
     } catch (error) {
-      console.log(error);
-      Alert.fire({
-        icon: "error",
-        title: "付款失敗",
-      })
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "付款失敗",
+        });
+      }
     }
   };
 
@@ -230,25 +254,19 @@ export default function PaymentInfo() {
       confirmButtonText: "確認",
       cancelButtonText: "取消",
       html: `<hr><p class="fs-7">${projectData.projectTitle}</p><p class="fs-4">【 ${productData.title}】</p><p class="fs-7">總金額：$${orderData.totalPrice}</p>`,
-    }).then((result)=>{
-      console.log(result)
+    }).then((result) => {
       if (result.value) {
-        handleFormsSubmit()
+        handleFormsSubmit();
       }
-    })
-  }
-
-  
+    });
+  };
 
   return (
     <>
       <Helmet>
         <title>付款資料</title>
       </Helmet>
-      {Object.keys(orderData).length !== 0 &&
-      Object.keys(projectData).length !== 0 &&
-      Object.keys(productData).length !== 0 &&
-      Object.keys(userData).length !== 0 ? (
+      {Object.keys(orderData).length !== 0 && Object.keys(projectData).length !== 0 && Object.keys(productData).length !== 0 && Object.keys(userData).length !== 0 ? (
         <>
           <div className="container mb-20" style={{ marginTop: 88 }}>
             <div className="row">
@@ -261,21 +279,11 @@ export default function PaymentInfo() {
                 <PaymentCollapseFrom reference={paymentFromRef} showError={showError} banksData={banksData} />
               </main>
 
-              <PaymentAside
-                handleFormsSubmit={handleConfirmPayment}
-                orderData={orderData}
-                projectData={projectData}
-                productData={productData}
-              />
+              <PaymentAside handleFormsSubmit={handleConfirmPayment} orderData={orderData} projectData={projectData} productData={productData} />
             </div>
           </div>
 
-          <PaymentMobileFooter
-            handleFormsSubmit={handleConfirmPayment}
-            orderData={orderData}
-            projectData={projectData}
-            productData={productData}
-          />
+          <PaymentMobileFooter handleFormsSubmit={handleConfirmPayment} orderData={orderData} projectData={projectData} productData={productData} />
         </>
       ) : (
         <div className="vh-100"></div>

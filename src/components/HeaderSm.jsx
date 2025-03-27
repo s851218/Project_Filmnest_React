@@ -23,16 +23,17 @@ export default function HeaderSm() {
       document.cookie = "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
       Toast.fire({
         icon: "success",
-        title: "登出成功"
-      })
+        title: "登出成功",
+      });
       dispatch(setLogout());
       navigate("/");
     } catch (error) {
-      console.log(error);
-      Toast.fire({
-        icon: "error",
-        title: "登出失敗"
-      })
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "登出失敗",
+        });
+      }
     }
   };
   const handleIsExpand = () => {
@@ -44,10 +45,10 @@ export default function HeaderSm() {
     }
     dispatch(setIsSearchOpen(!isSearchOpen));
   };
-  const handleReturnPage = (e) =>{
-    e.preventDefault()
-    navigate(-1)
-  }
+  const handleReturnPage = (e) => {
+    e.preventDefault();
+    navigate(-1);
+  };
   return (
     <>
       <div className="mb-3 d-flex justify-content-between">

@@ -5,7 +5,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { setLogin } from "../slice/userSlice";
 import GrayScreenLoading from "../components/GrayScreenLoading";
-import { Toast } from "../assets/js/costomSweetAlert";
+import { Alert, Toast } from "../assets/js/costomSweetAlert";
 import { useNavigate } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 
@@ -64,11 +64,12 @@ export default function Profile() {
         title: "修改成功",
       });
     } catch (error) {
-      console.error("儲存資料錯誤:", error);
-      Toast.fire({
-        icon: "error",
-        title: "修改失敗",
-      });
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "修改失敗",
+        });
+      }
     }
   };
 
@@ -86,14 +87,19 @@ export default function Profile() {
       setValue("bio", response.data.userProfile.bio);
       setValue("userImageUrl", response.data.userProfile.userImageUrl);
     } catch (error) {
-      console.log(error.data);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "取得使用者資料失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
-  },[id,setValue])
+  }, [id, setValue]);
   useEffect(() => {
     getUserProfile();
-  }, [id,getUserProfile]);
+  }, [id, getUserProfile]);
 
   return (
     <>
@@ -103,9 +109,7 @@ export default function Profile() {
             <h1 className="fs-6">編輯個人資料</h1>
             <button className="d-flex align-items-center btn btn-primary py-3 px-4">
               <span className="fs-sm fw-bolder me-2">儲存</span>
-              <span className="material-symbols-outlined align-bottom fs-7">
-                check
-              </span>
+              <span className="material-symbols-outlined align-bottom fs-7">check</span>
             </button>
           </div>
           <div className="bg-primary-8 rounded-lg-4 d-flex flex-column flex-lg-row align-items-center p-3 p-lg-10">
@@ -114,26 +118,13 @@ export default function Profile() {
             </div>
             <div className="me-lg-11">
               <div className="mb-3">
-                <div
-                  style={{ width: "280px", height: "280px" }}
-                  className="mb-5"
-                >
+                <div style={{ width: "280px", height: "280px" }} className="mb-5">
                   <img src={file} alt="" className="object-fit-cover h-100" />
                 </div>
-                <input
-                  type="file"
-                  id="inputFile"
-                  className="d-none"
-                  onChange={handleFileChange}
-                />
-                <label
-                  htmlFor="inputFile"
-                  className="btn btn-primary-9 border d-flex justify-content-center align-items-center w-100"
-                >
+                <input type="file" id="inputFile" className="d-none" onChange={handleFileChange} />
+                <label htmlFor="inputFile" className="btn btn-primary-9 border d-flex justify-content-center align-items-center w-100">
                   <span>選擇檔案</span>
-                  <span className="material-symbols-outlined ms-1 fs-7">
-                    folder
-                  </span>
+                  <span className="material-symbols-outlined ms-1 fs-7">folder</span>
                 </label>
 
                 <input type="file" className="d-none" id="formFile" />
@@ -145,27 +136,15 @@ export default function Profile() {
                   <label htmlFor="inputEmail4" className="form-label">
                     帳號
                   </label>
-                  <input
-                    type="email"
-                    className="form-control bg-primary-4"
-                    defaultValue={userEmail}
-                    id="inputEmail4"
-                    disabled
-                  />
+                  <input type="email" className="form-control bg-primary-4" defaultValue={userEmail} id="inputEmail4" disabled />
                 </div>
                 <div className="col-md-6">
                   <label htmlFor="inputEmail4" className="form-label">
                     密碼
                   </label>
-                  <button
-                    type="button"
-                    className="btn btn-primary-9 border d-flex align-items-center py-2 px-4"
-                    onClick={() => navigate("/personalCenter/profilePassword")}
-                  >
+                  <button type="button" className="btn btn-primary-9 border d-flex align-items-center py-2 px-4" onClick={() => navigate("/personalCenter/profilePassword")}>
                     <span className="fs-sm">變更密碼</span>
-                    <span className="material-symbols-outlined ms-1 fs-base ">
-                      edit
-                    </span>
+                    <span className="material-symbols-outlined ms-1 fs-base ">edit</span>
                   </button>
                 </div>
                 <div className="col-md-6">
@@ -175,9 +154,7 @@ export default function Profile() {
                   <input
                     type="text"
                     defaultValue={userProfile.userName}
-                    className={`form-control bg-primary-9 ${
-                      errors.userName && "is-invalid"
-                    }`}
+                    className={`form-control bg-primary-9 ${errors.userName && "is-invalid"}`}
                     id="inputAddress"
                     placeholder="請輸入您的真實姓名"
                     {...register("userName", {
@@ -187,100 +164,39 @@ export default function Profile() {
                       },
                     })}
                   />
-                  {errors?.userName?.message && (
-                    <div className="invalid-feeback text-danger">
-                      {errors.userName.message}
-                    </div>
-                  )}
+                  {errors?.userName?.message && <div className="invalid-feeback text-danger">{errors.userName.message}</div>}
                 </div>
                 <div className="col-md-6">
                   <label htmlFor="inputAddress2" className="form-label">
                     暱稱
                   </label>
-                  <input
-                    type="text"
-                    defaultValue={userProfile.nickName}
-                    className={`form-control bg-primary-9 ${
-                      errors.nickName && "is-invalid"
-                    }`}
-                    id="inputAddress2"
-                    placeholder="請輸入您的暱稱"
-                    {...register("nickName")}
-                  />
-                  {errors?.nickName?.message && (
-                    <div className="invalid-feeback text-danger">
-                      {errors.nickName.message}
-                    </div>
-                  )}
+                  <input type="text" defaultValue={userProfile.nickName} className={`form-control bg-primary-9 ${errors.nickName && "is-invalid"}`} id="inputAddress2" placeholder="請輸入您的暱稱" {...register("nickName")} />
+                  {errors?.nickName?.message && <div className="invalid-feeback text-danger">{errors.nickName.message}</div>}
                 </div>
                 <div className="col-6">
                   <label htmlFor="inputAddress3" className="form-label">
                     聯絡電話
                   </label>
-                  <input
-                    type="tel"
-                    defaultValue={userProfile.phone}
-                    className={`form-control bg-primary-9 ${
-                      errors.phone && "is-invalid"
-                    }`}
-                    id="inputAddress3"
-                    placeholder="請輸入您的聯絡電話"
-                    {...register("phone")}
-                  />
-                  {errors?.phone?.message && (
-                    <div className="invalid-feeback text-danger">
-                      {errors.phone.message}
-                    </div>
-                  )}
+                  <input type="tel" defaultValue={userProfile.phone} className={`form-control bg-primary-9 ${errors.phone && "is-invalid"}`} id="inputAddress3" placeholder="請輸入您的聯絡電話" {...register("phone")} />
+                  {errors?.phone?.message && <div className="invalid-feeback text-danger">{errors.phone.message}</div>}
                 </div>
                 <div className="col-6">
                   <label htmlFor="inputAddress4" className="form-label">
                     出生日期
                   </label>
-                  <input
-                    type="date"
-                    defaultValue={userProfile.birthdate}
-                    className={`form-control bg-primary-9 ${
-                      errors.birthdate && "is-invalid"
-                    }`}
-                    id="inputAddress4"
-                    placeholder="請輸入您的出生日期"
-                    {...register("birthdate")}
-                  />
-                  {errors?.birthdate?.message && (
-                    <div className="invalid-feeback text-danger">
-                      {errors.birthdate.message}
-                    </div>
-                  )}
+                  <input type="date" defaultValue={userProfile.birthdate} className={`form-control bg-primary-9 ${errors.birthdate && "is-invalid"}`} id="inputAddress4" placeholder="請輸入您的出生日期" {...register("birthdate")} />
+                  {errors?.birthdate?.message && <div className="invalid-feeback text-danger">{errors.birthdate.message}</div>}
                 </div>
                 <div className="col">
                   <label htmlFor="inputAddress5" className="form-label">
                     自我介紹
                   </label>
-                  <textarea
-                    defaultValue={userProfile.bio}
-                    className={`form-control bg-primary-9 ${
-                      errors.bio && "is-invalid"
-                    }`}
-                    rows="4"
-                    id="inputAddress5"
-                    placeholder="請簡單介紹一下自己"
-                    {...register("bio")}
-                  />
-                  {errors?.bio?.message && (
-                    <div className="invalid-feeback text-danger">
-                      {errors.bio.message}
-                    </div>
-                  )}
+                  <textarea defaultValue={userProfile.bio} className={`form-control bg-primary-9 ${errors.bio && "is-invalid"}`} rows="4" id="inputAddress5" placeholder="請簡單介紹一下自己" {...register("bio")} />
+                  {errors?.bio?.message && <div className="invalid-feeback text-danger">{errors.bio.message}</div>}
                 </div>
-                <button
-                  type="submit"
-                  className="btn btn-primary py-3 px-4 d-block d-lg-none w-100 mt-4"
-                >
+                <button type="submit" className="btn btn-primary py-3 px-4 d-block d-lg-none w-100 mt-4">
                   <span className="fs-sm fw-bolder me-2">儲存</span>
-                  <span className="material-symbols-outlined align-bottom fs-7">
-                    check
-                  </span>
+                  <span className="material-symbols-outlined align-bottom fs-7">check</span>
                 </button>
               </div>
             </div>

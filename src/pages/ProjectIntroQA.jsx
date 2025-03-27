@@ -25,7 +25,6 @@ export default function ProjectIntroQA() {
         let [key, value] = param.split("=");
         paramsObj[key] = Number(value);
       });
-      console.log(paramsObj);
       setParams(paramsObj);
     }
   }, [id]);

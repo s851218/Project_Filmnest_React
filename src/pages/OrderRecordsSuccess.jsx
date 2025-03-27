@@ -2,7 +2,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { CheckModal } from "../assets/js/costomSweetAlert";
+import { Alert, CheckModal } from "../assets/js/costomSweetAlert";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 
 const apiBase = import.meta.env.VITE_API_BASE;
@@ -31,7 +31,7 @@ export default function OrderRecordsSuccess() {
     return newTime;
   };
   // 取得訂單
-  const getOrderData = useCallback( async () => {
+  const getOrderData = useCallback(async () => {
     setIsLoading(true);
 
     try {
@@ -46,14 +46,19 @@ export default function OrderRecordsSuccess() {
         setOrdersData(orderData);
       }
     } catch (error) {
-      console.log(error);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "取得訂單資料失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
-  },[sortOrderData,userId])
+  }, [sortOrderData, userId]);
   useEffect(() => {
     getOrderData();
-  }, [sortOrderData,getOrderData]);
+  }, [sortOrderData, getOrderData]);
 
   // 取消訂單
   const handleCancelOrder = (order) => {
@@ -110,8 +115,9 @@ export default function OrderRecordsSuccess() {
           CheckModal.fire("取消申請成功", "我們將儘快處理您的申請", "success");
           getOrderData();
         } catch (error) {
-          console.error(error);
-          CheckModal.fire("取消申請失敗", "請稍後再試", "error");
+          if (error) {
+            CheckModal.fire("取消申請失敗", "請稍後再試", "error");
+          }
         }
       }
     });

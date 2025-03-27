@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import FeedbackSwiper from "../components/FeedbackSwiper";
 import { ScrollRestoration, useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
@@ -29,17 +29,15 @@ function FeedbackPage() {
   const getProjectData = async (id) => {
     setIsLoading(true);
     try {
-      const response = await axios.get(
-        `${API_BASE}/projects?_expand=studio&id=${id}`
-      );
-      console.log(response.data[0]);
+      const response = await axios.get(`${API_BASE}/projects?_expand=studio&id=${id}`);
       setProjectData(response.data[0]);
     } catch (error) {
-      console.error("頁面資料取得失敗：" + error.message);
-      Toast.fire({
-        icon: "success",
-        title: "頁面資料取得失敗",
-      });
+      if (error) {
+        Toast.fire({
+          icon: "success",
+          title: "頁面資料取得失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -75,9 +73,7 @@ function FeedbackPage() {
 
     // 計算天、小時
     const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
-    const hours = Math.floor(
-      (remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
+    const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
 
     return `募資倒數 ${days} 天 ${hours} 小時`;
   }
@@ -112,19 +108,11 @@ function FeedbackPage() {
           <div className="container d-flex flex-column justify-content-center h-auto">
             <div className="row justify-content-center text-center">
               <div className="col-md-10">
-                <h1 className="fs-lg-xxl fs-6 mb-lg-3 text-primary-1 mb-2 text-balance">
-                  {projectData.projectTitle}
-                </h1>
-                <h3 className="fs-lg-6 fs-sm text-primary-2">
-                  {projectData.studio?.studioProfile?.groupName}
-                </h3>
+                <h1 className="fs-lg-xxl fs-6 mb-lg-3 text-primary-1 mb-2 text-balance">{projectData.projectTitle}</h1>
+                <h3 className="fs-lg-6 fs-sm text-primary-2">{projectData.studio?.studioProfile?.groupName}</h3>
 
                 <div className="my-5">
-                  <p className="fs-lg-6 mb-4">
-                    {`募資期間 ${getDateFormatted(
-                      projectData.createdAt
-                    )} - ${getDateFormatted(projectData.endAt)}`}
-                  </p>
+                  <p className="fs-lg-6 mb-4">{`募資期間 ${getDateFormatted(projectData.createdAt)} - ${getDateFormatted(projectData.endAt)}`}</p>
 
                   <div className="d-flex justify-content-between align-items-center  mb-4">
                     <p className="fs-lg-6 mb-0">
@@ -144,12 +132,7 @@ function FeedbackPage() {
                       </span>
                     </p>
 
-                    <p className="fs-lg-6 mb-0">
-                      {`${calculatePercentage(
-                        projectData.totalMoney,
-                        projectData.goalMoney
-                      )} %`}
-                    </p>
+                    <p className="fs-lg-6 mb-0">{`${calculatePercentage(projectData.totalMoney, projectData.goalMoney)} %`}</p>
                   </div>
 
                   {/* 自訂進度條 */}
@@ -164,16 +147,10 @@ function FeedbackPage() {
                       className="progress-bar bg-white"
                       role="progressbar"
                       style={{
-                        width: `${calculatePercentage(
-                          projectData.totalMoney,
-                          projectData.goalMoney
-                        )}%`,
+                        width: `${calculatePercentage(projectData.totalMoney, projectData.goalMoney)}%`,
                         borderRadius: "30px",
                       }}
-                      aria-valuenow={calculatePercentage(
-                        projectData.totalMoney,
-                        projectData.goalMoney
-                      )}
+                      aria-valuenow={calculatePercentage(projectData.totalMoney, projectData.goalMoney)}
                       aria-valuemin="0"
                       aria-valuemax="100"
                     ></div>
@@ -182,15 +159,11 @@ function FeedbackPage() {
                   <div className="d-flex justify-content-between align-items-center mt-1">
                     <div>
                       <i className="bi bi-person me-2"></i>
-                      <span className="fs-lg-7 fs-sm">
-                        {projectData.supportNum}
-                      </span>
+                      <span className="fs-lg-7 fs-sm">{projectData.supportNum}</span>
                     </div>
                     <div>
                       <i className="bi bi-clock me-2"></i>
-                      <span className="fs-lg-7 fs-sm">
-                        {getRemainingTime(projectData.endAt)}
-                      </span>
+                      <span className="fs-lg-7 fs-sm">{getRemainingTime(projectData.endAt)}</span>
                     </div>
                   </div>
                 </div>

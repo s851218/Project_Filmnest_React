@@ -6,7 +6,7 @@ import { useParams } from "react-router";
 import ArticleEditor from "../AdminComponents/ArticleEditor";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { AdminCheckModal, Toast } from "../assets/js/costomSweetAlert";
+import { AdminCheckModal, Alert, Toast } from "../assets/js/costomSweetAlert";
 import PropTypes from "prop-types";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
@@ -100,7 +100,12 @@ export default function Intro() {
         // 文章狀態
         setContent(projectData.content);
       } catch (error) {
-        console.log("取得專案資訊失敗", error);
+        if (error) {
+          Alert.fire({
+            icon: "error",
+            title: "取得傳案資訊失敗",
+          });
+        }
       } finally {
         setIsLoading(false);
       }
@@ -149,9 +154,7 @@ export default function Intro() {
       cancelButtonText: "取消",
       html: `<hr><img src="${otherImagesFields[index].imageUrl}">`,
     }).then((result) => {
-      console.log(result);
       if (result.value) {
-        console.log("已確認刪除");
         removeOtherImages(index);
       }
     });
@@ -253,7 +256,6 @@ export default function Intro() {
       ...data,
       projectImage,
     };
-    console.log("編輯後送出的專案資訊：", data);
     introSave(editData);
   };
 
@@ -280,20 +282,20 @@ export default function Intro() {
         team: updatedTeam,
       };
 
-      const res = await axios.patch(`${API_BASE}/projects/${id}`, updateData);
+      await axios.patch(`${API_BASE}/projects/${id}`, updateData);
       Toast.fire({
         icon: "success",
         title: "成功更新專案資訊！",
       });
-      console.log("成功更新專案資訊：", res.data);
       // 更新表單狀態，讓 UI 顯示刪除按鈕（因 temp 屬性已移除）
       setValue("team", updatedTeam);
     } catch (error) {
-      console.log("專案資訊編輯失敗", error);
-      Toast.fire({
-        icon: "error",
-        title: "專案資訊編輯失敗",
-      });
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "專案資訊編輯失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
