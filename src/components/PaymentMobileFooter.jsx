@@ -24,9 +24,6 @@ export default function PaymentMobileFooter ({handleFormsSubmit , orderData , pr
 
   const totalPrice = orderData.totalPrice
 
-  console.log(productData.title);
-  
-  
   return (
     <>
     {Object.keys(orderData).length !== 0 && (
