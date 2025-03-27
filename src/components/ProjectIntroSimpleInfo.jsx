@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import PropTypes from "prop-types";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -93,3 +94,17 @@ export default function ProjectIntroSimpleInfo({ projectInfo, studioId }) {
     </>
   );
 }
+
+ProjectIntroSimpleInfo.propTypes = {
+  projectInfo: PropTypes.shape({
+    projectTitle: PropTypes.string.isRequired,
+    projectImage: PropTypes.string.isRequired,
+    category: PropTypes.string.isRequired,
+    createdAt: PropTypes.string.isRequired,
+    endAt: PropTypes.string.isRequired,
+  }),
+  studioId: PropTypes.oneOfType([
+    PropTypes.number.isRequired,
+    PropTypes.string.isRequired,
+  ]),
+};
