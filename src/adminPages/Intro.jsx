@@ -656,10 +656,13 @@ export default function Intro() {
 
 IntroInput.propTypes = {
   register: PropTypes.func,
-  errors: PropTypes.objectOf(
-    PropTypes.shape({
-      message: PropTypes.string,
-    })
+  errors: PropTypes.oneOfType(
+    PropTypes.objectOf(
+      PropTypes.shape({
+        message: PropTypes.string,
+      })
+    ),
+    PropTypes.array
   ),
   id: PropTypes.string,
   labelText: PropTypes.string,
