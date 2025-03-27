@@ -329,8 +329,5 @@ export default function ProjectIntroNav({ projectId }) {
 }
 
 ProjectIntroNav.propTypes = {
-  projectId: PropTypes.oneOfType([
-    PropTypes.number.isRequired,
-    PropTypes.string.isRequired,
-  ]),
+  projectId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

@@ -97,14 +97,11 @@ export default function ProjectIntroSimpleInfo({ projectInfo, studioId }) {
 
 ProjectIntroSimpleInfo.propTypes = {
   projectInfo: PropTypes.shape({
-    projectTitle: PropTypes.string.isRequired,
-    projectImage: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    createdAt: PropTypes.string.isRequired,
-    endAt: PropTypes.string.isRequired,
+    projectTitle: PropTypes.string,
+    projectImage: PropTypes.string,
+    category: PropTypes.string,
+    createdAt: PropTypes.string,
+    endAt: PropTypes.string,
   }),
-  studioId: PropTypes.oneOfType([
-    PropTypes.number.isRequired,
-    PropTypes.string.isRequired,
-  ]),
+  studioId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

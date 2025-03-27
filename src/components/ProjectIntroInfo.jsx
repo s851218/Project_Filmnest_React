@@ -145,39 +145,14 @@ export default function ProjectIntroInfo({ projectInfo }) {
 
 ProjectIntroInfo.propTypes = {
   projectInfo: PropTypes.shape({
-    studioId: PropTypes.oneOfType([
-      PropTypes.number.isRequired,
-      PropTypes.string.isRequired,
-    ]),
-    projectTitle: PropTypes.string.isRequired,
-    summary: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    supportNum: PropTypes.oneOfType([
-      PropTypes.number.isRequired,
-      PropTypes.string.isRequired,
-    ]),
-    totalMoney: PropTypes.oneOfType([
-      PropTypes.number.isRequired,
-      PropTypes.string.isRequired,
-    ]),
-    goalMoney: PropTypes.oneOfType([
-      PropTypes.number.isRequired,
-      PropTypes.string.isRequired,
-    ]),
-    createdAt: PropTypes.string.isRequired,
-    endAt: PropTypes.string.isRequired,
+    studioId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    projectTitle: PropTypes.string,
+    summary: PropTypes.string,
+    category: PropTypes.string,
+    supportNum: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    totalMoney: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    goalMoney: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    createdAt: PropTypes.string,
+    endAt: PropTypes.string,
   }),
-};
-
-ProjectIntroInfo.defaultProps = {
-  projectInfo: {
-    projectTitle: "",
-    summary: "",
-    category: "",
-    supportNum: 0,
-    totalMoney: 0,
-    goalMoney: 0,
-    createdAt: "",
-    endAt: "",
-  },
 };

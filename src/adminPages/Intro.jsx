@@ -653,15 +653,15 @@ export default function Intro() {
 }
 
 IntroInput.propTypes = {
-  register: PropTypes.func.isRequired,
+  register: PropTypes.func,
   errors: PropTypes.objectOf(
     PropTypes.shape({
       message: PropTypes.string,
     })
   ),
-  id: PropTypes.string.isRequired,
-  labelText: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
+  id: PropTypes.string,
+  labelText: PropTypes.string,
+  type: PropTypes.string,
   rules: PropTypes.object,
   min: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 };
