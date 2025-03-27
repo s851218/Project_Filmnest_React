@@ -108,8 +108,5 @@ export default function ProjectIntroProposerInfo({ studioId }) {
 }
 
 ProjectIntroProposerInfo.propTypes = {
-  studioId: PropTypes.oneOfType([
-    PropTypes.number.isRequired,
-    PropTypes.string.isRequired,
-  ]),
+  studioId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 };

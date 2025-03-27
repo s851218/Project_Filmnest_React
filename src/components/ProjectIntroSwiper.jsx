@@ -43,7 +43,7 @@ export default function ProjectIntroSwiper({ projectInfo }) {
     if (thumbsSwiper && swiperRef.current) {
       swiperRef.current.update();
     }
-  }, [otherImages,thumbsSwiper]);
+  }, [otherImages, thumbsSwiper]);
 
   // 手機版 Navigation
   const handlePrevSlide = () => {
@@ -122,12 +122,12 @@ export default function ProjectIntroSwiper({ projectInfo }) {
 
 ProjectIntroSwiper.propTypes = {
   projectInfo: PropTypes.shape({
-    projectImage: PropTypes.string.isRequired,
+    projectImage: PropTypes.string,
     otherImages: PropTypes.arrayOf(
       PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        imageUrl: PropTypes.string.isRequired,
-      }).isRequired
+        id: PropTypes.string,
+        imageUrl: PropTypes.string,
+      })
     ),
   }),
 };
