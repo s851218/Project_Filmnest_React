@@ -1,23 +1,16 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router";
+import { ScrollRestoration, useNavigate, useParams } from "react-router";
 import BonusCalculator from "../components/BonusCalculator";
 import ModalComponent from "../components/ModalComponent";
 import GrayScreenLoading from "../components/GrayScreenLoading";
-import { CheckModal , Alert , Toast } from "../assets/js/costomSweetAlert";
+import { CheckModal, Alert, Toast } from "../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function FeedbackOption() {
-  // 路由跳轉頁面時，重製滾輪捲軸
-  useEffect(() => {
-    // 將滾動行為設為 auto 避免有捲動過程的動畫
-    document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-  }, []);
-
   const {
     register,
     handleSubmit,
@@ -36,7 +29,7 @@ export default function FeedbackOption() {
   const [originPrice, setOriginPrice] = useState(0);
   const [bonus, setBonse] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [modalType , setModalType] = useState(null)
+  const [modalType, setModalType] = useState(null);
   const userInfo = useSelector((state) => state.user.profile);
   const bonusCalculatorRef = useRef();
 
@@ -48,7 +41,7 @@ export default function FeedbackOption() {
   }, [id]);
 
   //處理params
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (id) {
       const paramsArry = id.split("&");
       let paramsObj = {};
@@ -74,7 +67,7 @@ export default function FeedbackOption() {
       Toast.fire({
         icon: "error",
         title: "回饋資料取得失敗：",
-      })
+      });
     } finally {
       setIsLoading(false);
     }
@@ -92,11 +85,11 @@ export default function FeedbackOption() {
       Toast.fire({
         icon: "error",
         title: "專案資料取得失敗：",
-      })
+      });
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (Object.keys(params).length !== 0) {
       getFeedbackData(params);
       getProjectData(params);
@@ -149,7 +142,7 @@ export default function FeedbackOption() {
 
     console.log(orderData);
 
-    const createOrder = async() => {
+    const createOrder = async () => {
       try {
         await axios.post(`${API_BASE}/orders`, orderData);
         navigate(`/paymentInfo/${orderId}`);
@@ -160,7 +153,7 @@ export default function FeedbackOption() {
           title: "建立訂單失敗",
         });
       }
-    }
+    };
 
     // 發送api
     CheckModal.fire({
@@ -169,13 +162,13 @@ export default function FeedbackOption() {
       confirmButtonText: "確認",
       cancelButtonText: "取消",
       html: `<hr><p class="fs-7">${projectData.projectTitle}</p><p class="fs-4">【 ${feedbackData.title}】</p><p class="fs-7">總金額：$${totalPrice}</p>`,
-    }).then((result)=>{
-      console.log(result)
+    }).then((result) => {
+      console.log(result);
       if (result.value) {
         console.log("已確認選擇，打API");
-        createOrder()
+        createOrder();
       }
-    })
+    });
 
     // if (messageToTeam.length !== 0) {
     //   console.log("有留言，打留言版api");
@@ -186,7 +179,7 @@ export default function FeedbackOption() {
 
   // 處理開啟Modal
   const handleOpenModal = (type) => {
-    setModalType(type)
+    setModalType(type);
     // 開啟modal
     setIsModalOpen(true);
   };
@@ -201,23 +194,24 @@ export default function FeedbackOption() {
     }
   }, [watch.isAnonymous]);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!isModalOpen) {
-      setModalType(null)
+      setModalType(null);
     }
-  },[isModalOpen])
+  }, [isModalOpen]);
 
-  const handleBonusCheck = async() => {
-    await bonusCalculatorRef.current.submit()
-    setIsModalOpen(false)
-  }
+  const handleBonusCheck = async () => {
+    await bonusCalculatorRef.current.submit();
+    setIsModalOpen(false);
+  };
 
-  const handleBonusReset = async() => {
-    setIsModalOpen(false)
-  }
+  const handleBonusReset = async () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <>
+      <ScrollRestoration />
       <header className="mt-20 mb-12">
         <div className="container-md">
           <div className="row align-items-center">
@@ -376,7 +370,11 @@ export default function FeedbackOption() {
             >
               <div className="card-body">
                 <h3 className="card-title fs-5 fw-bolder mb-6">隨喜加碼</h3>
-                <BonusCalculator bonus={bonus} setBonse={setBonse} type={"layout"} />
+                <BonusCalculator
+                  bonus={bonus}
+                  setBonse={setBonse}
+                  type={"layout"}
+                />
                 <div className="bg-primary-8 p-3 rounded-1 mb-4">
                   <p className="mb-1">總計金額</p>
                   <h4 className="fs-6 fw-bolder mb-1">
@@ -395,23 +393,31 @@ export default function FeedbackOption() {
           </aside>
         </div>
       </div>
-      
+
       {/* 手機版：加碼功能 */}
       <footer className="checkout-confirmation-footer d-lg-none d-block p-6 bg-primary-8 fixed-bottom">
         <div className="d-flex justify-content-between flex-wrap gap-3">
           <div className="d-flex align-items-center">
             <p className="mb-0 d-sm-block d-none">總計：</p>
-            <p className="total-amount fs-7 mb-0">NT$ {totalPrice.toLocaleString()}</p>
+            <p className="total-amount fs-7 mb-0">
+              NT$ {totalPrice.toLocaleString()}
+            </p>
           </div>
           <div className="amount-confirm-mobile d-flex align-items-center gap-3">
             <button
-                type="button"
-                className="btn btn-secondary align-self-end"
-                onClick={() => handleOpenModal("bonus")}
-              >
-                我要加碼
-              </button>
-            <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>下一步</button>
+              type="button"
+              className="btn btn-secondary align-self-end"
+              onClick={() => handleOpenModal("bonus")}
+            >
+              我要加碼
+            </button>
+            <button
+              type="button"
+              className="btn btn-primary ms-auto"
+              onClick={handleSubmit(onSubmit)}
+            >
+              下一步
+            </button>
           </div>
         </div>
       </footer>
@@ -425,7 +431,14 @@ export default function FeedbackOption() {
         handleBonusCheck={handleBonusCheck}
         handleBonusReset={handleBonusReset}
       >
-        { (modalType === "bonus") && <BonusCalculator reference={bonusCalculatorRef} bonus={bonus} setBonse={setBonse} type={"bouns"} /> } 
+        {modalType === "bonus" && (
+          <BonusCalculator
+            reference={bonusCalculatorRef}
+            bonus={bonus}
+            setBonse={setBonse}
+            type={"bouns"}
+          />
+        )}
       </ModalComponent>
 
       <GrayScreenLoading isLoading={isLoading} />

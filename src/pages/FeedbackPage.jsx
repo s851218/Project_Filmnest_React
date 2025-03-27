@@ -1,25 +1,20 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import FeedbackSwiper from "../components/FeedbackSwiper";
-import { useParams } from "react-router";
+import { ScrollRestoration, useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { Toast } from "../assets/js/costomSweetAlert";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 function FeedbackPage() {
-  // 路由跳轉頁面時，重製滾輪捲軸
-  useEffect(() => {
-    // 將滾動行為設為 auto 避免有捲動過程的動畫
-    document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-  }, []);
-
   const { id } = useParams();
   const [params, setParams] = useState({});
   const [projectData, setProjectData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   //處理params
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (id) {
       const paramsArry = id.split("&");
       let paramsObj = {};
@@ -32,6 +27,7 @@ function FeedbackPage() {
   }, [id]);
 
   const getProjectData = async (id) => {
+    setIsLoading(true);
     try {
       const response = await axios.get(
         `${API_BASE}/projects?_expand=studio&id=${id}`
@@ -44,11 +40,13 @@ function FeedbackPage() {
         icon: "success",
         title: "頁面資料取得失敗",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   // 取得資料
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (params.projectId) {
       getProjectData(params.projectId);
     }
@@ -94,6 +92,7 @@ function FeedbackPage() {
 
   return (
     <>
+      <ScrollRestoration />
       <Helmet>
         <title>贊助方案</title>
       </Helmet>
@@ -201,6 +200,7 @@ function FeedbackPage() {
         </div>
       </section>
       <FeedbackSwiper />
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }
