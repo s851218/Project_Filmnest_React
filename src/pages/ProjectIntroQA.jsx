@@ -3,8 +3,8 @@ import { Collapse } from "bootstrap";
 import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
-import GrayScreenLoading from "../components/GrayScreenLoading";
 import { Toast } from "../assets/js/costomSweetAlert";
+import GrayScreenLoading from "../components/GrayScreenLoading";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function ProjectIntroQA() {
@@ -60,10 +60,12 @@ export default function ProjectIntroQA() {
             })
           );
         } catch (error) {
-          Toast.fire({
-            icon: "error",
-            title: "最新消息取得失敗",
-          })
+          if(error){
+            Toast.fire({
+              icon: "error",
+              title: "最新消息取得失敗",
+            })
+          }
         } finally {
           setIsLoading(false);
         }
@@ -143,7 +145,7 @@ export default function ProjectIntroQA() {
           );
         })}
       </div>
-      {/* <GrayScreenLoading isLoading={isLoading} /> */}
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }
