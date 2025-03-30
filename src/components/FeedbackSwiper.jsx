@@ -6,7 +6,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css/navigation";
 import { Link, useParams } from "react-router";
 import GrayScreenLoading from "./GrayScreenLoading";
-import { Toast } from "../assets/js/costomSweetAlert";
+import { Alert } from "../assets/js/costomSweetAlert";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 function FeedbackSwiper() {
@@ -36,11 +36,12 @@ function FeedbackSwiper() {
       const response = await axios.get(`${API_BASE}/products?projectId=${id}`);
       setFeedbackData(response.data);
     } catch (error) {
-      console.error("回饋資料取得失敗：" + error.message);
-      Toast.fire({
-        icon: "success",
-        title: "回饋資料取得失敗",
-      });
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "回饋資料取得失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -356,7 +357,7 @@ function FeedbackSwiper() {
           </div>
         </div>
       </div>
-      {/* <GrayScreenLoading isLoading={isLoading} /> */}
+      <GrayScreenLoading isLoading={isLoading} />
     </>
   );
 }

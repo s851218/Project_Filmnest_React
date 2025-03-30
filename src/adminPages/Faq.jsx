@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { AdminCheckModal , Toast , Alert } from "../assets/js/costomSweetAlert";
+import { AdminCheckModal, Toast, Alert } from "../assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Faq() {
@@ -46,27 +46,29 @@ export default function Faq() {
       date: "date",
     };
     const now = new Date().toString();
-    console.log(now);
+    
 
     const newFaq = {
       ...faqData,
       date: now,
     };
-    
+
     try {
       await axios.post(`${apiBase}/faqs`, newFaq);
       setIsAdd(false);
       Toast.fire({
         icon: "success",
         title: "新增成功",
-      })
+      });
       getFaqData(id);
       reset();
     } catch (error) {
-      Alert.fire({
-        icon: "error",
-        title: "新增失敗",
-      })
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "新增失敗",
+        });
+      }
     }
   };
 
@@ -92,13 +94,15 @@ export default function Faq() {
       Toast.fire({
         icon: "success",
         title: "編輯成功",
-      })
+      });
       getFaqData(id);
     } catch (error) {
-      Toast.fire({
-        icon: "error",
-        title: "編輯失敗",
-      })
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "編輯失敗",
+        });
+      }
     }
   };
 
@@ -109,13 +113,15 @@ export default function Faq() {
       Toast.fire({
         icon: "success",
         title: "刪除成功",
-      })
+      });
       getFaqData(id);
     } catch (error) {
-      Toast.fire({
-        icon: "error",
-        title: "刪除成功",
-      })
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "刪除成功",
+        });
+      }
     }
   };
 
@@ -123,12 +129,15 @@ export default function Faq() {
   const getFaqData = async (projectId) => {
     setIsLoading(true);
     try {
-      const response = await axios.get(
-        `${apiBase}/faqs?projectId=${projectId}`
-      );
+      const response = await axios.get(`${apiBase}/faqs?projectId=${projectId}`);
       setFaqsData(response.data);
     } catch (error) {
-      console.log("取得資料失敗");
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "取得資料失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -136,40 +145,32 @@ export default function Faq() {
 
   useEffect(() => {
     getFaqData(id);
-  }, []);
+  }, [id]);
 
   const handleCreate = () => {
-    console.log("handleCreate");
     AdminCheckModal.fire({
       title: "確認新增常見問題",
       showCancelButton: true,
       confirmButtonText: "確認",
       cancelButtonText: "取消",
-    }).then((result)=>{
-      console.log(result)
+    }).then((result) => {
       if (result.value) {
-        console.log("已新增");
-        handleSubmit(onSubmit)()
+        handleSubmit(onSubmit)();
       }
-    })
-  }
+    });
+  };
 
   return (
     <>
       {isAdd ? (
-        <form
-          className="bg-primary-2 p-5 rounded-3 mb-5"
-          
-        >
+        <form className="bg-primary-2 p-5 rounded-3 mb-5">
           <div className="mb-3">
             <label htmlFor="title" className="form-label">
               標題
             </label>
             <input
               type="text"
-              className={`form-control text-dark bg-white ${
-                errors.title && "is-invalid"
-              }`}
+              className={`form-control text-dark bg-white ${errors.title && "is-invalid"}`}
               id="title"
               {...register("title", {
                 required: {
@@ -178,18 +179,14 @@ export default function Faq() {
                 },
               })}
             />
-            <div className="invalid-feedback text-danger">
-              {errors?.title?.message}
-            </div>
+            <div className="invalid-feedback text-danger">{errors?.title?.message}</div>
           </div>
           <div className="mb-3">
             <label htmlFor="content" className="form-label">
               內容
             </label>
             <textarea
-              className={`form-control text-dark bg-white ${
-                errors.content && "is-invalid"
-              }`}
+              className={`form-control text-dark bg-white ${errors.content && "is-invalid"}`}
               id="content"
               rows="3"
               {...register("content", {
@@ -199,34 +196,20 @@ export default function Faq() {
                 },
               })}
             ></textarea>
-            <div className="invalid-feedback text-danger">
-              {errors?.content?.message}
-            </div>
+            <div className="invalid-feedback text-danger">{errors?.content?.message}</div>
           </div>
           <div className="d-flex justify-content-end">
-            <button
-              type="button"
-              className="btn btn-primary rounded-2 px-4 py-2 me-3"
-              onClick={() => handleCreate()}
-            >
+            <button type="button" className="btn btn-primary rounded-2 px-4 py-2 me-3" onClick={() => handleCreate()}>
               確認送出
             </button>
-            <button
-              type="button"
-              className="btn btn-primary rounded-2 px-4 py-2"
-              onClick={() => setIsAdd(false)}
-            >
+            <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => setIsAdd(false)}>
               取消
             </button>
           </div>
         </form>
       ) : (
         <div className="d-flex justify-content-end mb-2">
-          <i
-            type="button"
-            className="btn btn-primary bi bi-plus-lg fs-1 lh-1 p-1 rounded-2"
-            onClick={() => setIsAdd(true)}
-          ></i>
+          <i type="button" className="btn btn-primary bi bi-plus-lg fs-1 lh-1 p-1 rounded-2" onClick={() => setIsAdd(true)}></i>
         </div>
       )}
       {faqsData.map((faq, index) => {
@@ -242,9 +225,7 @@ export default function Faq() {
                 {!isEditIng && (
                   <div className="d-flex justify-content-between align-items-center">
                     <label htmlFor="title" className="form-label fs-5">
-                      <span className="me-3">
-                        {!isEditIng && `Q${parseInt(index) + 1}:`}
-                      </span>
+                      <span className="me-3">{!isEditIng && `Q${parseInt(index) + 1}:`}</span>
                       {faq.title}
                     </label>
                     <p className="fs-sm">更新日期:{getTime(faq.date)}</p>
@@ -253,9 +234,7 @@ export default function Faq() {
                 {isEditIng && (
                   <input
                     type="text"
-                    className={`form-control text-dark bg-white ${
-                      updateErrors.title && "is-invalid"
-                    }`}
+                    className={`form-control text-dark bg-white ${updateErrors.title && "is-invalid"}`}
                     id="title"
                     defaultValue={faq.title}
                     {...updateRegister("title", {
@@ -266,9 +245,7 @@ export default function Faq() {
                     })}
                   />
                 )}
-                <div className="invalid-feedback text-danger">
-                  {updateErrors?.title?.message}
-                </div>
+                <div className="invalid-feedback text-danger">{updateErrors?.title?.message}</div>
               </div>
               <div className="mb-3">
                 {!isEditIng && (
@@ -278,9 +255,7 @@ export default function Faq() {
                 )}
                 {isEditIng && (
                   <textarea
-                    className={`form-control text-dark bg-white ${
-                      updateErrors.content && "is-invalid"
-                    }`}
+                    className={`form-control text-dark bg-white ${updateErrors.content && "is-invalid"}`}
                     id="content"
                     rows="3"
                     defaultValue={faq.content}
@@ -292,27 +267,15 @@ export default function Faq() {
                     })}
                   ></textarea>
                 )}
-                <div className="invalid-feedback text-danger">
-                  {updateErrors?.content?.message}
-                </div>
+                <div className="invalid-feedback text-danger">{updateErrors?.content?.message}</div>
               </div>
               <div className="d-flex justify-content-end">
                 {isEditIng ? (
                   <>
-                    <button
-                      type="submit"
-                      className="btn btn-primary rounded-2 px-4 py-2 me-3"
-                      onClick={updateHandleSubmit((data) =>
-                        onPutSubmit(data, faq.id)
-                      )}
-                    >
+                    <button type="submit" className="btn btn-primary rounded-2 px-4 py-2 me-3" onClick={updateHandleSubmit((data) => onPutSubmit(data, faq.id))}>
                       確認
                     </button>
-                    <button
-                      type="button"
-                      className="btn btn-primary rounded-2 px-4 py-2"
-                      onClick={() => setIsEdit(null)}
-                    >
+                    <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => setIsEdit(null)}>
                       取消
                     </button>
                   </>
@@ -332,11 +295,7 @@ export default function Faq() {
                     >
                       編輯
                     </button>
-                    <button
-                      type="button"
-                      className="btn btn-primary rounded-2 px-4 py-2"
-                      onClick={() => handleDelFaqData(faq.id)}
-                    >
+                    <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => handleDelFaqData(faq.id)}>
                       刪除
                     </button>
                   </>

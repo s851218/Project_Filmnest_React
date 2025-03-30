@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useEffect, useState, useRef, useMemo } from "react";
+import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { AdminCheckModal, Toast } from "../assets/js/costomSweetAlert";
+import { AdminCheckModal, Alert, Toast } from "../assets/js/costomSweetAlert";
 import PropTypes from "prop-types";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
@@ -51,10 +51,7 @@ function AdminFeedbackForm() {
   });
 
   const handleRemoveChoice = (choiceIndex) => {
-    console.log(choiceIndex);
-
     const item = feedbackData[choiceIndex];
-    console.log(item);
 
     if (!item) {
       AdminCheckModal.fire({
@@ -63,9 +60,7 @@ function AdminFeedbackForm() {
         confirmButtonText: "確認",
         cancelButtonText: "取消",
       }).then((result) => {
-        console.log(result);
         if (result.value) {
-          console.log("已確認刪除");
           removeChoice(choiceIndex);
         }
       });
@@ -77,16 +72,14 @@ function AdminFeedbackForm() {
         cancelButtonText: "取消",
         html: `<hr><img src="${item.image}"><p class="fs-4">【${item.title}】</p>`,
       }).then((result) => {
-        console.log(result);
         if (result.value) {
-          console.log("已確認刪除");
           removeChoice(choiceIndex);
         }
       });
     }
   };
 
-  const getFeedbackData = async () => {
+  const getFeedbackData = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(`${API_BASE}/products?projectId=${id}`);
@@ -94,14 +87,19 @@ function AdminFeedbackForm() {
       setFeedbackData(response.data);
       reset({ choice: response.data });
     } catch (error) {
-      console.error(error);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "專案取得失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id, reset]);
   useEffect(() => {
     getFeedbackData();
-  }, [reset]);
+  }, [reset, getFeedbackData]);
 
   const onSubmit = async (data) => {
     // 處理批量請求：比對資料
@@ -162,7 +160,10 @@ function AdminFeedbackForm() {
       // 處理請求結果
       results.forEach((result) => {
         if (result.status === "rejected") {
-          console.error("請求失敗:", result.reason);
+          Alert.fire({
+            icon: "error",
+            title: "請求失敗",
+          });
         }
       });
       Toast.fire({
@@ -172,11 +173,12 @@ function AdminFeedbackForm() {
       setEditingIndex(null);
       getFeedbackData();
     } catch (error) {
-      console.error(`提交失敗: ${error.message}`);
-      Toast.fire({
-        icon: "error",
-        title: "提交失敗",
-      });
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "提交失敗",
+        });
+      }
     }
   };
 
@@ -601,7 +603,6 @@ const ContentItems = ({
 
   const handleRemoveContent = (contentIndex) => {
     const itemName = contentFields[contentIndex].item;
-    console.log(itemName);
 
     AdminCheckModal.fire({
       title: "是否要刪除此回饋項目",
@@ -610,9 +611,7 @@ const ContentItems = ({
       cancelButtonText: "取消",
       html: `<hr><p class="fs-6">【${itemName}】</p>`,
     }).then((result) => {
-      console.log(result);
       if (result.value) {
-        console.log("已確認刪除");
         removeContent(contentIndex);
       }
     });

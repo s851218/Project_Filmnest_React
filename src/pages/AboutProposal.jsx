@@ -34,7 +34,7 @@ const data = {
   },
 };
 
-const { bannerImageUrl, slogan, totalFundsRaised, sponsors, step } = data;
+const {  slogan, totalFundsRaised, sponsors, step } = data;
 
 export default function AboutProposal() {
   // 路由跳轉頁面時，重製滾輪捲軸
@@ -49,20 +49,20 @@ export default function AboutProposal() {
       <Helmet>
         <title>提案 | 影巢 FilmNest</title>
       </Helmet>
-      <div class="aboutProposal-banner-bg banner-bg-mask">
-        <div class="aboutProposal-banner-wrap container position-relative z-3">
-          <h1 class="text-center slogn-position mb-0">{slogan}</h1>
-          <div class="aboutProposal-slogan-card-position container px-md-0">
-            <div class="position-relative">
-              <ul class="list-unstyled d-flex justify-content-center mb-0 w-100 w-md-75 w-xl-50 mx-auto banner-deco">
-                <li class="slogan-card-bg text-center w-50 py-3 py-md-5 me-3 me-md-10">
-                  <p class="fs-sm fs-md-base mb-2">累積金額</p>
+      <div className="aboutProposal-banner-bg banner-bg-mask">
+        <div className="aboutProposal-banner-wrap container position-relative z-3">
+          <h1 className="text-center slogn-position mb-0">{slogan}</h1>
+          <div className="aboutProposal-slogan-card-position container px-md-0">
+            <div className="position-relative">
+              <ul className="list-unstyled d-flex justify-content-center mb-0 w-100 w-md-75 w-xl-50 mx-auto banner-deco">
+                <li className="slogan-card-bg text-center w-50 py-3 py-md-5 me-3 me-md-10">
+                  <p className="fs-sm fs-md-base mb-2">累積金額</p>
                   <h2 className="fs-6 fs-md-1 lh-base mb-0">
                     {totalFundsRaised.toLocaleString()}
                   </h2>
                 </li>
-                <li class="slogan-card-bg text-center w-50 py-3 py-md-5">
-                  <p class="fs-sm fs-md-base mb-2">贊助人數</p>
+                <li className="slogan-card-bg text-center w-50 py-3 py-md-5">
+                  <p className="fs-sm fs-md-base mb-2">贊助人數</p>
                   <h2 className="fs-6 fs-md-1 lh-base mb-0">
                     {sponsors.toLocaleString()}
                   </h2>

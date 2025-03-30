@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import getNewDateFormatted from "../helpers/getNewDateFormatted";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { AdminCheckModal , Toast } from "../assets/js/costomSweetAlert";
+import { AdminCheckModal, Alert, Toast } from "../assets/js/costomSweetAlert";
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 
@@ -21,17 +21,18 @@ export default function AdminAnsComment() {
       setIsLoading(true);
       try {
         setLoading(true);
-        const response = await axios.get(
-          `${BASE_URL}/comments?projectId=${id}&_expand=user`
-        );
-        const responseForStudio = await axios.get(
-          `${BASE_URL}/projects/${id}?_expand=studio`
-        );
+        const response = await axios.get(`${BASE_URL}/comments?projectId=${id}&_expand=user`);
+        const responseForStudio = await axios.get(`${BASE_URL}/projects/${id}?_expand=studio`);
         setProjectOwner(responseForStudio.data.studio.studioProfile);
         const sortedComments = sortCommentsByDate(response.data, sortOrder);
         setComments(sortedComments);
       } catch (error) {
-        console.error(error);
+        if (error) {
+          Alert.fire({
+            icon: "error",
+            title: "留言or專案取得失敗",
+          });
+        }
       } finally {
         setLoading(false);
         setIsLoading(false);
@@ -81,9 +82,7 @@ export default function AdminAnsComment() {
   const submitReply = async (data) => {
     try {
       setLoading(true);
-      const currentComment = comments.find(
-        (comment) => comment.id === replyingToId
-      );
+      const currentComment = comments.find((comment) => comment.id === replyingToId);
       if (!currentComment) return;
       const updatedComment = {
         ...currentComment,
@@ -95,20 +94,17 @@ export default function AdminAnsComment() {
         replyDate: new Date(),
       });
 
-      setComments((prevComments) =>
-        prevComments.map((comment) =>
-          comment.id === replyingToId ? updatedComment : comment
-        )
-      );
+      setComments((prevComments) => prevComments.map((comment) => (comment.id === replyingToId ? updatedComment : comment)));
 
       resetReply();
       setReplyingToId(null);
     } catch (error) {
-      console.error("提交回覆時發生錯誤：", error);
-      Toast.fire({
-        icon: "error",
-        title: "提交回覆失敗，請稍後再試",
-      })
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "提交回覆失敗，請稍後再試",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -125,16 +121,12 @@ export default function AdminAnsComment() {
       showCancelButton: true,
       confirmButtonText: "確認",
       cancelButtonText: "取消",
-    }).then((result)=>{
-      console.log(result)
+    }).then((result) => {
       if (result.value) {
-        console.log("已確認刪除");
-        deleteReply(commentId)
+        deleteReply(commentId);
       }
-    })
-    
-  }
-
+    });
+  };
 
   const deleteReply = async (commentId) => {
     try {
@@ -157,13 +149,14 @@ export default function AdminAnsComment() {
       Toast.fire({
         icon: "success",
         title: "刪除回覆成功",
-      })
+      });
     } catch (error) {
-      console.error("刪除回覆失敗：", error);
-      Toast.fire({
-        icon: "error",
-        title: "刪除回覆失敗，請稍後再試",
-      })
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "刪除回覆失敗，請稍後再試",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -198,11 +191,12 @@ export default function AdminAnsComment() {
       setEditingReplyId(null);
       setEditContent("");
     } catch (error) {
-      console.error("儲存回覆失敗：", error);
-      Toast.fire({
-        icon: "error",
-        title: "儲存回覆失敗，請稍後再試",
-      })
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "儲存回覆失敗，請稍後再試",
+        });
+      }
     } finally {
       setLoading(false);
     }
@@ -226,16 +220,8 @@ export default function AdminAnsComment() {
             <h1 className="text-start">回覆留言</h1>
             {/* 排序按鈕 */}
             <div className="d-flex justify-content-end mb-4">
-              <button
-                className="btn btn-outline-secondary d-flex align-items-center gap-1"
-                onClick={toggleSortOrder}
-                disabled={loading}
-              >
-                <i
-                  className={`bi bi-sort-${
-                    sortOrder === "desc" ? "down" : "up"
-                  }`}
-                ></i>
+              <button className="btn btn-outline-secondary d-flex align-items-center gap-1" onClick={toggleSortOrder} disabled={loading}>
+                <i className={`bi bi-sort-${sortOrder === "desc" ? "down" : "up"}`}></i>
                 {sortOrder === "desc" ? "由新到舊" : "由舊到新"}
               </button>
             </div>
@@ -243,9 +229,7 @@ export default function AdminAnsComment() {
               <div className="alert alert-info">目前沒有留言</div>
             ) : (
               comments.map((comment) => {
-                const commentTime = comment.date
-                  ? getNewDateFormatted(comment.date)
-                  : "";
+                const commentTime = comment.date ? getNewDateFormatted(comment.date) : "";
                 let replyTime;
                 if (comment.reply !== "") {
                   replyTime = getNewDateFormatted(comment.replyDate);
@@ -258,15 +242,11 @@ export default function AdminAnsComment() {
                           <div className="d-flex align-items-center">
                             {/* 頭像 */}
                             <div className="comment-avatar me-3">
-                              {!comment.isIncognito &&
-                              comment.user?.userProfile?.userImageUrl ? (
+                              {!comment.isIncognito && comment.user?.userProfile?.userImageUrl ? (
                                 <img
                                   src={comment.user?.userProfile?.userImageUrl}
                                   className="img-fluid object-fit-cover me-1"
-                                  alt={
-                                    comment.user?.userProfile?.nickName ||
-                                    comment.user?.userProfile?.userName
-                                  }
+                                  alt={comment.user?.userProfile?.nickName || comment.user?.userProfile?.userName}
                                   style={{
                                     width: 50,
                                     height: 50,
@@ -274,23 +254,14 @@ export default function AdminAnsComment() {
                                   }}
                                 />
                               ) : (
-                                <div
-                                  className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
-                                  style={{ width: 50, height: 50 }}
-                                >
+                                <div className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1" style={{ width: 50, height: 50 }}>
                                   <i className="bi bi-person"></i>
                                 </div>
                               )}
                             </div>
                             <div className="d-flex flex-column">
                               {/* 名稱 */}
-                              <h6 className="mb-1">
-                                {comment.isIncognito
-                                  ? "匿名"
-                                  : comment.user?.userProfile?.nickName ||
-                                    comment.user?.userProfile?.userName ||
-                                    "訪客"}
-                              </h6>
+                              <h6 className="mb-1">{comment.isIncognito ? "匿名" : comment.user?.userProfile?.nickName || comment.user?.userProfile?.userName || "訪客"}</h6>
                               {/* 時間 */}
                               <div className="small text-primary-7 d-flex align-items-center gap-2">
                                 <i className="bi bi-calendar"></i>
@@ -301,16 +272,11 @@ export default function AdminAnsComment() {
                             </div>
                           </div>
                           {/* 回覆按鈕 */}
-                          {replyingToId !== comment.id &&
-                            editingReplyId !== comment.id &&
-                            !comment.reply && (
-                              <button
-                                className="btn btn-outline-dark btn-sm d-flex align-items-center"
-                                onClick={() => startReply(comment.id)}
-                              >
-                                <i className="bi bi-reply me-1"></i> 回覆
-                              </button>
-                            )}
+                          {replyingToId !== comment.id && editingReplyId !== comment.id && !comment.reply && (
+                            <button className="btn btn-outline-dark btn-sm d-flex align-items-center" onClick={() => startReply(comment.id)}>
+                              <i className="bi bi-reply me-1"></i> 回覆
+                            </button>
+                          )}
                         </div>
                         {/* 內容 */}
                         <div className="p-1">
@@ -322,9 +288,7 @@ export default function AdminAnsComment() {
                           <div className="mt-3 border-top pt-3">
                             <form onSubmit={handleSubmitReply(submitReply)}>
                               <textarea
-                                className={`form-control mb-2 bg-white text-primary-8 ${
-                                  errorsReply.replyContent ? "is-invalid" : ""
-                                }`}
+                                className={`form-control mb-2 bg-white text-primary-8 ${errorsReply.replyContent ? "is-invalid" : ""}`}
                                 rows="2"
                                 placeholder="輸入您的回覆..."
                                 {...registerReply("replyContent", {
@@ -335,25 +299,12 @@ export default function AdminAnsComment() {
                                   },
                                 })}
                               />
-                              {errorsReply.replyContent && (
-                                <div className="invalid-feedback mb-2">
-                                  {errorsReply.replyContent.message}
-                                </div>
-                              )}
+                              {errorsReply.replyContent && <div className="invalid-feedback mb-2">{errorsReply.replyContent.message}</div>}
                               <div className="d-flex justify-content-end">
-                                <button
-                                  type="button"
-                                  className="btn btn-sm btn-secondary me-2"
-                                  onClick={cancelReply}
-                                  disabled={loading}
-                                >
+                                <button type="button" className="btn btn-sm btn-secondary me-2" onClick={cancelReply} disabled={loading}>
                                   取消
                                 </button>
-                                <button
-                                  type="submit"
-                                  className="btn btn-sm btn-primary"
-                                  disabled={loading}
-                                >
+                                <button type="submit" className="btn btn-sm btn-primary" disabled={loading}>
                                   {loading ? "處理中..." : "送出回覆"}
                                 </button>
                               </div>
@@ -369,15 +320,11 @@ export default function AdminAnsComment() {
                               <div className="d-flex align-items-center justify-content-between mb-6">
                                 <div className="d-flex align-items-center">
                                   <div className="comment-avatar me-3">
-                                    {projectOwner &&
-                                    projectOwner.studioImageUrl ? (
+                                    {projectOwner && projectOwner.studioImageUrl ? (
                                       <img
                                         src={projectOwner.studioImageUrl}
                                         className="img-fluid object-fit-cover me-1"
-                                        alt={
-                                          projectOwner.groupName ||
-                                          projectOwner.personResponsible
-                                        }
+                                        alt={projectOwner.groupName || projectOwner.personResponsible}
                                         style={{
                                           width: 50,
                                           height: 50,
@@ -385,21 +332,14 @@ export default function AdminAnsComment() {
                                         }}
                                       />
                                     ) : (
-                                      <div
-                                        className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1"
-                                        style={{ width: 50, height: 50 }}
-                                      >
+                                      <div className="bg-secondary text-white rounded-circle d-flex justify-content-center align-items-center me-1" style={{ width: 50, height: 50 }}>
                                         <i className="bi bi-person"></i>
                                       </div>
                                     )}
                                   </div>
                                   <div className="d-flex flex-column">
                                     {/* 名稱 */}
-                                    <h6 className="mb-1">
-                                      {projectOwner &&
-                                        (projectOwner.groupName ||
-                                          projectOwner.personResponsible)}
-                                    </h6>
+                                    <h6 className="mb-1">{projectOwner && (projectOwner.groupName || projectOwner.personResponsible)}</h6>
                                     {/* 回覆時間 */}
                                     {comment.replyDate && (
                                       <div className="small text-primary-7 d-flex align-items-center gap-2">
@@ -413,22 +353,10 @@ export default function AdminAnsComment() {
                                 </div>
                                 {editingReplyId === comment.id || (
                                   <div className="d-flex align-items-center">
-                                    <button
-                                      className="btn btn-outline-info btn-sm me-2 d-flex align-items-center"
-                                      onClick={() =>
-                                        startEditReply(
-                                          comment.reply,
-                                          comment.id
-                                        )
-                                      }
-                                    >
+                                    <button className="btn btn-outline-info btn-sm me-2 d-flex align-items-center" onClick={() => startEditReply(comment.reply, comment.id)}>
                                       <i className="bi bi-pencil me-1"></i> 編輯
                                     </button>
-                                    <button
-                                      className="btn btn-outline-danger btn-sm d-flex align-items-center"
-                                      disabled={loading}
-                                      onClick={() => handleDeleteReply(comment.id)}
-                                    >
+                                    <button className="btn btn-outline-danger btn-sm d-flex align-items-center" disabled={loading} onClick={() => handleDeleteReply(comment.id)}>
                                       <i className="bi bi-trash me-1"></i> 刪除
                                     </button>
                                   </div>
@@ -438,27 +366,12 @@ export default function AdminAnsComment() {
                               {/* 編輯中的回覆 */}
                               {editingReplyId === comment.id ? (
                                 <div className="mb-3">
-                                  <textarea
-                                    className="form-control mb-2 bg-white text-primary-8"
-                                    rows="2"
-                                    value={editContent}
-                                    onChange={(e) =>
-                                      setEditContent(e.target.value)
-                                    }
-                                  ></textarea>
+                                  <textarea className="form-control mb-2 bg-white text-primary-8" rows="2" value={editContent} onChange={(e) => setEditContent(e.target.value)}></textarea>
                                   <div className="d-flex justify-content-end">
-                                    <button
-                                      className="btn btn-sm btn-secondary me-2"
-                                      onClick={cancelEdit}
-                                      disabled={loading}
-                                    >
+                                    <button className="btn btn-sm btn-secondary me-2" onClick={cancelEdit} disabled={loading}>
                                       取消
                                     </button>
-                                    <button
-                                      className="btn btn-sm btn-success"
-                                      onClick={() => saveEditReply(comment.id)}
-                                      disabled={loading}
-                                    >
+                                    <button className="btn btn-sm btn-success" onClick={() => saveEditReply(comment.id)} disabled={loading}>
                                       {loading ? "儲存中..." : "儲存"}
                                     </button>
                                   </div>

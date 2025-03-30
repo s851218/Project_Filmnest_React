@@ -1,3 +1,5 @@
+import PropTypes from "prop-types";
+
 const UploadProjectImage = ({ onUploadSuccess }) => {
   const handleFileChange = (e) => {
     const selectedfile = e.target.files[0]; //取目標files的內容
@@ -18,14 +20,12 @@ const UploadProjectImage = ({ onUploadSuccess }) => {
   return (
     <>
       <h2 className="fs-base fw-bolder mb-2">更換封面圖片</h2>
-      <input
-        type="file"
-        className="w-100"
-        accept="image/*"
-        onChange={handleFileChange}
-      />
+      <input type="file" className="w-100" accept="image/*" onChange={handleFileChange} />
     </>
   );
 };
 
+UploadProjectImage.propTypes = {
+  onUploadSuccess: PropTypes.func,
+};
 export default UploadProjectImage;

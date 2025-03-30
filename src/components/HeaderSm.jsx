@@ -11,7 +11,6 @@ const apiBase = import.meta.env.VITE_API_BASE;
 export default function HeaderSm() {
   const profile = useSelector((state) => state.user.profile);
   const id = useSelector((state) => state.user.profile.userId);
-  const searchValue = useSelector((state) => state.search.value);
   const isSearchOpen = useSelector((state) => state.search.isSearchOpen);
   const categoryData = ["喜劇", "愛情", "恐怖", "懸疑", "科幻", "紀錄片", "動畫", "實驗電影"];
   const [isExpand, setIsExpand] = useState({ category: false });
@@ -24,16 +23,17 @@ export default function HeaderSm() {
       document.cookie = "loginToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
       Toast.fire({
         icon: "success",
-        title: "登出成功"
-      })
+        title: "登出成功",
+      });
       dispatch(setLogout());
       navigate("/");
     } catch (error) {
-      console.log(error);
-      Toast.fire({
-        icon: "error",
-        title: "登出失敗"
-      })
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "登出失敗",
+        });
+      }
     }
   };
   const handleIsExpand = () => {
@@ -45,10 +45,10 @@ export default function HeaderSm() {
     }
     dispatch(setIsSearchOpen(!isSearchOpen));
   };
-  const handleReturnPage = (e) =>{
-    e.preventDefault()
-    navigate(-1)
-  }
+  const handleReturnPage = (e) => {
+    e.preventDefault();
+    navigate(-1);
+  };
   return (
     <>
       <div className="mb-3 d-flex justify-content-between">

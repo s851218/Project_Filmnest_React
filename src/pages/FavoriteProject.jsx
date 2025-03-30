@@ -1,10 +1,11 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Card from "../components/Card";
 import PersonalCenterSidebar from "../components/PersonalCenterSidebar";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
+import { Alert } from "../assets/js/costomSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function FavoriteProject() {
@@ -19,22 +20,25 @@ export default function FavoriteProject() {
   const [favoriteProjects, setFavoriteProjects] = useState([]);
   const id = useSelector((state) => state.user.profile.userId);
 
-  const getFavoriteProjects = async () => {
+  const getFavoriteProjects = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(
-        `${apiBase}/favorites?_expand=project&userId=${id}`
-      );
+      const response = await axios.get(`${apiBase}/favorites?_expand=project&userId=${id}`);
       setFavoriteProjects(response.data.map((item) => item.project));
     } catch (error) {
-      console.log("取得收藏專案失敗：", error);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "取得收藏專案失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id]);
   useEffect(() => {
     getFavoriteProjects();
-  }, [id]);
+  }, [id, getFavoriteProjects]);
   return (
     <>
       <Helmet>
