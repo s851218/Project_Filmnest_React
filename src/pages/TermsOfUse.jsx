@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import { Link } from "react-router";
 
 const data = [
@@ -79,14 +79,13 @@ export default function TermsOfUse() {
                 <li key={index}>
                   <h2 className="fs-6">{title}</h2>
                   {contents.map((content, index) => (
-                    <>
+                    <Fragment key={index}>
                       <p
-                        key={index}
                         className={`${index + 1 !== contents.length && "mb-0"}`}
                       >
                         {content}
                       </p>
-                    </>
+                    </Fragment>
                   ))}
                 </li>
               ))}
