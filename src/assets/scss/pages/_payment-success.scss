@@ -10,7 +10,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        background-image: url(/assets/images/payment-success-banner-md.png);
+        background-image: url(payment-success-banner-md.png);
         background-position: center top;
         background-size: cover;
         background-repeat: no-repeat;
@@ -20,7 +20,7 @@
         //     background-image: url(/assets/images/payment-success-banner-md-2.png);
         // }
         @include lg{
-            background-image: url(/assets/images/payment-success-banner-lg-2.png);
+            background-image: url(payment-success-banner-lg-2.png);
         }
     }
 }
