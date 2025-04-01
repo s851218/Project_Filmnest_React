@@ -50,6 +50,7 @@ import AboutStudioFin from "../pages/AboutStudioFin";
 import AboutStudioOngoing from "../pages/AboutStudioOngoing";
 import AboutStudioOthers from "../pages/AboutStudioOthers";
 import ProfilePassword from "../pages/ProfilePassword";
+import PaymentComplete from "../pages/PaymentComplete";
 
 const routes = [
   {
@@ -195,6 +196,14 @@ const routes = [
       {
         path: "paymentInfo/:id",
         element: <PaymentInfo />,
+      },
+      {
+        path: "completePayment",
+        element: <PaymentComplete />,
+      },
+      {
+        path: "completeOrder",
+        element: <PaymentComplete />,
       },
       {
         path: "headerSm",
