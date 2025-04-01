@@ -50,6 +50,8 @@ import AboutStudioFin from "../pages/AboutStudioFin";
 import AboutStudioOngoing from "../pages/AboutStudioOngoing";
 import AboutStudioOthers from "../pages/AboutStudioOthers";
 import ProfilePassword from "../pages/ProfilePassword";
+import CompleteProposal from "../pages/CompleteProposal";
+
 
 const routes = [
   {
@@ -135,6 +137,10 @@ const routes = [
       {
         path: "createProposal",
         element: <CreateProposal />,
+      },
+      {
+        path: "completeProposal",
+        element: <CompleteProposal />,
       },
       {
         path: "feedbackPage/:id",
