@@ -11,7 +11,7 @@ export default function PaymentInfoFrom({ reference, userData }) {
     reference: PropTypes.shape({
       current: PropTypes.any,
     }),
-    userData: PropTypes.array,
+    userData: PropTypes.object,
   };
 
   const dispatch = useDispatch();
