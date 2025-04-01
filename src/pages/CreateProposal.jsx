@@ -50,7 +50,7 @@ export default function CreatePropsal() {
           title: "提交成功",
         },
         setTimeout(() => {
-          navigate("/"); // 重新導向 暫定首頁 => 之後改付款完成頁面
+          navigate("/completeProposal");
         }, 1500)
       );
     } catch (error) {
