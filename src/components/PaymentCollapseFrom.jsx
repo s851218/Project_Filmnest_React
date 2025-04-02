@@ -126,21 +126,11 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
 
     if (newCardType !== enabledCardType) {
       setEnabledCardType(newCardType)
-      reset({
-        "cardType": newCardType,
-        "payMethod": enabledPayMethod,
-      })
+      reset()
+      setValue("cardType",newCardType)
+      setValue("payMethod",enabledPayMethod)
     }
-  }
-
-  useEffect(()=>{
-    if (enabledCardType) {
-      if (watch.cardType !== enabledCardType) {
-        setValue("cardType", enabledCardType)
-      }
-    }
-  },[enabledCardType , watch.cardType , setValue])
-  
+  }  
 
   // radio改變=>切換付款方式 (OK)
   const handlePayMethodChange = (e) => {
@@ -148,33 +138,21 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
 
     if (newPayMethod !== enabledPayMethod) {
       setEnabledPayMethod(newPayMethod)
+      setValue("payMethod",newPayMethod)
     }
   }
 
-  useEffect(()=>{
-    if (enabledPayMethod) {
-      if (watch.payMethod !== enabledPayMethod) {
-        setValue("payMethod",enabledPayMethod)
-      }
-    }
-  },[enabledPayMethod , watch.payMethod , setValue])
-
   // 處理卡號連續輸入 (OK)
-  useEffect(()=> {
-    if ((enabledCardType)&& accordionIndex === 0) {
-      const codeIndexLength = creditCardFormContent.cardTypes[enabledCardType].patterns.length
-      const thisInputId = `codeInput${cardCodeIndex+1}`
-      const thisInput = document.getElementById(thisInputId)
-
-      if ((thisInput.value.length === thisInput.maxLength) && (cardCodeIndex < codeIndexLength-1)) {
-        // 當前input填滿
-        setCardCodeIndex(cardCodeIndex+1) // 設定下一個input index
-      } else if ((thisInput.value.length === 0) && (cardCodeIndex > 0)) {
-        // 當前input清空
-        setCardCodeIndex(cardCodeIndex-1) // 設定上一個input index
-      }
+  const handleInputMove = (e,pattern) => {
+    const { value } = e.target
+    const codeIndexLength = creditCardFormContent.cardTypes[enabledCardType].patterns.length
+    
+    if ((value.length === 0) && (cardCodeIndex > 0)) {
+      setCardCodeIndex(cardCodeIndex-1)
+    } else if ((value.length === pattern) && (cardCodeIndex < codeIndexLength-1)) {
+      setCardCodeIndex(cardCodeIndex+1)
     }
-  },[watch , accordionIndex , cardCodeIndex , enabledCardType])
+  }
 
   useEffect(()=>{
     if (enabledCardType) {
@@ -286,6 +264,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
                             maxLength={pattern}
                             disabled={cardCodeIndex !== index}
                             autoComplete="one-time-code"
+                            onKeyUp={(e)=>handleInputMove(e,pattern)}
                             {...register(inputName,{
                               required: {
                                 value: true
