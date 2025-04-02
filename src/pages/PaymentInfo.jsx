@@ -225,15 +225,42 @@ export default function PaymentInfo() {
       canRefund: accordionIndex === 0 ? true : false, // 2025.03.20 xiang
     };
 
+    let navigateParams = {
+      state:{
+        ...paymentMethod,
+        projectTitle : projectData.projectTitle,
+        totalMoney : projectData.totalMoney,
+        goalMoney : projectData.goalMoney,
+        productTitle : productData.title,
+      }
+    }
+    let alertTitle
+    let navigation
+    switch (newOrderData.paymentMethod.type) {
+      case 0: // 信用卡付款
+        alertTitle = "付款成功"
+        navigation = "/completePayment"
+        break;
+
+      case 1: // ATM轉帳
+      case 2: // 超商代碼
+        alertTitle = "訂單成立"
+        navigation = "/completeOrder"
+        break;
+    
+      default:
+        break;
+    }
+    
     try {
       await axios.put(`${API_BASE}/orders/${id}`, newOrderData);
       Alert.fire(
         {
           icon: "success",
-          title: "付款成功",
+          title: alertTitle,
         },
         setTimeout(() => {
-          navigate("/"); // 重新導向 暫定首頁 => 之後改付款完成頁面
+          navigate(navigation,navigateParams);
         }, 1500)
       );
     } catch (error) {
@@ -266,7 +293,10 @@ export default function PaymentInfo() {
       <Helmet>
         <title>付款資料</title>
       </Helmet>
-      {Object.keys(orderData).length !== 0 && Object.keys(projectData).length !== 0 && Object.keys(productData).length !== 0 && Object.keys(userData).length !== 0 ? (
+      { Object.keys(orderData).length !== 0 && 
+        Object.keys(projectData).length !== 0 &&
+        Object.keys(productData).length !== 0 &&
+        Object.keys(userData).length !== 0 ? (
         <>
           <div className="container mb-20" style={{ marginTop: 88 }}>
             <div className="row">
