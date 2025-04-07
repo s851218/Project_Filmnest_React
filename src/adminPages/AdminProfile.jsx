@@ -8,7 +8,7 @@ import TimePicker from 'react-multi-date-picker/plugins/time_picker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' // 載入react-fontawesome元件
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
-import AdminSummary from './AdminSummary';
+import AdminSummary from '../AdminComponents/AdminSummary';
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -163,7 +163,7 @@ export default function AdminProfile() {
 
       <AdminSummary /> {/* 摘要區 */}
 
-      <div className="d-flex justify-content-between mb-7">
+      <div className="container d-flex justify-content-between mb-3 mb-sm-7">
         <h2 className="fs-6 lh-2 fw-bolder">個人資料</h2>
         <div>
           <button className="btn btn-outline-primary-10 fs-sm fw-bold py-3 ps-4 me-4">
@@ -199,264 +199,265 @@ export default function AdminProfile() {
           )}
         </div>
       </div>
-      <div className="container bg-white p-10 rounded-5">
-        <form className="row">
-          <div className="col-4">
-            <img src={tempFormValue.studioImageUrl} alt={tempFormValue.groupName} />
-            { isEdit && (
-              <input
-                name="studioImageUrl"
-                type="file"
-                className="form-control mt-3"
-                id="studioImageUrl"
-                onChange={handleFileChange}
-              />
-            )}
-          </div>
-          <div className="col-8">
-            <div className="row g-5 mb-5">
-              <div className="col-6">
-                <label htmlFor="groupName" className="form-label">團隊名稱</label>
+      <div className="container px-0 px-sm-3">
+        <div className="bg-white p-3 p-sm-10 rounded-0 rounded-sm-5 shadow">
+          <form className="row row-cols-md-2 row-cols-1">
+            <div className="col-md-4 col mb-5">
+              <img src={tempFormValue.studioImageUrl} alt={tempFormValue.groupName} />
+              { isEdit && (
                 <input
-                  id="groupName"
-                  type="text" 
-                  className={`form-control ${errors.groupName ? "is-invalid no-icon" : ""}`}
-                  disabled={!isEdit}
-                  {...register("groupName",{
-                    required: {
-                      value:true,
-                      message: "*必填欄位",
-                    },
-                  })}
+                  name="studioImageUrl"
+                  type="file"
+                  className="form-control mt-3"
+                  id="studioImageUrl"
+                  onChange={handleFileChange}
                 />
-                { errors.groupName && <div className="invalid-feedback d-block">{errors.groupName.message}</div>}
-              </div>
-              <div className="col-6">
-                <label htmlFor="personResponsible" className="form-label">負責人</label>
-                <input
-                  id="personResponsible"
-                  type="text"
-                  className={`form-control ${errors.personResponsible ? "is-invalid no-icon" : ""}`}
-                  disabled={!isEdit}
-                  {...register("personResponsible",{
-                    required: {
-                      value:true,
-                      message: "*必填欄位",
-                    },
-                    pattern: {
-                      value: /^[\u4e00-\u9fa5a-zA-Z]+$/,
-                      message: "輸入包含無效字符，只可輸入中英文",
-                    },
-                  })}
-                />
-                { errors.personResponsible && <div className="invalid-feedback d-block">{errors.personResponsible.message}</div>}
-              </div>
+              )}
             </div>
-
-            <div className="row g-5 mb-5">
-              <div className="col-6">
-                <label htmlFor="email" className="form-label">聯絡信箱</label>
-                <input
-                  id="email"
-                  type="email"
-                  className={`form-control ${errors.email ? "is-invalid no-icon" : ""}`}
-                  disabled={!isEdit}
-                  {...register("email",{
-                    required: {
-                      value:true,
-                      message: "*必填欄位",
-                    },
-                    pattern: {
-                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                      message: "*Email 格式錯誤"
-                    }
-                  })}
-                />
-                { errors.email && <div className="invalid-feedback d-block">{errors.email.message}</div>}
-              </div>
-              <div className="col-6">
-                <label htmlFor="phone" className="form-label">聯絡電話</label>
-                <input
-                  id="phone"
-                  type="tel"
-                  className={`form-control ${errors.phone ? "is-invalid no-icon" : ""}`}
-                  disabled={!isEdit}
-                  {...register("phone",{
-                    required: {
-                      value:true,
-                      message: "*必填欄位",
-                    },
-                    pattern: {
-                      value: /^(0[2-8]\d{7}|09\d{8})$/,
-                      message: "電話格式錯誤，請輸入有效的台灣電話號碼",
-                    },
-                  })}
-                />
-                { errors.phone && <div className="invalid-feedback d-block">{errors.phone.message}</div>}
-              </div>
-            </div>
-
-            <div className="mb-5">
-              <h3 className="fw-normal fs-base lh-base">服務時間</h3>
-              <div className="row">
-                <div className="col-6 d-flex align-items-center">
-                  <label htmlFor="startTime" className="form-label flex-shrink-0 mb-0 me-2">開始時間</label>
-                  <Controller 
-                    control={control}
-                    name="startTime"
-                    rules={{required: "*請輸入有效時間"}}
-                    render={({
-                      field: { name, value },
-                      formState: { errors },
-                    }) => (
-                      <>
-                        <DatePicker
-                          disableDayPicker
-                          id="startTime"
-                          inputClass={`form-control ${errors.startTime ? "is-invalid no-icon" : ""}`}
-                          value={value}
-                          onChange={(time) => handleTimeChange(name,time)}
-                          format="HH:mm"
-                          plugins={[
-                            <TimePicker key="startTime" hideSeconds />
-                          ]}
-                          disabled={!isEdit}
-                        />
-                        { errors.startTime && <div className="invalid-feedback d-block">{errors.startTime.message}</div>}
-                      </>
-                    )}
+            <div className="col-md-8 col">
+              <div className="row row-cols-sm-2 row-cols-1 gx-5 mb-3 mb-sm-5">
+                <div className="col-sm-6 col mb-3 mb-sm-0">
+                  <label htmlFor="groupName" className="form-label text-primary-6">團隊名稱</label>
+                  <input
+                    id="groupName"
+                    type="text" 
+                    className={`form-control ${errors.groupName ? "is-invalid no-icon" : ""}`}
+                    disabled={!isEdit}
+                    {...register("groupName",{
+                      required: {
+                        value:true,
+                        message: "*必填欄位",
+                      },
+                    })}
                   />
+                  { errors.groupName && <div className="invalid-feedback d-block">{errors.groupName.message}</div>}
                 </div>
-                <div className="col-6 d-flex align-items-center">
-                  <label htmlFor="endTime" className="form-label flex-shrink-0 mb-0 me-2">結束時間</label>
-                  <Controller 
-                    control={control}
-                    className="form-control"
-                    name="endTime"
-                    rules={{required: "*請輸入有效時間"}}
-                    render={({
-                      field: { name, value },
-                      formState: { errors },
-                    }) => (
-                      <>
-                        <DatePicker
-                          disableDayPicker
-                          id="endTime"
-                          inputClass={`form-control ${errors.endTime ? "is-invalid no-icon" : ""}`}
-                          value={value}
-                          onChange={(time) => handleTimeChange(name,time)}
-                          format="HH:mm"
-                          plugins={[
-                            <TimePicker key="endTime" hideSeconds />
-                          ]}
-                          disabled={!isEdit}
-                        />
-                        { errors.endTime && <div className="invalid-feedback d-block">{errors.endTime.message}</div>}
-                      </>
-                    )}
+                <div className="col-sm-6 col">
+                  <label htmlFor="personResponsible" className="form-label text-primary-6">負責人</label>
+                  <input
+                    id="personResponsible"
+                    type="text"
+                    className={`form-control ${errors.personResponsible ? "is-invalid no-icon" : ""}`}
+                    disabled={!isEdit}
+                    {...register("personResponsible",{
+                      required: {
+                        value:true,
+                        message: "*必填欄位",
+                      },
+                      pattern: {
+                        value: /^[\u4e00-\u9fa5a-zA-Z]+$/,
+                        message: "輸入包含無效字符，只可輸入中英文",
+                      },
+                    })}
                   />
+                  { errors.personResponsible && <div className="invalid-feedback d-block">{errors.personResponsible.message}</div>}
                 </div>
               </div>
-            </div>
 
-            <div className="d-flex flex-column mb-5">
-              <label htmlFor="teamIntro" className="form-label">團隊簡介</label>
-              <textarea
-                id="teamIntro"
-                rows={5}
-                className={`form-control ${errors.teamIntro ? "is-invalid no-icon" : ""}`}
-                disabled={!isEdit}
-                {...register("teamIntro",{
-                  required: {
-                    value: true,
-                    message: "*必填欄位，限制500字",
-                  },
-                  maxLength: {
-                    value: 500,
-                    message: "*超出字數上限，限制500字",
-                  },
-                })}
-              />
-              { errors.teamIntro && <div className="invalid-feedback d-block">{errors.teamIntro.message}</div>}
-            </div>
+              <div className="row row-cols-sm-2 row-cols-1 gx-5 mb-3 mb-sm-5">
+                <div className="col-sm-6 col mb-3 mb-sm-0">
+                  <label htmlFor="email" className="form-label text-primary-6">聯絡信箱</label>
+                  <input
+                    id="email"
+                    type="email"
+                    className={`form-control ${errors.email ? "is-invalid no-icon" : ""}`}
+                    disabled={!isEdit}
+                    {...register("email",{
+                      required: {
+                        value:true,
+                        message: "*必填欄位",
+                      },
+                      pattern: {
+                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                        message: "*Email 格式錯誤"
+                      }
+                    })}
+                  />
+                  { errors.email && <div className="invalid-feedback d-block">{errors.email.message}</div>}
+                </div>
+                <div className="col-sm-6 col">
+                  <label htmlFor="phone" className="form-label text-primary-6">聯絡電話</label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    className={`form-control ${errors.phone ? "is-invalid no-icon" : ""}`}
+                    disabled={!isEdit}
+                    {...register("phone",{
+                      required: {
+                        value:true,
+                        message: "*必填欄位",
+                      },
+                      pattern: {
+                        value: /^(0[2-8]\d{7}|09\d{8})$/,
+                        message: "電話格式錯誤，請輸入有效的台灣電話號碼",
+                      },
+                    })}
+                  />
+                  { errors.phone && <div className="invalid-feedback d-block">{errors.phone.message}</div>}
+                </div>
+              </div>
 
-            <div className="mb-5">
-              <h5 className="fs-base fw-normal">社群媒體</h5>
-              <div className="input-group">
-                <div className="input-group-text w-100 py-3 border-bottom-0 rounded-bottom-0">
-                  <div className="row align-items-center">
-                    <div className="col-4 d-flex align-items-center">
-                      { isEdit && (
-                        <input className="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" />
+              <div className="mb-5">
+                <h3 className="fw-normal fs-base lh-base text-primary-6">服務時間</h3>
+                <div className="row">
+                  <div className="col-6 d-flex align-items-center">
+                    <label htmlFor="startTime" className="form-label flex-shrink-0 mb-0 me-2">開始時間</label>
+                    <Controller 
+                      control={control}
+                      name="startTime"
+                      rules={{required: "*請輸入有效時間"}}
+                      render={({
+                        field: { name, value },
+                        formState: { errors },
+                      }) => (
+                        <>
+                          <DatePicker
+                            disableDayPicker
+                            id="startTime"
+                            inputClass={`form-control ${errors.startTime ? "is-invalid no-icon" : ""}`}
+                            value={value}
+                            onChange={(time) => handleTimeChange(name,time)}
+                            format="HH:mm"
+                            plugins={[
+                              <TimePicker key="startTime" hideSeconds />
+                            ]}
+                            disabled={!isEdit}
+                          />
+                          { errors.startTime && <div className="invalid-feedback d-block">{errors.startTime.message}</div>}
+                        </>
                       )}
-                      <span className="text-black mx-5 text-start d-flex" style={{width:120}}>
-                        <FontAwesomeIcon className="text-primary-6 fs-6 me-2" icon={fab.faSquareFacebook} />
-                        Facebook
-                      </span>
-                    </div>
-                    <div className="col-8">
-                      { isEdit && (
-                        <input
-                          type="text" className="form-control" aria-label="Text input with checkbox"
-                          disabled={!isEdit}
-                          {...register("studioFb")}
-                        />
+                    />
+                  </div>
+                  <div className="col-6 d-flex align-items-center">
+                    <label htmlFor="endTime" className="form-label flex-shrink-0 mb-0 me-2">結束時間</label>
+                    <Controller 
+                      control={control}
+                      name="endTime"
+                      rules={{required: "*請輸入有效時間"}}
+                      render={({
+                        field: { name, value },
+                        formState: { errors },
+                      }) => (
+                        <>
+                          <DatePicker
+                            disableDayPicker
+                            id="endTime"
+                            inputClass={`form-control ${errors.endTime ? "is-invalid no-icon" : ""}`}
+                            value={value}
+                            onChange={(time) => handleTimeChange(name,time)}
+                            format="HH:mm"
+                            plugins={[
+                              <TimePicker key="endTime" hideSeconds />
+                            ]}
+                            disabled={!isEdit}
+                          />
+                          { errors.endTime && <div className="invalid-feedback d-block">{errors.endTime.message}</div>}
+                        </>
                       )}
-                    </div>
+                    />
                   </div>
                 </div>
               </div>
-              <div className="input-group">
-                <div className="input-group-text w-100 py-3 rounded-0">
-                  <div className="row align-items-center">
-                    <div className="col-4 d-flex align-items-center">
-                      { isEdit && (
-                        <input className="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" />
-                      )}
-                      <span className="text-black mx-5 text-start d-flex" style={{width:120}}>
-                        <FontAwesomeIcon className="text-primary-6 fs-6 me-2" icon={fab.faInstagram} />
-                        Instagram
-                      </span>
-                    </div>
-                    <div className="col-8">
-                      { isEdit && (
-                        <input
-                          type="text" className="form-control" aria-label="Text input with checkbox"
-                          disabled={!isEdit}
-                          {...register("studioIg")}
-                        />
-                      )}
+
+              <div className="d-flex flex-column mb-5">
+                <label htmlFor="teamIntro" className="form-label text-primary-6">團隊簡介</label>
+                <textarea
+                  id="teamIntro"
+                  rows={5}
+                  className={`form-control ${errors.teamIntro ? "is-invalid no-icon" : ""}`}
+                  disabled={!isEdit}
+                  {...register("teamIntro",{
+                    required: {
+                      value: true,
+                      message: "*必填欄位，限制500字",
+                    },
+                    maxLength: {
+                      value: 500,
+                      message: "*超出字數上限，限制500字",
+                    },
+                  })}
+                />
+                { errors.teamIntro && <div className="invalid-feedback d-block">{errors.teamIntro.message}</div>}
+              </div>
+
+              <div className="mb-0">
+                <h5 className="fs-base fw-normal text-primary-6">社群媒體</h5>
+                <div className="input-group">
+                  <div className="input-group-text w-100 py-3 border-bottom-0 rounded-bottom-0">
+                    <div className="row align-items-center">
+                      <div className="col-4 d-flex align-items-center">
+                        { isEdit && (
+                          <input className="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" />
+                        )}
+                        <span className="text-black mx-5 d-flex" style={{width:120}}>
+                          <FontAwesomeIcon className="text-primary-6 fs-6 me-2" icon={fab.faSquareFacebook} />
+                          Facebook
+                        </span>
+                      </div>
+                      <div className="col-8">
+                        { isEdit && (
+                          <input
+                            type="text" className="form-control" aria-label="Text input with checkbox"
+                            disabled={!isEdit}
+                            {...register("studioFb")}
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="input-group">
-                <div className="input-group-text w-100 py-3 border-top-0 rounded-top-0">
-                  <div className="row align-items-center">
-                    <div className="col-4 d-flex align-items-center">
-                      { isEdit && (
-                        <input className="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" />
-                      )}
-                      <span className="text-black mx-5 text-start d-flex" style={{width:120}}>
-                        <i className="bi bi-line text-primary-6 fs-6 lh-0 me-2" />
-                        LINE
-                      </span>
+                <div className="input-group">
+                  <div className="input-group-text w-100 py-3 rounded-0">
+                    <div className="row align-items-center">
+                      <div className="col-4 d-flex align-items-center">
+                        { isEdit && (
+                          <input className="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" />
+                        )}
+                        <span className="text-black mx-5 d-flex" style={{width:120}}>
+                          <FontAwesomeIcon className="text-primary-6 fs-6 me-2" icon={fab.faInstagram} />
+                          Instagram
+                        </span>
+                      </div>
+                      <div className="col-8">
+                        { isEdit && (
+                          <input
+                            type="text" className="form-control" aria-label="Text input with checkbox"
+                            disabled={!isEdit}
+                            {...register("studioIg")}
+                          />
+                        )}
+                      </div>
                     </div>
-                    <div className="col-8">
-                      { isEdit && (
-                        <input
-                          type="text" className="form-control" aria-label="Text input with checkbox"
-                          disabled={!isEdit}
-                          {...register("studioLine")}
-                        />
-                      )}
+                  </div>
+                </div>
+                <div className="input-group">
+                  <div className="input-group-text w-100 py-3 border-top-0 rounded-top-0">
+                    <div className="row align-items-center">
+                      <div className="col-4 d-flex align-items-center">
+                        { isEdit && (
+                          <input className="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input" />
+                        )}
+                        <span className="text-black mx-5 d-flex" style={{width:120}}>
+                          <i className="bi bi-line text-primary-6 fs-6 lh-0 me-2" />
+                          LINE
+                        </span>
+                      </div>
+                      <div className="col-8">
+                        { isEdit && (
+                          <input
+                            type="text" className="form-control" aria-label="Text input with checkbox"
+                            disabled={!isEdit}
+                            {...register("studioLine")}
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </>
   );

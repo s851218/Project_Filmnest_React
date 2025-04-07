@@ -265,196 +265,194 @@ function AdminFeedbackForm() {
 
   return (
     <>
-      <div className="container py-10">
-        <div className="card shadow-sm bg-primary-2 text-primary-8">
-          <div className="card-header bg-primary-3 py-3 d-flex justify-content-between align-items-center">
-            <h4 className="mb-0 fw-bold">回饋方案設定</h4>
-            <button type="button" className="btn btn-primary d-flex justify-content-center align-items-center" onClick={addNewChoice} disabled={!allFieldsValid}>
-              <i className="bi bi-plus-circle me-2"></i>
-              新增回饋項目
-            </button>
-          </div>
-          <div className="card-body p-4">
-            <form onSubmit={handleSubmit(onSubmit)}>
-              {choiceFields.map((choice, choiceIndex) => {
-                const imageValue = watch(`choice.${choiceIndex}.image`);
-                const imageInputID = `feedbackImageInput-${choice.id}`;
-                const titleInputID = `feedbackTitleInput-${choice.id}`;
-                const priceInputID = `feedbackPriceInput-${choice.id}`;
-                const hasImage = !!imageValue;
-                const isEditing = editingIndex === choiceIndex;
+      <div className="card shadow rounded-0 rounded-sm-3 py-4 px-3 p-sm-6 bg-white text-primary-8 border-0 mb-sm-6 mb-lg-0">
+        <div className="card-header p-0 d-flex justify-content-between align-items-center border-0 mb-5">
+          <h4 className="mb-0 fw-bold">回饋方案設定</h4>
+          <button type="button" className="btn btn-primary d-flex justify-content-center align-items-center" onClick={addNewChoice} disabled={!allFieldsValid}>
+            <i className="bi bi-plus-circle me-2"></i>
+            新增回饋項目
+          </button>
+        </div>
+        <div className="card-body p-0">
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {choiceFields.map((choice, choiceIndex) => {
+              const imageValue = watch(`choice.${choiceIndex}.image`);
+              const imageInputID = `feedbackImageInput-${choice.id}`;
+              const titleInputID = `feedbackTitleInput-${choice.id}`;
+              const priceInputID = `feedbackPriceInput-${choice.id}`;
+              const hasImage = !!imageValue;
+              const isEditing = editingIndex === choiceIndex;
 
-                return (
-                  <section key={choice.id} className={`mb-4 border rounded ${isEditing ? "border-primary-7 border-2" : "border-primary-3"}`}>
-                    {/* 標題列與操作按鈕 */}
-                    <div className="bg-light p-3 d-flex justify-content-between align-items-center rounded-top">
-                      <h5 className="mb-0">回饋項目 #{choiceIndex + 1}</h5>
-                      <div className="d-flex gap-2">
-                        <button type="button" className={`btn ${isEditing ? "btn-outline-primary-6" : "btn-primary-3"} btn-sm d-flex align-items-center`} onClick={() => toggleEdit(choiceIndex)}>
-                          <i className={`bi ${isEditing ? "bi-lock" : "bi-pencil"} me-1`}></i>
-                          {isEditing ? "鎖定" : "編輯"}
-                        </button>
-                        <button type="button" className="btn btn-danger btn-sm d-flex align-items-center" onClick={() => handleRemoveChoice(choiceIndex)} disabled={choiceFields.length === 1 || !isEditing}>
-                          <i className="bi bi-trash me-1"></i>
-                          刪除
-                        </button>
-                      </div>
+              return (
+                <section key={choice.id} className="mb-4 shadow bg-primary-2 rounded">
+                  {/* 標題列與操作按鈕 */}
+                  <div className="p-3 d-flex justify-content-between align-items-center">
+                    <h5 className="mb-0">回饋項目 #{choiceIndex + 1}</h5>
+                    <div className="d-flex gap-2">
+                      <button type="button" className={`btn ${isEditing ? "btn-outline-primary-6" : "btn-outline-primary-10"} btn-sm d-flex align-items-center`} onClick={() => toggleEdit(choiceIndex)}>
+                        <i className={`bi ${isEditing ? "bi-lock" : "bi-pencil"} me-1`}></i>
+                        {isEditing ? "鎖定" : "編輯"}
+                      </button>
+                      <button type="button" className="btn btn-sm btn-outline-danger d-flex align-items-center" onClick={() => handleRemoveChoice(choiceIndex)} disabled={choiceFields.length === 1 || !isEditing}>
+                        <i className="bi bi-trash me-1"></i>
+                        刪除
+                      </button>
                     </div>
+                  </div>
 
-                    <div className="p-3">
-                      <div className="row">
-                        {/* 左側圖片區域 */}
-                        <div className="col-md-5 mb-3 mb-md-0">
-                          <div className="mb-1">
-                            <label className="form-label mb-2 fw-bold required">項目圖片</label>
-                            <input
-                              type="hidden"
-                              {...register(`choice.${choiceIndex}.image`, {
-                                required: "您必須上傳一張示意圖片",
-                              })}
-                            />
-                            <input
-                              id={imageInputID}
-                              type="file"
-                              accept="image/*"
-                              className="form-control d-none"
-                              disabled={!isEditing}
-                              onChange={(e) => {
-                                const file = e.target.files[0];
-                                handleFileUpload(choiceIndex, file);
-                              }}
-                            />
-                            <label htmlFor={imageInputID} className="d-block mb-0">
-                              {hasImage ? (
-                                <div className="position-relative">
-                                  <div className="ratio ratio-4x3 overflow-hidden rounded">
-                                    <img src={imageValue} alt="Preview" className="w-100 h-100 object-fit-cover border border-2 border-primary-8 rounded" />
-                                  </div>
-                                  {isEditing && (
-                                    <button
-                                      type="button"
-                                      className="btn btn-sm btn-warning position-absolute top-0 end-0 m-2 rounded-circle"
-                                      style={{ width: "32px", height: "32px" }}
-                                      onClick={(e) => {
-                                        e.preventDefault();
-                                        document.getElementById(imageInputID).click();
-                                      }}
-                                    >
-                                      <i className="bi bi-pencil"></i>
-                                    </button>
-                                  )}
+                  <div className="p-3">
+                    <div className="row">
+                      {/* 左側圖片區域 */}
+                      <div className="col-md-5 mb-3 mb-md-0">
+                        <div className="mb-1">
+                          <label className="form-label mb-2 fw-bold required">項目圖片</label>
+                          <input
+                            type="hidden"
+                            {...register(`choice.${choiceIndex}.image`, {
+                              required: "您必須上傳一張示意圖片",
+                            })}
+                          />
+                          <input
+                            id={imageInputID}
+                            type="file"
+                            accept="image/*"
+                            className="form-control d-none"
+                            disabled={!isEditing}
+                            onChange={(e) => {
+                              const file = e.target.files[0];
+                              handleFileUpload(choiceIndex, file);
+                            }}
+                          />
+                          <label htmlFor={imageInputID} className="d-block mb-0">
+                            {hasImage ? (
+                              <div className="position-relative">
+                                <div className="ratio ratio-4x3 overflow-hidden rounded">
+                                  <img src={imageValue} alt="Preview" className="w-100 h-100 object-fit-cover rounded" />
                                 </div>
-                              ) : (
-                                <div
-                                  className="d-flex flex-column align-items-center justify-content-center border-2 border-dashed rounded bg-light p-4 ratio ratio-16x9"
-                                  style={{
-                                    cursor: isEditing ? "pointer" : "default",
-                                  }}
-                                >
-                                  {errors.choice?.[choiceIndex]?.image && (
-                                    <div className="text-danger small p-2">
-                                      <i className="bi bi-exclamation-circle me-1"></i>
-                                      {errors.choice[choiceIndex].image.message}
-                                    </div>
-                                  )}
-                                  <div className={`d-flex align-items-center justify-content-center border ${errors.choice?.[choiceIndex]?.image && "border-danger"}`}>
-                                    <div className={`d-flex flex-column align-items-center justify-content-center ${errors.choice?.[choiceIndex]?.image ? "text-danger" : "text-primary-6"}`}>
-                                      <i className="bi bi-cloud-arrow-up fs-1 mb-2"></i>
-                                      <p className="mb-1 fw-bold required">上傳圖片</p>
-                                      <p className="small mb-0">{isEditing ? "點擊此處上傳圖片" : "尚未上傳圖片"}</p>
-                                    </div>
-                                  </div>
-                                </div>
-                              )}
-                            </label>
-                          </div>
-                        </div>
-
-                        {/* 右側表單欄位 */}
-                        <div className="col-md-7">
-                          <div className="row mb-3">
-                            <div className="col-md-7 mb-3 mb-md-0">
-                              <label htmlFor={titleInputID} className="form-label fw-bold required">
-                                項目名稱
-                              </label>
-                              <input
-                                {...register(`choice.${choiceIndex}.title`, {
-                                  required: "您必須填入項目名稱",
-                                })}
-                                disabled={!isEditing}
-                                id={titleInputID}
-                                type="text"
-                                placeholder="請輸入回饋項目名稱"
-                                className={`form-control bg-white text-primary-8 ${errors.choice?.[choiceIndex]?.title ? "is-invalid" : ""}`}
-                              />
-                              {errors.choice?.[choiceIndex]?.title && <div className="invalid-feedback">{errors.choice[choiceIndex].title.message}</div>}
-                            </div>
-                            <div className="col-md-5">
-                              <label htmlFor={priceInputID} className="form-label fw-bold required">
-                                金額設定
-                              </label>
-                              <div className="input-group">
-                                <span className="input-group-text bg-white text-primary-8">NT$</span>
-                                <input
-                                  {...register(`choice.${choiceIndex}.price`, {
-                                    required: "您必須填入項目金額",
-                                    min: {
-                                      value: 1,
-                                      message: "金額必須大於 0",
-                                    },
-                                  })}
-                                  disabled={!isEditing}
-                                  id={priceInputID}
-                                  type="number"
-                                  min={1}
-                                  placeholder="0"
-                                  className={`form-control bg-white text-primary-8 ${errors.choice?.[choiceIndex]?.price ? "is-invalid" : ""}`}
-                                />
-                                {errors.choice?.[choiceIndex]?.price && <div className="invalid-feedback">{errors.choice[choiceIndex].price.message}</div>}
+                                {isEditing && (
+                                  <button
+                                    type="button"
+                                    className="btn btn-sm btn-warning position-absolute top-0 end-0 m-2 rounded-circle"
+                                    style={{ width: "32px", height: "32px" }}
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      document.getElementById(imageInputID).click();
+                                    }}
+                                  >
+                                    <i className="bi bi-pencil"></i>
+                                  </button>
+                                )}
                               </div>
-                            </div>
-                          </div>
-
-                          {/* 內容項目列表 */}
-                          <ContentItems control={control} choiceIndex={choiceIndex} register={register} editingIndex={editingIndex} errors={errors} watch={watch} />
-                          <div>
-                            {!allFieldsValid && (
-                              <div className="text-primary-7 fst-italic text-end">
-                                <i className="bi bi-info-circle me-1"></i>
-                                <small className="me-2">完成所有欄位才能新增回饋項目唷</small>
+                            ) : (
+                              <div
+                                className="d-flex flex-column align-items-center justify-content-center border-2 border-dashed rounded bg-light p-4 ratio ratio-16x9"
+                                style={{
+                                  cursor: isEditing ? "pointer" : "default",
+                                }}
+                              >
+                                {errors.choice?.[choiceIndex]?.image && (
+                                  <div className="text-danger small p-2">
+                                    <i className="bi bi-exclamation-circle me-1"></i>
+                                    {errors.choice[choiceIndex].image.message}
+                                  </div>
+                                )}
+                                <div className={`d-flex align-items-center justify-content-center border ${errors.choice?.[choiceIndex]?.image && "border-danger"}`}>
+                                  <div className={`d-flex flex-column align-items-center justify-content-center ${errors.choice?.[choiceIndex]?.image ? "text-danger" : "text-primary-6"}`}>
+                                    <i className="bi bi-cloud-arrow-up fs-1 mb-2"></i>
+                                    <p className="mb-1 fw-bold required">上傳圖片</p>
+                                    <p className="small mb-0">{isEditing ? "點擊此處上傳圖片" : "尚未上傳圖片"}</p>
+                                  </div>
+                                </div>
                               </div>
                             )}
+                          </label>
+                        </div>
+                      </div>
+
+                      {/* 右側表單欄位 */}
+                      <div className="col-md-7">
+                        <div className="row mb-3">
+                          <div className="col-md-7 mb-3 mb-md-0">
+                            <label htmlFor={titleInputID} className="form-label fw-bold required">
+                              項目名稱
+                            </label>
+                            <input
+                              {...register(`choice.${choiceIndex}.title`, {
+                                required: "您必須填入項目名稱",
+                              })}
+                              disabled={!isEditing}
+                              id={titleInputID}
+                              type="text"
+                              placeholder="請輸入回饋項目名稱"
+                              className={`form-control bg-white text-primary-8 ${errors.choice?.[choiceIndex]?.title ? "is-invalid" : ""}`}
+                            />
+                            {errors.choice?.[choiceIndex]?.title && <div className="invalid-feedback">{errors.choice[choiceIndex].title.message}</div>}
                           </div>
+                          <div className="col-md-5">
+                            <label htmlFor={priceInputID} className="form-label fw-bold required">
+                              金額設定
+                            </label>
+                            <div className="input-group">
+                              <span className="input-group-text bg-white text-primary-8 border border-primary-3">NT$</span>
+                              <input
+                                {...register(`choice.${choiceIndex}.price`, {
+                                  required: "您必須填入項目金額",
+                                  min: {
+                                    value: 1,
+                                    message: "金額必須大於 0",
+                                  },
+                                })}
+                                disabled={!isEditing}
+                                id={priceInputID}
+                                type="number"
+                                min={1}
+                                placeholder="0"
+                                className={`form-control bg-white text-primary-8 ${errors.choice?.[choiceIndex]?.price ? "is-invalid" : ""}`}
+                              />
+                              {errors.choice?.[choiceIndex]?.price && <div className="invalid-feedback">{errors.choice[choiceIndex].price.message}</div>}
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* 內容項目列表 */}
+                        <ContentItems control={control} choiceIndex={choiceIndex} register={register} editingIndex={editingIndex} errors={errors} watch={watch} />
+                        <div>
+                          {!allFieldsValid && (
+                            <div className="text-primary-7 fst-italic text-end">
+                              <i className="bi bi-info-circle me-1"></i>
+                              <small className="me-2">完成所有欄位才能新增回饋項目唷</small>
+                            </div>
+                          )}
                         </div>
                       </div>
                     </div>
-                  </section>
-                );
-              })}
+                  </div>
+                </section>
+              );
+            })}
 
-              {/* 表單操作按鈕區 */}
-              <div className="d-flex justify-content-center align-items-center mt-4 pt-3 border-top">
-                <div className="d-flex gap-2 w-lg-50 w-sm-75 w-100 justify-content-center">
-                  <button type="button" className="btn btn-primary d-flex justify-content-center align-items-center w-lg-50 w-sm-75 w-100" onClick={addNewChoice} disabled={!allFieldsValid}>
-                    <i className="bi bi-plus-circle me-2"></i>
-                    新增回饋項目
-                  </button>
-                  <button disabled={isSubmitting || !isFormChanged} type="submit" className="btn btn-primary-8 d-flex justify-content-center align-items-center w-lg-50 w-sm-75 w-100">
-                    {isSubmitting ? (
-                      <>
-                        <span className="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
-                        <span role="status">提交中…</span>
-                      </>
-                    ) : (
-                      <>
-                        <i className="bi bi-check-circle me-2"></i> 確認送出
-                      </>
-                    )}
-                  </button>
-                </div>
+            {/* 表單操作按鈕區 */}
+            <div className="d-flex justify-content-center align-items-center mt-4 pt-3 border-top">
+              <div className="d-flex gap-2 w-lg-50 w-sm-75 w-100 justify-content-center">
+                <button type="button" className="btn btn-primary d-flex justify-content-center align-items-center w-lg-50 w-sm-75 w-100" onClick={addNewChoice} disabled={!allFieldsValid}>
+                  <i className="bi bi-plus-circle me-2"></i>
+                  新增回饋項目
+                </button>
+                <button disabled={isSubmitting || !isFormChanged} type="submit" className="btn btn-primary-8 d-flex justify-content-center align-items-center w-lg-50 w-sm-75 w-100">
+                  {isSubmitting ? (
+                    <>
+                      <span className="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+                      <span role="status">提交中…</span>
+                    </>
+                  ) : (
+                    <>
+                      <i className="bi bi-check-circle me-2"></i> 確認送出
+                    </>
+                  )}
+                </button>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
       <LightScreenLoading isLoading={isLoading} />

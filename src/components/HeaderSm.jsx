@@ -118,7 +118,7 @@ export default function HeaderSm() {
           </>
         )}
         {profile.hasStudio && (
-          <Link to="/admin/adminProjectsHome" className={`nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder ${!profile.token && "d-none"}`}>
+          <Link to="/admin/adminProfile" className={`nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder ${!profile.token && "d-none"}`}>
             工作室
           </Link>
         )}

@@ -112,11 +112,11 @@ export default function Profile() {
               <span className="material-symbols-outlined align-bottom fs-7">check</span>
             </button>
           </div>
-          <div className="bg-primary-8 rounded-lg-4 d-flex flex-column flex-lg-row align-items-center p-3 p-lg-10">
+          <div className="bg-primary-8 rounded-lg-4 d-flex flex-column flex-lg-row align-items-center p-3 p-lg-6 p-xl-10">
             <div className="d-block d-lg-none w-100 mb-5">
               <PersonalCenterSidebar />
             </div>
-            <div className="me-lg-11">
+            <div className="me-lg-5 me-xl-11">
               <div className="mb-3">
                 <div style={{ width: "280px", height: "280px" }} className="mb-5">
                   <img src={file} alt="" className="object-fit-cover h-100" />
@@ -130,7 +130,7 @@ export default function Profile() {
                 <input type="file" className="d-none" id="formFile" />
               </div>
             </div>
-            <div className="container">
+            <div className="container pe-lg-0">
               <div className="row g-3">
                 <div className="col-md-6">
                   <label htmlFor="inputEmail4" className="form-label">
@@ -187,17 +187,19 @@ export default function Profile() {
                   <input type="date" defaultValue={userProfile.birthdate} className={`form-control bg-primary-9 ${errors.birthdate && "is-invalid"}`} id="inputAddress4" placeholder="請輸入您的出生日期" {...register("birthdate")} />
                   {errors?.birthdate?.message && <div className="invalid-feeback text-danger">{errors.birthdate.message}</div>}
                 </div>
-                <div className="col">
+                <div className="col-12">
                   <label htmlFor="inputAddress5" className="form-label">
                     自我介紹
                   </label>
                   <textarea defaultValue={userProfile.bio} className={`form-control bg-primary-9 ${errors.bio && "is-invalid"}`} rows="4" id="inputAddress5" placeholder="請簡單介紹一下自己" {...register("bio")} />
                   {errors?.bio?.message && <div className="invalid-feeback text-danger">{errors.bio.message}</div>}
                 </div>
-                <button type="submit" className="btn btn-primary py-3 px-4 d-block d-lg-none w-100 mt-4">
-                  <span className="fs-sm fw-bolder me-2">儲存</span>
-                  <span className="material-symbols-outlined align-bottom fs-7">check</span>
-                </button>
+                <div className="col-12">
+                  <button type="submit" className="btn btn-primary py-3 px-4 d-block d-lg-none w-100 mt-4 rounded">
+                    <span className="fs-sm fw-bolder me-2">儲存</span>
+                    <span className="material-symbols-outlined align-bottom fs-7">check</span>
+                  </button>
+                </div>
               </div>
             </div>
           </div>

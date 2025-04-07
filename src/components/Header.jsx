@@ -176,7 +176,7 @@ export default function Header() {
             </div>
             {profile.hasStudio && (
               <div className={`p-0 me-12 nav-item ${!profile.token && "d-none"}`}>
-                <NavLink to="/admin/adminProjectsHome">工作室</NavLink>
+                <NavLink to="/admin/adminProfile">工作室</NavLink>
               </div>
             )}
             <div className="ms-auto d-flex flex-column flex-lg-row align-items-center">

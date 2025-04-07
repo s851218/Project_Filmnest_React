@@ -171,7 +171,7 @@ export default function ProjectIntroComments() {
         <div className="row">
           <div className="col-lg-9 col-md-10 mx-auto">
             <div
-              className="card mb-4 shadow-sm"
+              className="card mb-4 shadow"
               style={{
                 backgroundColor: "transparent",
               }}
@@ -253,7 +253,7 @@ export default function ProjectIntroComments() {
 
               return (
                 <div key={comment.id} className="mb-6">
-                  <div className="card comment-card shadow-sm border border-primary-7 rounded-1">
+                  <div className="card comment-card shadow border border-primary-7 rounded-1">
                     <div className="card-body">
                       <div className="d-flex align-items-center mb-6">
                         {/* 頭像 */}

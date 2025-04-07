@@ -4,18 +4,12 @@ import AdminSidebar from "../AdminComponents/AdminSidebar";
 export default function AdminHome() {
   return (
     <>
-      <div className="py-3 py-lg-8">
-        <div className="row">
-          <div className="col-lg-2">
-            <div className="row mb-3">
-              <div className="col bg-white rounded-5">
-                <AdminSidebar />
-              </div>
-            </div>
-          </div>
-          <div className="col-12 col-lg-10">
-            <Outlet />
-          </div>
+      <div className="row pt-3 pb-0 py-lg-8">
+        <div className="col-xl-2 col-lg-3 px-4">
+          <AdminSidebar />
+        </div>
+        <div className="col-xl-10 col-lg-9 col px-0 px-sm-4">
+          <Outlet />
         </div>
       </div>
     </>

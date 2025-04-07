@@ -8,12 +8,12 @@ export default function PersonalCenter() {
       <Helmet>
         <title>編輯個人資料</title>
       </Helmet>
-      <div className="container container-lg pt-18 pb-11 py-lg-20">
-        <div className="row row-lg pt-8">
-          <div className="col-lg-2 px-5 bg-primary-8 rounded-4 d-none d-lg-block">
+      <div className="container container-lg pt-18 pt-lg-20">
+        <div className="row row-lg py-5 py-lg-8">
+          <div className="col-xl-2 col-lg-3 px-5 bg-primary-8 rounded-4 d-none d-lg-block">
             <PersonalCenterSidebar />
           </div>
-          <div className="col-lg-10 px-0 px-lg-3">
+          <div className="col-xl-10 col-lg-9 px-0 px-lg-3">
             <Outlet />
           </div>
         </div>
