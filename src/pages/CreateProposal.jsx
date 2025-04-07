@@ -277,6 +277,10 @@ export default function CreatePropsal() {
                         value: true,
                         message: "*必填欄位",
                       },
+                      pattern: {
+                        value: /^[\u4e00-\u9fa5a-zA-Z]+$/,
+                        message: "輸入包含無效字符，只可輸入中英文",
+                      },
                     })}
                   />
                   {errors.personResponsible && <div className="invalid-feedback">{errors?.personResponsible?.message}</div>}
@@ -310,11 +314,11 @@ export default function CreatePropsal() {
                     {...register("teamIntro", {
                       required: {
                         value: true,
-                        message: "*必填欄位，限制300字",
+                        message: "*必填欄位，限制500字",
                       },
                       maxLength: {
-                        value: 300,
-                        message: "*超出字數上限，限制300字",
+                        value: 500,
+                        message: "*超出字數上限，限制500字",
                       },
                     })}
                   />
