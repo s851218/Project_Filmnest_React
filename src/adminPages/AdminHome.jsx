@@ -4,11 +4,11 @@ import AdminSidebar from "../AdminComponents/AdminSidebar";
 export default function AdminHome() {
   return (
     <>
-      <div className="pt-3 pt-lg-8">
+      <div className="py-3 py-lg-8">
         <div className="row">
           <div className="col-lg-2">
             <div className="row mb-3">
-              <div className="col bg-white rounded-4">
+              <div className="col bg-white rounded-5">
                 <AdminSidebar />
               </div>
             </div>
