@@ -83,29 +83,29 @@ export default function Login() {
     <div className="login-bg">
       <div className="container pt-20 pb-10">
         <div className="row">
-          <div className="col-lg-6 mx-auto">
+          <div className="col-xxl-6 col-xl-7 col-md-9 col-sm-10 col-12 mx-auto">
             <div className="mx-auto" style={{ width: "216px" }}>
               <h1 className="text-center h6 lh-base mb-6 border-bottom border-2 py-3">會員登入</h1>
             </div>
-            <div className="bg-primary-9 py-10 px-3 px-lg-30 mb-20 rounded-2">
-              <div className="mb-10 text-center">
+            <div className="bg-primary-9 py-10 px-3 px-sm-15 px-lg-30 mb-20 rounded-2">
+              <div className="mb-10 text-center text-primary-3">
                 <p className="mb-0">
-                  是新朋友嗎?
-                  <Link to="/signUp" className="ms-2 border-bottom">
+                  是新朋友嗎？
+                  <Link to="/signUp" className="ms-1 border-bottom">
                     立即註冊
                   </Link>
                 </p>
               </div>
               <div className="mb-10">
-                <button type="button" className="btn btn-info text-light w-100 rounded-4 fw-bolder mb-5 py-2">
+                <button type="button" className="btn btn-info text-light w-100 rounded-pill fw-bolder mb-5 py-2" style={{backgroundColor: "#1877F2"}}>
                   <img src="46c3528958e7f331d055e6b735d0d032.png" alt="fb" className="me-2 " style={{ width: "24px", height: "24px" }} /> 
                   使用 facebook 帳號繼續
                 </button>
-                <button type="button" className="btn btn-success w-100 rounded-4 fw-bolder mb-5 py-2">
+                <button type="button" className="btn btn-success w-100 rounded-pill fw-bolder mb-5 py-2" style={{backgroundColor: "#4CC764"}}>
                   <img src="6c2c184012a38a8dbf129cae0d16b308.png" alt="Line" className="me-2 " style={{ width: "24px", height: "24px" }} />
                   使用 Line 帳號繼續
                 </button>
-                <button type="button" className="btn btn-light w-100 rounded-4 fw-bolder mb-5 py-2">
+                <button type="button" className="btn btn-light w-100 rounded-pill fw-bolder mb-5 py-2" style={{backgroundColor: "#FFF"}}>
                   <img src="a0b4a34ebb9bf63926751b620f06967d.png" alt="Google" className="me-2 " style={{ width: "24px", height: "24px" }} />
                   使用 Google 帳號繼續
                 </button>
@@ -113,7 +113,7 @@ export default function Login() {
               <div className="mb-10">
                 <div className="d-flex align-items-center my-3">
                   <div className="flex-grow-1 border-top border-white"></div>
-                  <span className="mx-3 fw-bold">或使用 FilmNest 影巢帳號登入</span>
+                  <span className="mx-3">或使用 FilmNest 影巢帳號登入</span>
                   <div className="flex-grow-1 border-top border-white"></div>
                 </div>
               </div>
@@ -159,15 +159,17 @@ export default function Login() {
                   {errors.password && <div className="invalid-feedback text-danger">{errors.password.message}</div>}
                 </div>
                 <div className="mb-10 text-end">
-                  <span className="fs-sm mb-3 mb-lg-5 ms-auto border-bottom">忘記密碼</span>
+                  <span className="fs-sm mb-3 mb-lg-5 ms-auto border-bottom">忘記密碼？</span>
                 </div>
                 <div>
-                  <button type="submit" className="btn btn-primary form-control py-3 mb-5">
+                  <button type="submit" className="btn btn-primary form-control py-3 mb-5 fw-bold">
                     登入
                   </button>
-                  <p className="text-center">
+                  <p className="text-center text-primary-3 fs-sm">
                     登入後即代表你同意
-                    <span className="border-bottom">服務條款</span>及<span className="border-bottom">隱私權政策</span>
+                    <span className="border-bottom text-white mx-1">服務條款</span>
+                    及
+                    <span className="border-bottom text-white mx-1">隱私權政策</span>
                   </p>
                 </div>
               </form>
