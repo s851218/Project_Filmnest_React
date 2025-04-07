@@ -10,7 +10,6 @@ export const adminSidebarExpandSlice = createSlice({
   initialState,
   reducers: {
     setExpanded(state, { payload }) {
-      console.log(payload);
       if (payload === "project") {
         state.expanded.project = !state.expanded.project;
       } else if (payload === "reset") {
