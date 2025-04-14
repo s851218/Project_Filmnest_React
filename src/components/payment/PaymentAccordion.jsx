@@ -1,6 +1,6 @@
 import { Collapse } from 'bootstrap';
 import { useEffect, useRef } from 'react';
-import { setPaymentInfo } from "../slice/paymentInfoSlice"
+import { setPaymentInfo } from "../../slice/paymentInfoSlice"
 import { useDispatch, useSelector } from "react-redux"
 import PropTypes from 'prop-types';
 
