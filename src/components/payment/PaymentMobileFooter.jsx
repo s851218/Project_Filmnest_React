@@ -49,7 +49,7 @@ export default function PaymentMobileFooter ({handleFormsSubmit , orderData , pr
           totalPrice={totalPrice}
         >
           <ul className="list-unstyled d-flex flex-column gap-5 lh-1">
-            <li className="d-flex justify-content-between align-items-center">
+            <li className="d-flex justify-content-between align-items-top">
               <small className="mb-0 text-primary-3 lh-1 flex-shrink-0">專案名稱：</small>
               <p className="mb-0 lh-1 text-end">{projectData.projectTitle}</p>
             </li>
