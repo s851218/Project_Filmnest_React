@@ -45,11 +45,11 @@ const paymentMessage = {
   ],
 }
 
-export default function PaymentAccordion ({children}) {
+PaymentAccordion.propTypes = {
+  children : PropTypes.any,
+}
 
-  PaymentAccordion.propTypes = {
-    children : PropTypes.any,
-  }
+export default function PaymentAccordion ({children}) {
 
   const dispatch = useDispatch()
   const { accordion : accordionSlice} = useSelector((state)=>state.paymentInfo)

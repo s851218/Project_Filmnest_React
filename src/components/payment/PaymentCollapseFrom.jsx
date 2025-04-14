@@ -41,15 +41,15 @@ const creditCardFormContent = {
   },
 }
 
-export default function PaymentCollapseFrom ({reference , showError , banksData}) {
+PaymentCollapseFrom.propTypes = {
+  reference : PropTypes.shape({
+    current: PropTypes.any
+  }),
+  showError : PropTypes.bool,
+  banksData : PropTypes.array,
+}
 
-  PaymentCollapseFrom.propTypes = {
-    reference : PropTypes.shape({
-      current: PropTypes.any
-    }),
-    showError : PropTypes.bool,
-    banksData : PropTypes.array,
-  }
+export default function PaymentCollapseFrom ({reference , showError , banksData}) {
   
   const { register , control , setValue , formState:{errors,isValid} , reset , handleSubmit } = useForm({
     shouldUnregister:true, // 不寫入未被渲染的表單內容

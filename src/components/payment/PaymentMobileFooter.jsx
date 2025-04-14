@@ -2,14 +2,14 @@ import { useRef, useState } from "react";
 import ModalComponent from "../ModalComponent"
 import PropTypes from 'prop-types';
 
-export default function PaymentMobileFooter ({handleFormsSubmit , orderData , projectData , productData }) {
+PaymentMobileFooter.propTypes = {
+  handleFormsSubmit : PropTypes.func,
+  orderData : PropTypes.object,
+  projectData : PropTypes.object,
+  productData : PropTypes.object,
+}
 
-  PaymentMobileFooter.propTypes = {
-    handleFormsSubmit : PropTypes.func,
-    orderData : PropTypes.object,
-    projectData : PropTypes.object,
-    productData : PropTypes.object,
-  }
+export default function PaymentMobileFooter ({handleFormsSubmit , orderData , projectData , productData }) {
 
   const modalRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);

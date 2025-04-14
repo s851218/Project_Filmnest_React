@@ -6,14 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { Alert } from "../../assets/js/costomSweetAlert";
 
-export default function PaymentInfoFrom({ reference , userData }) {
+PaymentInfoFrom.propTypes = {
+  reference: PropTypes.shape({
+    current: PropTypes.any,
+  }),
+  userData: PropTypes.object,
+};
 
-  PaymentInfoFrom.propTypes = {
-    reference: PropTypes.shape({
-      current: PropTypes.any,
-    }),
-    userData: PropTypes.object,
-  };
+export default function PaymentInfoFrom({ reference , userData }) {
 
   const dispatch = useDispatch();
   const paymentSlice = useSelector((state) => state.paymentInfo);
