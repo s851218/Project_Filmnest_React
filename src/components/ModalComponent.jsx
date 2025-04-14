@@ -102,7 +102,7 @@ function ModalComponent({
           )}
           { modalType === "check" && (
             <div className="modal-footer">
-              <button type="button" className="btn btn-primary w-100" onClick={() => setIsModalOpen(false)}>確認訂單</button>
+              <button type="button" className="btn btn-primary w-100 rounded-1 fw-bolder p-3" onClick={() => setIsModalOpen(false)}>確認訂單</button>
             </div>
           )}
         </div>
