@@ -65,10 +65,6 @@ export default function CreatePropsal() {
 
   const [endMinDate, setEndMinDate] = useState(null);
 
-  Date.prototype.clone = function () {
-    return new Date(this.valueOf());
-  };
-
   const handleChange = (newDateTime, type) => {
     if (newDateTime) {
       switch (type) {
@@ -77,7 +73,7 @@ export default function CreatePropsal() {
           newDateTime.setHours(0, 0, 0, 0);
           setValue("createdAt", newDateTime); // 更新日期與時間
 
-          const defaultEndTime = newDateTime.clone();
+          const defaultEndTime = new Date(newDateTime.getTime());
           defaultEndTime.setMonth(defaultEndTime.getMonth() + 1);
           defaultEndTime.setHours(23, 59, 59, 999);
           setValue("endAt", defaultEndTime); // 預設截止日期為一個月後
