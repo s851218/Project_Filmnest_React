@@ -5,6 +5,7 @@ import { setPaymentInfo } from "../../slice/paymentInfoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { Alert } from "../../assets/js/costomSweetAlert";
+import handleInputNumber from "../../assets/js/handleInputNumber"
 
 PaymentInfoFrom.propTypes = {
   reference: PropTypes.shape({
@@ -249,6 +250,7 @@ export default function PaymentInfoFrom({ reference , userData }) {
               type="tel"
               id="recipientPhone"
               className={`form-control ${!watch.sameAsMember && errors.recipientPhone && "is-invalid"} ${watch.sameAsMember && "bg-dark text-primary-3"}`}
+              onInput={(e)=>handleInputNumber(e,setValue)}
               {...register("recipientPhone", {
                 required: {
                   value: true,

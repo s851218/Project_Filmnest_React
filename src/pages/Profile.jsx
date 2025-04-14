@@ -7,6 +7,7 @@ import { setLogin } from "../slice/userSlice";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 import { Alert, Toast } from "../assets/js/costomSweetAlert";
 import { useNavigate } from "react-router";
+import handleInputNumber from "../assets/js/handleInputNumber"
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Profile() {
@@ -177,7 +178,7 @@ export default function Profile() {
                   <label htmlFor="inputAddress3" className="form-label">
                     聯絡電話
                   </label>
-                  <input type="tel" defaultValue={userProfile.phone} className={`form-control bg-primary-9 ${errors.phone && "is-invalid"}`} id="inputAddress3" placeholder="請輸入您的聯絡電話" {...register("phone")} />
+                  <input type="tel" onInput={(e)=>handleInputNumber(e,setValue)} defaultValue={userProfile.phone} className={`form-control bg-primary-9 ${errors.phone && "is-invalid"}`} id="inputAddress3" placeholder="請輸入您的聯絡電話" {...register("phone")} />
                   {errors?.phone?.message && <div className="invalid-feeback text-danger">{errors.phone.message}</div>}
                 </div>
                 <div className="col-6">

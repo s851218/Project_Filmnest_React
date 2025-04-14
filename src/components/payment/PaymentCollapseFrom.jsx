@@ -8,6 +8,7 @@ import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import PropTypes from 'prop-types';
+import handleInputNumber from "../../assets/js/handleInputNumber"
 
 const requiredChecked = [
   "我已再次確認「訂單資訊」及「付款資訊」，付款完成後藍新金流將發送通知信至付款人電子信箱",
@@ -270,7 +271,10 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
                             maxLength={pattern}
                             disabled={cardCodeIndex !== index}
                             autoComplete="one-time-code"
-                            onKeyUp={(e)=>handleInputMove(e,pattern)}
+                            onInput={(e)=>{
+                              handleInputMove(e,pattern)
+                              handleInputNumber(e,setValue)
+                            }}
                             {...register(inputName,{
                               required: {
                                 value: true
@@ -321,6 +325,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
                             placeholder={placeholderText}
                             pattern={regex}
                             maxLength={pattern}
+                            onInput={(e)=>handleInputNumber(e,setValue)}
                             {...register( id ,{
                               required: {
                                 value: ((id === "cvv") && (enabledCardType === "unionPay")) ? false : true,

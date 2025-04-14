@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' // 載入react-
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import AdminSummary from '../AdminComponents/AdminSummary';
+import handleInputNumber from "../assets/js/handleInputNumber"
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -282,6 +283,7 @@ export default function AdminProfile() {
                     type="tel"
                     className={`form-control ${errors.phone ? "is-invalid no-icon" : ""}`}
                     disabled={!isEdit}
+                    onInput={(e)=>handleInputNumber(e,setValue)}
                     {...register("phone",{
                       required: {
                         value:true,
