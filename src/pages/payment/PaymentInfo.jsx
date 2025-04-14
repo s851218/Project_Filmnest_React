@@ -2,13 +2,14 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
-import PaymentAside from "../components/PaymentAside";
-import PaymentMobileFooter from "../components/PaymentMobileFooter";
-import PaymentInfoFrom from "../components/PaymentInfoFrom";
-import PaymentCollapseFrom from "../components/PaymentCollapseFrom";
 import { Helmet } from "react-helmet-async";
-import GrayScreenLoading from "../components/GrayScreenLoading";
-import { CheckModal, Alert } from "../assets/js/costomSweetAlert";
+
+import PaymentAside from "../../components/payment/PaymentAside";
+import PaymentMobileFooter from "../../components/payment/PaymentMobileFooter";
+import PaymentInfoFrom from "../../components/payment/PaymentInfoFrom";
+import PaymentCollapseFrom from "../../components/payment/PaymentCollapseFrom";
+import GrayScreenLoading from "../../components/GrayScreenLoading";
+import { CheckModal, Alert } from "../../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -84,34 +85,41 @@ export default function PaymentInfo() {
         setIsLoading(false);
       }
     };
+
     if (id) {
       getOrder(id);
     }
   }, [id, navigate]);
 
-  // 取得資料
-  const getData = async (order) => {
-    const { projectId, productId, userId } = order;
-    try {
-      const projectRes = await axios.get(`${API_BASE}/projects/${projectId}`);
-      const productRes = await axios.get(`${API_BASE}/products/${productId}`);
-      const userRes = await axios.get(`${API_BASE}/users/${userId}`);
-      setProjectData(projectRes.data);
-      setProductData(productRes.data);
-      setUserData(userRes.data);
-    } catch (error) {
-      if (error) {
-        Alert.fire({
-          icon: "error",
-          title: "資料取得失敗",
-        });
-      }
-    }
-  };
-
-  // 判斷訂單是否付款
+  // 取得完整資料
   useEffect(() => {
+    const getData = async (order) => {
+      const { projectId, productId, userId } = order;
+      try {
+        const projectRes = await axios.get(`${API_BASE}/projects/${projectId}`);
+        const productRes = await axios.get(`${API_BASE}/products/${productId}`);
+        const userRes = await axios.get(`${API_BASE}/users/${userId}`);
+        setProjectData(projectRes.data);
+        setProductData(productRes.data);
+        setUserData(userRes.data);
+      } catch (error) {
+        if (error) {
+          Alert.fire({
+            icon: "error",
+            title: "資料取得失敗",
+          });
+        }
+      }
+    };
+
+    // 判斷訂單是否付款
     if (Object.keys(orderData).length !== 0) {
+      // 檢查userID
+      if (!orderData.userId) {
+        navigate("/"); // 無ID則返回首頁
+      }
+
+      // 判斷訂單是否付款
       if (orderData.paymentStatus === "已付款") {
         Alert.fire(
           {
@@ -123,6 +131,7 @@ export default function PaymentInfo() {
           }, 1500)
         );
       } else {
+        // 有效訂單 => 取得完整資料
         getData(orderData);
       }
     }
