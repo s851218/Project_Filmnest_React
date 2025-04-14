@@ -29,13 +29,9 @@ const paymentInfoSlice = createSlice({
       const { type , data } = action.payload
       state[type] = data
     },
-    setPaymentOption(state, action) {
-      // 寫入付款方式內容
-      state.paymentOption = action.payload
-    },
   }
 })
 
-export const { setPaymentInfo , setPaymentOption } = paymentInfoSlice.actions
+export const { setPaymentInfo } = paymentInfoSlice.actions
 
 export default paymentInfoSlice.reducer

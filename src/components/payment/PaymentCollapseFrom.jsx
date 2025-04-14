@@ -1,7 +1,7 @@
 import { Fragment , useEffect, useImperativeHandle, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
-import { setPaymentOption } from "../../slice/paymentInfoSlice"
+import { setPaymentInfo} from "../../slice/paymentInfoSlice"
 import PaymentAccordion from "./PaymentAccordion" // 手風琴元件
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' // 載入react-fontawesome元件
 import { fab } from "@fortawesome/free-brands-svg-icons";
@@ -73,10 +73,16 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
   const [ cardCodeIndex , setCardCodeIndex ] = useState(0) // 當前的input位置
   const [ isPasswordVisibility , setIsPasswordVisibility ] = useState(false) // 密碼是否可視
 
-  const watch = useWatch({control})
+  const watch = useWatch({control})  
   // 監控表單
   useEffect(()=>{
-    dispatch(setPaymentOption(watch))
+    const sliceData = {
+      type: "paymentOption",
+      data: {
+        ...watch,
+      }
+    }
+    dispatch(setPaymentInfo(sliceData))
   },[watch , dispatch])
 
   // 手風琴切換，重設表單reset (OK)
