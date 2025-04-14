@@ -318,7 +318,7 @@ export default function FeedbackOption() {
 
           {/* 加碼功能 */}
           <aside className="col-4 feedback-confirmation-sidebar d-lg-block d-none">
-            <div className="card bg-primary-9 p-3  border rounded-1 h-auto" style={{ border: "1px sold #606060" }}>
+            <div className="card bg-primary-9 p-3 border rounded-1 h-auto" style={{ border: "1px sold #606060" }}>
               <div className="card-body">
                 <h3 className="card-title fs-5 fw-bolder mb-6">隨喜加碼</h3>
                 <BonusCalculator bonus={bonus} setBonus={setBonus} type={"layout"} />
@@ -326,7 +326,7 @@ export default function FeedbackOption() {
                   <p className="mb-1">總計金額</p>
                   <h4 className="fs-6 fw-bolder mb-1">NT$ {totalPrice.toLocaleString()}</h4>
                 </div>
-                <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>
+                <button type="button" className="btn btn-primary ms-auto w-100 rounded-1 fw-bolder p-3" onClick={handleSubmit(onSubmit)}>
                   下一步
                 </button>
               </div>
