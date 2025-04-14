@@ -16,8 +16,6 @@ export default function PaymentInfoFrom({ reference , userData }) {
   };
 
   const dispatch = useDispatch();
-  // const { userInfo, recipientInfo } = useSelector((state) => state.paymentInfo);
-  // console.log("sliceState:",address);
   const paymentSlice = useSelector((state) => state.paymentInfo);
   
   const {
