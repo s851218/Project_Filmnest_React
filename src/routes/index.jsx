@@ -3,7 +3,6 @@ import App from "../App";
 import Home from "../pages/Home";
 import ProjectExplore from "../pages/ProjectExplore";
 import Login from "../pages/Login";
-import AboutProposal from "../pages/AboutProposal";
 import Admin from "../Admin";
 import AdminHome from "../adminPages/AdminHome";
 import AdminProfile from "../adminPages/AdminProfile";
@@ -19,7 +18,6 @@ import SignUp from "../pages/Signup";
 import PersonalCenter from "../pages/PersonalCenter";
 import AboutStudio from "../pages/AboutStudio";
 import TermsOfUse from "../pages/TermsOfUse";
-import CreateProposal from "../pages/CreateProposal";
 import FeedbackPage from "../pages/FeedbackPage";
 import ProjectIntro from "../pages/ProjectIntro";
 import ProjectIntroContent from "../pages/ProjectIntroContent";
@@ -30,7 +28,6 @@ import ProjectIntroComments from "../pages/ProjectIntroComments";
 import ProjectIntroInfoDisclosure from "../pages/ProjectIntroInfoDisclosure";
 import HeaderSm from "../components/HeaderSm";
 import HeaderSmSec from "../components/HeaderSmSec";
-import PaymentInfo from "../pages/PaymentInfo";
 import HeaderSmSearch from "../components/HeaderSmSearch";
 import AdminProjectsHome from "../adminPages/AdminProjectsHome";
 import AdminHeaderSm from "../AdminComponents/AdminHeaderSm ";
@@ -50,8 +47,13 @@ import AboutStudioFin from "../pages/AboutStudioFin";
 import AboutStudioOngoing from "../pages/AboutStudioOngoing";
 import AboutStudioOthers from "../pages/AboutStudioOthers";
 import ProfilePassword from "../pages/ProfilePassword";
-import CompleteProposal from "../pages/CompleteProposal";
-import PaymentComplete from "../pages/PaymentComplete";
+// proposal
+import AboutProposal from "../pages/proposal/AboutProposal";
+import CreateProposal from "../pages/proposal/CreateProposal";
+import CompleteProposal from "../pages/proposal/CompleteProposal";
+// payment
+import PaymentInfo from "../pages/payment/PaymentInfo";
+import PaymentComplete from "../pages/payment/PaymentComplete";
 
 const routes = [
   {
