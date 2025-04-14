@@ -54,15 +54,8 @@ export default function PaymentInfo() {
   const [showError, setShowError] = useState(false);
   const accordionIndex = useSelector((state) => state.paymentInfo.accordion.index);
 
-  // 初始化
-  const init = () => {
-    setOrderData({});
-    setProjectData({});
-    setProductData({});
-  };
   // 取得訂單資料
   useEffect(() => {
-    init();
     const getOrder = async (id) => {
       setIsLoading(true);
       try {
