@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import ModalComponent from "../components/ModalComponent"
+import ModalComponent from "../ModalComponent"
 import PropTypes from 'prop-types';
 
 export default function PaymentMobileFooter ({handleFormsSubmit , orderData , projectData , productData }) {

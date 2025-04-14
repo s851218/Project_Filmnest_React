@@ -1,8 +1,8 @@
 import { Fragment , useEffect, useImperativeHandle, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
-import { setPaymentOption } from "../slice/paymentInfoSlice"
-import PaymentAccordion from "./PaymentAccordion" // 手風琴元件
+import { setPaymentOption } from "../../slice/paymentInfoSlice"
+import PaymentAccordion from "../PaymentAccordion" // 手風琴元件
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' // 載入react-fontawesome元件
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
