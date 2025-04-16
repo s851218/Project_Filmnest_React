@@ -4,14 +4,14 @@ import {
   useLocation,
   useParams,
 } from "react-router";
-import ProjectIntroNav from "../../components/ProjectIntroNav";
-import ProjectIntroSwiper from "../../components/ProjectIntroSwiper";
-import ProjectIntroInfo from "../../components/ProjectIntroInfo";
+import ProjectIntroNav from "../../components/projectIntro/ProjectIntroNav";
+import ProjectIntroSwiper from "../../components/projectIntro/ProjectIntroSwiper";
+import ProjectIntroInfo from "../../components/projectIntro/ProjectIntroInfo";
 import { useLayoutEffect, useState } from "react";
 import axios from "axios";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../../components/GrayScreenLoading";
-import ProjectIntroSimpleInfo from "../../components/ProjectIntroSimpleInfo";
+import ProjectIntroSimpleInfo from "../../components/projectIntro/ProjectIntroSimpleInfo";
 import { Alert } from "../../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
