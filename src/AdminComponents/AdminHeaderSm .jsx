@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "react-router";
-import { useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLogout } from "../slice/userSlice";
 import axios from "axios";
 import { Toast } from "../assets/js/costomSweetAlert";
@@ -8,6 +8,7 @@ const apiBase = import.meta.env.VITE_API_BASE;
 export default function AdminHeaderSm() {
   const profile = useSelector((state) => state.user.profile);
   const id = useSelector((state) => state.user.profile.userId);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleLogout = async () => {
     try {
@@ -16,14 +17,16 @@ export default function AdminHeaderSm() {
       Toast.fire({
         icon: "success",
         title: "登出成功",
-      })
+      });
       dispatch(setLogout());
       navigate("/");
     } catch (error) {
-      Toast.fire({
-        icon: "error",
-        title: "登出失敗",
-      })
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "登出失敗",
+        });
+      }
     }
   };
 
@@ -34,8 +37,8 @@ export default function AdminHeaderSm() {
           <img src="close_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="logo" style={{ width: "20px" }} />
         </Link>
         <Link className="p-0 me-12" to="/admin/adminProjectsHome">
-            Studio
-          </Link>
+          Studio
+        </Link>
       </div>
       <ul className="nav flex-column">
         {profile.token ? (
@@ -51,7 +54,9 @@ export default function AdminHeaderSm() {
           </Link>
         )}
         <Link className="nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder">我要提案</Link>
-        <Link to="/" className="nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder">離開工作室</Link>
+        <Link to="/" className="nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder">
+          離開工作室
+        </Link>
         <Link className="nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder" onClick={handleLogout}>
           登出
         </Link>

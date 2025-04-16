@@ -1,27 +1,19 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router";
+import { ScrollRestoration, useNavigate, useParams } from "react-router";
 import BonusCalculator from "../components/BonusCalculator";
 import ModalComponent from "../components/ModalComponent";
 import GrayScreenLoading from "../components/GrayScreenLoading";
-import { CheckModal , Alert , Toast } from "../assets/js/costomSweetAlert";
+import { CheckModal, Alert, Toast } from "../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function FeedbackOption() {
-  // 路由跳轉頁面時，重製滾輪捲軸
-  useEffect(() => {
-    // 將滾動行為設為 auto 避免有捲動過程的動畫
-    document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-  }, []);
-
   const {
     register,
     handleSubmit,
-    reset,
     control,
     formState: { errors },
   } = useForm();
@@ -34,9 +26,9 @@ export default function FeedbackOption() {
   const [projectData, setProjectData] = useState([]);
   const [isName, setIsName] = useState(false);
   const [originPrice, setOriginPrice] = useState(0);
-  const [bonus, setBonse] = useState(0);
+  const [bonus, setBonus] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [modalType , setModalType] = useState(null)
+  const [modalType, setModalType] = useState(null);
   const userInfo = useSelector((state) => state.user.profile);
   const bonusCalculatorRef = useRef();
 
@@ -48,7 +40,7 @@ export default function FeedbackOption() {
   }, [id]);
 
   //處理params
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (id) {
       const paramsArry = id.split("&");
       let paramsObj = {};
@@ -64,17 +56,16 @@ export default function FeedbackOption() {
     setIsLoading(true);
     const { projectId, productId } = params;
     try {
-      const res = await axios.get(
-        `${API_BASE}/products?projectId=${projectId}&id=${productId}`
-      );
+      const res = await axios.get(`${API_BASE}/products?projectId=${projectId}&id=${productId}`);
       setFeedbackData(res.data[0]);
       setOriginPrice(res.data[0].price);
     } catch (error) {
-      console.log("回饋資料取得失敗：" + error.message);
-      Toast.fire({
-        icon: "error",
-        title: "回饋資料取得失敗：",
-      })
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "回饋資料取得失敗：",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -83,20 +74,19 @@ export default function FeedbackOption() {
   const getProjectData = async (params) => {
     const { projectId } = params;
     try {
-      const res = await axios.get(
-        `${API_BASE}/projects?projectId=${projectId}`
-      );
+      const res = await axios.get(`${API_BASE}/projects?projectId=${projectId}`);
       setProjectData(res.data[0]);
     } catch (error) {
-      console.log("專案資料取得失敗：" + error.message);
-      Toast.fire({
-        icon: "error",
-        title: "專案資料取得失敗：",
-      })
+      if (error) {
+        Toast.fire({
+          icon: "error",
+          title: "專案資料取得失敗：",
+        });
+      }
     }
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (Object.keys(params).length !== 0) {
       getFeedbackData(params);
       getProjectData(params);
@@ -112,7 +102,6 @@ export default function FeedbackOption() {
   // 處理訂單送出
   const onSubmit = async (data) => {
     const { messageToTeam } = data;
-    console.log("驗證成功", data);
 
     // 建立order
 
@@ -123,44 +112,43 @@ export default function FeedbackOption() {
 
     // 組建orderData
     const orderData = {
-      "orderFile": {
-        "Recipient": "",
-        "phone": "",
-        "email": "",
-        "address": "",
+      orderFile: {
+        Recipient: "",
+        phone: "",
+        email: "",
+        address: "",
       },
-      "orderStatus": 0,
-      "paymentStatus": 0,
-      "shippingStatus": 0,
-      "bonus": bonus,
-      "totalPrice": totalPrice,
-      "createdAt": createdAt,
-      "paymentTime": "付款時間",
-      "canCancel": true, // 可否取消訂單，已付款後false
-      "canRefund": false, // 已付款後啟用，可否取消付款
-      "canReturn": false, // 已出貨後啟用，可否退貨
-      "userId": userInfo.userId,
-      "projectId": params.projectId,
-      "productId": params.productId,
-      "orderId": orderId,
-      "message": messageToTeam,
-      "isIncognito": Boolean(watch.isAnonymous),
+      orderStatus: 0,
+      paymentStatus: 0,
+      shippingStatus: 0,
+      bonus: bonus,
+      totalPrice: totalPrice,
+      createdAt: createdAt,
+      paymentTime: "付款時間",
+      canCancel: true, // 可否取消訂單，已付款後false
+      canRefund: false, // 已付款後啟用，可否取消付款
+      canReturn: false, // 已出貨後啟用，可否退貨
+      userId: userInfo.userId,
+      projectId: params.projectId,
+      productId: params.productId,
+      orderId: orderId,
+      message: messageToTeam,
+      isIncognito: Boolean(watch.isAnonymous),
     };
 
-    console.log(orderData);
-
-    const createOrder = async() => {
+    const createOrder = async () => {
       try {
         await axios.post(`${API_BASE}/orders`, orderData);
         navigate(`/paymentInfo/${orderId}`);
       } catch (error) {
-        console.log("建立訂單失敗", error);
-        Alert.fire({
-          icon: "error",
-          title: "建立訂單失敗",
-        });
+        if (error) {
+          Alert.fire({
+            icon: "error",
+            title: "建立訂單失敗",
+          });
+        }
       }
-    }
+    };
 
     // 發送api
     CheckModal.fire({
@@ -169,13 +157,11 @@ export default function FeedbackOption() {
       confirmButtonText: "確認",
       cancelButtonText: "取消",
       html: `<hr><p class="fs-7">${projectData.projectTitle}</p><p class="fs-4">【 ${feedbackData.title}】</p><p class="fs-7">總金額：$${totalPrice}</p>`,
-    }).then((result)=>{
-      console.log(result)
+    }).then((result) => {
       if (result.value) {
-        console.log("已確認選擇，打API");
-        createOrder()
+        createOrder();
       }
-    })
+    });
 
     // if (messageToTeam.length !== 0) {
     //   console.log("有留言，打留言版api");
@@ -186,7 +172,7 @@ export default function FeedbackOption() {
 
   // 處理開啟Modal
   const handleOpenModal = (type) => {
-    setModalType(type)
+    setModalType(type);
     // 開啟modal
     setIsModalOpen(true);
   };
@@ -201,39 +187,34 @@ export default function FeedbackOption() {
     }
   }, [watch.isAnonymous]);
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!isModalOpen) {
-      setModalType(null)
+      setModalType(null);
     }
-  },[isModalOpen])
+  }, [isModalOpen]);
 
-  const handleBonusCheck = async() => {
-    await bonusCalculatorRef.current.submit()
-    setIsModalOpen(false)
-  }
+  const handleBonusCheck = async () => {
+    await bonusCalculatorRef.current.submit();
+    setIsModalOpen(false);
+  };
 
-  const handleBonusReset = async() => {
-    setIsModalOpen(false)
-  }
+  const handleBonusReset = async () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <>
+      <ScrollRestoration />
       <header className="mt-20 mb-12">
         <div className="container-md">
           <div className="row align-items-center">
             {/* <!-- 左半部（圖片） --> */}
             <div className="col-lg-8 col-md-7">
-              <img
-                className="img-fluid w-100 object-fit-cover rounded-lg-1"
-                src={feedbackData.image}
-                alt={feedbackData.title}
-              />
+              <img className="img-fluid w-100 object-fit-cover rounded-lg-1" src={feedbackData.image} alt={feedbackData.title} />
             </div>
             {/* <!-- 右半部（標題） --> */}
             <div className="col-lg-4 col-md-5 d-flex flex-column justify-content-center align-items-md-start align-items-center p-4">
-              <h2 className="fs-lg-6 fs-md-7 fs-sm text-primary-2">
-                {projectData.projectTitle}
-              </h2>
+              <h2 className="fs-lg-6 fs-md-7 fs-sm text-primary-2">{projectData.projectTitle}</h2>
               <h1 className="fs-lg-4 fs-md-3 fs-2 mb-lg-3 mb-1">{`【 ${feedbackData.title}】`}</h1>
             </div>
           </div>
@@ -264,32 +245,18 @@ export default function FeedbackOption() {
                   ))}
                 </tbody>
               </table>
-              <button
-                type="button"
-                className="btn btn-secondary align-self-end"
-                onClick={() => handleOpenModal("change")}
-              >
+              <button type="button" className="btn btn-secondary align-self-end" onClick={() => handleOpenModal("change")}>
                 更改方案
-                <span className="material-symbols-outlined ms-1 align-bottom">
-                  undo
-                </span>
+                <span className="material-symbols-outlined ms-1 align-bottom">undo</span>
               </button>
             </section>
             {/* 感謝名稱 */}
             <section>
               <h3 className="fs-lg-3 fw-bolder mb-3 required">感謝名稱</h3>
-              <p>
-                請留下您的大名或暱稱，我們會將您的名字置入電影片尾感謝名單。
-              </p>
+              <p>請留下您的大名或暱稱，我們會將您的名字置入電影片尾感謝名單。</p>
               <p>※如不願露出，選擇匿名即可</p>
               <form action="">
-                <div
-                  className={`${
-                    errors?.isAnonymous
-                      ? "row fit-content py-3 border border-danger rounded-2"
-                      : ""
-                  }`}
-                >
+                <div className={`${errors?.isAnonymous ? "row fit-content py-3 border border-danger rounded-2" : ""}`}>
                   <div className="d-flex align-items-center mb-3">
                     <input
                       type="radio"
@@ -307,9 +274,7 @@ export default function FeedbackOption() {
                     <input
                       type="text"
                       id="supporterNameInput"
-                      className={`supporter-name-input w-sm-50 w-100 rounded-1 p-2 ${
-                        errors.supporterName && "is-invalid"
-                      }`}
+                      className={`supporter-name-input w-sm-50 w-100 rounded-1 p-2 ${errors.supporterName && "is-invalid"}`}
                       placeholder="填入您希望的稱呼"
                       disabled={isName ? false : true}
                       {...register("supporterName", {
@@ -320,11 +285,7 @@ export default function FeedbackOption() {
                       })}
                     />
                   </div>
-                  {isName && errors?.supporterName && (
-                    <div className="invalid-feedback d-block">
-                      {errors?.supporterName?.message}
-                    </div>
-                  )}
+                  {isName && errors?.supporterName && <div className="invalid-feedback d-block">{errors?.supporterName?.message}</div>}
                   <div>
                     <input
                       type="radio"
@@ -342,27 +303,14 @@ export default function FeedbackOption() {
                     <label htmlFor="chooseHideName">我想匿名</label>
                   </div>
                 </div>
-                {errors?.isAnonymous && (
-                  <div className="invalid-feedback d-block">
-                    {errors?.isAnonymous?.message}
-                  </div>
-                )}
+                {errors?.isAnonymous && <div className="invalid-feedback d-block">{errors?.isAnonymous?.message}</div>}
 
                 <hr />
                 <div className="d-flex flex-column">
                   <label htmlFor="messageToTeam" className="mb-3 fs-lg-6">
                     想跟團隊說的話
                   </label>
-                  <textarea
-                    name="messageToTeam"
-                    id="messageToTeam"
-                    rows="6"
-                    cols="33"
-                    placeholder="您的留言會出現在留言板（選填）"
-                    className="rounded-1 p-2"
-                    style={{ resize: "none" }}
-                    {...register("messageToTeam")}
-                  ></textarea>
+                  <textarea name="messageToTeam" id="messageToTeam" rows="6" cols="33" placeholder="您的留言會出現在留言板（選填）" className="rounded-1 p-2" style={{ resize: "none" }} {...register("messageToTeam")}></textarea>
                 </div>
               </form>
             </section>
@@ -370,24 +318,15 @@ export default function FeedbackOption() {
 
           {/* 加碼功能 */}
           <aside className="col-4 feedback-confirmation-sidebar d-lg-block d-none">
-            <div
-              className="card bg-primary-9 p-3  border rounded-1 h-auto"
-              style={{ border: "1px sold #606060" }}
-            >
+            <div className="card bg-primary-9 p-3  border rounded-1 h-auto" style={{ border: "1px sold #606060" }}>
               <div className="card-body">
                 <h3 className="card-title fs-5 fw-bolder mb-6">隨喜加碼</h3>
-                <BonusCalculator bonus={bonus} setBonse={setBonse} type={"layout"} />
+                <BonusCalculator bonus={bonus} setBonus={setBonus} type={"layout"} />
                 <div className="bg-primary-8 p-3 rounded-1 mb-4">
                   <p className="mb-1">總計金額</p>
-                  <h4 className="fs-6 fw-bolder mb-1">
-                    NT$ {totalPrice.toLocaleString()}
-                  </h4>
+                  <h4 className="fs-6 fw-bolder mb-1">NT$ {totalPrice.toLocaleString()}</h4>
                 </div>
-                <button
-                  type="button"
-                  className="btn btn-primary ms-auto"
-                  onClick={handleSubmit(onSubmit)}
-                >
+                <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>
                   下一步
                 </button>
               </div>
@@ -395,7 +334,7 @@ export default function FeedbackOption() {
           </aside>
         </div>
       </div>
-      
+
       {/* 手機版：加碼功能 */}
       <footer className="checkout-confirmation-footer d-lg-none d-block p-6 bg-primary-8 fixed-bottom">
         <div className="d-flex justify-content-between flex-wrap gap-3">
@@ -404,28 +343,18 @@ export default function FeedbackOption() {
             <p className="total-amount fs-7 mb-0">NT$ {totalPrice.toLocaleString()}</p>
           </div>
           <div className="amount-confirm-mobile d-flex align-items-center gap-3">
-            <button
-                type="button"
-                className="btn btn-secondary align-self-end"
-                onClick={() => handleOpenModal("bonus")}
-              >
-                我要加碼
-              </button>
-            <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>下一步</button>
+            <button type="button" className="btn btn-secondary align-self-end" onClick={() => handleOpenModal("bonus")}>
+              我要加碼
+            </button>
+            <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>
+              下一步
+            </button>
           </div>
         </div>
       </footer>
 
-      <ModalComponent
-        modalType={modalType}
-        modalRef={modalRef}
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        totalPrice={totalPrice}
-        handleBonusCheck={handleBonusCheck}
-        handleBonusReset={handleBonusReset}
-      >
-        { (modalType === "bonus") && <BonusCalculator reference={bonusCalculatorRef} bonus={bonus} setBonse={setBonse} type={"bouns"} /> } 
+      <ModalComponent modalType={modalType} modalRef={modalRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} totalPrice={totalPrice} handleBonusCheck={handleBonusCheck} handleBonusReset={handleBonusReset}>
+        {modalType === "bonus" && <BonusCalculator reference={bonusCalculatorRef} bonus={bonus} setBonus={setBonus} type={"bouns"} />}
       </ModalComponent>
 
       <GrayScreenLoading isLoading={isLoading} />

@@ -6,7 +6,9 @@ import { useParams } from "react-router";
 import ArticleEditor from "../AdminComponents/ArticleEditor";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { AdminCheckModal, Toast } from "../assets/js/costomSweetAlert";
+import { AdminCheckModal, Alert, Toast } from "../assets/js/costomSweetAlert";
+import PropTypes from "prop-types";
+
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 const IntroInput = ({ register, errors, id, labelText, type, rules, min }) => {
@@ -98,7 +100,12 @@ export default function Intro() {
         // 文章狀態
         setContent(projectData.content);
       } catch (error) {
-        console.log("取得專案資訊失敗", error);
+        if (error) {
+          Alert.fire({
+            icon: "error",
+            title: "取得傳案資訊失敗",
+          });
+        }
       } finally {
         setIsLoading(false);
       }
@@ -147,9 +154,7 @@ export default function Intro() {
       cancelButtonText: "取消",
       html: `<hr><img src="${otherImagesFields[index].imageUrl}">`,
     }).then((result) => {
-      console.log(result);
       if (result.value) {
-        console.log("已確認刪除");
         removeOtherImages(index);
       }
     });
@@ -231,12 +236,26 @@ export default function Intro() {
     };
   };
 
+  // 刪除團隊個人相片
+  const handleRemoveTeamMemberPhoto = (index) => {
+    AdminCheckModal.fire({
+      title: "是否要刪除個人相片？",
+      showCancelButton: true,
+      confirmButtonText: "確認",
+      cancelButtonText: "取消",
+      html: `<div class="mt-2"><img class="rounded" src="${teamFields[index].photo}" ></div>`,
+    }).then((result) => {
+      if (result.value) {
+        updateTeam(index, { ...getValues(`team.${index}`), photo: "" });
+      }
+    });
+  };
+
   const onSubmit = (data) => {
     const editData = {
       ...data,
       projectImage,
     };
-    console.log("編輯後送出的專案資訊：", data);
     introSave(editData);
   };
 
@@ -247,7 +266,7 @@ export default function Intro() {
     try {
       // 將團隊人員的 fields 中的 temp 屬性移除
       const updatedTeam = data.team.map((member) => {
-        const { temp, ...rest } = member;
+        const { ...rest } = member;
         return rest;
       });
 
@@ -263,20 +282,20 @@ export default function Intro() {
         team: updatedTeam,
       };
 
-      const res = await axios.patch(`${API_BASE}/projects/${id}`, updateData);
+      await axios.patch(`${API_BASE}/projects/${id}`, updateData);
       Toast.fire({
         icon: "success",
         title: "成功更新專案資訊！",
       });
-      console.log("成功更新專案資訊：", res.data);
       // 更新表單狀態，讓 UI 顯示刪除按鈕（因 temp 屬性已移除）
       setValue("team", updatedTeam);
     } catch (error) {
-      console.log("專案資訊編輯失敗", error);
-      Toast.fire({
-        icon: "error",
-        title: "專案資訊編輯失敗",
-      });
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "專案資訊編輯失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -355,7 +374,10 @@ export default function Intro() {
             id="goalMoney"
             labelText="目標金額"
             type="number"
-            rules={{ required: "目標金額為必填" }}
+            rules={{
+              required: "目標金額為必填",
+              min: { value: 1, message: "目標金額必須大於零" },
+            }}
             min="1"
           />
         </section>
@@ -529,30 +551,63 @@ export default function Intro() {
                             handleChangeTeamMemberPhoto(e, index)
                           }
                         />
+                        <button
+                          type="button"
+                          className="btn btn-outline-danger btn-sm rounded mt-2"
+                          onClick={() => handleRemoveTeamMemberPhoto(index)}
+                        >
+                          刪除相片
+                        </button>
                       </section>
                     </div>
                     <div className="col-md-8">
                       {/* 名稱與職稱 */}
                       <section className="d-flex gap-6">
                         <div className="mb-5">
-                          <IntroInput
-                            register={register}
-                            errors={errors}
-                            id={`team.${index}.name`}
-                            labelText="名稱"
+                          <label
+                            htmlFor={`team-name-${index}`}
+                            className="form-label fw-bolder fs-base"
+                          >
+                            名稱
+                          </label>
+                          <input
                             type="text"
-                            rules={{ required: "名稱為必填" }}
+                            id={`team-name-${index}`}
+                            className={`form-control bg-light text-dark fs-sm fs-md-base ${
+                              errors.team?.[index]?.name ? "is-invalid" : ""
+                            }`}
+                            {...register(`team.${index}.name`, {
+                              required: "名稱為必填",
+                            })}
                           />
+                          {errors.team?.[index]?.name && (
+                            <p className="invalid-feedback my-2">
+                              {errors.team[index].name.message}
+                            </p>
+                          )}
                         </div>
                         <div>
-                          <IntroInput
-                            register={register}
-                            errors={errors}
-                            id={`team.${index}.jobTitle`}
-                            labelText="職稱"
+                          <label
+                            htmlFor={`team-jobTitle-${index}`}
+                            className="form-label fw-bolder fs-base"
+                          >
+                            名稱
+                          </label>
+                          <input
                             type="text"
-                            rules={{ required: "職稱為必填" }}
+                            id={`team-jobTitle-${index}`}
+                            className={`form-control bg-light text-dark fs-sm fs-md-base ${
+                              errors.team?.[index]?.jobTitle ? "is-invalid" : ""
+                            }`}
+                            {...register(`team.${index}.jobTitle`, {
+                              required: "職稱為必填",
+                            })}
                           />
+                          {errors.team?.[index]?.jobTitle && (
+                            <p className="invalid-feedback my-2">
+                              {errors.team[index].jobTitle.message}
+                            </p>
+                          )}
                         </div>
                       </section>
                       {/* 個人介紹 */}
@@ -598,3 +653,20 @@ export default function Intro() {
     </>
   );
 }
+
+IntroInput.propTypes = {
+  register: PropTypes.func,
+  errors: PropTypes.oneOfType(
+    PropTypes.objectOf(
+      PropTypes.shape({
+        message: PropTypes.string,
+      })
+    ),
+    PropTypes.array
+  ),
+  id: PropTypes.string,
+  labelText: PropTypes.string,
+  type: PropTypes.string,
+  rules: PropTypes.object,
+  min: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+};

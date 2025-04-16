@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { Link, Outlet, useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
+import { Alert } from "../assets/js/costomSweetAlert";
 
 export default function AboutStudio() {
   const [hoveredIndex, setHoveredIndex] = useState(null);
@@ -19,51 +20,55 @@ export default function AboutStudio() {
   // 提案者資料
   const [studioProfile, setStudioProfile] = useState({});
   // 取得提案者資料
-  const getStudioProfile = async () => {
+  const getStudioProfile = useCallback(async () => {
     setIsLoading(true);
     let idArray = id.split("=");
     let idObj = { [idArray[0]]: Number(idArray[1]) };
     const { projectId } = idObj;
     try {
-      const res = await axios.get(
-        `${apiBase}/projects?_expand=studio&id=${projectId}`
-      );
+      const res = await axios.get(`${apiBase}/projects?_expand=studio&id=${projectId}`);
       const studioProfile = res.data[0].studio.studioProfile;
       setStudioProfile(studioProfile);
       setUserId(res.data[0].studio.userId);
     } catch (error) {
-      console.log(error);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "取得提案者專案失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id]);
 
   // 取得專案資料
-  const getProjectData = async () => {
-    setIsLoading(true)
+  const getProjectData = useCallback(async () => {
+    setIsLoading(true);
     try {
-      const response = await axios.get(
-        `${apiBase}/projects?studioId=${userId}`
-      );
-      const finFilterData = response.data.filter((item)=>item.isfin)
-      const filterData = response.data.filter((item)=>!item.isfin)
+      const response = await axios.get(`${apiBase}/projects?studioId=${userId}`);
+      const finFilterData = response.data.filter((item) => item.isfin);
+      const filterData = response.data.filter((item) => !item.isfin);
       setProjects(filterData);
       setFinProjects(finFilterData);
-      setlength(filterData.length)
+      setlength(filterData.length);
       setFinLength(finFilterData.length);
     } catch (error) {
-      console.log(error);
-    } finally{
-        setIsLoading(false)
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "取得專案資料失敗",
+        });
+      }
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [userId]);
   useEffect(() => {
     if (userId) {
       getProjectData();
     }
-  }, [userId]);
-
- 
+  }, [userId, getProjectData]);
 
   // 路由跳轉至專案介紹頁時，重製滾輪捲軸
   useEffect(() => {
@@ -75,22 +80,9 @@ export default function AboutStudio() {
   // 元件初始化
   useEffect(() => {
     getStudioProfile();
-  }, []);
+  }, [getStudioProfile]);
 
-
-  const {
-    email,
-    endTime,
-    groupName,
-    personResponsible,
-    phone,
-    startTime,
-    studioFb,
-    studioIg,
-    studioImageUrl,
-    studioLine,
-    teamIntro,
-  } = studioProfile;
+  const { email, endTime, groupName, personResponsible, phone, startTime, studioFb, studioIg, studioImageUrl, studioLine, teamIntro } = studioProfile;
 
   return (
     <>
@@ -103,12 +95,7 @@ export default function AboutStudio() {
             <div className="border-bottom border-primary-4 pb-8 mb-8">
               <div className="row flex-md-row flex-column">
                 <div className="col-lg-4 col-md-5 text-center">
-                  <img
-                    src={studioImageUrl}
-                    className="img-fluid object-fit-cover img-director"
-                    style={{ height: 264, width: 264 }}
-                    alt={groupName}
-                  />
+                  <img src={studioImageUrl} className="img-fluid object-fit-cover img-director" style={{ height: 264, width: 264 }} alt={groupName} />
                 </div>
                 <div className="col-lg-8 col-md-7">
                   <div className="d-flex flex-column h-100">
@@ -201,7 +188,7 @@ export default function AboutStudio() {
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
                   {item}
-                  {item === "進行中" ? `(${length})` : item === "已結案" ?  `(${finLength})` :""}
+                  {item === "進行中" ? `(${length})` : item === "已結案" ? `(${finLength})` : ""}
                   <span
                     className="underline-effect"
                     style={{
@@ -220,7 +207,7 @@ export default function AboutStudio() {
           ))}
         </ul>
       </nav>
-      <Outlet context={{isLoading,finProjects,projects}}/>
+      <Outlet context={{ isLoading, finProjects, projects }} />
       <GrayScreenLoading isLoading={isLoading} />
     </>
   );

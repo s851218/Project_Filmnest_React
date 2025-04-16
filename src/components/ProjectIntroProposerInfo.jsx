@@ -1,6 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
+import PropTypes from "prop-types"; // prop validation
+import { Alert } from "../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -17,7 +19,12 @@ export default function ProjectIntroProposerInfo({ studioId }) {
         const res = await axios.get(`${API_BASE}/studios/${studioId}`);
         setProposerData(res.data.studioProfile);
       } catch (error) {
-        console.log("取得提案人資料失敗：", error);
+        if (error) {
+          Alert.fire({
+            icon: "error",
+            title: "取得提案人資料失敗",
+          });
+        }
       }
     };
     getProposerData();
@@ -28,12 +35,15 @@ export default function ProjectIntroProposerInfo({ studioId }) {
     if (!studioId) return;
     const fetchProjectCount = async () => {
       try {
-        const res = await axios.get(
-          `${API_BASE}/projects?studioId=${studioId}`
-        );
+        const res = await axios.get(`${API_BASE}/projects?studioId=${studioId}`);
         setProjectCount(res.data.length);
       } catch (error) {
-        console.log("取得專案數量失敗：", error);
+        if (error) {
+          Alert.fire({
+            icon: "error",
+            title: "取得專案數量失敗",
+          });
+        }
       }
     };
     fetchProjectCount();
@@ -42,15 +52,8 @@ export default function ProjectIntroProposerInfo({ studioId }) {
   return (
     <>
       <div className="d-flex p-3 p-md-5 bg-primary-9-transparent rounded-1 rounded-md-2">
-        <img
-          className="object-fit-cover rounded rounded-md-1 img-director"
-          src={proposerData.studioImageUrl}
-          alt={`${proposerData.personResponsible}-提案人照片`}
-        />
-        <div
-          className="ms-3 ms-md-7 d-flex flex-column justify-content-between"
-          style={{ width: 552 }}
-        >
+        <img className="object-fit-cover rounded rounded-md-1 img-director" src={proposerData.studioImageUrl} alt={`${proposerData.personResponsible}-提案人照片`} />
+        <div className="ms-3 ms-md-7 d-flex flex-column justify-content-between" style={{ width: 552 }}>
           <div>
             <h3 className="fs-base fs-md-7 mb-2">
               <Link to="aboutStudio" className="text-white title-hover">
@@ -58,22 +61,12 @@ export default function ProjectIntroProposerInfo({ studioId }) {
               </Link>
             </h3>
             <section className="d-flex gap-4">
-              <Link
-                to="aboutStudio"
-                className="fs-sm fs-md-base icon-text-hover"
-              >
-                <span className="material-symbols-outlined align-bottom text-primary-5 me-0 me-md-1">
-                  star
-                </span>
+              <Link to="aboutStudio" className="fs-sm fs-md-base icon-text-hover">
+                <span className="material-symbols-outlined align-bottom text-primary-5 me-0 me-md-1">star</span>
                 {`${projectCount} 個專案`}
               </Link>
-              <Link
-                to="aboutStudio"
-                className="fs-sm fs-md-base icon-text-hover"
-              >
-                <span className="material-symbols-outlined align-bottom text-primary-5 me-0 me-md-1">
-                  person
-                </span>
+              <Link to="aboutStudio" className="fs-sm fs-md-base icon-text-hover">
+                <span className="material-symbols-outlined align-bottom text-primary-5 me-0 me-md-1">person</span>
                 {`提案者-${proposerData.personResponsible}`}
               </Link>
             </section>
@@ -105,3 +98,7 @@ export default function ProjectIntroProposerInfo({ studioId }) {
     </>
   );
 }
+
+ProjectIntroProposerInfo.propTypes = {
+  studioId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+};

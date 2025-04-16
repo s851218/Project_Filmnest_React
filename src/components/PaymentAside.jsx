@@ -1,9 +1,18 @@
+import PropTypes from 'prop-types';
+
 export default function PaymentAside ({
   handleFormsSubmit,
   orderData,
   projectData,
   productData,
 }) {
+
+  PaymentAside.propTypes = {
+    handleFormsSubmit : PropTypes.func,
+    orderData : PropTypes.object,
+    projectData : PropTypes.object,
+    productData : PropTypes.object,
+  }
 
   return (
     <aside className="col-lg-4 d-lg-block d-none">

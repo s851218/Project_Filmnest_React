@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' // 載入react-
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
+import PropTypes from 'prop-types';
 
 const requiredChecked = [
   "我已再次確認「訂單資訊」及「付款資訊」，付款完成後藍新金流將發送通知信至付款人電子信箱",
@@ -41,6 +42,14 @@ const creditCardFormContent = {
 }
 
 export default function PaymentCollapseFrom ({reference , showError , banksData}) {
+
+  PaymentCollapseFrom.propTypes = {
+    reference : PropTypes.shape({
+      current: PropTypes.any
+    }),
+    showError : PropTypes.bool,
+    banksData : PropTypes.array,
+  }
   
   const { register , control , setValue , formState:{errors,isValid} , reset , handleSubmit } = useForm({
     shouldUnregister:true, // 不寫入未被渲染的表單內容
@@ -53,8 +62,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
     isValid,
   }))
 
-  const onSubmit = (data) => {
-    console.log("驗證成功",data);
+  const onSubmit = () => {
   }
 
   const dispatch = useDispatch()
@@ -69,7 +77,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
   // 監控表單
   useEffect(()=>{
     dispatch(setPaymentOption(watch))
-  },[watch])
+  },[watch , dispatch])
 
   // 手風琴切換，重設表單reset (OK)
   useEffect(()=>{
@@ -81,7 +89,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
       setValue("payMethod","oneTime")
       setCardCodeIndex(0)
     }
-  },[accordionIndex])
+  },[accordionIndex , setValue , reset])
 
   // labelb 點擊 => focus 當前啟用 input (OK)
   const handleCardNumInptLabelClick = (cardType) => {
@@ -131,7 +139,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
         setValue("cardType", enabledCardType)
       }
     }
-  },[enabledCardType])
+  },[enabledCardType , watch.cardType , setValue])
   
 
   // radio改變=>切換付款方式 (OK)
@@ -149,7 +157,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
         setValue("payMethod",enabledPayMethod)
       }
     }
-  },[enabledPayMethod])
+  },[enabledPayMethod , watch.payMethod , setValue])
 
   // 處理卡號連續輸入 (OK)
   useEffect(()=> {
@@ -166,7 +174,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
         setCardCodeIndex(cardCodeIndex-1) // 設定上一個input index
       }
     }
-  },[watch])
+  },[watch , accordionIndex , cardCodeIndex , enabledCardType])
 
   useEffect(()=>{
     if (enabledCardType) {
@@ -176,7 +184,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
         nextInput.focus()
       }
     }
-  },[cardCodeIndex])
+  },[cardCodeIndex , enabledCardType])
   // 處理卡號連續輸入 (OK)
 
   // 處理長按事件
@@ -257,12 +265,9 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
                     </div>
                     { creditCardFormContent.cardTypes[enabledCardType].patterns.map(( pattern , index) => {
                       const maxIndex = creditCardFormContent.cardTypes[enabledCardType].patterns.length
-                      const placeholderText = Array.from({length: pattern}).map((item) => item = "-").join(" ")
+                      const placeholderText = Array.from({length: pattern}).map(() => "-").join(" ")
                       const inputName = `codeInput${index+1}`
-                      let inputWidth
-                      if ("unionPay") {
-                        inputWidth = pattern*20
-                      }
+                      const inputWidth = pattern*20
                       // 動態創建正規表達式
                       const regex = new RegExp(`^\\d{${pattern}}$`);
 
@@ -307,7 +312,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
                 </div>
 
                 <div className={`input-group d-flex align-items-center gap-6 ${(errors.expiryDate || errors.cvv) ? "" : "mb-4"}`}>
-                  { Object.keys(creditCardFormContent.required).map((id,index) => {
+                  { Object.keys(creditCardFormContent.required).map((id) => {
                     const { name , pattern } = creditCardFormContent.required[id]
                     const inputWidth = pattern*20
                     const placeholderText = (id === "cvv") ? "CVV" : "MM/YY"
@@ -347,7 +352,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
                             <small className="ms-2 text-warning">※ 若您的卡片無末三碼，可不填寫</small> }
                         </div>
                         { errors[id] && <div className="invalid-feedback d-block">{errors[id]?.message}</div> }
-                        { errors.expiryDate && enabledCardType === "unionPay" && id === "cvv" && <div className="d-block">　</div> }
+                        { errors.expiryDate && enabledCardType === "unionPay" && id === "cvv" && <div className="d-block">&nbsp;</div> }
                       </div>
                     )
                   }) }

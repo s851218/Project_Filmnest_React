@@ -1,8 +1,8 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
-import { CheckModal } from "../assets/js/costomSweetAlert";
+import { Alert, CheckModal } from "../assets/js/costomSweetAlert";
 import { useNavigate, useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 
@@ -14,7 +14,7 @@ export default function OrderRecordsDetail() {
     window.scrollTo(0, 0);
   }, []);
 
-  const [orderData, setOrdersData] = useState({paymentMethod:{}});
+  const [orderData, setOrdersData] = useState({ paymentMethod: {} });
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
@@ -33,20 +33,25 @@ export default function OrderRecordsDetail() {
     return newTime;
   };
 
-  const getOrderData = async () => {
+  const getOrderData = useCallback(async () => {
     setIsLoading(true);
     try {
       const response = await axios.get(`${apiBase}/orders?_expand=project&_expand=product&id=${id}`);
       setOrdersData(response.data[0]);
     } catch (error) {
-      console.log(error);
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "取得訂單失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [id]);
   useEffect(() => {
     getOrderData();
-  }, []);
+  }, [getOrderData]);
 
   // 取消訂單
   const handleCancelOrder = (orderData) => {
@@ -103,7 +108,9 @@ export default function OrderRecordsDetail() {
           CheckModal.fire("取消申請成功", "我們將儘快處理您的申請", "success");
           getOrderData();
         } catch (error) {
-          CheckModal.fire("取消申請失敗", "請稍後再試", "error");
+          if (error) {
+            CheckModal.fire("取消申請失敗", "請稍後再試", "error");
+          }
         }
       }
     });
@@ -157,16 +164,18 @@ export default function OrderRecordsDetail() {
         return reason;
       },
     }).then(async (result) => {
-        if (result.isConfirmed) {
-          const reason = result.value;
-          try {
-            await axios.patch(`${apiBase}/orders/${orderData.id}`, { canReturn: false, reason: reason, shippingStatus: 2 });
-            CheckModal.fire("退貨申請成功", "我們將儘快處理您的申請", "success");
-            getOrderData();
-          } catch (error) {
+      if (result.isConfirmed) {
+        const reason = result.value;
+        try {
+          await axios.patch(`${apiBase}/orders/${orderData.id}`, { canReturn: false, reason: reason, shippingStatus: 2 });
+          CheckModal.fire("退貨申請成功", "我們將儘快處理您的申請", "success");
+          getOrderData();
+        } catch (error) {
+          if (error) {
             CheckModal.fire("退貨申請失敗", "請稍後再試", "error");
           }
         }
+      }
     });
   };
 
@@ -225,7 +234,9 @@ export default function OrderRecordsDetail() {
           CheckModal.fire("退款申請成功", "我們將儘快處理您的申請", "success");
           getOrderData();
         } catch (error) {
-          CheckModal.fire("退款申請失敗", "請稍後再試", "error");
+          if (error) {
+            CheckModal.fire("退款申請失敗", "請稍後再試", "error");
+          }
         }
       }
     });
@@ -260,15 +271,13 @@ export default function OrderRecordsDetail() {
               <h3 className="fs-base">本方案包含：</h3>
               <ol>
                 {orderData.product?.contents?.map((item, index) => (
-                  
-                    <li key={index}>{item.item}</li>
-                  
+                  <li key={index}>{item.item}</li>
                 ))}
               </ol>
             </div>
             <p className="mb-3">額外加碼：{Number(orderData.bonus).toLocaleString()}</p>
             <p className="mb-3">訂單總額：{Number(orderData.totalPrice).toLocaleString()}</p>
-            <p className="mb-3">訂單狀態：{orderData.orderStatus === 0 ? "訂單建立" : orderData.orderStatus === 2 ? "訂單取消"  : "訂單成立" }</p>
+            <p className="mb-3">訂單狀態：{orderData.orderStatus === 0 ? "訂單建立" : orderData.orderStatus === 2 ? "訂單取消" : "訂單成立"}</p>
             <p className="mb-3">訂單成立時間：{getTime(orderData.createdAt)}</p>
             {!orderData.paymentMethod || Object.keys(orderData.paymentMethod).length === 0 ? (
               <p className="mb-3">付款方式：尚未選擇付款方式</p>

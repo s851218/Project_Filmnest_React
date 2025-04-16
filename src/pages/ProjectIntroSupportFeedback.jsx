@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import FeedbackSwiper from "../components/FeedbackSwiper";
 import { Helmet } from "react-helmet-async";
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ProjectIntroProposerInfo from "./ProjectIntroProposerInfo";
 import { Link } from "react-router";
+import PropTypes from "prop-types"; // prop validation
 
 export default function ProjectIntroInfo({ projectInfo }) {
   const [currentMoneyPercentage, setCurrentMoneyPercentage] = useState(0);
@@ -141,3 +142,17 @@ export default function ProjectIntroInfo({ projectInfo }) {
     </>
   );
 }
+
+ProjectIntroInfo.propTypes = {
+  projectInfo: PropTypes.shape({
+    studioId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    projectTitle: PropTypes.string,
+    summary: PropTypes.string,
+    category: PropTypes.string,
+    supportNum: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    totalMoney: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    goalMoney: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+    createdAt: PropTypes.string,
+    endAt: PropTypes.string,
+  }),
+};

@@ -4,6 +4,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs } from "swiper/modules";
 
 import { useEffect, useRef, useState } from "react";
+// prop validation
+import PropTypes from "prop-types";
 
 // Import Swiper styles
 import "swiper/css";
@@ -41,7 +43,7 @@ export default function ProjectIntroSwiper({ projectInfo }) {
     if (thumbsSwiper && swiperRef.current) {
       swiperRef.current.update();
     }
-  }, [otherImages]);
+  }, [otherImages, thumbsSwiper]);
 
   // 手機版 Navigation
   const handlePrevSlide = () => {
@@ -117,3 +119,15 @@ export default function ProjectIntroSwiper({ projectInfo }) {
     </>
   );
 }
+
+ProjectIntroSwiper.propTypes = {
+  projectInfo: PropTypes.shape({
+    projectImage: PropTypes.string,
+    otherImages: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+        imageUrl: PropTypes.string,
+      })
+    ),
+  }),
+};
