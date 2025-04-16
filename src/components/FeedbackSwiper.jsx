@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { Link, useParams } from "react-router";
@@ -16,7 +16,7 @@ function FeedbackSwiper() {
   const [isLoading, setIsLoading] = useState(false);
   const swiperRef = useRef(null);
 
-  // 處理params
+  //處理params
   useEffect(() => {
     if (id) {
       const paramsArry = id.split("&");
@@ -47,7 +47,7 @@ function FeedbackSwiper() {
   };
 
   // 渲染時取得資料
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (params.projectId) {
       getFeedbackData(params.projectId);
     }
@@ -129,13 +129,13 @@ function FeedbackSwiper() {
                             <h5 className="fw-bold fs-lg-6 mb-1">
                               {feedback.title}
                             </h5>
-                            <p className="fw-bold fs-lg-5 fs-7 mb-lg-2 mb-1">{`NT$ ${feedback.price.toLocaleString(
-                              "zh-TW"
-                              // {
-                              //   style: "currency",
-                              //   currency: "TWD",
-                              //   minimumFractionDigits: 0,
-                              // }
+                            <p className="fw-bold fs-lg-5 fs-7 mb-lg-2 mb-1">{`NT${feedback.price.toLocaleString(
+                              "zh-TW",
+                              {
+                                style: "currency",
+                                currency: "TWD",
+                                minimumFractionDigits: 0,
+                              }
                             )}`}</p>
 
                             <hr className="my-3" />

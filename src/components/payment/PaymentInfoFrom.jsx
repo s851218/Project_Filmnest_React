@@ -1,21 +1,24 @@
 import axios from "axios";
 import { useEffect, useImperativeHandle, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
-import { setUserInfo, setAddress, setRecipientInfo, setSameAsMember } from "../slice/paymentInfoSlice";
+import { setPaymentInfo } from "../../slice/paymentInfoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import { Alert } from "../assets/js/costomSweetAlert";
+import { Alert } from "../../assets/js/costomSweetAlert";
+import handleInputNumber from "../../assets/js/handleInputNumber"
 
-export default function PaymentInfoFrom({ reference, userData }) {
-  PaymentInfoFrom.propTypes = {
-    reference: PropTypes.shape({
-      current: PropTypes.any,
-    }),
-    userData: PropTypes.array,
-  };
+PaymentInfoFrom.propTypes = {
+  reference: PropTypes.shape({
+    current: PropTypes.any,
+  }),
+  userData: PropTypes.object,
+};
+
+export default function PaymentInfoFrom({ reference , userData }) {
 
   const dispatch = useDispatch();
-  const { userInfo, recipientInfo } = useSelector((state) => state.paymentInfo);
+  const paymentSlice = useSelector((state) => state.paymentInfo);
+  
   const {
     register,
     setValue,
@@ -25,9 +28,9 @@ export default function PaymentInfoFrom({ reference, userData }) {
     reset,
   } = useForm({
     defaultValues: {
-      ...userInfo,
+      ...paymentSlice.userInfo,
       sameAsMember: false,
-      ...recipientInfo,
+      ...paymentSlice.recipientInfo,
       county: "請選擇縣市",
       district: "請選擇鄉鎮市區",
       zipcode: "",
@@ -40,16 +43,20 @@ export default function PaymentInfoFrom({ reference, userData }) {
     if (userData.userProfile) {
       const { userName, phone } = userData.userProfile;
       const { email } = userData;
-
-      const userInfo = {
-        userName,
-        userPhone: phone,
-        userEmail: email,
-      };
+      
       setValue("userName", userName);
       setValue("userPhone", phone);
       setValue("userEmail", email);
-      dispatch(setUserInfo(userInfo));
+
+      const sliceData = {
+        type:"userInfo",
+        data: {
+          userName,
+          userPhone: phone,
+          userEmail: email,
+        }
+      };
+      dispatch(setPaymentInfo(sliceData));
     }
   }, [userData, dispatch, setValue]);
 
@@ -109,38 +116,69 @@ export default function PaymentInfoFrom({ reference, userData }) {
       setValue("zipcode", "");
     }
   }, [watch.district, districts, setValue, watch.zipcode]);
+
   // 寫入地址 to slice
   useEffect(() => {
+    const {county, district, address, zipcode} = watch
     const addressData = {
-      county: watch.county,
-      district: watch.district,
-      address: watch.address,
-      zipcode: watch.zipcode,
-    };
-    dispatch(setAddress(addressData));
-  }, [watch.address, dispatch, watch.county, watch.district, watch.zipcode]);
+      county,
+      district,
+      address,
+      zipcode,
+    }
+    if (JSON.stringify(addressData) !== JSON.stringify(paymentSlice.address)) {
+      const sliceData = {
+        type:"address",
+        data: addressData
+      };
+      dispatch(setPaymentInfo(sliceData));
+    }
+  }, [watch, paymentSlice, dispatch]);
+
   // 收件人 同會員資料 (OK)
   useEffect(() => {
-    dispatch(setSameAsMember(watch.sameAsMember));
-    if (watch.sameAsMember) {
-      setValue("recipientName", watch.userName);
-      setValue("recipientPhone", watch.userPhone);
-      setValue("recipientEmail", watch.userEmail);
-    } else {
-      setValue("recipientName", "");
-      setValue("recipientPhone", "");
-      setValue("recipientEmail", "");
+    const { sameAsMember , userName , userPhone , userEmail } = watch;
+    if (sameAsMember !== paymentSlice.sameAsMember) {
+      const sliceData = {
+        type:"sameAsMember",
+        data: sameAsMember
+      };
+      dispatch(setPaymentInfo(sliceData));
+
+      switch (sameAsMember) {
+        case true:
+          setValue("recipientName", userName);
+          setValue("recipientPhone", userPhone);
+          setValue("recipientEmail", userEmail);
+          break;
+        case false:
+          setValue("recipientName", "");
+          setValue("recipientPhone", "");
+          setValue("recipientEmail", "");
+          break;
+      
+        default:
+          break;
+      };
     }
-  }, [watch.sameAsMember, dispatch, setValue, watch.userName, watch.userPhone, watch.userEmail]);
+  }, [watch, paymentSlice, dispatch, setValue]);
+
   // 寫入收件人資料 to slice
   useEffect(() => {
-    const recipientInfoData = {
-      recipientName: watch.recipientName,
-      recipientPhone: watch.recipientPhone,
-      recipientEmail: watch.recipientEmail,
+    const {recipientName, recipientPhone, recipientEmail} = watch
+    const recipientData = {
+      recipientName,
+      recipientPhone,
+      recipientEmail,
     };
-    dispatch(setRecipientInfo(recipientInfoData));
-  }, [watch.recipientName, watch.recipientPhone, watch.recipientEmail, dispatch]);
+    if (JSON.stringify(recipientData) !== JSON.stringify(paymentSlice.recipientInfo)) {
+      const sliceData = {
+        type:"recipientInfo",
+        data: recipientData
+      };
+      dispatch(setPaymentInfo(sliceData));
+    };
+  }, [watch, paymentSlice, dispatch]);
 
   return (
     <form>
@@ -212,6 +250,7 @@ export default function PaymentInfoFrom({ reference, userData }) {
               type="tel"
               id="recipientPhone"
               className={`form-control ${!watch.sameAsMember && errors.recipientPhone && "is-invalid"} ${watch.sameAsMember && "bg-dark text-primary-3"}`}
+              onInput={(e)=>handleInputNumber(e,setValue)}
               {...register("recipientPhone", {
                 required: {
                   value: true,

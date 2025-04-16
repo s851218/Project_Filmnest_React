@@ -1,13 +1,14 @@
 import { Fragment , useEffect, useImperativeHandle, useState } from "react"
 import { useForm, useWatch } from "react-hook-form"
 import { useDispatch, useSelector } from "react-redux"
-import { setPaymentOption } from "../slice/paymentInfoSlice"
+import { setPaymentInfo} from "../../slice/paymentInfoSlice"
 import PaymentAccordion from "./PaymentAccordion" // 手風琴元件
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' // 載入react-fontawesome元件
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import PropTypes from 'prop-types';
+import handleInputNumber from "../../assets/js/handleInputNumber"
 
 const requiredChecked = [
   "我已再次確認「訂單資訊」及「付款資訊」，付款完成後藍新金流將發送通知信至付款人電子信箱",
@@ -41,15 +42,15 @@ const creditCardFormContent = {
   },
 }
 
-export default function PaymentCollapseFrom ({reference , showError , banksData}) {
+PaymentCollapseFrom.propTypes = {
+  reference : PropTypes.shape({
+    current: PropTypes.any
+  }),
+  showError : PropTypes.bool,
+  banksData : PropTypes.array,
+}
 
-  PaymentCollapseFrom.propTypes = {
-    reference : PropTypes.shape({
-      current: PropTypes.any
-    }),
-    showError : PropTypes.bool,
-    banksData : PropTypes.array,
-  }
+export default function PaymentCollapseFrom ({reference , showError , banksData}) {
   
   const { register , control , setValue , formState:{errors,isValid} , reset , handleSubmit } = useForm({
     shouldUnregister:true, // 不寫入未被渲染的表單內容
@@ -73,10 +74,16 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
   const [ cardCodeIndex , setCardCodeIndex ] = useState(0) // 當前的input位置
   const [ isPasswordVisibility , setIsPasswordVisibility ] = useState(false) // 密碼是否可視
 
-  const watch = useWatch({control})
+  const watch = useWatch({control})  
   // 監控表單
   useEffect(()=>{
-    dispatch(setPaymentOption(watch))
+    const sliceData = {
+      type: "paymentOption",
+      data: {
+        ...watch,
+      }
+    }
+    dispatch(setPaymentInfo(sliceData))
   },[watch , dispatch])
 
   // 手風琴切換，重設表單reset (OK)
@@ -126,21 +133,11 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
 
     if (newCardType !== enabledCardType) {
       setEnabledCardType(newCardType)
-      reset({
-        "cardType": newCardType,
-        "payMethod": enabledPayMethod,
-      })
+      reset()
+      setValue("cardType",newCardType)
+      setValue("payMethod",enabledPayMethod)
     }
-  }
-
-  useEffect(()=>{
-    if (enabledCardType) {
-      if (watch.cardType !== enabledCardType) {
-        setValue("cardType", enabledCardType)
-      }
-    }
-  },[enabledCardType , watch.cardType , setValue])
-  
+  }  
 
   // radio改變=>切換付款方式 (OK)
   const handlePayMethodChange = (e) => {
@@ -148,33 +145,21 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
 
     if (newPayMethod !== enabledPayMethod) {
       setEnabledPayMethod(newPayMethod)
+      setValue("payMethod",newPayMethod)
     }
   }
 
-  useEffect(()=>{
-    if (enabledPayMethod) {
-      if (watch.payMethod !== enabledPayMethod) {
-        setValue("payMethod",enabledPayMethod)
-      }
-    }
-  },[enabledPayMethod , watch.payMethod , setValue])
-
   // 處理卡號連續輸入 (OK)
-  useEffect(()=> {
-    if ((enabledCardType)&& accordionIndex === 0) {
-      const codeIndexLength = creditCardFormContent.cardTypes[enabledCardType].patterns.length
-      const thisInputId = `codeInput${cardCodeIndex+1}`
-      const thisInput = document.getElementById(thisInputId)
-
-      if ((thisInput.value.length === thisInput.maxLength) && (cardCodeIndex < codeIndexLength-1)) {
-        // 當前input填滿
-        setCardCodeIndex(cardCodeIndex+1) // 設定下一個input index
-      } else if ((thisInput.value.length === 0) && (cardCodeIndex > 0)) {
-        // 當前input清空
-        setCardCodeIndex(cardCodeIndex-1) // 設定上一個input index
-      }
+  const handleInputMove = (e,pattern) => {
+    const { value } = e.target
+    const codeIndexLength = creditCardFormContent.cardTypes[enabledCardType].patterns.length
+    
+    if ((value.length === 0) && (cardCodeIndex > 0)) {
+      setCardCodeIndex(cardCodeIndex-1)
+    } else if ((value.length === pattern) && (cardCodeIndex < codeIndexLength-1)) {
+      setCardCodeIndex(cardCodeIndex+1)
     }
-  },[watch , accordionIndex , cardCodeIndex , enabledCardType])
+  }
 
   useEffect(()=>{
     if (enabledCardType) {
@@ -286,6 +271,10 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
                             maxLength={pattern}
                             disabled={cardCodeIndex !== index}
                             autoComplete="one-time-code"
+                            onInput={(e)=>{
+                              handleInputMove(e,pattern)
+                              handleInputNumber(e,setValue)
+                            }}
                             {...register(inputName,{
                               required: {
                                 value: true
@@ -336,6 +325,7 @@ export default function PaymentCollapseFrom ({reference , showError , banksData}
                             placeholder={placeholderText}
                             pattern={regex}
                             maxLength={pattern}
+                            onInput={(e)=>handleInputNumber(e,setValue)}
                             {...register( id ,{
                               required: {
                                 value: ((id === "cvv") && (enabledCardType === "unionPay")) ? false : true,

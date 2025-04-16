@@ -33,24 +33,24 @@ export default function OrderRecords() {
           <h1 className="pb-5 border-bottom border-secondary fs-6">訂單紀錄</h1>
           <div className="border-bottom border-secondary">
             <ul className="list-unstyled row row-cols-4 text-center pt-5 mb-0">
-              <li className="col">
-                <NavLink className="w-100 d-block py-3" to="orderRecordsAll" style={activeStyle}>
+              <li className="col pe-0">
+                <NavLink className="w-100 d-block py-3 fs-md-base fs-sm-sm fs-xs" to="orderRecordsAll" style={activeStyle}>
                   所有訂單紀錄
                 </NavLink>
               </li>
-              <li className="col">
-                <NavLink className="w-100 d-block py-3" to="orderRecordsSuccess" style={activeStyle}>
+              <li className="col px-0">
+                <NavLink className="w-100 d-block py-3 fs-md-base fs-sm-sm fs-xs" to="orderRecordsSuccess" style={activeStyle}>
                   成功訂單紀錄
                 </NavLink>
               </li>
-              <li className="col">
-                <NavLink className="w-100 d-block py-3" to="orderRecordsFailed" style={activeStyle}>
+              <li className="col px-0">
+                <NavLink className="w-100 d-block py-3 fs-md-base fs-sm-sm fs-xs" to="orderRecordsFailed" style={activeStyle}>
                   退款/退貨紀錄
                 </NavLink>
               </li>
-              <li className="col">
-                <NavLink className="w-100 d-block py-3" to="orderRecordsUnpaid" style={activeStyle}>
-                  未付款訂單紀錄
+              <li className="col ps-0">
+                <NavLink className="w-100 d-block py-3 fs-md-base fs-sm-sm fs-xs" to="orderRecordsUnpaid" style={activeStyle}>
+                  未付款紀錄
                 </NavLink>
               </li>
             </ul>

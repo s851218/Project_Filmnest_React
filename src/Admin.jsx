@@ -60,7 +60,7 @@ function Admin() {
       <ScrollRestoration />
       <AdminHeader />
       <div className="admin">
-        <div className="container mt-20">
+        <div className="container mt-14 mt-lg-20">
           <Outlet />
         </div>
       </div>

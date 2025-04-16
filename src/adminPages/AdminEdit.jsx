@@ -17,7 +17,9 @@ export default function AdminEdit() {
         <Outlet />
       ) : (
         <>
-          <h2 className="fs-7 fs-lg-6 mb-3 mb-md-5 mb-lg-7">專案編輯</h2>
+          <div className="container p-sm-0">
+            <h2 className="fs-7 fs-lg-6 mb-3 mb-md-5 mb-lg-7">專案編輯</h2>
+          </div>
 
           <ul className="mb-4 list-unstyled d-flex">
             <li className="w-100">

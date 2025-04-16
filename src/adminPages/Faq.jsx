@@ -163,14 +163,14 @@ export default function Faq() {
   return (
     <>
       {isAdd ? (
-        <form className="bg-primary-2 p-5 rounded-3 mb-5">
+        <form className="bg-white shadow p-5 rounded-3 mb-5">
           <div className="mb-3">
             <label htmlFor="title" className="form-label">
               標題
             </label>
             <input
               type="text"
-              className={`form-control text-dark bg-white ${errors.title && "is-invalid"}`}
+              className={`form-control ${errors.title && "is-invalid"}`}
               id="title"
               {...register("title", {
                 required: {
@@ -186,7 +186,7 @@ export default function Faq() {
               內容
             </label>
             <textarea
-              className={`form-control text-dark bg-white ${errors.content && "is-invalid"}`}
+              className={`form-control ${errors.content && "is-invalid"}`}
               id="content"
               rows="3"
               {...register("content", {
@@ -199,17 +199,17 @@ export default function Faq() {
             <div className="invalid-feedback text-danger">{errors?.content?.message}</div>
           </div>
           <div className="d-flex justify-content-end">
-            <button type="button" className="btn btn-primary rounded-2 px-4 py-2 me-3" onClick={() => handleCreate()}>
+            <button type="button" className="btn btn-primary rounded px-4 py-2 me-3" onClick={() => handleCreate()}>
               確認送出
             </button>
-            <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => setIsAdd(false)}>
+            <button type="button" className="btn btn-primary rounded px-4 py-2" onClick={() => setIsAdd(false)}>
               取消
             </button>
           </div>
         </form>
       ) : (
         <div className="d-flex justify-content-end mb-2">
-          <i type="button" className="btn btn-primary bi bi-plus-lg fs-1 lh-1 p-1 rounded-2" onClick={() => setIsAdd(true)}></i>
+          <i type="button" className="btn btn-primary bi bi-plus-lg fs-5 lh-1 p-1 rounded" onClick={() => setIsAdd(true)}></i>
         </div>
       )}
       {faqsData.map((faq, index) => {
@@ -220,7 +220,7 @@ export default function Faq() {
             <Helmet>
               <title>常見問題編輯</title>
             </Helmet>
-            <form className="bg-primary-2 p-5 rounded-3 mb-5" key={faq.id}>
+            <form className="bg-white shadow p-5 rounded-3 mb-5" key={faq.id}>
               <div className="mb-3">
                 {!isEditIng && (
                   <div className="d-flex justify-content-between align-items-center">
@@ -234,7 +234,7 @@ export default function Faq() {
                 {isEditIng && (
                   <input
                     type="text"
-                    className={`form-control text-dark bg-white ${updateErrors.title && "is-invalid"}`}
+                    className={`form-control  ${updateErrors.title && "is-invalid"}`}
                     id="title"
                     defaultValue={faq.title}
                     {...updateRegister("title", {
@@ -255,7 +255,7 @@ export default function Faq() {
                 )}
                 {isEditIng && (
                   <textarea
-                    className={`form-control text-dark bg-white ${updateErrors.content && "is-invalid"}`}
+                    className={`form-control  ${updateErrors.content && "is-invalid"}`}
                     id="content"
                     rows="3"
                     defaultValue={faq.content}
@@ -272,10 +272,10 @@ export default function Faq() {
               <div className="d-flex justify-content-end">
                 {isEditIng ? (
                   <>
-                    <button type="submit" className="btn btn-primary rounded-2 px-4 py-2 me-3" onClick={updateHandleSubmit((data) => onPutSubmit(data, faq.id))}>
+                    <button type="submit" className="btn btn-primary rounded px-4 py-2 me-3" onClick={updateHandleSubmit((data) => onPutSubmit(data, faq.id))}>
                       確認
                     </button>
-                    <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => setIsEdit(null)}>
+                    <button type="button" className="btn btn-primary rounded px-4 py-2" onClick={() => setIsEdit(null)}>
                       取消
                     </button>
                   </>
@@ -283,7 +283,7 @@ export default function Faq() {
                   <>
                     <button
                       type="button"
-                      className="btn btn-primary rounded-2 px-4 py-2 me-3"
+                      className="btn btn-primary rounded px-4 py-2 me-3"
                       onClick={(e) => {
                         e.preventDefault();
                         setIsEdit(faq.id);
@@ -295,7 +295,7 @@ export default function Faq() {
                     >
                       編輯
                     </button>
-                    <button type="button" className="btn btn-primary rounded-2 px-4 py-2" onClick={() => handleDelFaqData(faq.id)}>
+                    <button type="button" className="btn btn-primary rounded px-4 py-2" onClick={() => handleDelFaqData(faq.id)}>
                       刪除
                     </button>
                   </>

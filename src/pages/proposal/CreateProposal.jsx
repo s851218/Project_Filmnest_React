@@ -5,7 +5,8 @@ import { Controller, useForm } from "react-hook-form";
 import DateTimePicker from "react-datetime-picker";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
-import { Alert } from "../assets/js/costomSweetAlert";
+import { Alert } from "../../assets/js/costomSweetAlert";
+import handleInputNumber from "../../assets/js/handleInputNumber"
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -50,7 +51,7 @@ export default function CreatePropsal() {
           title: "提交成功",
         },
         setTimeout(() => {
-          navigate("/"); // 重新導向 暫定首頁 => 之後改付款完成頁面
+          navigate("/completeProposal");
         }, 1500)
       );
     } catch (error) {
@@ -65,10 +66,6 @@ export default function CreatePropsal() {
 
   const [endMinDate, setEndMinDate] = useState(null);
 
-  Date.prototype.clone = function () {
-    return new Date(this.valueOf());
-  };
-
   const handleChange = (newDateTime, type) => {
     if (newDateTime) {
       switch (type) {
@@ -77,7 +74,7 @@ export default function CreatePropsal() {
           newDateTime.setHours(0, 0, 0, 0);
           setValue("createdAt", newDateTime); // 更新日期與時間
 
-          const defaultEndTime = newDateTime.clone();
+          const defaultEndTime = new Date(newDateTime.getTime());
           defaultEndTime.setMonth(defaultEndTime.getMonth() + 1);
           defaultEndTime.setHours(23, 59, 59, 999);
           setValue("endAt", defaultEndTime); // 預設截止日期為一個月後
@@ -277,6 +274,10 @@ export default function CreatePropsal() {
                         value: true,
                         message: "*必填欄位",
                       },
+                      pattern: {
+                        value: /^[\u4e00-\u9fa5a-zA-Z]+$/,
+                        message: "輸入包含無效字符，只可輸入中英文",
+                      },
                     })}
                   />
                   {errors.personResponsible && <div className="invalid-feedback">{errors?.personResponsible?.message}</div>}
@@ -310,11 +311,11 @@ export default function CreatePropsal() {
                     {...register("teamIntro", {
                       required: {
                         value: true,
-                        message: "*必填欄位，限制300字",
+                        message: "*必填欄位，限制500字",
                       },
                       maxLength: {
-                        value: 300,
-                        message: "*超出字數上限，限制300字",
+                        value: 500,
+                        message: "*超出字數上限，限制500字",
                       },
                     })}
                   />
@@ -347,9 +348,10 @@ export default function CreatePropsal() {
                     連絡電話
                   </label>
                   <input
+                    id="tel"
                     type="tel"
                     className={`form-control ${errors.phone ? "is-invalid" : ""}`}
-                    id="tel"
+                    onInput={(e)=>handleInputNumber(e,setValue)}
                     {...register("phone", {
                       required: {
                         value: true,

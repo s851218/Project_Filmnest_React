@@ -124,68 +124,65 @@ export default function OrderRecordsAll() {
   return (
     <>
       {ordersData.length !== 0 ? (
-        <>
-          <div className="d-flex justify-content-end mt-5">
-            <button className="btn btn-light" onClick={() => setSortOrderData((prev) => !prev)}>
-              {sortOrderData ? (
-                <>
-                  <i className="bi bi-sort-up"></i>
-                  <span>由舊到新</span>
-                </>
-              ) : (
-                <>
-                  <i className="bi bi-sort-down"></i>由新到舊
-                </>
-              )}
-            </button>
-          </div>
-          <div className="table-responsive bg-primary-8">
-            <table className="table align-middle border border-primary-9 mb-0">
-              <thead className="nowrap-table">
-                <tr>
-                  <th scope="col" className="text-white">
-                    訂單項目
-                  </th>
-                  <th scope="col" className="d-lg-none"></th>
-                  <th scope="col" className="text-white"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {ordersData.map((order) => (
-                  <tr key={order.id}>
-                    <td className="text-white">
-                      <div className="row align-items-center">
-                        <div className="col-4">
-                          <img src={order.project.projectImage} className="rounded-2" alt="專案數量" />
-                        </div>
-                        <div className="col-8">
-                          <span className="badge text-bg-danger mb-1">{order.orderStatus === 2 ? "已取消" : order.paymentStatus === 2 ? "已退款" : order.shippingStatus === 2 ? "已退貨" : ""}</span>
-                          <p className="fs-sm fs-lg-base text-secondary">訂單建立時間：{getTime(order.createdAt)}</p>
-                          <h3 className="fs-base fs-lg-6 fw-bolder text-truncate" title={order.project.projectTitle}>
-                            {order.project.projectTitle}
-                          </h3>
-                          <p className="fs-sm fs-lg-base">購買回饋方案項目：{order.product.title}</p>
-                        </div>
+        <div className="table-responsive bg-primary-8">
+          <table className="table align-middle border border-primary-9 mb-0">
+            <thead className="nowrap-table">
+              <tr>
+                <th scope="col" className="text-white align-middle">
+                  訂單項目
+                </th>
+                {/* <th scope="col" className="d-lg-none"></th> */}
+                <th scope="col" className="text-white">
+                  <button className="btn btn-light" onClick={() => setSortOrderData((prev) => !prev)}>
+                    {sortOrderData ? (
+                      <>
+                        <i className="bi bi-sort-up"></i>
+                        <span>由舊到新</span>
+                      </>
+                    ) : (
+                      <>
+                        <i className="bi bi-sort-down"></i>由新到舊
+                      </>
+                    )}
+                  </button>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {ordersData.map((order) => (
+                <tr key={order.id}>
+                  <td className="text-white">
+                    <div className="row align-items-center">
+                      <div className="col-4">
+                        <img src={order.project.projectImage} className="rounded-2" alt="專案數量" />
                       </div>
-                    </td>
-                    <td className="nowrap-table text-white">
-                      <div className="d-flex flex-column">
-                        {order.canCancel && (
-                          <button type="button" className="btn btn-danger mb-2" onClick={() => handleCancelOrder(order)}>
-                            訂單取消
-                          </button>
-                        )}
-                        <button type="button" className="btn btn-primary" onClick={() => navigate(`/personalCenter/orderRecords/${order.id}`)}>
-                          訂單詳細
+                      <div className="col-8">
+                        <span className="badge text-bg-danger mb-1">{order.orderStatus === 2 ? "已取消" : order.paymentStatus === 2 ? "已退款" : order.shippingStatus === 2 ? "已退貨" : ""}</span>
+                        <p className="fs-sm fs-lg-base text-secondary">訂單建立時間：{getTime(order.createdAt)}</p>
+                        <h3 className="fs-base fs-lg-6 fw-bolder text-truncate" title={order.project.projectTitle}>
+                          {order.project.projectTitle}
+                        </h3>
+                        <p className="fs-sm fs-lg-base">購買回饋方案項目：{order.product.title}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td className="nowrap-table text-white">
+                    <div className="d-flex flex-column">
+                      {order.canCancel && (
+                        <button type="button" className="btn btn-danger mb-2" onClick={() => handleCancelOrder(order)}>
+                          訂單取消
                         </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </>
+                      )}
+                      <button type="button" className="btn btn-primary" onClick={() => navigate(`/personalCenter/orderRecords/${order.id}`)}>
+                        訂單詳細
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <div className="row justify-content-center">
           <div className="col-8 bg-primary-6 rounded-3 mt-15">

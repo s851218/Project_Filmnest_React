@@ -3,7 +3,6 @@ import App from "../App";
 import Home from "../pages/Home";
 import ProjectExplore from "../pages/ProjectExplore";
 import Login from "../pages/Login";
-import AboutProposal from "../pages/AboutProposal";
 import Admin from "../Admin";
 import AdminHome from "../adminPages/AdminHome";
 import AdminProfile from "../adminPages/AdminProfile";
@@ -18,19 +17,17 @@ import Faq from "../adminPages/Faq";
 import SignUp from "../pages/Signup";
 import PersonalCenter from "../pages/PersonalCenter";
 import AboutStudio from "../pages/AboutStudio";
-import TermsOfUse from "../pages/TermsOfUse";
-import CreateProposal from "../pages/CreateProposal";
 import FeedbackPage from "../pages/FeedbackPage";
-import ProjectIntro from "../pages/ProjectIntro";
-import ProjectIntroContent from "../pages/ProjectIntroContent";
-import ProjectIntroNews from "../pages/ProjectIntroNews";
-import ProjectIntroSupportFeedback from "../pages/ProjectIntroSupportFeedback";
-import ProjectIntroQA from "../pages/ProjectIntroQA";
-import ProjectIntroComments from "../pages/ProjectIntroComments";
-import ProjectIntroInfoDisclosure from "../pages/ProjectIntroInfoDisclosure";
+// projectIntro
+import ProjectIntro from "../pages/projectIntro/ProjectIntro";
+import ProjectIntroContent from "../pages/projectIntro/ProjectIntroContent";
+import ProjectIntroNews from "../pages/projectIntro/ProjectIntroNews";
+import ProjectIntroSupportFeedback from "../pages/projectIntro/ProjectIntroSupportFeedback";
+import ProjectIntroQA from "../pages/projectIntro/ProjectIntroQA";
+import ProjectIntroComments from "../pages/projectIntro/ProjectIntroComments";
+import ProjectIntroInfoDisclosure from "../pages/projectIntro/ProjectIntroInfoDisclosure";
 import HeaderSm from "../components/HeaderSm";
 import HeaderSmSec from "../components/HeaderSmSec";
-import PaymentInfo from "../pages/PaymentInfo";
 import HeaderSmSearch from "../components/HeaderSmSearch";
 import AdminProjectsHome from "../adminPages/AdminProjectsHome";
 import AdminHeaderSm from "../AdminComponents/AdminHeaderSm ";
@@ -50,6 +47,14 @@ import AboutStudioFin from "../pages/AboutStudioFin";
 import AboutStudioOngoing from "../pages/AboutStudioOngoing";
 import AboutStudioOthers from "../pages/AboutStudioOthers";
 import ProfilePassword from "../pages/ProfilePassword";
+// proposal
+import AboutProposal from "../pages/proposal/AboutProposal";
+import TermsOfUse from "../pages/proposal/TermsOfUse";
+import CreateProposal from "../pages/proposal/CreateProposal";
+import CompleteProposal from "../pages/proposal/CompleteProposal";
+// payment
+import PaymentInfo from "../pages/payment/PaymentInfo";
+import PaymentComplete from "../pages/payment/PaymentComplete";
 
 const routes = [
   {
@@ -137,6 +142,10 @@ const routes = [
         element: <CreateProposal />,
       },
       {
+        path: "completeProposal",
+        element: <CompleteProposal />,
+      },
+      {
         path: "feedbackPage/:id",
         element: <FeedbackPage />,
       },
@@ -195,6 +204,14 @@ const routes = [
       {
         path: "paymentInfo/:id",
         element: <PaymentInfo />,
+      },
+      {
+        path: "completePayment",
+        element: <PaymentComplete />,
+      },
+      {
+        path: "completeOrder",
+        element: <PaymentComplete />,
       },
       {
         path: "headerSm",

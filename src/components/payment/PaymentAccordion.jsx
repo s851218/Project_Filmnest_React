@@ -1,6 +1,6 @@
 import { Collapse } from 'bootstrap';
 import { useEffect, useRef } from 'react';
-import { setAccordionIndex } from "../slice/paymentInfoSlice"
+import { setPaymentInfo } from "../../slice/paymentInfoSlice"
 import { useDispatch, useSelector } from "react-redux"
 import PropTypes from 'prop-types';
 
@@ -45,11 +45,11 @@ const paymentMessage = {
   ],
 }
 
-export default function PaymentAccordion ({children}) {
+PaymentAccordion.propTypes = {
+  children : PropTypes.any,
+}
 
-  PaymentAccordion.propTypes = {
-    children : PropTypes.any,
-  }
+export default function PaymentAccordion ({children}) {
 
   const dispatch = useDispatch()
   const { accordion : accordionSlice} = useSelector((state)=>state.paymentInfo)
@@ -70,7 +70,13 @@ export default function PaymentAccordion ({children}) {
 
   const handleToggleCollapse = (index) => {
     toggleCollapse(index) // 執行切換手風琴 promises
-    dispatch(setAccordionIndex(index))
+    const sliceData = {
+      type: "accordion",
+      data: {
+        index,
+      }
+    }
+    dispatch(setPaymentInfo(sliceData))
   }
 
   // 手風琴初始化

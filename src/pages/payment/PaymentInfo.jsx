@@ -2,13 +2,14 @@ import axios from "axios";
 import { useEffect, useState, useRef } from "react";
 import { useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
-import PaymentAside from "../components/PaymentAside";
-import PaymentMobileFooter from "../components/PaymentMobileFooter";
-import PaymentInfoFrom from "../components/PaymentInfoFrom";
-import PaymentCollapseFrom from "../components/PaymentCollapseFrom";
 import { Helmet } from "react-helmet-async";
-import GrayScreenLoading from "../components/GrayScreenLoading";
-import { CheckModal, Alert } from "../assets/js/costomSweetAlert";
+
+import PaymentAside from "../../components/payment/PaymentAside";
+import PaymentMobileFooter from "../../components/payment/PaymentMobileFooter";
+import PaymentInfoFrom from "../../components/payment/PaymentInfoFrom";
+import PaymentCollapseFrom from "../../components/payment/PaymentCollapseFrom";
+import GrayScreenLoading from "../../components/GrayScreenLoading";
+import { CheckModal, Alert } from "../../assets/js/costomSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -54,15 +55,8 @@ export default function PaymentInfo() {
   const [showError, setShowError] = useState(false);
   const accordionIndex = useSelector((state) => state.paymentInfo.accordion.index);
 
-  // 初始化
-  const init = () => {
-    setOrderData({});
-    setProjectData({});
-    setProductData({});
-  };
   // 取得訂單資料
   useEffect(() => {
-    init();
     const getOrder = async (id) => {
       setIsLoading(true);
       try {
@@ -91,34 +85,41 @@ export default function PaymentInfo() {
         setIsLoading(false);
       }
     };
+
     if (id) {
       getOrder(id);
     }
   }, [id, navigate]);
 
-  // 取得資料
-  const getData = async (order) => {
-    const { projectId, productId, userId } = order;
-    try {
-      const projectRes = await axios.get(`${API_BASE}/projects/${projectId}`);
-      const productRes = await axios.get(`${API_BASE}/products/${productId}`);
-      const userRes = await axios.get(`${API_BASE}/users/${userId}`);
-      setProjectData(projectRes.data);
-      setProductData(productRes.data);
-      setUserData(userRes.data);
-    } catch (error) {
-      if (error) {
-        Alert.fire({
-          icon: "error",
-          title: "資料取得失敗",
-        });
-      }
-    }
-  };
-
-  // 判斷訂單是否付款
+  // 取得完整資料
   useEffect(() => {
+    const getData = async (order) => {
+      const { projectId, productId, userId } = order;
+      try {
+        const projectRes = await axios.get(`${API_BASE}/projects/${projectId}`);
+        const productRes = await axios.get(`${API_BASE}/products/${productId}`);
+        const userRes = await axios.get(`${API_BASE}/users/${userId}`);
+        setProjectData(projectRes.data);
+        setProductData(productRes.data);
+        setUserData(userRes.data);
+      } catch (error) {
+        if (error) {
+          Alert.fire({
+            icon: "error",
+            title: "資料取得失敗",
+          });
+        }
+      }
+    };
+
+    // 判斷訂單是否付款
     if (Object.keys(orderData).length !== 0) {
+      // 檢查userID
+      if (!orderData.userId) {
+        navigate("/"); // 無ID則返回首頁
+      }
+
+      // 判斷訂單是否付款
       if (orderData.paymentStatus === "已付款") {
         Alert.fire(
           {
@@ -130,6 +131,7 @@ export default function PaymentInfo() {
           }, 1500)
         );
       } else {
+        // 有效訂單 => 取得完整資料
         getData(orderData);
       }
     }
@@ -225,15 +227,42 @@ export default function PaymentInfo() {
       canRefund: accordionIndex === 0 ? true : false, // 2025.03.20 xiang
     };
 
+    let navigateParams = {
+      state:{
+        ...paymentMethod,
+        projectTitle : projectData.projectTitle,
+        totalMoney : projectData.totalMoney,
+        goalMoney : projectData.goalMoney,
+        productTitle : productData.title,
+      }
+    }
+    let alertTitle
+    let navigation
+    switch (newOrderData.paymentMethod.type) {
+      case 0: // 信用卡付款
+        alertTitle = "付款成功"
+        navigation = "/completePayment"
+        break;
+
+      case 1: // ATM轉帳
+      case 2: // 超商代碼
+        alertTitle = "訂單成立"
+        navigation = "/completeOrder"
+        break;
+    
+      default:
+        break;
+    }
+    
     try {
       await axios.put(`${API_BASE}/orders/${id}`, newOrderData);
       Alert.fire(
         {
           icon: "success",
-          title: "付款成功",
+          title: alertTitle,
         },
         setTimeout(() => {
-          navigate("/"); // 重新導向 暫定首頁 => 之後改付款完成頁面
+          navigate(navigation,navigateParams);
         }, 1500)
       );
     } catch (error) {
@@ -266,7 +295,10 @@ export default function PaymentInfo() {
       <Helmet>
         <title>付款資料</title>
       </Helmet>
-      {Object.keys(orderData).length !== 0 && Object.keys(projectData).length !== 0 && Object.keys(productData).length !== 0 && Object.keys(userData).length !== 0 ? (
+      { Object.keys(orderData).length !== 0 && 
+        Object.keys(projectData).length !== 0 &&
+        Object.keys(productData).length !== 0 &&
+        Object.keys(userData).length !== 0 ? (
         <>
           <div className="container mb-20" style={{ marginTop: 88 }}>
             <div className="row">

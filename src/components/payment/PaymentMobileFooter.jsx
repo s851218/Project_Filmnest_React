@@ -1,15 +1,15 @@
 import { useRef, useState } from "react";
-import ModalComponent from "../components/ModalComponent"
+import ModalComponent from "../ModalComponent"
 import PropTypes from 'prop-types';
 
-export default function PaymentMobileFooter ({handleFormsSubmit , orderData , projectData , productData }) {
+PaymentMobileFooter.propTypes = {
+  handleFormsSubmit : PropTypes.func,
+  orderData : PropTypes.object,
+  projectData : PropTypes.object,
+  productData : PropTypes.object,
+}
 
-  PaymentMobileFooter.propTypes = {
-    handleFormsSubmit : PropTypes.func,
-    orderData : PropTypes.object,
-    projectData : PropTypes.object,
-    productData : PropTypes.object,
-  }
+export default function PaymentMobileFooter ({handleFormsSubmit , orderData , projectData , productData }) {
 
   const modalRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -49,7 +49,7 @@ export default function PaymentMobileFooter ({handleFormsSubmit , orderData , pr
           totalPrice={totalPrice}
         >
           <ul className="list-unstyled d-flex flex-column gap-5 lh-1">
-            <li className="d-flex justify-content-between align-items-center">
+            <li className="d-flex justify-content-between align-items-top">
               <small className="mb-0 text-primary-3 lh-1 flex-shrink-0">專案名稱：</small>
               <p className="mb-0 lh-1 text-end">{projectData.projectTitle}</p>
             </li>
