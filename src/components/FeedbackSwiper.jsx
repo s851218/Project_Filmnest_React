@@ -83,8 +83,8 @@ function FeedbackSwiper() {
                   }}
                   slidesPerView={1}
                   spaceBetween={4}
-                  pagination={false} // 禁用內建分頁，我們將使用自定義控制
-                  navigation={false} // 禁用內建導航，我們將使用自定義控制
+                  pagination={false} // 以自定義方式控制，因此取消內建
+                  navigation={false} // 與上同理
                   onSwiper={(swiper) => {
                     // 保存 swiper 實例供後續使用
                     swiperRef.current = swiper;
@@ -166,7 +166,7 @@ function FeedbackSwiper() {
                   ))}
                 </Swiper>
 
-                {/* 自定義導航和分頁在卡片下方 */}
+                {/* 自定義導航和分頁 */}
                 {showNavigation && (
                   <div className="custom-controls-container">
                     <div className="d-flex justify-content-center align-items-center mt-4">
