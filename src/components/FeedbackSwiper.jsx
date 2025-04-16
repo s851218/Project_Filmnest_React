@@ -84,9 +84,9 @@ function FeedbackSwiper() {
   };
 
   // 自定義導航和分頁的引用
-  const prevNavRef = useRef(null);
-  const nextNavRef = useRef(null);
-  const paginationRef = useRef(null);
+  // const prevNavRef = useRef(null);
+  // const nextNavRef = useRef(null);
+  // const paginationRef = useRef(null);
   const swiperRef = useRef(null);
 
   // 用於更新導航和分頁的顯示狀態
@@ -98,27 +98,27 @@ function FeedbackSwiper() {
     setShowNavigation(shouldShowNavigation);
 
     // 如果應該顯示導航，確保所有元素都正確初始化
-    if (shouldShowNavigation) {
-      setTimeout(() => {
-        // 確保元素存在再初始化
-        if (prevNavRef.current && nextNavRef.current && paginationRef.current) {
-          swiper.params.navigation.prevEl = prevNavRef.current;
-          swiper.params.navigation.nextEl = nextNavRef.current;
-          swiper.params.pagination.el = paginationRef.current;
+    // if (shouldShowNavigation) {
+    //   setTimeout(() => {
+    //     // 確保元素存在再初始化
+    //     if (prevNavRef.current && nextNavRef.current && paginationRef.current) {
+    //       swiper.params.navigation.prevEl = prevNavRef.current;
+    //       swiper.params.navigation.nextEl = nextNavRef.current;
+    //       swiper.params.pagination.el = paginationRef.current;
 
-          swiper.navigation?.init();
-          swiper.navigation?.update();
-          swiper.pagination?.init();
-          swiper.pagination?.update();
+    //       swiper.navigation?.init();
+    //       swiper.navigation?.update();
+    //       swiper.pagination?.init();
+    //       swiper.pagination?.update();
 
-          // 使分頁指示器可見
-          const paginationContainer = paginationRef.current;
-          if (paginationContainer) {
-            paginationContainer.style.display = "flex";
-          }
-        }
-      }, 0);
-    }
+    //       // 使分頁指示器可見
+    //       const paginationContainer = paginationRef.current;
+    //       if (paginationContainer) {
+    //         paginationContainer.style.display = "flex";
+    //       }
+    //     }
+    //   }, 0);
+    // }
   };
 
   return (
@@ -130,7 +130,8 @@ function FeedbackSwiper() {
             {showNavigation && (
               <div style={navigationStyles.navigationContainer}>
                 <button
-                  ref={prevNavRef}
+                  onClick={() => swiperRef.current?.slidePrev()}
+                  // ref={prevNavRef}
                   style={navigationStyles.navigationButton}
                   aria-label="上一張"
                 >
@@ -139,7 +140,7 @@ function FeedbackSwiper() {
 
                 {/* 自定義分頁指示器 */}
                 <div
-                  ref={paginationRef}
+                  // ref={paginationRef}
                   style={{
                     display: "flex",
                     justifyContent: "center",
@@ -153,7 +154,8 @@ function FeedbackSwiper() {
                 </div>
 
                 <button
-                  ref={nextNavRef}
+                  onClick={() => swiperRef.current?.slideNext()}
+                  // ref={nextNavRef}
                   style={navigationStyles.navigationButton}
                   aria-label="下一張"
                 >
@@ -209,24 +211,24 @@ function FeedbackSwiper() {
                   // });
 
                   // 確保分頁元素正確引用
-                  setTimeout(() => {
-                    if (paginationRef.current) {
-                      paginationRef.current.className = "pagination-container";
-                    }
-                    if (prevNavRef.current) {
-                      prevNavRef.current.className =
-                        "swiper-button-prev-custom";
-                    }
-                    if (nextNavRef.current) {
-                      nextNavRef.current.className =
-                        "swiper-button-next-custom";
-                    }
+                  // setTimeout(() => {
+                  //   if (paginationRef.current) {
+                  //     paginationRef.current.className = "pagination-container";
+                  //   }
+                  //   if (prevNavRef.current) {
+                  //     prevNavRef.current.className =
+                  //       "swiper-button-prev-custom";
+                  //   }
+                  //   if (nextNavRef.current) {
+                  //     nextNavRef.current.className =
+                  //       "swiper-button-next-custom";
+                  //   }
 
-                    swiper.navigation?.init();
-                    swiper.navigation?.update();
-                    swiper.pagination?.init();
-                    swiper.pagination?.update();
-                  }, 10);
+                  //   swiper.navigation?.init();
+                  //   swiper.navigation?.update();
+                  //   swiper.pagination?.init();
+                  //   swiper.pagination?.update();
+                  // }, 10);
                 }}
                 onSlideChange={(swiper) => {
                   setActiveIndex(swiper.activeIndex);
