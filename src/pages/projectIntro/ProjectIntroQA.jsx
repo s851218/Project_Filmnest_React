@@ -3,8 +3,8 @@ import { Collapse } from "bootstrap";
 import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
-import { Toast } from "../assets/js/costomSweetAlert";
-import GrayScreenLoading from "../components/GrayScreenLoading";
+import { Toast } from "../../assets/js/costomSweetAlert";
+import GrayScreenLoading from "../../components/GrayScreenLoading";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function ProjectIntroQA() {
@@ -59,11 +59,11 @@ export default function ProjectIntroQA() {
             })
           );
         } catch (error) {
-          if(error){
+          if (error) {
             Toast.fire({
               icon: "error",
               title: "最新消息取得失敗",
-            })
+            });
           }
         } finally {
           setIsLoading(false);
@@ -114,7 +114,10 @@ export default function ProjectIntroQA() {
                     onClick={() => handleCollapse(item.id)}
                   >
                     <span className="d-flex justify-content-between">
-                      <span className="fs-base">Q{index + 1}:<span className="fs-base ms-lg-3">{item.title}</span></span>
+                      <span className="fs-base">
+                        Q{index + 1}:
+                        <span className="fs-base ms-lg-3">{item.title}</span>
+                      </span>
                       {faqsIsOpen[index].isOpen ? (
                         <i className="bi bi-chevron-up fs-sm d-lg-none"></i>
                       ) : (
