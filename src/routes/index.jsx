@@ -17,7 +17,6 @@ import Faq from "../adminPages/Faq";
 import SignUp from "../pages/Signup";
 import PersonalCenter from "../pages/PersonalCenter";
 import AboutStudio from "../pages/AboutStudio";
-import TermsOfUse from "../pages/TermsOfUse";
 import FeedbackPage from "../pages/FeedbackPage";
 import ProjectIntro from "../pages/ProjectIntro";
 import ProjectIntroContent from "../pages/ProjectIntroContent";
@@ -49,6 +48,7 @@ import AboutStudioOthers from "../pages/AboutStudioOthers";
 import ProfilePassword from "../pages/ProfilePassword";
 // proposal
 import AboutProposal from "../pages/proposal/AboutProposal";
+import TermsOfUse from "../pages/proposal/TermsOfUse";
 import CreateProposal from "../pages/proposal/CreateProposal";
 import CompleteProposal from "../pages/proposal/CompleteProposal";
 // payment
