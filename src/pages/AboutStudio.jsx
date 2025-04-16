@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
-import { Link, Outlet, useParams } from "react-router";
+import { Link, Outlet, ScrollRestoration, useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
@@ -26,7 +26,9 @@ export default function AboutStudio() {
     let idObj = { [idArray[0]]: Number(idArray[1]) };
     const { projectId } = idObj;
     try {
-      const res = await axios.get(`${apiBase}/projects?_expand=studio&id=${projectId}`);
+      const res = await axios.get(
+        `${apiBase}/projects?_expand=studio&id=${projectId}`
+      );
       const studioProfile = res.data[0].studio.studioProfile;
       setStudioProfile(studioProfile);
       setUserId(res.data[0].studio.userId);
@@ -46,7 +48,9 @@ export default function AboutStudio() {
   const getProjectData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${apiBase}/projects?studioId=${userId}`);
+      const response = await axios.get(
+        `${apiBase}/projects?studioId=${userId}`
+      );
       const finFilterData = response.data.filter((item) => item.isfin);
       const filterData = response.data.filter((item) => !item.isfin);
       setProjects(filterData);
@@ -70,22 +74,28 @@ export default function AboutStudio() {
     }
   }, [userId, getProjectData]);
 
-  // 路由跳轉至專案介紹頁時，重製滾輪捲軸
-  useEffect(() => {
-    // 將滾動行為設為 auto 避免有捲動過程的動畫
-    document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-  }, []);
-
   // 元件初始化
   useEffect(() => {
     getStudioProfile();
   }, [getStudioProfile]);
 
-  const { email, endTime, groupName, personResponsible, phone, startTime, studioFb, studioIg, studioImageUrl, studioLine, teamIntro } = studioProfile;
+  const {
+    email,
+    endTime,
+    groupName,
+    personResponsible,
+    phone,
+    startTime,
+    studioFb,
+    studioIg,
+    studioImageUrl,
+    studioLine,
+    teamIntro,
+  } = studioProfile;
 
   return (
     <>
+      <ScrollRestoration />
       <Helmet>
         <title>{studioProfile.groupName}</title>
       </Helmet>
@@ -95,7 +105,12 @@ export default function AboutStudio() {
             <div className="border-bottom border-primary-4 pb-8 mb-8">
               <div className="row flex-md-row flex-column">
                 <div className="col-lg-4 col-md-5 text-center">
-                  <img src={studioImageUrl} className="img-fluid object-fit-cover img-director" style={{ height: 264, width: 264 }} alt={groupName} />
+                  <img
+                    src={studioImageUrl}
+                    className="img-fluid object-fit-cover img-director"
+                    style={{ height: 264, width: 264 }}
+                    alt={groupName}
+                  />
                 </div>
                 <div className="col-lg-8 col-md-7">
                   <div className="d-flex flex-column h-100">
@@ -172,7 +187,13 @@ export default function AboutStudio() {
             <li className="nav-item border-0" key={index}>
               <Link
                 className="nav-link link-primary-1 text-center border-0 position-relative"
-                to={`${item === "進行中" ? "aboutStudioOngoing" : item === "已結案" ? "aboutStudioFin" : "aboutStudioOthers"}`}
+                to={`${
+                  item === "進行中"
+                    ? "aboutStudioOngoing"
+                    : item === "已結案"
+                    ? "aboutStudioFin"
+                    : "aboutStudioOthers"
+                }`}
                 style={{
                   backgroundColor: "transparent",
                   overflow: "hidden",
@@ -188,7 +209,11 @@ export default function AboutStudio() {
                   onMouseLeave={() => setHoveredIndex(null)}
                 >
                   {item}
-                  {item === "進行中" ? `(${length})` : item === "已結案" ? `(${finLength})` : ""}
+                  {item === "進行中"
+                    ? `(${length})`
+                    : item === "已結案"
+                    ? `(${finLength})`
+                    : ""}
                   <span
                     className="underline-effect"
                     style={{

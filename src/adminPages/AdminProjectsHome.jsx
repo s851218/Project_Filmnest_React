@@ -2,7 +2,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setExpanded } from "../slice/adminSidebarExpandSlice";
-import { useNavigate } from "react-router";
+import { ScrollRestoration, useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
 import { Alert } from "../assets/js/costomSweetAlert";
@@ -10,13 +10,6 @@ import AdminSummary from "../AdminComponents/AdminSummary";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function AdminProjectsHome() {
-  // 路由跳轉至專案介紹頁時，重製滾輪捲軸
-  useEffect(() => {
-    // 將滾動行為設為 auto 避免有捲動過程的動畫
-    document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-  }, []);
-
   const [isLoading, setIsLoading] = useState(false);
   const [projects, setProjects] = useState([]);
   const [commentsCount, setCommentsCount] = useState({});
@@ -97,12 +90,11 @@ export default function AdminProjectsHome() {
   }, [projects]);
   return (
     <>
+      <ScrollRestoration />
       <Helmet>
         <title>專案管理</title>
       </Helmet>
-      
       <AdminSummary /> {/* 摘要區 */}
-
       <div className="container pb-5">
         <h2 className="fs-6 mb-5">專案總覽</h2>
         <div className="bg-white rounded-5 shadow p-4">
@@ -180,11 +172,19 @@ export default function AdminProjectsHome() {
                 <tr>
                   <th scope="col">專案</th>
                   <th scope="col">專案狀態</th>
-                  <th scope="col" className="d-none d-xl-table-cell">發布日期</th>
-                  <th scope="col" className="d-none d-md-table-cell">截止日期</th>
+                  <th scope="col" className="d-none d-xl-table-cell">
+                    發布日期
+                  </th>
+                  <th scope="col" className="d-none d-md-table-cell">
+                    截止日期
+                  </th>
                   <th scope="col">瀏覽量</th>
-                  <th scope="col" className="d-none d-xl-table-cell">收藏量</th>
-                  <th scope="col" className="d-none d-xl-table-cell">留言數</th>
+                  <th scope="col" className="d-none d-xl-table-cell">
+                    收藏量
+                  </th>
+                  <th scope="col" className="d-none d-xl-table-cell">
+                    留言數
+                  </th>
                 </tr>
               </thead>
               <tbody style={{ lineHeight: "1.5" }}>
@@ -205,23 +205,43 @@ export default function AdminProjectsHome() {
                       <th scope="row">
                         <div className="row align-items-center">
                           <div className="col-md-4 col-5">
-                            <img src={project.projectImage} className="rounded-2" alt={project.projectTitle} />
+                            <img
+                              src={project.projectImage}
+                              className="rounded-2"
+                              alt={project.projectTitle}
+                            />
                           </div>
                           <div className="col-md-8 col-7 text-warp">
-                            <h3 className="fs-xl-7 fs-base fw-bolder multiline-ellipsis mb-0 mb-md-2">{project.projectTitle}</h3>
-                            <p className="fs-xl-sm fs-xs fw-normal multiline-ellipsis text-primary-6 mb-0 d-none d-md-block">{project.summary}</p>
+                            <h3 className="fs-xl-7 fs-base fw-bolder multiline-ellipsis mb-0 mb-md-2">
+                              {project.projectTitle}
+                            </h3>
+                            <p className="fs-xl-sm fs-xs fw-normal multiline-ellipsis text-primary-6 mb-0 d-none d-md-block">
+                              {project.summary}
+                            </p>
                           </div>
                           <div className="col d-md-none mt-2">
-                            <p className="fs-xl-sm fs-xs fw-normal multiline-ellipsis text-primary-6 mb-0">{project.summary}</p>
+                            <p className="fs-xl-sm fs-xs fw-normal multiline-ellipsis text-primary-6 mb-0">
+                              {project.summary}
+                            </p>
                           </div>
                         </div>
                       </th>
-                      <td className="nowrap-table">{remainDays < 0 ? "進行中" : "已結案"}</td>
-                      <td className="nowrap-table d-none d-xl-table-cell">{getTime(project.createdAt)}</td>
-                      <td className="nowrap-table d-none d-md-table-cell">{getTime(project.endAt)}</td>
+                      <td className="nowrap-table">
+                        {remainDays < 0 ? "進行中" : "已結案"}
+                      </td>
+                      <td className="nowrap-table d-none d-xl-table-cell">
+                        {getTime(project.createdAt)}
+                      </td>
+                      <td className="nowrap-table d-none d-md-table-cell">
+                        {getTime(project.endAt)}
+                      </td>
                       <td className="nowrap-table">{project.viewNum}</td>
-                      <td className="nowrap-table d-none d-xl-table-cell">{favoritesCount[project.id] || 0}</td>
-                      <td className="nowrap-table d-none d-xl-table-cell">{commentsCount[project.id] || 0}</td>
+                      <td className="nowrap-table d-none d-xl-table-cell">
+                        {favoritesCount[project.id] || 0}
+                      </td>
+                      <td className="nowrap-table d-none d-xl-table-cell">
+                        {commentsCount[project.id] || 0}
+                      </td>
                     </tr>
                   );
                 })}

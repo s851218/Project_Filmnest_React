@@ -3,17 +3,10 @@ import { useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 import { Alert, CheckModal } from "../assets/js/costomSweetAlert";
-import { useNavigate, useParams } from "react-router";
+import { ScrollRestoration, useNavigate, useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function OrderRecordsDetail() {
-  // 路由跳轉至專案介紹頁時，重製滾輪捲軸
-  useEffect(() => {
-    // 將滾動行為設為 auto 避免有捲動過程的動畫
-    document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-  }, []);
-
   const [orderData, setOrdersData] = useState({ paymentMethod: {} });
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
@@ -36,7 +29,9 @@ export default function OrderRecordsDetail() {
   const getOrderData = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${apiBase}/orders?_expand=project&_expand=product&id=${id}`);
+      const response = await axios.get(
+        `${apiBase}/orders?_expand=project&_expand=product&id=${id}`
+      );
       setOrdersData(response.data[0]);
     } catch (error) {
       if (error) {
@@ -49,6 +44,7 @@ export default function OrderRecordsDetail() {
       setIsLoading(false);
     }
   }, [id]);
+
   useEffect(() => {
     getOrderData();
   }, [getOrderData]);
@@ -75,7 +71,9 @@ export default function OrderRecordsDetail() {
                   <img src=${orderData.project?.projectImage} alt="" />
                 </div>
                 <div class="col-5">
-                  <h2 class="fs-base text-balance">${orderData.project?.projectTitle}</h2>
+                  <h2 class="fs-base text-balance">${
+                    orderData.project?.projectTitle
+                  }</h2>
                 </div>
             </div>
           
@@ -87,7 +85,9 @@ export default function OrderRecordsDetail() {
               <div class="mb-6">
                 <h3 class="fs-base">本方案包含：</h3>
                 <ol>
-                ${orderData.product?.contents?.map((item) => `<li>${item.item}</li>`).join("")}
+                ${orderData.product?.contents
+                  ?.map((item) => `<li>${item.item}</li>`)
+                  .join("")}
                 </ol>
               </div>
             </div>
@@ -104,7 +104,11 @@ export default function OrderRecordsDetail() {
       if (result.isConfirmed) {
         const reason = result.value;
         try {
-          await axios.patch(`${apiBase}/orders/${orderData.id}`, { canCancel: false, reason: reason, orderStatus: 2 });
+          await axios.patch(`${apiBase}/orders/${orderData.id}`, {
+            canCancel: false,
+            reason: reason,
+            orderStatus: 2,
+          });
           CheckModal.fire("取消申請成功", "我們將儘快處理您的申請", "success");
           getOrderData();
         } catch (error) {
@@ -138,7 +142,9 @@ export default function OrderRecordsDetail() {
                   <img src=${orderData.project?.projectImage} alt="" />
                 </div>
                 <div class="col-5">
-                  <h2 class="fs-base text-balance">${orderData.project?.projectTitle}</h2>
+                  <h2 class="fs-base text-balance">${
+                    orderData.project?.projectTitle
+                  }</h2>
                 </div>
             </div>
           
@@ -150,7 +156,9 @@ export default function OrderRecordsDetail() {
               <div class="mb-6">
                 <h3 class="fs-base">本方案包含：</h3>
                 <ol>
-                ${orderData.product?.contents?.map((item) => `<li>${item.item}</li>`).join("")}
+                ${orderData.product?.contents
+                  ?.map((item) => `<li>${item.item}</li>`)
+                  .join("")}
                 </ol>
               </div>
             </div>
@@ -167,7 +175,11 @@ export default function OrderRecordsDetail() {
       if (result.isConfirmed) {
         const reason = result.value;
         try {
-          await axios.patch(`${apiBase}/orders/${orderData.id}`, { canReturn: false, reason: reason, shippingStatus: 2 });
+          await axios.patch(`${apiBase}/orders/${orderData.id}`, {
+            canReturn: false,
+            reason: reason,
+            shippingStatus: 2,
+          });
           CheckModal.fire("退貨申請成功", "我們將儘快處理您的申請", "success");
           getOrderData();
         } catch (error) {
@@ -201,7 +213,9 @@ export default function OrderRecordsDetail() {
                   <img src=${orderData.project?.projectImage} alt="" />
                 </div>
                 <div class="col-5">
-                  <h2 class="fs-base text-balance">${orderData.project?.projectTitle}</h2>
+                  <h2 class="fs-base text-balance">${
+                    orderData.project?.projectTitle
+                  }</h2>
                 </div>
             </div>
           
@@ -213,7 +227,9 @@ export default function OrderRecordsDetail() {
               <div class="mb-6">
                 <h3 class="fs-base">本方案包含：</h3>
                 <ol>
-                ${orderData.product?.contents?.map((item) => `<li>${item.item}</li>`).join("")}
+                ${orderData.product?.contents
+                  ?.map((item) => `<li>${item.item}</li>`)
+                  .join("")}
                 </ol>
               </div>
             </div>
@@ -230,7 +246,11 @@ export default function OrderRecordsDetail() {
       if (result.isConfirmed) {
         const reason = result.value;
         try {
-          await axios.patch(`${apiBase}/orders/${orderData.id}`, { canRefund: false, reason: reason, paymentStatus: 2 });
+          await axios.patch(`${apiBase}/orders/${orderData.id}`, {
+            canRefund: false,
+            reason: reason,
+            paymentStatus: 2,
+          });
           CheckModal.fire("退款申請成功", "我們將儘快處理您的申請", "success");
           getOrderData();
         } catch (error) {
@@ -244,6 +264,7 @@ export default function OrderRecordsDetail() {
 
   return (
     <>
+      <ScrollRestoration />
       <Helmet>
         <title>訂單內容</title>
       </Helmet>
@@ -251,21 +272,37 @@ export default function OrderRecordsDetail() {
         <div className="row flex-column">
           <div className="col-lg-6">
             <h1 className="pb-5 border-bottom border-secondary fs-6">
-              訂單內容<span className="badge text-bg-danger fs-sm ms-2">{orderData.orderStatus === 2 ? "已取消" : orderData.paymentStatus === 2 ? "已退款" : orderData.shippingStatus === 2 ? "已退貨" : ""}</span>
+              訂單內容
+              <span className="badge text-bg-danger fs-sm ms-2">
+                {orderData.orderStatus === 2
+                  ? "已取消"
+                  : orderData.paymentStatus === 2
+                  ? "已退款"
+                  : orderData.shippingStatus === 2
+                  ? "已退貨"
+                  : ""}
+              </span>
             </h1>
             <div className="row mb-3 align-items-center">
               <div className="col-lg-7">
                 <img src={orderData.project?.projectImage} alt="" />
               </div>
               <div className="col-lg-5">
-                <h2 className="fs-base text-balance">{orderData.project?.projectTitle}</h2>
+                <h2 className="fs-base text-balance">
+                  {orderData.project?.projectTitle}
+                </h2>
               </div>
             </div>
           </div>
           <div className="col-lg-3">
             <div className="mb-6">
               <p className="mb-1">方案 - {orderData.product?.title}</p>
-              <p>NT$ {orderData.product?.price ? orderData.product.price.toLocaleString() : ""}</p>
+              <p>
+                NT${" "}
+                {orderData.product?.price
+                  ? orderData.product.price.toLocaleString()
+                  : ""}
+              </p>
             </div>
             <div className="mb-6">
               <h3 className="fs-base">本方案包含：</h3>
@@ -275,51 +312,111 @@ export default function OrderRecordsDetail() {
                 ))}
               </ol>
             </div>
-            <p className="mb-3">額外加碼：{Number(orderData.bonus).toLocaleString()}</p>
-            <p className="mb-3">訂單總額：{Number(orderData.totalPrice).toLocaleString()}</p>
-            <p className="mb-3">訂單狀態：{orderData.orderStatus === 0 ? "訂單建立" : orderData.orderStatus === 2 ? "訂單取消" : "訂單成立"}</p>
+            <p className="mb-3">
+              額外加碼：{Number(orderData.bonus).toLocaleString()}
+            </p>
+            <p className="mb-3">
+              訂單總額：{Number(orderData.totalPrice).toLocaleString()}
+            </p>
+            <p className="mb-3">
+              訂單狀態：
+              {orderData.orderStatus === 0
+                ? "訂單建立"
+                : orderData.orderStatus === 2
+                ? "訂單取消"
+                : "訂單成立"}
+            </p>
             <p className="mb-3">訂單成立時間：{getTime(orderData.createdAt)}</p>
-            {!orderData.paymentMethod || Object.keys(orderData.paymentMethod).length === 0 ? (
+            {!orderData.paymentMethod ||
+            Object.keys(orderData.paymentMethod).length === 0 ? (
               <p className="mb-3">付款方式：尚未選擇付款方式</p>
             ) : orderData.paymentMethod?.type === 0 ? (
               <p className="mb-3">付款方式：信用卡</p>
             ) : orderData.paymentMethod?.type === 1 ? (
               <>
                 <p className="mb-3">付款方式：銀行轉帳</p>
-                <p className="mb-3">銀行名稱：{orderData.paymentMethod.bankName}</p>
-                <p className="mb-3">轉帳代碼：{orderData.paymentMethod.bankCode}</p>
-                <p className="mb-3">轉帳帳號：{orderData.paymentMethod.accountNumber}</p>
+                <p className="mb-3">
+                  銀行名稱：{orderData.paymentMethod.bankName}
+                </p>
+                <p className="mb-3">
+                  轉帳代碼：{orderData.paymentMethod.bankCode}
+                </p>
+                <p className="mb-3">
+                  轉帳帳號：{orderData.paymentMethod.accountNumber}
+                </p>
               </>
             ) : (
               <>
                 <p className="mb-3">付款方式：超商付款</p>
-                <p className="mb-3">付款代碼：{orderData.paymentMethod.paymentCode}</p>
+                <p className="mb-3">
+                  付款代碼：{orderData.paymentMethod.paymentCode}
+                </p>
               </>
             )}
-            <p className="mb-3">付款狀態：{orderData.paymentStatus === 0 ? "未付款" : orderData.paymentStatus === 1 ? "已付款" : "已退款"}</p>
-            {orderData.paymentStatus === 1 && <p className="mb-3">付款時間：{getTime(orderData.paymentTime)}</p>}
-            {orderData.paymentStatus === 1 && <p className="mb-3">出貨狀態：{orderData.shippingStatus === 0 ? "未出貨" : orderData.shippingStatus === 1 ? "已出貨" : "已退貨"}</p>}
+            <p className="mb-3">
+              付款狀態：
+              {orderData.paymentStatus === 0
+                ? "未付款"
+                : orderData.paymentStatus === 1
+                ? "已付款"
+                : "已退款"}
+            </p>
+            {orderData.paymentStatus === 1 && (
+              <p className="mb-3">付款時間：{getTime(orderData.paymentTime)}</p>
+            )}
+            {orderData.paymentStatus === 1 && (
+              <p className="mb-3">
+                出貨狀態：
+                {orderData.shippingStatus === 0
+                  ? "未出貨"
+                  : orderData.shippingStatus === 1
+                  ? "已出貨"
+                  : "已退貨"}
+              </p>
+            )}
             <div className="d-flex flex-column flex-lg-row justify-content-between align-items-center">
-              <button type="button" className="btn btn-outline-light w-100 w-lg-auto mb-2 mb-lg-0" onClick={() => navigate(-1)}>
+              <button
+                type="button"
+                className="btn btn-outline-light w-100 w-lg-auto mb-2 mb-lg-0"
+                onClick={() => navigate(-1)}
+              >
                 返回
               </button>
               {orderData.canCancel ? (
                 <>
-                  <button type="button" className="btn btn-outline-light w-100 w-lg-auto mb-2 mb-lg-0" onClick={() => handleCancelOrder(orderData)}>
+                  <button
+                    type="button"
+                    className="btn btn-outline-light w-100 w-lg-auto mb-2 mb-lg-0"
+                    onClick={() => handleCancelOrder(orderData)}
+                  >
                     取消訂單
                   </button>
                   {orderData.orderStatus === 0 && (
-                    <button type="button" className="btn btn-outline-light w-100 w-lg-auto" onClick={() => navigate(`/paymentInfo/${orderData.orderId}`)}>
+                    <button
+                      type="button"
+                      className="btn btn-outline-light w-100 w-lg-auto"
+                      onClick={() =>
+                        navigate(`/paymentInfo/${orderData.orderId}`)
+                      }
+                    >
                       前往付款
                     </button>
                   )}
                 </>
               ) : orderData.canRefund ? (
-                <button type="button" className="btn btn-outline-light w-100 w-lg-auto " onClick={() => handleRefund(orderData)}>
+                <button
+                  type="button"
+                  className="btn btn-outline-light w-100 w-lg-auto "
+                  onClick={() => handleRefund(orderData)}
+                >
                   申請退款
                 </button>
               ) : orderData.canReturn ? (
-                <button type="button" className="btn btn-outline-light w-100 w-lg-auto " onClick={() => handleReturn(orderData)}>
+                <button
+                  type="button"
+                  className="btn btn-outline-light w-100 w-lg-auto "
+                  onClick={() => handleReturn(orderData)}
+                >
                   申請退貨
                 </button>
               ) : (

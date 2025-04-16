@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState, useRef } from "react";
-import { useNavigate, useParams } from "react-router";
+import { ScrollRestoration, useNavigate, useParams } from "react-router";
 import { useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 
@@ -37,13 +37,6 @@ const banksData = [
 ];
 
 export default function PaymentInfo() {
-  // 路由跳轉頁面時，重製滾輪捲軸
-  useEffect(() => {
-    // 將滾動行為設為 auto 避免有捲動過程的動畫
-    document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-  }, []);
-
   const navigate = useNavigate();
   const { id } = useParams();
   const [orderData, setOrderData] = useState({});
@@ -53,7 +46,9 @@ export default function PaymentInfo() {
   const [isLoading, setIsLoading] = useState(false);
   const paymentInfoSlice = useSelector((state) => state.paymentInfo);
   const [showError, setShowError] = useState(false);
-  const accordionIndex = useSelector((state) => state.paymentInfo.accordion.index);
+  const accordionIndex = useSelector(
+    (state) => state.paymentInfo.accordion.index
+  );
 
   // 取得訂單資料
   useEffect(() => {
@@ -168,7 +163,8 @@ export default function PaymentInfo() {
     const { recipientInfo, address, paymentOption } = paymentInfoSlice;
 
     // 重組地址字串
-    const newAddress = address.zipcode + address.county + address.district + address.address;
+    const newAddress =
+      address.zipcode + address.county + address.district + address.address;
 
     // 重組收件人資料
     const newOrderFile = {
@@ -195,7 +191,9 @@ export default function PaymentInfo() {
 
       case 1: // ATM轉帳
         {
-          const bankSelect = banksData.filter((bank) => bank.bankCode === paymentOption.bankSelect);
+          const bankSelect = banksData.filter(
+            (bank) => bank.bankCode === paymentOption.bankSelect
+          );
           paymentStatu = 0; // 未付款
           paymentMethod = {
             type: accordionIndex,
@@ -228,32 +226,32 @@ export default function PaymentInfo() {
     };
 
     let navigateParams = {
-      state:{
+      state: {
         ...paymentMethod,
-        projectTitle : projectData.projectTitle,
-        totalMoney : projectData.totalMoney,
-        goalMoney : projectData.goalMoney,
-        productTitle : productData.title,
-      }
-    }
-    let alertTitle
-    let navigation
+        projectTitle: projectData.projectTitle,
+        totalMoney: projectData.totalMoney,
+        goalMoney: projectData.goalMoney,
+        productTitle: productData.title,
+      },
+    };
+    let alertTitle;
+    let navigation;
     switch (newOrderData.paymentMethod.type) {
       case 0: // 信用卡付款
-        alertTitle = "付款成功"
-        navigation = "/completePayment"
+        alertTitle = "付款成功";
+        navigation = "/completePayment";
         break;
 
       case 1: // ATM轉帳
       case 2: // 超商代碼
-        alertTitle = "訂單成立"
-        navigation = "/completeOrder"
+        alertTitle = "訂單成立";
+        navigation = "/completeOrder";
         break;
-    
+
       default:
         break;
     }
-    
+
     try {
       await axios.put(`${API_BASE}/orders/${id}`, newOrderData);
       Alert.fire(
@@ -262,7 +260,7 @@ export default function PaymentInfo() {
           title: alertTitle,
         },
         setTimeout(() => {
-          navigate(navigation,navigateParams);
+          navigate(navigation, navigateParams);
         }, 1500)
       );
     } catch (error) {
@@ -292,30 +290,49 @@ export default function PaymentInfo() {
 
   return (
     <>
+      <ScrollRestoration />
       <Helmet>
         <title>付款資料</title>
       </Helmet>
-      { Object.keys(orderData).length !== 0 && 
-        Object.keys(projectData).length !== 0 &&
-        Object.keys(productData).length !== 0 &&
-        Object.keys(userData).length !== 0 ? (
+      {Object.keys(orderData).length !== 0 &&
+      Object.keys(projectData).length !== 0 &&
+      Object.keys(productData).length !== 0 &&
+      Object.keys(userData).length !== 0 ? (
         <>
           <div className="container mb-20" style={{ marginTop: 88 }}>
             <div className="row">
               <main className="col-lg-8">
                 {/* 付款資料 V */}
                 <h2 className="fs-lg-3 fs-4 text-primary-2 mb-4">付款資料</h2>
-                <PaymentInfoFrom reference={infoFromRef} userData={userData} showError={showError} />
+                <PaymentInfoFrom
+                  reference={infoFromRef}
+                  userData={userData}
+                  showError={showError}
+                />
                 {/* 付款方式 V */}
                 <h2 className="fs-lg-3 fs-4 text-primary-2 mb-4">付款方式</h2>
-                <PaymentCollapseFrom reference={paymentFromRef} showError={showError} banksData={banksData} />
+                <PaymentCollapseFrom
+                  reference={paymentFromRef}
+                  showError={showError}
+                  banksData={banksData}
+                />
               </main>
 
-              <PaymentAside handleFormsSubmit={handleConfirmPayment} orderData={orderData} projectData={projectData} productData={productData} />
+              <PaymentAside
+                handleFormsSubmit={handleConfirmPayment}
+                orderData={orderData}
+                projectData={projectData}
+                productData={productData}
+              />
             </div>
           </div>
 
-          <PaymentMobileFooter handleFormsSubmit={handleConfirmPayment} orderData={orderData} projectData={projectData} productData={productData} />
+          <PaymentMobileFooter
+            handleFormsSubmit={handleConfirmPayment}
+            orderData={orderData}
+            projectData={projectData}
+            productData={productData}
+          />
         </>
       ) : (
         <div className="vh-100"></div>
