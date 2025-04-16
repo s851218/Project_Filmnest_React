@@ -115,10 +115,10 @@ export default function Intro() {
 
   // 更換劇照圖片 input
   const handleChangeOtherImages = (e, index) => {
-    const selectedfile = e.target.files[0]; //取目標files的內容
-    if (selectedfile) {
+    const selectedFile = e.target.files[0]; //取目標files的內容
+    if (selectedFile) {
       const reader = new FileReader();
-      reader.readAsDataURL(selectedfile); // 轉換為 Base64，會進入onload狀態
+      reader.readAsDataURL(selectedFile); // 轉換為 Base64，會進入onload狀態
       reader.onloadend = () => {
         //事件處理器，於每一次讀取結束之後觸發（不論成功或失敗）
         const fileUrl = reader.result;
