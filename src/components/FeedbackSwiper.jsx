@@ -274,13 +274,13 @@ function FeedbackSwiper() {
                           <h5 className="fw-bold fs-lg-6 mb-1">
                             {feedback.title}
                           </h5>
-                          <p className="fw-bold fs-lg-5 fs-7 mb-lg-2 mb-1">{`NT${feedback.price.toLocaleString(
+                          <p className="fw-bold fs-lg-5 fs-7 mb-lg-2 mb-1">{`NT$ ${feedback.price.toLocaleString(
                             "zh-TW",
-                            {
-                              style: "currency",
-                              currency: "TWD",
-                              minimumFractionDigits: 0,
-                            }
+                            // {
+                            //   style: "currency",
+                            //   currency: "TWD",
+                            //   minimumFractionDigits: 0,
+                            // }
                           )}`}</p>
 
                           <hr className="my-3" />
