@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Collapse } from "bootstrap";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
 import GrayScreenLoading from "../../components/GrayScreenLoading";
@@ -32,7 +32,7 @@ export default function ProjectIntroNews() {
   };
 
   //處理params
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (id) {
       const paramsArry = id.split("&");
       let paramsObj = {};
@@ -44,7 +44,7 @@ export default function ProjectIntroNews() {
     }
   }, [id]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (params.projectId) {
       (async () => {
         setIsLoading(true);

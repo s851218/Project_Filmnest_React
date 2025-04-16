@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useLayoutEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { Navigation, Pagination } from "swiper/modules";
@@ -18,7 +18,7 @@ function FeedbackSwiper() {
   const [isLoading, setIsLoading] = useState(false);
 
   //處理params
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (id) {
       const paramsArry = id.split("&");
       let paramsObj = {};
@@ -48,7 +48,7 @@ function FeedbackSwiper() {
   };
 
   // 渲染時取得資料
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (params.projectId) {
       getFeedbackData(params.projectId);
     }

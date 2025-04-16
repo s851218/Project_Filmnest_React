@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Collapse } from "bootstrap";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
 import { Toast } from "../../assets/js/costomSweetAlert";
@@ -17,7 +17,7 @@ export default function ProjectIntroQA() {
   const [isLoading, setIsLoading] = useState(false);
 
   //處理params
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (id) {
       const paramsArry = id.split("&");
       let paramsObj = {};
@@ -44,7 +44,7 @@ export default function ProjectIntroQA() {
     return newTime;
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (params.projectId) {
       (async () => {
         setIsLoading(true);

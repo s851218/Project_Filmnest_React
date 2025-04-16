@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
@@ -20,7 +20,7 @@ export default function ProjectIntroComments() {
   const [isLoading, setIsLoading] = useState(false);
 
   //處理params
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (id) {
       const paramsArry = id.split("&");
       let paramsObj = {};
@@ -33,7 +33,7 @@ export default function ProjectIntroComments() {
   }, [id]);
 
   //初始渲染資料，並處理排序
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (params.projectId) {
       const getCommentsData = async (id) => {
         setIsLoading(true);
