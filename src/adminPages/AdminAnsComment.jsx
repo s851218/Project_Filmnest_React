@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import getNewDateFormatted from "../helpers/getNewDateFormatted";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { AdminCheckModal, Alert, Toast } from "../assets/js/costomSweetAlert";
+import { AdminCheckModal, Alert, Toast } from "../js/customSweetAlert";
 
 const BASE_URL = import.meta.env.VITE_API_BASE;
 

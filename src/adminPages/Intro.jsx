@@ -6,7 +6,7 @@ import { useParams } from "react-router";
 import ArticleEditor from "../AdminComponents/ArticleEditor";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { AdminCheckModal, Alert, Toast } from "../assets/js/costomSweetAlert";
+import { AdminCheckModal, Alert, Toast } from "../js/customSweetAlert";
 import PropTypes from "prop-types";
 
 const API_BASE = import.meta.env.VITE_API_BASE;

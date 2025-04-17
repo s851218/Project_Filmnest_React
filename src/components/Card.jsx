@@ -2,7 +2,7 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
-import { CheckModal } from "../assets/js/costomSweetAlert";
+import { CheckModal } from "../js/customSweetAlert";
 
 export default function Card({ projects, isSwiper, isDelete, getData }) {
   const userId = useSelector((state) => state.user.profile.userId);

@@ -3,7 +3,7 @@ import { useLayoutEffect, useState } from "react";
 import FeedbackSwiper from "../components/FeedbackSwiper";
 import { ScrollRestoration, useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
-import { Toast } from "../assets/js/costomSweetAlert";
+import { Toast } from "../js/customSweetAlert";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 const API_BASE = import.meta.env.VITE_API_BASE;
 

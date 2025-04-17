@@ -3,7 +3,7 @@ import { Collapse } from "bootstrap";
 import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
-import { Toast } from "../assets/js/costomSweetAlert";
+import { Toast } from "../js/customSweetAlert";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 const apiBase = import.meta.env.VITE_API_BASE;
 

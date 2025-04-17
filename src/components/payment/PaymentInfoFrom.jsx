@@ -4,8 +4,8 @@ import { useForm, useWatch } from "react-hook-form";
 import { setPaymentInfo } from "../../slice/paymentInfoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
-import { Alert } from "../../assets/js/costomSweetAlert";
-import handleInputNumber from "../../assets/js/handleInputNumber"
+import { Alert } from "../../js/customSweetAlert";
+import handleInputNumber from "../../js/handleInputNumber"
 
 PaymentInfoFrom.propTypes = {
   reference: PropTypes.shape({

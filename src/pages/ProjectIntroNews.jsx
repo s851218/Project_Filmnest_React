@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
 import GrayScreenLoading from "../components/GrayScreenLoading";
-import { Toast } from "../assets/js/costomSweetAlert";
+import { Toast } from "../js/customSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function ProjectIntroNews() {

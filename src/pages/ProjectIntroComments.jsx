@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import getNewDateFormatted from "../helpers/getNewDateFormatted";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
-import { Alert, Toast } from "../assets/js/costomSweetAlert";
+import { Alert, Toast } from "../js/customSweetAlert";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 
 const BASE_URL = import.meta.env.VITE_API_BASE;

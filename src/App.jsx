@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { setLogin } from "./slice/userSlice";
 import axios from "axios";
 import { useCallback, useEffect } from "react";
-import { Alert } from "./assets/js/costomSweetAlert";
+import { Alert } from "./js/customSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 function App() {

@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setLogout } from "../slice/userSlice";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import { Toast } from "../assets/js/costomSweetAlert";
+import { Toast } from "../js/customSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function HeaderSmSec() {

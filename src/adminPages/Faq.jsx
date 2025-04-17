@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { AdminCheckModal, Toast, Alert } from "../assets/js/costomSweetAlert";
+import { AdminCheckModal, Toast, Alert } from "../js/customSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Faq() {

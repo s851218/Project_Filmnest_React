@@ -7,7 +7,7 @@ import { setLogin } from "./slice/userSlice";
 import { useCallback, useEffect } from "react";
 import { ScrollRestoration } from "react-router";
 import axios from "axios";
-import { Alert } from "./assets/js/costomSweetAlert";
+import { Alert } from "./js/customSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 function Admin() {
   const location = useLocation();

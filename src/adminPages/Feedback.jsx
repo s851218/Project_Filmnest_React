@@ -3,7 +3,7 @@ import { useEffect, useState, useRef, useMemo, useCallback } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { AdminCheckModal, Alert, Toast } from "../assets/js/costomSweetAlert";
+import { AdminCheckModal, Alert, Toast } from "../js/customSweetAlert";
 import PropTypes from "prop-types";
 
 const API_BASE = import.meta.env.VITE_API_BASE;

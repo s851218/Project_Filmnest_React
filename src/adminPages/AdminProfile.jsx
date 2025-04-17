@@ -2,14 +2,14 @@ import { useState } from 'react';
 import { useForm , Controller } from 'react-hook-form'
 import axios from 'axios';
 import { Helmet } from "react-helmet-async";
-import { Alert } from "../assets/js/costomSweetAlert";
+import { Alert } from "../js/customSweetAlert";
 import DatePicker from 'react-multi-date-picker';
 import TimePicker from 'react-multi-date-picker/plugins/time_picker';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' // 載入react-fontawesome元件
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import AdminSummary from '../AdminComponents/AdminSummary';
-import handleInputNumber from "../assets/js/handleInputNumber"
+import handleInputNumber from "../js/handleInputNumber"
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 

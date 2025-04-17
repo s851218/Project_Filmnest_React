@@ -5,8 +5,8 @@ import { Controller, useForm } from "react-hook-form";
 import DateTimePicker from "react-datetime-picker";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
-import { Alert } from "../../assets/js/costomSweetAlert";
-import handleInputNumber from "../../assets/js/handleInputNumber"
+import { Alert } from "../../js/customSweetAlert";
+import handleInputNumber from "../../js/handleInputNumber"
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 

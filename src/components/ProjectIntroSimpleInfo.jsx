@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import PropTypes from "prop-types";
-import { Alert } from "../assets/js/costomSweetAlert";
+import { Alert } from "../js/customSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 

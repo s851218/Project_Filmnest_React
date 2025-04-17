@@ -7,7 +7,7 @@ import axios from "axios";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 import ProjectIntroSimpleInfo from "../components/ProjectIntroSimpleInfo";
-import { Alert } from "../assets/js/costomSweetAlert";
+import { Alert } from "../js/customSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 

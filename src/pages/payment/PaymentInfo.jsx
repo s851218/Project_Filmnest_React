@@ -9,7 +9,7 @@ import PaymentMobileFooter from "../../components/payment/PaymentMobileFooter";
 import PaymentInfoFrom from "../../components/payment/PaymentInfoFrom";
 import PaymentCollapseFrom from "../../components/payment/PaymentCollapseFrom";
 import GrayScreenLoading from "../../components/GrayScreenLoading";
-import { CheckModal, Alert } from "../../assets/js/costomSweetAlert";
+import { CheckModal, Alert } from "../../js/customSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 

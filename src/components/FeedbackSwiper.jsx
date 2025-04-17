@@ -6,7 +6,7 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css/navigation";
 import { Link, useParams } from "react-router";
 import GrayScreenLoading from "./GrayScreenLoading";
-import { Alert } from "../assets/js/costomSweetAlert";
+import { Alert } from "../js/customSweetAlert";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 function FeedbackSwiper() {

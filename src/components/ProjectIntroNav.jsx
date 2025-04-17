@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { Link, NavLink, useLocation, useNavigate } from "react-router";
-import { Alert, Toast } from "../assets/js/costomSweetAlert";
+import { Alert, Toast } from "../js/customSweetAlert";
 import PropTypes from "prop-types";
 
 // import Swiper core and required modules
