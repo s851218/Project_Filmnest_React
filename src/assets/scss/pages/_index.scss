@@ -1,4 +1,4 @@
-// .index-projectcard{
+// .index-projectCard{
 //   padding-top: 120px;
 //   padding-bottom: 120px;
 // }
@@ -109,8 +109,8 @@
   }
 }
 
-.swiper-horizontal > .swiper-scrollbar.indexbannerswiper-scrollbar,
-.swiper-scrollbar.indexbannerswiper-scrollbar.swiper-scrollbar-horizontal {
+.swiper-horizontal > .swiper-scrollbar.indexBannerSwiper-scrollbar,
+.swiper-scrollbar.indexBannerSwiper-scrollbar.swiper-scrollbar-horizontal {
   position: absolute;
   left: 77%;
   bottom: 0;
@@ -124,7 +124,7 @@
     translate: (-50% -50%);
   }
 }
-.indexbannerswiper-scrollbar > .swiper-scrollbar-drag {
+.indexBannerSwiper-scrollbar > .swiper-scrollbar-drag {
   background: #ffffff;
 }
 
@@ -143,7 +143,7 @@
 .progress-bar.index-progress-bar {
   border-radius: 30px;
 }
-.index-projectcard::after {
+.index-projectCard::after {
   content: "";
   width: 420px;
   height: 400px;
@@ -173,10 +173,10 @@
     padding-bottom: 72px;
   }
 }
-.indexcategory-card:hover {
+.indexCategory-card:hover {
   box-shadow: 2px 2px 20px 2px rgba(255, 255, 255, 0.2);
 }
-.indexcategory-img {
+.indexCategory-img {
   @media (max-width: 992px) {
     width: 36px;
     height: 36px;
