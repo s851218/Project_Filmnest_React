@@ -15,8 +15,6 @@ import Post from "../adminPages/Post";
 import Intro from "../adminPages/Intro";
 import Faq from "../adminPages/Faq";
 import SignUp from "../pages/Signup";
-import PersonalCenter from "../pages/PersonalCenter";
-import AboutStudio from "../pages/AboutStudio";
 import TermsOfUse from "../pages/TermsOfUse";
 import FeedbackPage from "../pages/FeedbackPage";
 import ProjectIntro from "../pages/ProjectIntro";
@@ -30,23 +28,22 @@ import HeaderSm from "../components/HeaderSm";
 import HeaderSmSec from "../components/HeaderSmSec";
 import HeaderSmSearch from "../components/HeaderSmSearch";
 import AdminProjectsHome from "../adminPages/AdminProjectsHome";
-import AdminHeaderSm from "../AdminComponents/AdminHeaderSm ";
-import Profile from "../pages/Profile";
-import FavoriteProject from "../pages/FavoriteProject";
-import OrderRecords from "../pages/OrderRecords";
-import FavoriteVideo from "../pages/FavoriteVideo";
-import ViewRecords from "../pages/ViewRecords";
+import AdminHeaderSm from "../AdminComponents/AdminHeaderSm";
 import FeedbackOption from "../pages/FeedbackOption";
 import AdminFeedbackForm from "../adminPages/Feedback";
-import OrderRecordsAll from "../pages/OrderRecordsAll";
-import OrderRecordsSuccess from "../pages/OrderRecordsSuccess";
-import OrderRecordsFailed from "../pages/OrderRecordsFailed";
-import OrderRecordsDetail from "../pages/OrderRecordsDetail";
-import OrderRecordsUnpaid from "../pages/OrderRecordsUnpaid";
-import AboutStudioFin from "../pages/AboutStudioFin";
-import AboutStudioOngoing from "../pages/AboutStudioOngoing";
-import AboutStudioOthers from "../pages/AboutStudioOthers";
-import ProfilePassword from "../pages/ProfilePassword";
+// aboutStudioPage
+import AboutStudio from "../pages/aboutStudio/AboutStudio";
+import AboutContent from "../pages/aboutStudio/AboutContent";
+// PersonalCenter
+import ViewRecords from "../pages/personalCenter/ViewRecords";
+import FavoriteVideo from "../pages/personalCenter/FavoriteVideo";
+import PersonalCenter from "../pages/personalCenter/PersonalCenter";
+import Profile from "../pages/personalCenter/Profile";
+import FavoriteProject from "../pages/personalCenter/FavoriteProject";
+import OrderRecords from "../pages/personalCenter/OrderRecords";
+import OrderRecordsAll from "../pages/personalCenter/OrderRecordsAll";
+import OrderRecordsDetail from "../pages/personalCenter/OrderRecordsDetail";
+import ProfilePassword from "../pages/personalCenter/ProfilePassword";
 // proposal
 import AboutProposal from "../pages/proposal/AboutProposal";
 import CreateProposal from "../pages/proposal/CreateProposal";
@@ -98,15 +95,15 @@ const routes = [
               },
               {
                 path: "orderRecordsSuccess",
-                element: <OrderRecordsSuccess />,
+                element: <OrderRecordsAll />,
               },
               {
                 path: "orderRecordsFailed",
-                element: <OrderRecordsFailed />,
+                element: <OrderRecordsAll />,
               },
               {
                 path: "orderRecordsUnpaid",
-                element: <OrderRecordsUnpaid />,
+                element: <OrderRecordsAll />,
               },
               {
                 path: ":id",
@@ -182,15 +179,15 @@ const routes = [
             children: [
               {
                 path: "aboutStudioOngoing",
-                element: <AboutStudioOngoing />,
+                element: <AboutContent />,
               },
               {
                 path: "aboutStudioFin",
-                element: <AboutStudioFin />,
+                element: <AboutContent />,
               },
               {
                 path: "aboutStudioOthers",
-                element: <AboutStudioOthers />,
+                element: <AboutContent />,
               },
             ],
           },
