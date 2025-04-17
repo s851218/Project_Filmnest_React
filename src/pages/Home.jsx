@@ -8,7 +8,7 @@ import { Link, ScrollRestoration } from "react-router";
 import { Helmet } from "react-helmet-async";
 import { animated, useSprings } from "@react-spring/web"; // 引入 react-spring用來檢查區塊是否進入視窗
 import GrayScreenLoading from "../components/GrayScreenLoading";
-import { Alert } from "../assets/js/costomSweetAlert";
+import { Alert } from "../js/customSweetAlert";
 
 const apiBase = import.meta.env.VITE_API_BASE;
 
@@ -56,18 +56,18 @@ export default function Home() {
         hide: true,
       },
     });
-    // index-projectcard 精選專案
-    const indexProjectcardSwiper = new Swiper(swiperRef.current, {
+    //  精選專案
+    const featuredCardSwiper = new Swiper(swiperRef.current, {
       slidesPerView: 1.1, // 每次顯示的幻燈片數量
       spaceBetween: 24, // 兩張圖片之間的間距
       navigation: {
         // 啟用左右箭頭
-        nextEl: ".indexcard-button-next",
-        prevEl: ".indexcard-button-prev",
+        nextEl: ".featuredCard-button-next",
+        prevEl: ".featuredCard-button-prev",
       },
       pagination: {
         // 啟用下方的點點導航
-        el: ".indexcard-pagination",
+        el: ".featuredCard-pagination",
         clickable: true,
         type: "bullets",
         updateOnWindowResize: true,
@@ -82,18 +82,18 @@ export default function Home() {
       },
     });
 
-    // index-projectcard 最新專案
-    const indexProjectcardSwiper2 = new Swiper(swiper2Ref.current, {
+    //  最新專案
+    const newestCardSwiper = new Swiper(swiper2Ref.current, {
       slidesPerView: 1.1, // 每次顯示的幻燈片數量
       spaceBetween: 24, // 兩張圖片之間的間距
       navigation: {
         // 啟用左右箭頭
-        nextEl: ".indexcard2-button-next",
-        prevEl: ".indexcard2-button-prev",
+        nextEl: ".newestCard-button-next",
+        prevEl: ".newestCard-button-prev",
       },
       pagination: {
         // 啟用下方的點點導航
-        el: ".indexcard2-pagination",
+        el: ".newestCard-pagination",
         clickable: true,
       },
       breakpoints: {
@@ -105,8 +105,8 @@ export default function Home() {
         },
       },
     });
-    // index-category 類別
-    const indexCaregorySwiper = new Swiper(swiperCategoryRef.current, {
+    //  類別
+    const categorySwiper = new Swiper(swiperCategoryRef.current, {
       slidesPerView: 2,
       spaceBetween: 8,
       grid: {
@@ -114,7 +114,7 @@ export default function Home() {
         rows: 4,
       },
       pagination: {
-        el: ".indexcategory-pagination",
+        el: ".category-pagination",
         clickable: true,
       },
 
@@ -130,7 +130,7 @@ export default function Home() {
       },
     });
     // index-slogan
-    const indexSlogaSwiper = new Swiper(swiperSloganRef.current, {
+    const sloganSwiper = new Swiper(swiperSloganRef.current, {
       slidesPerView: 3,
       spaceBetween: 8,
       breakpoints: {
@@ -142,10 +142,10 @@ export default function Home() {
     });
     return () => {
       indexBannerSwiper.destroy();
-      indexProjectcardSwiper.destroy();
-      indexProjectcardSwiper2.destroy();
-      indexCaregorySwiper.destroy();
-      indexSlogaSwiper.destroy();
+      featuredCardSwiper.destroy();
+      newestCardSwiper.destroy();
+      categorySwiper.destroy();
+      sloganSwiper.destroy();
     };
   }, []);
 
@@ -205,20 +205,20 @@ export default function Home() {
       </Helmet>
       <section className="index-banner">
         <div className="index-banner-container">
-          <div className="swiper indexbannerswiper" ref={swiperBannerRef}>
+          <div className="swiper indexBannerSwiper" ref={swiperBannerRef}>
             <div className="swiper-wrapper">
               <div className="swiper-slide h-auto">
                 <div className="index-banner-text-bg h-100 text-balance">
                   <div className="container index-banner-text h-100 d-flex flex-column">
-                    <h1 className="fs-6 fs-lg-xxl mb-3 mb-lg-6">點燃創意，成就影視夢想</h1>
-                    <p className="fs-sm fs-lg-7 mb-8 mb-lg-15">
+                    <h1 className="fs-6 fs-lg-xxl mt-auto">點燃創意，成就影視夢想</h1>
+                    <p className="fs-sm fs-lg-7 mt-6">
                       為影視創作者打造專屬募資平台，
                       <br />
                       支持獨立製作與學生創作，點燃影視夢想。
                       <br />
                       加入我們，讓你的創意被發現，讓更多故事成為現實。
                     </p>
-                    <div className="mt-auto">
+                    <div className="mt-15">
                       <Link to="/" className="btn btn-primary fw-bolder py-3 px-5">
                         我想贊助
                       </Link>
@@ -236,9 +236,9 @@ export default function Home() {
                       }}
                     >
                       <div className="container index-banner-text h-100 d-flex flex-column">
-                        <h1 className="fs-6 fs-lg-xxl mb-3 mb-lg-6 justify-content-center justify-content-lg-start">{project.projectTitle}</h1>
-                        <p className="fs-sm fs-lg-7 mb-8 mb-lg-15">{project.summary}</p>
-                        <div className="mt-auto">
+                        <h1 className="fs-6 fs-lg-xxl mt-auto justify-content-center justify-content-lg-start">{project.projectTitle}</h1>
+                        <p className="fs-sm fs-lg-7 mt-6">{project.summary}</p>
+                        <div className="mt-15">
                           <Link to={`/projects/projectId=${project.id}`} className="btn btn-primary fw-bolder py-3 px-5">
                             我想贊助
                           </Link>
@@ -249,29 +249,29 @@ export default function Home() {
                 );
               })}
             </div>
-            <div className="swiper-scrollbar indexbannerswiper-scrollbar"></div>
+            <div className="swiper-scrollbar indexBannerSwiper-scrollbar"></div>
           </div>
         </div>
       </section>
-      <section className="index-projectcard position-relative">
+      <section className="index-projectCard position-relative">
         <div className="container pt-18 pb-11 py-lg-20">
           <div>
             <div className="d-flex justify-content-between align-items-center">
               <h2 className="fs-7 fs-lg-6 mb-0 text-white">精選專案</h2>
               <div className="d-flex align-items-center">
                 <div>
-                  <div className="swiper-button-prev indexcard-button-prev custom-style-prev d-none d-md-flex"></div>
+                  <div className="swiper-button-prev featuredCard-button-prev custom-style-prev d-none d-md-flex"></div>
                 </div>
-                <div className="swiper-pagination indexcard-pagination custom-style-pagination d-none d-md-flex"></div>
+                <div className="swiper-pagination featuredCard-pagination custom-style-pagination d-none d-md-flex"></div>
                 <div>
-                  <div className="swiper-button-next indexcard-button-next custom-style-next d-none d-md-flex"></div>
+                  <div className="swiper-button-next featuredCard-button-next custom-style-next d-none d-md-flex"></div>
                 </div>
                 <Link to="/projectExplore" className="fs-sm fs-lg-base d-block mb-0 text-nowrap ms-5 link-light">
                   查看更多
                 </Link>
               </div>
             </div>
-            <div ref={swiperRef} className="swiper indexcard pb-16 pb-lg-20 pt-7 ps-3" style={{ marginLeft: "-12px", overflow: "hidden" }}>
+            <div ref={swiperRef} className="swiper indexCard pb-16 pb-lg-20 pt-7 ps-3" style={{ marginLeft: "-12px", overflow: "hidden" }}>
               <div className="swiper-wrapper">
                 <Card projects={projects} isSwiper={true} />
               </div>
@@ -282,18 +282,18 @@ export default function Home() {
               <h2 className="fs-7 fs-lg-6 mb-0 text-white">最新專案</h2>
               <div className="d-flex align-items-center">
                 <div>
-                  <div className="swiper-button-prev indexcard2-button-prev custom-style-prev d-none d-md-flex"></div>
+                  <div className="swiper-button-prev newestCard-button-prev custom-style-prev d-none d-md-flex"></div>
                 </div>
-                <div className="swiper-pagination indexcard2-pagination custom-style-pagination d-none d-md-flex"></div>
+                <div className="swiper-pagination newestCard-pagination custom-style-pagination d-none d-md-flex"></div>
                 <div>
-                  <div className="swiper-button-next indexcard2-button-next custom-style-next d-none d-md-flex"></div>
+                  <div className="swiper-button-next newestCard-button-next custom-style-next d-none d-md-flex"></div>
                 </div>
                 <Link to="/projectExplore" className="fs-sm fs-lg-base d-block mb-0 text-nowrap ms-5 link-light">
                   查看更多
                 </Link>
               </div>
             </div>
-            <div ref={swiper2Ref} className="swiper indexcard2 pb-16 pb-lg-20 pt-7 ps-3" style={{ marginLeft: "-12px", overflow: "hidden" }}>
+            <div ref={swiper2Ref} className="swiper indexCard2 pb-16 pb-lg-20 pt-7 ps-3" style={{ marginLeft: "-12px", overflow: "hidden" }}>
               <div className="swiper-wrapper">
                 <Card projects={sortProjects} isSwiper={true} />
               </div>
@@ -306,67 +306,67 @@ export default function Home() {
           <div className="mb-5 mb-lg-20">
             <h2 className="fs-7 fs-lg-3 mb-0 text-center">你可以找到 ...</h2>
           </div>
-          <div ref={swiperCategoryRef} className="swiper indexcategory p-3" style={{ marginRight: "-12px", marginLeft: "-12px" }}>
+          <div ref={swiperCategoryRef} className="swiper indexCategory p-3" style={{ marginRight: "-12px", marginLeft: "-12px" }}>
             <div className="swiper-wrapper">
               <div className="swiper-slide">
-                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexcategory-card">
-                  <img src="喜劇.png" className="indexcategory-img" alt="喜劇" />
+                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
+                  <img src="喜劇.png" className="indexCategory-img" alt="喜劇" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("喜劇"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">喜劇</h3>
                   </Link>
                 </div>
               </div>
               <div className="swiper-slide">
-                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexcategory-card">
-                  <img src="愛情.png" className="indexcategory-img" alt="愛情" />
+                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
+                  <img src="愛情.png" className="indexCategory-img" alt="愛情" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("愛情"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">愛情</h3>
                   </Link>
                 </div>
               </div>
               <div className="swiper-slide">
-                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexcategory-card">
-                  <img src="恐怖.png" className="indexcategory-img" alt="恐怖" />
+                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
+                  <img src="恐怖.png" className="indexCategory-img" alt="恐怖" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("恐怖"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">恐怖</h3>
                   </Link>
                 </div>
               </div>
               <div className="swiper-slide">
-                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexcategory-card">
-                  <img src="懸疑.png" className="indexcategory-img" alt="懸疑" />
+                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
+                  <img src="懸疑.png" className="indexCategory-img" alt="懸疑" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("懸疑"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">懸疑</h3>
                   </Link>
                 </div>
               </div>
               <div className="swiper-slide">
-                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexcategory-card">
-                  <img src="科幻.png" className="indexcategory-img" alt="科幻" />
+                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
+                  <img src="科幻.png" className="indexCategory-img" alt="科幻" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("科幻"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">科幻</h3>
                   </Link>
                 </div>
               </div>
               <div className="swiper-slide">
-                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexcategory-card">
-                  <img src="紀錄片.png" className="indexcategory-img" alt="紀錄片" />
+                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
+                  <img src="紀錄片.png" className="indexCategory-img" alt="紀錄片" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("紀錄片"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">紀錄片</h3>
                   </Link>
                 </div>
               </div>
               <div className="swiper-slide">
-                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexcategory-card">
-                  <img src="動畫.png" className="indexcategory-img" alt="動畫" />
+                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
+                  <img src="動畫.png" className="indexCategory-img" alt="動畫" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("動畫"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">動畫</h3>
                   </Link>
                 </div>
               </div>
               <div className="swiper-slide">
-                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexcategory-card">
-                  <img src="實驗電影.png" className="indexcategory-img" alt="實驗電影" />
+                <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
+                  <img src="實驗電影.png" className="indexCategory-img" alt="實驗電影" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("實驗電影"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">實驗電影</h3>
                   </Link>
@@ -503,7 +503,7 @@ export default function Home() {
             </span>
             成就每一個精彩故事
           </h2>
-          <div className="swiper sloganswiper mb-5 mb-lg-10" ref={swiperSloganRef}>
+          <div className="swiper sloganSwiper mb-5 mb-lg-10" ref={swiperSloganRef}>
             <div className="swiper-wrapper">
               {numbers.map((target, index) => (
                 <div className="swiper-slide" ref={(el) => (refs.current[index] = el)} key={index}>
