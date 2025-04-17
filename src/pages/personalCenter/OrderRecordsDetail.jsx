@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import GrayScreenLoading from "../components/GrayScreenLoading";
-import { Alert, CheckModal } from "../assets/js/costomSweetAlert";
+import GrayScreenLoading from "../../components/GrayScreenLoading";
+import { Alert, CheckModal } from "../../js/customSweetAlert";
 import { useNavigate, useParams } from "react-router";
 const apiBase = import.meta.env.VITE_API_BASE;
 

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { NavLink, Outlet, useLocation } from "react-router";
-import PersonalCenterSidebar from "../components/PersonalCenterSidebar";
+import PersonalCenterSidebar from "../../components/PersonalCenterSidebar";
 
 export default function OrderRecords() {
   // 路由跳轉至專案介紹頁時，重製滾輪捲軸

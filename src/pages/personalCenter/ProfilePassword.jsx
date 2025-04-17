@@ -1,5 +1,5 @@
 import { useForm, useWatch } from "react-hook-form";
-import { Alert, Toast } from "../assets/js/costomSweetAlert";
+import { Alert, Toast } from "../../js/customSweetAlert";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
