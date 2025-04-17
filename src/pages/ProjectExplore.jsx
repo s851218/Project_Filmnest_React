@@ -6,13 +6,14 @@ import Card from "../components/Card";
 import { ScrollRestoration, useLocation } from "react-router";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../components/GrayScreenLoading";
-import { Alert } from "../assets/js/costomSweetAlert";
+import { Alert } from "../js/customSweetAlert";
 
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function ProjectExplore() {
   const [projects, setProjects] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [projectState, setProjectState] = useState(false);
   const location = useLocation();
   const dispatch = useDispatch();
   const category = useSelector((state) => state.category.type);
@@ -31,9 +32,21 @@ export default function ProjectExplore() {
       const response = await axios.get(apiUrl);
       if (searchText) {
         const newData = response.data.filter((item) => item.projectTitle.toLowerCase().includes(searchText.toLowerCase())); //toLowerCase()轉小寫比較
-        setProjects(newData);
+        if(projectState){
+          const finData = newData.filter((item)=> item.isFin === true)
+          setProjects(finData);
+        }else{
+          const finData = newData.filter((item)=> item.isFin === false)
+          setProjects(finData);
+        }
       } else {
-        setProjects(response.data);
+        if(projectState){
+          const finData = response.data.filter((item)=> item.isFin === true)
+          setProjects(finData);
+        }else{
+          const finData = response.data.filter((item)=> item.isFin === false)
+          setProjects(finData);
+        }
       }
     } catch (error) {
       if (error) {
@@ -43,15 +56,20 @@ export default function ProjectExplore() {
         });
       }
     } finally {
-      setIsLoading(false);
+      setTimeout(()=>{
+        setIsLoading(false);
+      },300)
     }
-  }, [category, searchText, dispatch]);
+  }, [category, searchText, dispatch,projectState]);
 
   const handleSwitchCategory = (e) => {
     const { value } = e.target;
     dispatch(setCategory(value));
   };
-
+  const handleSwitchState = (e) =>{
+    const { value } = e.target;
+    setProjectState(value === "true")
+  }
   useLayoutEffect(() => {
     getProjectsData();
   }, [getProjectsData, category, searchText]);
@@ -88,10 +106,9 @@ export default function ProjectExplore() {
               </div>
               <div className="d-flex align-items-center">
                 <span className="project-select me-md-3 fs-sm fs-md-base">專案狀態</span>
-                <select className="form-select fs-sm fs-md-base" aria-label="Default select example">
-                  <option value="3">進行中</option>
-                  <option value="1">即將開始</option>
-                  <option value="2">已結案</option>
+                <select className="form-select fs-sm fs-md-base" aria-label="Default select example" defaultValue="false" onChange={handleSwitchState}>
+                  <option value="false">進行中</option>
+                  <option value="true">已結案</option>
                 </select>
               </div>
             </div>
