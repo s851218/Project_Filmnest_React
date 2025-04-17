@@ -1,4 +1,4 @@
-import FeedbackSwiper from "../components/FeedbackSwiper";
+import FeedbackSwiper from "../../components/FeedbackSwiper";
 import { Helmet } from "react-helmet-async";
 
 export default function ProjectIntroSupportFeedback() {

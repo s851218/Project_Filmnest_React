@@ -15,15 +15,15 @@ import Post from "../adminPages/Post";
 import Intro from "../adminPages/Intro";
 import Faq from "../adminPages/Faq";
 import SignUp from "../pages/Signup";
-import TermsOfUse from "../pages/TermsOfUse";
 import FeedbackPage from "../pages/FeedbackPage";
-import ProjectIntro from "../pages/ProjectIntro";
-import ProjectIntroContent from "../pages/ProjectIntroContent";
-import ProjectIntroNews from "../pages/ProjectIntroNews";
-import ProjectIntroSupportFeedback from "../pages/ProjectIntroSupportFeedback";
-import ProjectIntroQA from "../pages/ProjectIntroQA";
-import ProjectIntroComments from "../pages/ProjectIntroComments";
-import ProjectIntroInfoDisclosure from "../pages/ProjectIntroInfoDisclosure";
+// projectIntro
+import ProjectIntro from "../pages/projectIntro/ProjectIntro";
+import ProjectIntroContent from "../pages/projectIntro/ProjectIntroContent";
+import ProjectIntroNews from "../pages/projectIntro/ProjectIntroNews";
+import ProjectIntroSupportFeedback from "../pages/projectIntro/ProjectIntroSupportFeedback";
+import ProjectIntroQA from "../pages/projectIntro/ProjectIntroQA";
+import ProjectIntroComments from "../pages/projectIntro/ProjectIntroComments";
+import ProjectIntroInfoDisclosure from "../pages/projectIntro/ProjectIntroInfoDisclosure";
 import HeaderSm from "../components/HeaderSm";
 import HeaderSmSec from "../components/HeaderSmSec";
 import HeaderSmSearch from "../components/HeaderSmSearch";
@@ -46,6 +46,7 @@ import OrderRecordsDetail from "../pages/personalCenter/OrderRecordsDetail";
 import ProfilePassword from "../pages/personalCenter/ProfilePassword";
 // proposal
 import AboutProposal from "../pages/proposal/AboutProposal";
+import TermsOfUse from "../pages/proposal/TermsOfUse";
 import CreateProposal from "../pages/proposal/CreateProposal";
 import CompleteProposal from "../pages/proposal/CompleteProposal";
 // payment

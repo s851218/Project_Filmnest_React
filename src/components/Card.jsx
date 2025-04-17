@@ -53,7 +53,7 @@ export default function Card({ projects, isSwiper, isDelete, getData }) {
             <div className="progress index-progress mb-4 bg-primary-8" role="progressbar" aria-label="Example 1px high" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style={{ height: "4px" }}>
               <div className="progress-bar index-progress-bar bg-white bg-white" style={{ width: "90%" }}></div>
             </div>
-            <h4 className="fs-7 fs-lg-6 text-white mb-0">NT${project.totalMoney.toLocaleString()}</h4>
+            <h4 className="fs-7 fs-lg-6 text-white mb-0">NT$ {project.totalMoney.toLocaleString()}</h4>
           </div>
         </div>
       </div>
@@ -91,7 +91,7 @@ export default function Card({ projects, isSwiper, isDelete, getData }) {
             <div className="progress index-progress mb-4 bg-primary-8" role="progressbar" aria-label="Example 1px high" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style={{ height: "4px" }}>
               <div className="progress-bar index-progress-bar bg-white bg-white" style={{ width: "90%" }}></div>
             </div>
-            <h4 className="fs-7 fs-lg-6 text-white mb-0">NT${project.totalMoney.toLocaleString()}</h4>
+            <h4 className="fs-7 fs-lg-6 text-white mb-0">NT$ {project.totalMoney.toLocaleString()}</h4>
           </div>
         </div>
       </div>
