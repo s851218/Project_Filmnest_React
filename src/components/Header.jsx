@@ -1,11 +1,11 @@
 import { useRef, useEffect } from "react";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { setCategory } from "../slice/categorySlice";
 import { setSearchText, setSearchValue, setIsSearchOpen } from "../slice/searchSlice";
 import { setLogout } from "../slice/userSlice";
 import axios from "axios";
-import { Toast } from "../assets/js/costomSweetAlert";
+import { Toast } from "../js/customSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Header() {
@@ -15,11 +15,12 @@ export default function Header() {
   const isSearchOpen = useSelector((state) => state.search.isSearchOpen);
   const categoryData = ["喜劇", "愛情", "恐怖", "懸疑", "科幻", "紀錄片", "動畫", "實驗電影"];
   const dispatch = useDispatch();
-  const navbarRef = useRef(null);
-  const navbarRef2 = useRef(null);
+  const deskNavbarRef = useRef(null);
+  const mobileNavbarRef = useRef(null);
   const searchContainerRef = useRef(null);
   const buttonRef = useRef(null);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLogout = async () => {
     try {
@@ -45,12 +46,12 @@ export default function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      navbarRef.current.scrollY = window.scrollY;
+      deskNavbarRef.current.scrollY = window.scrollY;
 
-      if (navbarRef.current.scrollY > 0) {
-        navbarRef.current.classList.add("active");
+      if (deskNavbarRef.current.scrollY > 0) {
+        deskNavbarRef.current.classList.add("active");
       } else {
-        navbarRef.current.classList.remove("active");
+        deskNavbarRef.current.classList.remove("active");
       }
     };
 
@@ -61,12 +62,12 @@ export default function Header() {
   }, []);
   useEffect(() => {
     const handleScroll2 = () => {
-      navbarRef2.current.scrollY = window.scrollY;
+      mobileNavbarRef.current.scrollY = window.scrollY;
 
-      if (navbarRef2.current.scrollY > 0) {
-        navbarRef2.current.classList.add("active");
+      if (mobileNavbarRef.current.scrollY > 0) {
+        mobileNavbarRef.current.classList.add("active");
       } else {
-        navbarRef2.current.classList.remove("active");
+        mobileNavbarRef.current.classList.remove("active");
       }
     };
     window.addEventListener("scroll", handleScroll2);
@@ -76,8 +77,9 @@ export default function Header() {
     };
   }, []);
   useEffect(() => {
+    const pathName = location.pathname.split("/").at(-1)
     const handleClickOutside = (event) => {
-      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target)) {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(event.target) && pathName !== "projectExplore" ) {
         dispatch(setIsSearchOpen(false));
       }
     };
@@ -87,11 +89,17 @@ export default function Header() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [dispatch]);
+  }, [dispatch,location.pathname]);
+  useEffect(() => {
+    const pathName = location.pathname.split("/").at(-1)
+    if (pathName !== "projectExplore") {
+      dispatch(setIsSearchOpen(false));
+      dispatch(setSearchValue(""));
+      dispatch(setSearchText(""));
+    }
+  }, [location.pathname, dispatch]);
 
   const handleSearchToggle = (e) => {
-    
-
     if (buttonRef.current.contains(e.target)) {
       navigate("/headerSm");
     } else {
@@ -119,7 +127,7 @@ export default function Header() {
   return (
     <>
       <nav
-        ref={navbarRef}
+        ref={deskNavbarRef}
         className="navbar navbar-expand-md navbar-dark py-5 d-none d-lg-flex"
         style={
           // 專案介紹頁 Header 不固定在上方
@@ -164,7 +172,18 @@ export default function Header() {
                   <span className="material-symbols-outlined text-white">search</span>
                 </button>
                 <div className={`search-input-container ${isSearchOpen ? "open" : ""}`}>
-                  <input type="text" className="search-input" placeholder="輸入影片名稱" value={searchValue} onChange={(e) => dispatch(setSearchValue(e.target.value))} />
+                  <input
+                    type="text"
+                    className="search-input"
+                    placeholder="輸入影片名稱"
+                    value={searchValue}
+                    onChange={(e) => dispatch(setSearchValue(e.target.value))}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        handleSearchSubmit();
+                      }
+                    }}
+                  />
                   <span className="material-symbols-outlined search-input-search-icon" onClick={handleSearchSubmit}>
                     Search
                   </span>
@@ -243,7 +262,7 @@ export default function Header() {
         </div>
       </nav>
       <nav
-        ref={navbarRef2}
+        ref={mobileNavbarRef}
         className="navbar navbar-expand-md navbar-dark py-5 d-lg-flex d-lg-none"
         style={
           // 專案介紹頁 Header 不固定在上方
