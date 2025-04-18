@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import ReactLoading from "react-loading";
 
-export default function GrayScreenLoading({ isLoading }) {
+export default function GrayScreenLoading({ isLoading = false }) {
   return (
     <>
       {isLoading && (
@@ -22,8 +22,4 @@ export default function GrayScreenLoading({ isLoading }) {
 }
 GrayScreenLoading.propTypes = {
   isLoading: PropTypes.bool,
-};
-
-GrayScreenLoading.defaultProps = {
-  isLoading: false,
 };
