@@ -6,7 +6,7 @@ import { setLogin } from "../../slice/userSlice";
 import GrayScreenLoading from "../../components/GrayScreenLoading";
 import { Alert, Toast } from "../../js/customSweetAlert";
 import { useNavigate } from "react-router";
-import handleInputNumber from "../../js/handleInputNumber"
+import handleInputNumber from "../../helpers/handleInputNumber"
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Profile() {

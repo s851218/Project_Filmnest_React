@@ -6,7 +6,7 @@ import DateTimePicker from "react-datetime-picker";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import { Alert } from "../../js/customSweetAlert";
-import handleInputNumber from "../../js/handleInputNumber"
+import handleInputNumber from "../../helpers/handleInputNumber"
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
@@ -191,6 +191,7 @@ export default function CreateProposal() {
                     inputMode="numeric"
                     className={`form-control ${errors.target ? "is-invalid" : ""}`}
                     id="target"
+                    onInput={(e)=>handleInputNumber(e,setValue)}
                     {...register("target", {
                       required: {
                         value: true,
@@ -349,9 +350,8 @@ export default function CreateProposal() {
                   </label>
                   <input
                     id="tel"
-                    type="tel"
+                    type="text"
                     className={`form-control ${errors.phone ? "is-invalid" : ""}`}
-                    onInput={(e)=>handleInputNumber(e,setValue)}
                     {...register("phone", {
                       required: {
                         value: true,
