@@ -5,7 +5,7 @@ import { setCategory } from "../slice/categorySlice";
 import { setSearchValue, setIsSearchOpen } from "../slice/searchSlice";
 import { setLogout } from "../slice/userSlice";
 import axios from "axios";
-import { Toast } from "../assets/js/costomSweetAlert";
+import { Toast } from "../js/customSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function HeaderSm() {

@@ -1,5 +1,5 @@
 import { Helmet } from "react-helmet-async";
-import PersonalCenterSidebar from "../components/PersonalCenterSidebar";
+import PersonalCenterSidebar from "../../components/PersonalCenterSidebar";
 import { Outlet } from "react-router";
 
 export default function PersonalCenter() {

@@ -2,7 +2,7 @@ import { Link } from "react-router";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router";
 import axios from "axios";
-import { Toast, Alert } from "../assets/js/costomSweetAlert";
+import { Toast, Alert } from "../js/customSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function SignUp() {

@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import Card from "../components/Card";
-import PersonalCenterSidebar from "../components/PersonalCenterSidebar";
+import Card from "../../components/Card";
+import PersonalCenterSidebar from "../../components/PersonalCenterSidebar";
 import { Helmet } from "react-helmet-async";
-import GrayScreenLoading from "../components/GrayScreenLoading";
-import { Alert } from "../assets/js/costomSweetAlert";
+import GrayScreenLoading from "../../components/GrayScreenLoading";
+import { Alert } from "../../js/customSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function FavoriteProject() {

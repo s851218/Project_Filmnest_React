@@ -7,11 +7,6 @@ import { useEffect, useRef, useState } from "react";
 // prop validation
 import PropTypes from "prop-types";
 
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/thumbs";
-import "swiper/css/navigation";
-
 export default function ProjectIntroSwiper({ projectInfo }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 

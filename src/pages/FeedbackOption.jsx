@@ -6,7 +6,7 @@ import { ScrollRestoration, useNavigate, useParams } from "react-router";
 import BonusCalculator from "../components/BonusCalculator";
 import ModalComponent from "../components/ModalComponent";
 import GrayScreenLoading from "../components/GrayScreenLoading";
-import { CheckModal, Alert, Toast } from "../assets/js/costomSweetAlert";
+import { CheckModal, Alert, Toast } from "../js/customSweetAlert";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 

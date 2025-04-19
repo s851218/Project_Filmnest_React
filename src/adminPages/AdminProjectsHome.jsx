@@ -5,7 +5,7 @@ import { setExpanded } from "../slice/adminSidebarExpandSlice";
 import { useNavigate } from "react-router";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { Alert } from "../assets/js/costomSweetAlert";
+import { Alert } from "../js/customSweetAlert";
 import AdminSummary from "../AdminComponents/AdminSummary";
 const apiBase = import.meta.env.VITE_API_BASE;
 

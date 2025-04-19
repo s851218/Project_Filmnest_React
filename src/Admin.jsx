@@ -4,10 +4,10 @@ import Footer from "./components/Footer";
 import { Outlet, useLocation } from "react-router";
 import { setExpanded } from "./slice/adminSidebarExpandSlice";
 import { setLogin } from "./slice/userSlice";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { ScrollRestoration } from "react-router";
 import axios from "axios";
-import { Alert } from "./assets/js/costomSweetAlert";
+import { Alert } from "./js/customSweetAlert";
 const apiBase = import.meta.env.VITE_API_BASE;
 function Admin() {
   const location = useLocation();
@@ -23,8 +23,9 @@ function Admin() {
     }
   }, [location.pathname, dispatch]);
 
-  const checkLogin = useCallback(
-    async (token) => {
+  useEffect(() => {
+    const token = document.cookie.replace(/(?:(?:^|.*;\s*)loginToken\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    const checkLogin = async (token) => {
       try {
         const response = await axios.get(`${apiBase}/users?token=${token}`);
         const userData = response.data[0];
@@ -44,17 +45,11 @@ function Admin() {
           });
         }
       }
-    },
-    [dispatch]
-  );
-
-  useEffect(() => {
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)loginToken\s*=\s*([^;]*).*$)|^.*$/, "$1");
-
+    };
     if (token) {
       checkLogin(token);
     }
-  }, [checkLogin]);
+  }, [dispatch]);
   return (
     <>
       <ScrollRestoration />

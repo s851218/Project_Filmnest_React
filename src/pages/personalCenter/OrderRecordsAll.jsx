@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router";
-import { Alert, CheckModal } from "../assets/js/costomSweetAlert";
-import GrayScreenLoading from "../components/GrayScreenLoading";
+import { useLocation, useNavigate } from "react-router";
+import { Alert, CheckModal } from "../../js/customSweetAlert";
+import GrayScreenLoading from "../../components/GrayScreenLoading";
 
 const apiBase = import.meta.env.VITE_API_BASE;
 
@@ -12,6 +12,7 @@ export default function OrderRecordsAll() {
   const [sortOrderData, setSortOrderData] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
   const userId = useSelector((state) => state.user.profile.userId);
 
   const getSortTime = (time) => new Date(time).getTime();
@@ -33,15 +34,47 @@ export default function OrderRecordsAll() {
   // 取得訂單
   const getOrderData = useCallback(async () => {
     setIsLoading(true);
+    const pathName = location.pathname.split("/").at(-1)
 
     try {
       const response = await axios.get(`${apiBase}/orders?_expand=project&_expand=product&userId=${userId}`);
-      if (sortOrderData) {
+      if(pathName === "orderRecordsAll"){
+        if (sortOrderData) {
         const orderData = response.data.sort((a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt));
         setOrdersData(orderData);
       } else {
         const orderData = response.data.sort((a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt));
         setOrdersData(orderData);
+      }}else if(pathName === "orderRecordsSuccess"){
+        if (sortOrderData) {
+          const orderData = response.data.filter((item) => item.paymentStatus === 1 && (item.canReturn || item.canRefund));
+          orderData.sort((a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt));
+          setOrdersData(orderData);
+        } else {
+          const orderData = response.data.filter((item) => item.paymentStatus === 1 && (item.canReturn || item.canRefund));
+          orderData.sort((a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt));
+          setOrdersData(orderData);
+        }
+      }else if(pathName === "orderRecordsFailed"){
+        if (sortOrderData) {
+          const orderData = response.data.filter((item) => item.paymentStatus === 2 || item.orderStatus === 2 || item.shippingStatus === 2);
+          orderData.sort((a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt));
+          setOrdersData(orderData);
+        } else {
+          const orderData = response.data.filter((item) => item.paymentStatus === 2 || item.orderStatus === 2 || item.shippingStatus === 2);
+          orderData.sort((a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt));
+          setOrdersData(orderData);
+        }
+      }else if(pathName === "orderRecordsUnpaid"){
+        if (sortOrderData) {
+          const orderData = response.data.filter((item) => item.paymentStatus === 0 && item.orderStatus !== 2);
+          orderData.sort((a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt));
+          setOrdersData(orderData);
+        } else {
+          const orderData = response.data.filter((item) => item.paymentStatus === 0 && item.orderStatus !== 2);
+          orderData.sort((a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt));
+          setOrdersData(orderData);
+        }
       }
     } catch (error) {
       if (error) {
@@ -53,7 +86,7 @@ export default function OrderRecordsAll() {
     } finally {
       setIsLoading(false);
     }
-  }, [sortOrderData, userId]);
+  }, [sortOrderData, userId ,location.pathname]);
   useEffect(() => {
     getOrderData();
   }, [sortOrderData, getOrderData]);

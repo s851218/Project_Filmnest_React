@@ -1,13 +1,13 @@
 import { useForm } from "react-hook-form";
-import PersonalCenterSidebar from "../components/PersonalCenterSidebar";
+import PersonalCenterSidebar from "../../components/PersonalCenterSidebar";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
-import { setLogin } from "../slice/userSlice";
-import GrayScreenLoading from "../components/GrayScreenLoading";
-import { Alert, Toast } from "../assets/js/costomSweetAlert";
+import { useEffect, useState } from "react";
+import { setLogin } from "../../slice/userSlice";
+import GrayScreenLoading from "../../components/GrayScreenLoading";
+import { Alert, Toast } from "../../js/customSweetAlert";
 import { useNavigate } from "react-router";
-import handleInputNumber from "../assets/js/handleInputNumber"
+import handleInputNumber from "../../js/handleInputNumber"
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Profile() {
@@ -74,33 +74,33 @@ export default function Profile() {
     }
   };
 
-  const getUserProfile = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(`${apiBase}/users/${id}`);
-      setUserProfile(response.data.userProfile);
-      setUserEmail(response.data.email);
-      setFile(response.data.userProfile.userImageUrl);
-      setValue("userName", response.data.userProfile.userName);
-      setValue("nickName", response.data.userProfile.nickName);
-      setValue("phone", response.data.userProfile.phone);
-      setValue("birthdate", response.data.userProfile.birthdate);
-      setValue("bio", response.data.userProfile.bio);
-      setValue("userImageUrl", response.data.userProfile.userImageUrl);
-    } catch (error) {
-      if (error) {
-        Alert.fire({
-          icon: "error",
-          title: "取得使用者資料失敗",
-        });
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  }, [id, setValue]);
+
   useEffect(() => {
-    getUserProfile();
-  }, [id, getUserProfile]);
+    const getUserProfile = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(`${apiBase}/users/${id}`);
+        setUserProfile(response.data.userProfile);
+        setUserEmail(response.data.email);
+        setFile(response.data.userProfile.userImageUrl);
+        Object.entries(response.data.userProfile).forEach(([key, value]) => {
+          setValue(key, value);
+        });
+      } catch (error) {
+        if (error) {
+          Alert.fire({
+            icon: "error",
+            title: "取得使用者資料失敗",
+          });
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    if(id){
+      getUserProfile();
+    }
+  }, [id,setValue]);
 
   return (
     <>

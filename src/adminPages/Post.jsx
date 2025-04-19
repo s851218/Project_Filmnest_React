@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Helmet } from "react-helmet-async";
 import LightScreenLoading from "../AdminComponents/LightScreenLoading";
-import { AdminCheckModal, Toast } from "../assets/js/costomSweetAlert";
+import { AdminCheckModal, Toast } from "../js/customSweetAlert";
+import getNewTime from "../helpers/getNewTime";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function Post() {
@@ -13,22 +14,6 @@ export default function Post() {
   const [isAdd, setIsAdd] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
-
-  // 時間格式轉換
-  const getTime = (time) => {
-    const newTime = new Date(time)
-      .toLocaleString("zh-TW", {
-        timeZone: "Asia/Taipei",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      })
-      .replace(/\//g, "-");
-    return newTime;
-  };
 
   // 新增最新消息
   const {
@@ -261,7 +246,7 @@ export default function Post() {
                   <label htmlFor="title" className="form-label fs-5">
                     {post.title}
                   </label>
-                  <p className="fs-sm">更新日期:{getTime(post.date)}</p>
+                  <p className="fs-sm">更新日期:{getNewTime(post.date)}</p>
                 </div>
               )}
               {isEditIng && (
