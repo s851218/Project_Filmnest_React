@@ -4,6 +4,7 @@ import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../../components/GrayScreenLoading";
 import { Alert, CheckModal } from "../../js/customSweetAlert";
 import { useNavigate, useParams } from "react-router";
+import getNewTime from "../../helpers/getNewTime";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function OrderRecordsDetail() {
@@ -18,20 +19,6 @@ export default function OrderRecordsDetail() {
   const [isLoading, setIsLoading] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
-  const getTime = (time) => {
-    const newTime = new Date(time)
-      .toLocaleString("zh-TW", {
-        timeZone: "Asia/Taipei",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      })
-      .replace(/\//g, "-");
-    return newTime;
-  };
 
   const getOrderData = useCallback(async () => {
     setIsLoading(true);
@@ -278,7 +265,7 @@ export default function OrderRecordsDetail() {
             <p className="mb-3">額外加碼：{Number(orderData.bonus).toLocaleString()}</p>
             <p className="mb-3">訂單總額：{Number(orderData.totalPrice).toLocaleString()}</p>
             <p className="mb-3">訂單狀態：{orderData.orderStatus === 0 ? "訂單建立" : orderData.orderStatus === 2 ? "訂單取消" : "訂單成立"}</p>
-            <p className="mb-3">訂單成立時間：{getTime(orderData.createdAt)}</p>
+            <p className="mb-3">訂單成立時間：{getNewTime(orderData.createdAt)}</p>
             {!orderData.paymentMethod || Object.keys(orderData.paymentMethod).length === 0 ? (
               <p className="mb-3">付款方式：尚未選擇付款方式</p>
             ) : orderData.paymentMethod?.type === 0 ? (
@@ -297,7 +284,7 @@ export default function OrderRecordsDetail() {
               </>
             )}
             <p className="mb-3">付款狀態：{orderData.paymentStatus === 0 ? "未付款" : orderData.paymentStatus === 1 ? "已付款" : "已退款"}</p>
-            {orderData.paymentStatus === 1 && <p className="mb-3">付款時間：{getTime(orderData.paymentTime)}</p>}
+            {orderData.paymentStatus === 1 && <p className="mb-3">付款時間：{getNewTime(orderData.paymentTime)}</p>}
             {orderData.paymentStatus === 1 && <p className="mb-3">出貨狀態：{orderData.shippingStatus === 0 ? "未出貨" : orderData.shippingStatus === 1 ? "已出貨" : "已退貨"}</p>}
             <div className="d-flex flex-column flex-lg-row justify-content-between align-items-center">
               <button type="button" className="btn btn-outline-light w-100 w-lg-auto mb-2 mb-lg-0" onClick={() => navigate(-1)}>

@@ -16,8 +16,8 @@ export default function Home() {
   const [projects, setProjects] = useState([]);
   const [sortProjects, setSortProjects] = useState([]);
   const swiperBannerRef = useRef(null);
-  const swiperRef = useRef(null);
-  const swiper2Ref = useRef(null);
+  const swiperFeaturedRef = useRef(null);
+  const swiperNewestRef = useRef(null);
   const swiperCategoryRef = useRef(null);
   const swiperSloganRef = useRef(null);
   const dispatch = useDispatch();
@@ -57,7 +57,7 @@ export default function Home() {
       },
     });
     //  精選專案
-    const featuredCardSwiper = new Swiper(swiperRef.current, {
+    const featuredCardSwiper = new Swiper(swiperFeaturedRef.current, {
       slidesPerView: 1.1, // 每次顯示的幻燈片數量
       spaceBetween: 24, // 兩張圖片之間的間距
       navigation: {
@@ -83,7 +83,7 @@ export default function Home() {
     });
 
     //  最新專案
-    const newestCardSwiper = new Swiper(swiper2Ref.current, {
+    const newestCardSwiper = new Swiper(swiperNewestRef.current, {
       slidesPerView: 1.1, // 每次顯示的幻燈片數量
       spaceBetween: 24, // 兩張圖片之間的間距
       navigation: {
@@ -271,7 +271,7 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            <div ref={swiperRef} className="swiper indexCard pb-16 pb-lg-20 pt-7 ps-3" style={{ marginLeft: "-12px", overflow: "hidden" }}>
+            <div ref={swiperFeaturedRef} className="swiper indexCard pb-16 pb-lg-20 pt-7 ps-3" style={{ marginLeft: "-12px", overflow: "hidden" }}>
               <div className="swiper-wrapper">
                 <Card projects={projects} isSwiper={true} />
               </div>
@@ -293,7 +293,7 @@ export default function Home() {
                 </Link>
               </div>
             </div>
-            <div ref={swiper2Ref} className="swiper indexCard2 pb-16 pb-lg-20 pt-7 ps-3" style={{ marginLeft: "-12px", overflow: "hidden" }}>
+            <div ref={swiperNewestRef} className="swiper indexCard2 pb-16 pb-lg-20 pt-7 ps-3" style={{ marginLeft: "-12px", overflow: "hidden" }}>
               <div className="swiper-wrapper">
                 <Card projects={sortProjects} isSwiper={true} />
               </div>

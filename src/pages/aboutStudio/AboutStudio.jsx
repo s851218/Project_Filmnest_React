@@ -46,8 +46,8 @@ export default function AboutStudio() {
     setIsLoading(true);
     try {
       const response = await axios.get(`${apiBase}/projects?studioId=${studios.userId}`);
-      const finFilterData = response.data.filter((item) => item.isfin);
-      const filterData = response.data.filter((item) => !item.isfin);
+      const finFilterData = response.data.filter((item) => item.isFin);
+      const filterData = response.data.filter((item) => !item.isFin);
       setProjectsData({
         projects:filterData,
         finProjects:finFilterData,
