@@ -45,7 +45,7 @@ export default function Header() {
   };
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleDeskNavbarScroll = () => {
       deskNavbarRef.current.scrollY = window.scrollY;
 
       if (deskNavbarRef.current.scrollY > 0) {
@@ -55,13 +55,13 @@ export default function Header() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleDeskNavbarScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", handleDeskNavbarScroll);
     };
   }, []);
   useEffect(() => {
-    const handleScroll2 = () => {
+    const handleMobileNavbarScroll = () => {
       mobileNavbarRef.current.scrollY = window.scrollY;
 
       if (mobileNavbarRef.current.scrollY > 0) {
@@ -70,10 +70,10 @@ export default function Header() {
         mobileNavbarRef.current.classList.remove("active");
       }
     };
-    window.addEventListener("scroll", handleScroll2);
+    window.addEventListener("scroll", handleMobileNavbarScroll);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll2);
+      window.removeEventListener("scroll", handleMobileNavbarScroll);
     };
   }, []);
   useEffect(() => {
