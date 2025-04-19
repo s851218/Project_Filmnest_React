@@ -2,7 +2,7 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-import { Alert, CheckModal } from "../assets/js/costomSweetAlert";
+import { Alert, CheckModal } from "../js/customSweetAlert";
 import GrayScreenLoading from "../components/GrayScreenLoading";
 
 const apiBase = import.meta.env.VITE_API_BASE;
@@ -31,34 +31,44 @@ export default function OrderRecordsUnpaid() {
     return newTime;
   };
   // 取得訂單
-  const getOrderData = useCallback( async () => {
+  const getOrderData = useCallback(async () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.get(`${apiBase}/orders?_expand=project&_expand=product&userId=${userId}`);
+      const response = await axios.get(
+        `${apiBase}/orders?_expand=project&_expand=product&userId=${userId}`
+      );
       if (sortOrderData) {
-        const orderData = response.data.filter((item) => item.paymentStatus === 0 && item.orderStatus !== 2);
-        orderData.sort((a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt));
+        const orderData = response.data.filter(
+          (item) => item.paymentStatus === 0 && item.orderStatus !== 2
+        );
+        orderData.sort(
+          (a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt)
+        );
         setOrdersData(orderData);
       } else {
-        const orderData = response.data.filter((item) => item.paymentStatus === 0 && item.orderStatus !== 2);
-        orderData.sort((a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt));
+        const orderData = response.data.filter(
+          (item) => item.paymentStatus === 0 && item.orderStatus !== 2
+        );
+        orderData.sort(
+          (a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt)
+        );
         setOrdersData(orderData);
       }
     } catch (error) {
-      if(error){
-              Alert.fire({
-                icon: "error",
-                title: "取得訂單資料失敗",
-              })
-            }
+      if (error) {
+        Alert.fire({
+          icon: "error",
+          title: "取得訂單資料失敗",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
-  },[sortOrderData,userId])
+  }, [sortOrderData, userId]);
   useEffect(() => {
     getOrderData();
-  }, [sortOrderData,getOrderData]);
+  }, [sortOrderData, getOrderData]);
 
   // 取消訂單
   const handleCancelOrder = (order) => {
@@ -82,7 +92,9 @@ export default function OrderRecordsUnpaid() {
                   <img src=${order.project?.projectImage} alt="" />
                 </div>
                 <div class="col-5">
-                  <h2 class="fs-base text-balance">${order.project?.projectTitle}</h2>
+                  <h2 class="fs-base text-balance">${
+                    order.project?.projectTitle
+                  }</h2>
                 </div>
             </div>
           
@@ -94,7 +106,9 @@ export default function OrderRecordsUnpaid() {
               <div class="mb-6">
                 <h3 class="fs-base">本方案包含：</h3>
                 <ol>
-                ${order.product?.contents?.map((item) => `<li>${item.item}</li>`).join("")}
+                ${order.product?.contents
+                  ?.map((item) => `<li>${item.item}</li>`)
+                  .join("")}
                 </ol>
               </div>
             </div>
@@ -111,11 +125,15 @@ export default function OrderRecordsUnpaid() {
       if (result.isConfirmed) {
         const reason = result.value;
         try {
-          await axios.patch(`${apiBase}/orders/${order.id}`, { canCancel: false, reason: reason, orderStatus: 2 });
+          await axios.patch(`${apiBase}/orders/${order.id}`, {
+            canCancel: false,
+            reason: reason,
+            orderStatus: 2,
+          });
           CheckModal.fire("取消申請成功", "我們將儘快處理您的申請", "success");
           getOrderData();
         } catch (error) {
-          if(error){
+          if (error) {
             CheckModal.fire("取消申請失敗", "請稍後再試", "error");
           }
         }
@@ -135,7 +153,10 @@ export default function OrderRecordsUnpaid() {
                 </th>
                 {/* <th scope="col" className="d-lg-none"></th> */}
                 <th scope="col" className="text-white">
-                  <button className="btn btn-light btn-base" onClick={() => setSortOrderData((prev) => !prev)}>
+                  <button
+                    className="btn btn-light btn-base"
+                    onClick={() => setSortOrderData((prev) => !prev)}
+                  >
                     {sortOrderData ? (
                       <>
                         <i className="bi bi-sort-up"></i>
@@ -156,26 +177,55 @@ export default function OrderRecordsUnpaid() {
                   <td className="text-white">
                     <div className="row align-items-center">
                       <div className="col-4">
-                        <img src={order.project.projectImage} className="rounded-2" alt="專案數量" />
+                        <img
+                          src={order.project.projectImage}
+                          className="rounded-2"
+                          alt="專案數量"
+                        />
                       </div>
                       <div className="col-8">
-                        <span className="badge text-bg-danger mb-1">{order.orderStatus === 2 ? "已取消" : order.paymentStatus === 2 ? "已退款" : order.shippingStatus === 2 ? "已退貨" : ""}</span>
-                        <p className="fs-sm fs-lg-base text-secondary">訂單建立時間：{getTime(order.createdAt)}</p>
-                        <h3 className="fs-base fs-lg-6 fw-bolder text-truncate" title={order.project.projectTitle}>
+                        <span className="badge text-bg-danger mb-1">
+                          {order.orderStatus === 2
+                            ? "已取消"
+                            : order.paymentStatus === 2
+                            ? "已退款"
+                            : order.shippingStatus === 2
+                            ? "已退貨"
+                            : ""}
+                        </span>
+                        <p className="fs-sm fs-lg-base text-secondary">
+                          訂單建立時間：{getTime(order.createdAt)}
+                        </p>
+                        <h3
+                          className="fs-base fs-lg-6 fw-bolder text-truncate"
+                          title={order.project.projectTitle}
+                        >
                           {order.project.projectTitle}
                         </h3>
-                        <p className="fs-sm fs-lg-base">購買回饋方案項目：{order.product.title}</p>
+                        <p className="fs-sm fs-lg-base">
+                          購買回饋方案項目：{order.product.title}
+                        </p>
                       </div>
                     </div>
                   </td>
                   <td className="nowrap-table text-white">
                     <div className="d-flex flex-column">
                       {order.canCancel && (
-                        <button type="button" className="btn btn-danger btn-base mb-2" onClick={() => handleCancelOrder(order)}>
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-base mb-2"
+                          onClick={() => handleCancelOrder(order)}
+                        >
                           訂單取消
                         </button>
                       )}
-                      <button type="button" className="btn btn-primary btn-base" onClick={() => navigate(`/personalCenter/orderRecords/${order.id}`)}>
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-base"
+                        onClick={() =>
+                          navigate(`/personalCenter/orderRecords/${order.id}`)
+                        }
+                      >
                         訂單詳細
                       </button>
                     </div>

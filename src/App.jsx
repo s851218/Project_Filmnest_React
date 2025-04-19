@@ -23,7 +23,10 @@ function App() {
   const shouldHideLayout = layoutHiddenRoutes.includes(location.pathname);
 
   useEffect(() => {
-    const token = document.cookie.replace(/(?:(?:^|.*;\s*)loginToken\s*=\s*([^;]*).*$)|^.*$/, "$1");
+    const token = document.cookie.replace(
+      /(?:(?:^|.*;\s*)loginToken\s*=\s*([^;]*).*$)|^.*$/,
+      "$1"
+    );
     const checkLogin = async (token) => {
       try {
         const response = await axios.get(`${apiBase}/users?token=${token}`);
@@ -38,14 +41,14 @@ function App() {
           })
         );
       } catch (error) {
-        if(error){
+        if (error) {
           Alert.fire({
             icon: "error",
             title: "驗證失敗",
-          })
+          });
         }
       }
-    }
+    };
 
     if (token) {
       checkLogin(token);
