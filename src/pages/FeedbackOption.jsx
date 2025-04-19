@@ -24,13 +24,14 @@ export default function FeedbackOption() {
   const [params, setParams] = useState({});
   const [feedbackData, setFeedbackData] = useState([]);
   const [projectData, setProjectData] = useState([]);
-  const [isName, setIsName] = useState(false);
+  const [isAnonymous, setIsAnonymous] = useState(false); // 是否匿名
   const [originPrice, setOriginPrice] = useState(0);
   const [bonus, setBonus] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [modalType, setModalType] = useState(null);
   const userInfo = useSelector((state) => state.user.profile);
   const bonusCalculatorRef = useRef();
+  const watch = useWatch({ control });
 
   const modalRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -177,16 +178,6 @@ export default function FeedbackOption() {
     setIsModalOpen(true);
   };
 
-  // 監控是否匿名
-  const watch = useWatch({ control });
-  useEffect(() => {
-    if (watch.isAnonymous === "false") {
-      setIsName(true);
-    } else {
-      setIsName(false);
-    }
-  }, [watch.isAnonymous]);
-
   useEffect(() => {
     if (!isModalOpen) {
       setModalType(null);
@@ -201,7 +192,7 @@ export default function FeedbackOption() {
   const handleBonusReset = async () => {
     setIsModalOpen(false);
   };
-
+  
   return (
     <>
       <ScrollRestoration />
@@ -263,7 +254,8 @@ export default function FeedbackOption() {
                       id="chooseInputName"
                       name="nameOption"
                       className="me-2"
-                      value={false}
+                      checked={isAnonymous ? false : true}
+                      onClick={()=>setIsAnonymous(!isAnonymous)}
                       {...register("isAnonymous", {
                         required: {
                           value: true,
@@ -276,23 +268,24 @@ export default function FeedbackOption() {
                       id="supporterNameInput"
                       className={`supporter-name-input w-sm-50 w-100 rounded-1 p-2 ${errors.supporterName && "is-invalid"}`}
                       placeholder="填入您希望的稱呼"
-                      disabled={isName ? false : true}
+                      disabled={isAnonymous ? true : false}
                       {...register("supporterName", {
                         required: {
-                          value: isName ? true : false,
-                          message: isName && "*請填寫您希望的稱呼",
+                          value: isAnonymous ? false : true,
+                          message: isAnonymous && "*請填寫您希望的稱呼",
                         },
                       })}
                     />
                   </div>
-                  {isName && errors?.supporterName && <div className="invalid-feedback d-block">{errors?.supporterName?.message}</div>}
+                  {isAnonymous && errors?.supporterName && <div className="invalid-feedback d-block">{errors?.supporterName?.message}</div>}
                   <div>
                     <input
                       type="radio"
                       id="chooseHideName"
                       name="nameOption"
                       className="me-2"
-                      value={true}
+                      checked={isAnonymous ? true : false}
+                      onClick={()=>setIsAnonymous(!isAnonymous)}
                       {...register("isAnonymous", {
                         required: {
                           value: true,
