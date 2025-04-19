@@ -5,7 +5,7 @@ import { setPaymentInfo } from "../../slice/paymentInfoSlice";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { Alert } from "../../js/customSweetAlert";
-import handleInputNumber from "../../js/handleInputNumber"
+import handleInputNumber from "../../helpers/handleInputNumber"
 
 PaymentInfoFrom.propTypes = {
   reference: PropTypes.shape({

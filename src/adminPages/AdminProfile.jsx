@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome' // 載入react-
 import { fab } from "@fortawesome/free-brands-svg-icons";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import AdminSummary from '../AdminComponents/AdminSummary';
-import handleInputNumber from "../js/handleInputNumber"
+import handleInputNumber from "../helpers/handleInputNumber"
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
