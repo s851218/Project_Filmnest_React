@@ -1,23 +1,16 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useState } from "react";
+import { ScrollRestoration, useNavigate } from "react-router";
 import { Controller, useForm } from "react-hook-form";
 import DateTimePicker from "react-datetime-picker";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
 import { Alert } from "../../js/customSweetAlert";
-import handleInputNumber from "../../helpers/handleInputNumber"
+import handleInputNumber from "../../helpers/handleInputNumber";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function CreateProposal() {
-  // 路由跳轉至專案介紹頁時，重製滾輪捲軸
-  useEffect(() => {
-    // 將滾動行為設為 auto 避免有捲動過程的動畫
-    document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-  }, []);
-
   const navigate = useNavigate();
 
   const {
@@ -105,6 +98,7 @@ export default function CreateProposal() {
 
   return (
     <>
+      <ScrollRestoration />
       <div className="container pt-20 pt-xl-40 pb-10 pb-md-15 pb-xl-30 text-center">
         <h1 className="text-center mb-5 mb-sm-8 mb-md-10">發起專案</h1>
         <form>
@@ -118,7 +112,9 @@ export default function CreateProposal() {
                   </label>
                   <input
                     type="text"
-                    className={`form-control ${errors.projectName ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.projectName ? "is-invalid" : ""
+                    }`}
                     id="projectName"
                     {...register("projectName", {
                       required: {
@@ -131,19 +127,28 @@ export default function CreateProposal() {
                       },
                     })}
                   />
-                  {errors.projectName ? <div className="invalid-feedback">{errors?.projectName?.message}</div> : <p className="fs-sm mb-0 mt-1">限制30字</p>}
+                  {errors.projectName ? (
+                    <div className="invalid-feedback">
+                      {errors?.projectName?.message}
+                    </div>
+                  ) : (
+                    <p className="fs-sm mb-0 mt-1">限制30字</p>
+                  )}
                 </div>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="projectType" className="form-label required">
                     專案類型
                   </label>
                   <select
-                    className={`form-select ${errors.projectType ? "is-invalid" : ""}`}
+                    className={`form-select ${
+                      errors.projectType ? "is-invalid" : ""
+                    }`}
                     id="projectType"
                     defaultValue="請選擇專案類型"
                     {...register("projectType", {
                       validate: {
-                        value: (value) => value !== "請選擇專案類型" || "*請選擇有效專案類型",
+                        value: (value) =>
+                          value !== "請選擇專案類型" || "*請選擇有效專案類型",
                       },
                     })}
                   >
@@ -159,14 +164,23 @@ export default function CreateProposal() {
                     <option value="動畫">動畫</option>
                     <option value="實驗電影">實驗電影</option>
                   </select>
-                  {errors.projectType && <div className="invalid-feedback">{errors?.projectType?.message}</div>}
+                  {errors.projectType && (
+                    <div className="invalid-feedback">
+                      {errors?.projectType?.message}
+                    </div>
+                  )}
                 </div>
                 <div className="mb-3 mb-md-5">
-                  <label htmlFor="projectIntroduction" className="form-label required">
+                  <label
+                    htmlFor="projectIntroduction"
+                    className="form-label required"
+                  >
                     專案簡介
                   </label>
                   <textarea
-                    className={`form-control ${errors.projectIntroduction ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.projectIntroduction ? "is-invalid" : ""
+                    }`}
                     name="projectIntroduction"
                     id="projectIntroduction"
                     {...register("projectIntroduction", {
@@ -180,7 +194,13 @@ export default function CreateProposal() {
                       },
                     })}
                   />
-                  {errors.projectIntroduction ? <div className="invalid-feedback">{errors?.projectIntroduction?.message}</div> : <p className="fs-sm mb-0 mt-1">限制80字</p>}
+                  {errors.projectIntroduction ? (
+                    <div className="invalid-feedback">
+                      {errors?.projectIntroduction?.message}
+                    </div>
+                  ) : (
+                    <p className="fs-sm mb-0 mt-1">限制80字</p>
+                  )}
                 </div>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="target" className="form-label required">
@@ -189,7 +209,9 @@ export default function CreateProposal() {
                   <input
                     type="text"
                     inputMode="numeric"
-                    className={`form-control ${errors.target ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.target ? "is-invalid" : ""
+                    }`}
                     id="target"
                     onInput={(e)=>handleInputNumber(e,setValue)}
                     {...register("target", {
@@ -203,15 +225,24 @@ export default function CreateProposal() {
                       },
                     })}
                   />
-                  {errors.target && <div className="invalid-feedback">{errors?.target?.message}</div>}
+                  {errors.target && (
+                    <div className="invalid-feedback">
+                      {errors?.target?.message}
+                    </div>
+                  )}
                 </div>
                 <div className="mb-3 mb-md-5">
-                  <h3 className="fs-base fw-normal lh-base required">募資時間</h3>
+                  <h3 className="fs-base fw-normal lh-base required">
+                    募資時間
+                  </h3>
                   <div className="container px-0">
                     <div className="row dateRange">
                       <div className="col-6">
                         <small>
-                          <label htmlFor="createdAt" className="form-label required">
+                          <label
+                            htmlFor="createdAt"
+                            className="form-label required"
+                          >
                             起始時間
                           </label>
                         </small>
@@ -222,12 +253,30 @@ export default function CreateProposal() {
                           rules={{
                             required: "*請填入有效日期",
                           }}
-                          render={({ field }) => <DateTimePicker {...field} id="createdAt" className={`form-control ${errors.createdAt ? "is-invalid" : ""}`} value={field.value} format="y-MM-dd HH:mm" clearIcon={null} onChange={(date) => handleChange(date, "created")} minDate={nextDay} maxDetail={"minute"} disableClock={true} />}
+                          render={({ field }) => (
+                            <DateTimePicker
+                              {...field}
+                              id="createdAt"
+                              className={`form-control ${
+                                errors.createdAt ? "is-invalid" : ""
+                              }`}
+                              value={field.value}
+                              format="y-MM-dd HH:mm"
+                              clearIcon={null}
+                              onChange={(date) => handleChange(date, "created")}
+                              minDate={nextDay}
+                              maxDetail={"minute"}
+                              disableClock={true}
+                            />
+                          )}
                         />
                       </div>
                       <div className="col-6">
                         <small>
-                          <label htmlFor="endAt" className="form-label required">
+                          <label
+                            htmlFor="endAt"
+                            className="form-label required"
+                          >
                             結束時間
                           </label>
                         </small>
@@ -238,7 +287,22 @@ export default function CreateProposal() {
                           rules={{
                             required: "*請填入有效日期",
                           }}
-                          render={({ field }) => <DateTimePicker {...field} id="endAt" className={`form-control ${errors?.endAt ? "is-invalid" : ""}`} value={field.value} format="y-MM-dd HH:mm" clearIcon={null} onChange={(date) => handleChange(date, "end")} minDate={endMinDate} maxDetail={"minute"} disableClock={true} />}
+                          render={({ field }) => (
+                            <DateTimePicker
+                              {...field}
+                              id="endAt"
+                              className={`form-control ${
+                                errors?.endAt ? "is-invalid" : ""
+                              }`}
+                              value={field.value}
+                              format="y-MM-dd HH:mm"
+                              clearIcon={null}
+                              onChange={(date) => handleChange(date, "end")}
+                              minDate={endMinDate}
+                              maxDetail={"minute"}
+                              disableClock={true}
+                            />
+                          )}
                         />
                       </div>
                     </div>
@@ -246,10 +310,14 @@ export default function CreateProposal() {
                   {errors?.createdAt || errors?.endAt ? (
                     <div className="row">
                       <div className="col-6">
-                        <div className="invalid-feedback d-inline-block">{errors?.createdAt?.message}</div>
+                        <div className="invalid-feedback d-inline-block">
+                          {errors?.createdAt?.message}
+                        </div>
                       </div>
                       <div className="col-6">
-                        <div className="invalid-feedback d-inline-block">{errors?.endAt?.message}</div>
+                        <div className="invalid-feedback d-inline-block">
+                          {errors?.endAt?.message}
+                        </div>
                       </div>
                     </div>
                   ) : (
@@ -263,12 +331,17 @@ export default function CreateProposal() {
               <fieldset className="payment-fieldset col-12 col-md-10">
                 <legend className="payment-legend">提案人資訊</legend>
                 <div className="mb-3 mb-md-5">
-                  <label htmlFor="personResponsible" className="form-label required">
+                  <label
+                    htmlFor="personResponsible"
+                    className="form-label required"
+                  >
                     提案負責人
                   </label>
                   <input
                     type="text"
-                    className={`form-control ${errors.personResponsible ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.personResponsible ? "is-invalid" : ""
+                    }`}
                     id="personResponsible"
                     {...register("personResponsible", {
                       required: {
@@ -281,7 +354,11 @@ export default function CreateProposal() {
                       },
                     })}
                   />
-                  {errors.personResponsible && <div className="invalid-feedback">{errors?.personResponsible?.message}</div>}
+                  {errors.personResponsible && (
+                    <div className="invalid-feedback">
+                      {errors?.personResponsible?.message}
+                    </div>
+                  )}
                 </div>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="groupName" className="form-label required">
@@ -289,7 +366,9 @@ export default function CreateProposal() {
                   </label>
                   <input
                     type="text"
-                    className={`form-control ${errors.groupName ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.groupName ? "is-invalid" : ""
+                    }`}
                     id="groupName"
                     {...register("groupName", {
                       required: {
@@ -298,14 +377,20 @@ export default function CreateProposal() {
                       },
                     })}
                   />
-                  {errors.groupName && <div className="invalid-feedback">{errors?.groupName?.message}</div>}
+                  {errors.groupName && (
+                    <div className="invalid-feedback">
+                      {errors?.groupName?.message}
+                    </div>
+                  )}
                 </div>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="teamIntro" className="form-label required">
                     提案人/團隊介紹
                   </label>
                   <textarea
-                    className={`form-control ${errors.teamIntro ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.teamIntro ? "is-invalid" : ""
+                    }`}
                     name="teamIntro"
                     id="teamIntro"
                     rows={3}
@@ -321,7 +406,13 @@ export default function CreateProposal() {
                     })}
                   />
                   {/* <p className="fs-sm mb-0 mt-1">限制300字</p> */}
-                  {errors.teamIntro ? <div className="invalid-feedback">{errors?.teamIntro?.message}</div> : <p className="fs-sm mb-0 mt-1">限制300字</p>}
+                  {errors.teamIntro ? (
+                    <div className="invalid-feedback">
+                      {errors?.teamIntro?.message}
+                    </div>
+                  ) : (
+                    <p className="fs-sm mb-0 mt-1">限制300字</p>
+                  )}
                 </div>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="email" className="form-label required">
@@ -329,7 +420,9 @@ export default function CreateProposal() {
                   </label>
                   <input
                     type="email"
-                    className={`form-control ${errors.email ? "is-invalid" : ""}`}
+                    className={`form-control ${
+                      errors.email ? "is-invalid" : ""
+                    }`}
                     id="email"
                     {...register("email", {
                       required: {
@@ -337,12 +430,17 @@ export default function CreateProposal() {
                         message: "*必填欄位",
                       },
                       pattern: {
-                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                        value:
+                          /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                         message: "*Email 格式錯誤",
                       },
                     })}
                   />
-                  {errors.email && <div className="invalid-feedback">{errors?.email?.message}</div>}
+                  {errors.email && (
+                    <div className="invalid-feedback">
+                      {errors?.email?.message}
+                    </div>
+                  )}
                 </div>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="tel" className="form-label required">
@@ -350,8 +448,11 @@ export default function CreateProposal() {
                   </label>
                   <input
                     id="tel"
-                    type="text"
-                    className={`form-control ${errors.phone ? "is-invalid" : ""}`}
+                    type="tel"
+                    className={`form-control ${
+                      errors.phone ? "is-invalid" : ""
+                    }`}
+                    onInput={(e) => handleInputNumber(e, setValue)}
                     {...register("phone", {
                       required: {
                         value: true,
@@ -363,14 +464,22 @@ export default function CreateProposal() {
                       },
                     })}
                   />
-                  {errors.phone && <div className="invalid-feedback">{errors?.phone?.message}</div>}
+                  {errors.phone && (
+                    <div className="invalid-feedback">
+                      {errors?.phone?.message}
+                    </div>
+                  )}
                 </div>
               </fieldset>
             </div>
           </div>
         </form>
 
-        <button type="button" className="btn btn-primary btn-main fw-bolder w-100 w-md-auto" onClick={handleSubmit(onSubmit)}>
+        <button
+          type="button"
+          className="btn btn-primary btn-main fw-bolder w-100 w-md-auto"
+          onClick={handleSubmit(onSubmit)}
+        >
           送出
         </button>
       </div>

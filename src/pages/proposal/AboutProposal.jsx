@@ -1,6 +1,5 @@
-import { useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router";
+import { Link, ScrollRestoration } from "react-router";
 
 const data = {
   slogan: "有好想法，卻沒辦法嗎？",
@@ -34,18 +33,12 @@ const data = {
   },
 };
 
-const {  slogan, totalFundsRaised, sponsors, step } = data;
+const { slogan, totalFundsRaised, sponsors, step } = data;
 
 export default function AboutProposal() {
-  // 路由跳轉頁面時，重製滾輪捲軸
-  useEffect(() => {
-    // 將滾動行為設為 auto 避免有捲動過程的動畫
-    document.documentElement.style.scrollBehavior = "auto";
-    window.scrollTo(0, 0);
-  }, []);
-
   return (
     <>
+      <ScrollRestoration />
       <Helmet>
         <title>提案 | 影巢 FilmNest</title>
       </Helmet>
