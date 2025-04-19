@@ -5,6 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
 import { Toast } from "../../js/customSweetAlert";
 import GrayScreenLoading from "../../components/GrayScreenLoading";
+import getNewTime from "../../helpers/getNewTime";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function ProjectIntroQA() {
@@ -19,9 +20,9 @@ export default function ProjectIntroQA() {
   //處理params
   useLayoutEffect(() => {
     if (id) {
-      const paramsArry = id.split("&");
+      const paramsArray = id.split("&");
       let paramsObj = {};
-      paramsArry.forEach((param) => {
+      paramsArray.forEach((param) => {
         let [key, value] = param.split("=");
         paramsObj[key] = Number(value);
       });
@@ -29,20 +30,6 @@ export default function ProjectIntroQA() {
     }
   }, [id]);
 
-  const getTime = (time) => {
-    const newTime = new Date(time)
-      .toLocaleString("zh-TW", {
-        timeZone: "Asia/Taipei",
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-      })
-      .replace(/\//g, "-");
-    return newTime;
-  };
 
   useLayoutEffect(() => {
     if (params.projectId) {
@@ -126,7 +113,7 @@ export default function ProjectIntroQA() {
                     </span>
                     <span className="d-flex align-self-start align-items-center">
                       <span className="fs-sm text-primary-5 me-2">
-                        {getTime(item.date)}
+                        {getNewTime(item.date)}
                       </span>
                       {faqsIsOpen[index].isOpen ? (
                         <i className="bi bi-chevron-up fs-7 d-none d-lg-block"></i>
