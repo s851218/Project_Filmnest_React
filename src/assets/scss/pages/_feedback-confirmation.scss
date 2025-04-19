@@ -1,28 +1,28 @@
 .table > :not(caption) > * > * {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 
 .supporter-name-input {
-    border: 1px solid #ccc;
-    &:disabled{
-        background-color: #f0f0f0;
-        color: #888;
-    }
+  border: 1px solid #ccc;
+  &:disabled{
+    background-color: #f0f0f0;
+    color: #888;
+  }
 }
 
 .feedback-confirmation-sidebar{
-    position: sticky;
-    top: 100px;
-    align-self: flex-start;
-    // max-height: calc(100vh - 100px);
-    // overflow-y: auto;
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+  // max-height: calc(100vh - 100px);
+  // overflow-y: auto;
 }
 
 .error-message{
-    display: none;
+  display: none;
 }
 
 .input-error {
-    border-color: #FFC107 !important;
+  border-color: #FFC107 !important;
 }

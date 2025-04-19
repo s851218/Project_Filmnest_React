@@ -10,7 +10,7 @@ import handleInputNumber from "../../js/handleInputNumber"
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
-export default function CreatePropsal() {
+export default function CreateProposal() {
   // 路由跳轉至專案介紹頁時，重製滾輪捲軸
   useEffect(() => {
     // 將滾動行為設為 auto 避免有捲動過程的動畫
@@ -111,7 +111,7 @@ export default function CreatePropsal() {
           <div className="container">
             <div className="row justify-content-center mb-5 mb-sm-8 mb-md-10 text-start">
               <fieldset className="payment-fieldset col-12 col-md-10">
-                <legend className="payment-lengend">專案基本資訊</legend>
+                <legend className="payment-legend">專案基本資訊</legend>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="projectName" className="form-label required">
                     專案名稱
@@ -162,14 +162,14 @@ export default function CreatePropsal() {
                   {errors.projectType && <div className="invalid-feedback">{errors?.projectType?.message}</div>}
                 </div>
                 <div className="mb-3 mb-md-5">
-                  <label htmlFor="projectdIntroduction" className="form-label required">
+                  <label htmlFor="projectIntroduction" className="form-label required">
                     專案簡介
                   </label>
                   <textarea
-                    className={`form-control ${errors.projectdIntroduction ? "is-invalid" : ""}`}
-                    name="projectdIntroduction"
-                    id="projectdIntroduction"
-                    {...register("projectdIntroduction", {
+                    className={`form-control ${errors.projectIntroduction ? "is-invalid" : ""}`}
+                    name="projectIntroduction"
+                    id="projectIntroduction"
+                    {...register("projectIntroduction", {
                       required: {
                         value: true,
                         message: "*必填欄位，限制80字",
@@ -180,7 +180,7 @@ export default function CreatePropsal() {
                       },
                     })}
                   />
-                  {errors.projectdIntroduction ? <div className="invalid-feedback">{errors?.projectdIntroduction?.message}</div> : <p className="fs-sm mb-0 mt-1">限制80字</p>}
+                  {errors.projectIntroduction ? <div className="invalid-feedback">{errors?.projectIntroduction?.message}</div> : <p className="fs-sm mb-0 mt-1">限制80字</p>}
                 </div>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="target" className="form-label required">
@@ -207,7 +207,7 @@ export default function CreatePropsal() {
                 <div className="mb-3 mb-md-5">
                   <h3 className="fs-base fw-normal lh-base required">募資時間</h3>
                   <div className="container px-0">
-                    <div className="row daterange">
+                    <div className="row dateRange">
                       <div className="col-6">
                         <small>
                           <label htmlFor="createdAt" className="form-label required">
@@ -260,7 +260,7 @@ export default function CreatePropsal() {
 
             <div className="row justify-content-center mb-5 mb-sm-8 mb-md-10 text-start">
               <fieldset className="payment-fieldset col-12 col-md-10">
-                <legend className="payment-lengend">提案人資訊</legend>
+                <legend className="payment-legend">提案人資訊</legend>
                 <div className="mb-3 mb-md-5">
                   <label htmlFor="personResponsible" className="form-label required">
                     提案負責人

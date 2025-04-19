@@ -120,7 +120,7 @@ export default function PaymentInfo() {
       }
 
       // 判斷訂單是否付款
-      if (orderData.paymentStatus === "已付款") {
+      if (orderData.paymentStates === "已付款") {
         Alert.fire(
           {
             icon: "error",
@@ -178,13 +178,13 @@ export default function PaymentInfo() {
       address: newAddress, // 寫入重組後的地址字串
     };
 
-    let paymentStatu; // 付款狀態
+    let paymentState; // 付款狀態
     let paymentMethod; // 付款別
     let createdPaymentTime; // 取得付款時間
 
     switch (accordionIndex) {
       case 0: // 信用卡付款
-        paymentStatu = 1; // 已付款
+        paymentState = 1; // 已付款
         paymentMethod = {
           type: accordionIndex,
           cardType: paymentOption.cardType,
@@ -196,7 +196,7 @@ export default function PaymentInfo() {
       case 1: // ATM轉帳
         {
           const bankSelect = banksData.filter((bank) => bank.bankCode === paymentOption.bankSelect);
-          paymentStatu = 0; // 未付款
+          paymentState = 0; // 未付款
           paymentMethod = {
             type: accordionIndex,
             ...bankSelect[0],
@@ -205,7 +205,7 @@ export default function PaymentInfo() {
         break;
 
       case 2: // 信用卡付款
-        paymentStatu = 0; // 未付款
+        paymentState = 0; // 未付款
         paymentMethod = {
           type: accordionIndex,
           paymentCode: "FNEC942335764",
@@ -220,7 +220,7 @@ export default function PaymentInfo() {
       ...orderData, // 展開原訂單內容
       orderFile: newOrderFile, // 寫入收件人資料
       orderStatus: 1, // 訂單狀態修改為"成立"
-      paymentStatus: paymentStatu, // 付款狀態修改
+      paymentStates: paymentState, // 付款狀態修改
       paymentMethod, // 付款別
       paymentTime: accordionIndex === 0 ? createdPaymentTime : "付款時間", // 寫入付款時間
       canCancel: accordionIndex === 0 ? false : true,

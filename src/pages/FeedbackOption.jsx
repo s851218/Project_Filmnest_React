@@ -42,9 +42,9 @@ export default function FeedbackOption() {
   //處理params
   useLayoutEffect(() => {
     if (id) {
-      const paramsArry = id.split("&");
+      const paramsArray = id.split("&");
       let paramsObj = {};
-      paramsArry.forEach((param) => {
+      paramsArray.forEach((param) => {
         let [key, value] = param.split("=");
         paramsObj[key] = Number(value);
       });
@@ -354,7 +354,7 @@ export default function FeedbackOption() {
       </footer>
 
       <ModalComponent modalType={modalType} modalRef={modalRef} isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} totalPrice={totalPrice} handleBonusCheck={handleBonusCheck} handleBonusReset={handleBonusReset}>
-        {modalType === "bonus" && <BonusCalculator reference={bonusCalculatorRef} bonus={bonus} setBonus={setBonus} type={"bouns"} />}
+        {modalType === "bonus" && <BonusCalculator reference={bonusCalculatorRef} bonus={bonus} setBonus={setBonus} type={"bonus"} />}
       </ModalComponent>
 
       <GrayScreenLoading isLoading={isLoading} />

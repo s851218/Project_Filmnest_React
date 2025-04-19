@@ -23,8 +23,8 @@ export default function BonusCalculator ({ bonus , setBonus , type , reference }
   
   // 處理自訂金額
   const onsubmit = (data) => {
-    const addBouns = Number(data.customized)
-    const newBonus = bonus + addBouns
+    const addBonus = Number(data.customized)
+    const newBonus = bonus + addBonus
     setBonus(newBonus)
     reset()
   }

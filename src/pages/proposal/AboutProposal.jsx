@@ -51,7 +51,7 @@ export default function AboutProposal() {
       </Helmet>
       <div className="aboutProposal-banner-bg banner-bg-mask">
         <div className="aboutProposal-banner-wrap container position-relative z-3">
-          <h1 className="text-center slogn-position mb-0">{slogan}</h1>
+          <h1 className="text-center slogan-position mb-0">{slogan}</h1>
           <div className="aboutProposal-slogan-card-position container px-md-0">
             <div className="position-relative">
               <ul className="list-unstyled d-flex justify-content-center mb-0 w-100 w-md-75 w-xl-50 mx-auto banner-deco">

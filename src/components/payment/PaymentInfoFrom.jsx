@@ -184,7 +184,7 @@ export default function PaymentInfoFrom({ reference , userData }) {
     <form>
       {/* 會員資料 V */}
       <fieldset className="payment-fieldset mb-4">
-        <legend className="payment-lengend">會員資料</legend>
+        <legend className="payment-legend">會員資料</legend>
         <div className="row mb-3">
           <div className="col-lg-6 mb-lg-0 mb-3">
             <label htmlFor="userName" className="form-label">
@@ -211,7 +211,7 @@ export default function PaymentInfoFrom({ reference , userData }) {
 
       {/* 收件人資料 V */}
       <fieldset className="payment-fieldset mb-4">
-        <legend className="payment-lengend">收件人資料</legend>
+        <legend className="payment-legend">收件人資料</legend>
         <div className="form-check mb-3">
           <input className="form-check-input" type="checkbox" id="sameAsMember" {...register("sameAsMember")} />
           <label className="form-check-label" htmlFor="sameAsMember">
@@ -293,7 +293,7 @@ export default function PaymentInfoFrom({ reference , userData }) {
 
       {/* 收件地址 V */}
       <fieldset className="payment-fieldset mb-4">
-        <legend className="payment-lengend">收件地址</legend>
+        <legend className="payment-legend">收件地址</legend>
         <div className="row mb-3">
           <div className="col-lg-4 mb-lg-0 mb-3">
             <label htmlFor="county" className="form-label required">

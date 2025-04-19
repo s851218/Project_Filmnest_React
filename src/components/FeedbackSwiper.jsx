@@ -19,9 +19,9 @@ function FeedbackSwiper() {
   //處理params
   useEffect(() => {
     if (id) {
-      const paramsArry = id.split("&");
+      const paramsArray = id.split("&");
       let paramsObj = {};
-      paramsArry.forEach((param) => {
+      paramsArray.forEach((param) => {
         let [key, value] = param.split("=");
         paramsObj[key] = Number(value);
       });

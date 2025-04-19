@@ -59,7 +59,7 @@ export default function Card({ projects, isSwiper, isDelete, getData }) {
       </div>
     ) : (
       <div className="col-md-6 col-lg-4 g-5 h-auto" key={project.id}>
-        <div className="card index-card rounded-0 h-100 position-reletive">
+        <div className="card index-card rounded-0 h-100 position-relative">
           <img src={project.projectImage} className="card-img-top rounded-0 mb-3 object-fit-cover" style={{ height: "250px" }} alt="" />
           {isDelete && (
             <button

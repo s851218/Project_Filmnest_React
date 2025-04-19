@@ -165,35 +165,35 @@ export default function Profile() {
                       },
                     })}
                   />
-                  {errors?.userName?.message && <div className="invalid-feeback text-danger">{errors.userName.message}</div>}
+                  {errors?.userName?.message && <div className="invalid-feedback text-danger">{errors.userName.message}</div>}
                 </div>
                 <div className="col-md-6">
                   <label htmlFor="inputAddress2" className="form-label">
                     暱稱
                   </label>
                   <input type="text" defaultValue={userProfile.nickName} className={`form-control bg-primary-9 ${errors.nickName && "is-invalid"}`} id="inputAddress2" placeholder="請輸入您的暱稱" {...register("nickName")} />
-                  {errors?.nickName?.message && <div className="invalid-feeback text-danger">{errors.nickName.message}</div>}
+                  {errors?.nickName?.message && <div className="invalid-feedback text-danger">{errors.nickName.message}</div>}
                 </div>
                 <div className="col-6">
                   <label htmlFor="inputAddress3" className="form-label">
                     聯絡電話
                   </label>
                   <input type="tel" onInput={(e)=>handleInputNumber(e,setValue)} defaultValue={userProfile.phone} className={`form-control bg-primary-9 ${errors.phone && "is-invalid"}`} id="inputAddress3" placeholder="請輸入您的聯絡電話" {...register("phone")} />
-                  {errors?.phone?.message && <div className="invalid-feeback text-danger">{errors.phone.message}</div>}
+                  {errors?.phone?.message && <div className="invalid-feedback text-danger">{errors.phone.message}</div>}
                 </div>
                 <div className="col-6">
                   <label htmlFor="inputAddress4" className="form-label">
                     出生日期
                   </label>
                   <input type="date" defaultValue={userProfile.birthdate} className={`form-control bg-primary-9 ${errors.birthdate && "is-invalid"}`} id="inputAddress4" placeholder="請輸入您的出生日期" {...register("birthdate")} />
-                  {errors?.birthdate?.message && <div className="invalid-feeback text-danger">{errors.birthdate.message}</div>}
+                  {errors?.birthdate?.message && <div className="invalid-feedback text-danger">{errors.birthdate.message}</div>}
                 </div>
                 <div className="col-12">
                   <label htmlFor="inputAddress5" className="form-label">
                     自我介紹
                   </label>
                   <textarea defaultValue={userProfile.bio} className={`form-control bg-primary-9 ${errors.bio && "is-invalid"}`} rows="4" id="inputAddress5" placeholder="請簡單介紹一下自己" {...register("bio")} />
-                  {errors?.bio?.message && <div className="invalid-feeback text-danger">{errors.bio.message}</div>}
+                  {errors?.bio?.message && <div className="invalid-feedback text-danger">{errors.bio.message}</div>}
                 </div>
                 <div className="col-12">
                   <button type="submit" className="btn btn-primary btn-main pe-4 d-block d-lg-none w-100 mt-4 rounded">

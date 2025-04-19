@@ -6,10 +6,10 @@
 }
 
 @mixin tiny{
-   @media (min-width: 420px){
-     @content;
-   }
- }
+  @media (min-width: 420px){
+    @content;
+  }
+}
 
 @mixin xs-sm-1{
   @media (min-width: 503px) {
