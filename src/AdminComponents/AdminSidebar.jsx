@@ -19,13 +19,13 @@ export default function Sidebar() {
           </div>
           <ul className="list-unstyled d-flex flex-column">
             <li className="mb-3">
-              <NavLink to="/admin/adminProfile" className="nav-link text-decoration-none d-block btn-base rounded-1 d-flex align-items-center admin-sidebar">
+              <NavLink to="/admin/adminProfile" className="btn btn-primary btn-base rounded-2 border-0 d-flex align-items-center admin-sidebar">
                 <span className="material-symbols-outlined fs-7 ms-3 me-3">manage_accounts</span>
                 <span>個人資料管理</span>
               </NavLink>
             </li>
             <li className="mb-3">
-              <NavLink to="/admin/adminProjectsHome" className="nav-link text-decoration-none d-block btn-base rounded-1 d-flex align-items-center admin-sidebar">
+              <NavLink to="/admin/adminProjectsHome" className="btn btn-primary btn-base rounded-2 border-0 d-flex align-items-center admin-sidebar">
                 <span className="material-symbols-outlined fs-7 ms-3 me-3">folder_managed</span>
                 <span>
                   專案管理
@@ -37,18 +37,18 @@ export default function Sidebar() {
                   <div className="d-flex">
                     <div className="border-end border-primary-1 ms-6"></div>
                     <ul className="list-unstyled ps-6">
-                      <li>
-                        <NavLink to={`/admin/${id}/intro`} className="nav-link text-decoration-none d-block btn-base rounded-1 admin-sidebar">
+                      <li className="py-1">
+                        <NavLink to={`/admin/${id}/intro`} className="btn btn-primary btn-base border-0 rounded-2 admin-sidebar">
                           專案編輯
                         </NavLink>
                       </li>
-                      <li>
-                        <NavLink to={`/admin/${id}/adminAnsComment`} className="nav-link text-decoration-none d-block btn-base rounded-1 admin-sidebar">
+                      <li className="py-1">
+                        <NavLink to={`/admin/${id}/adminAnsComment`} className="btn btn-primary btn-base border-0 rounded-2 admin-sidebar">
                           回覆留言
                         </NavLink>
                       </li>
-                      <li>
-                        <NavLink to={`/admin/${id}/adminChart`} className="nav-link text-decoration-none d-block btn-base rounded-1 admin-sidebar">
+                      <li className="py-1">
+                        <NavLink to={`/admin/${id}/adminChart`} className="btn btn-primary btn-base border-0 rounded-2 admin-sidebar">
                           數據分析
                         </NavLink>
                       </li>
@@ -84,7 +84,7 @@ export default function Sidebar() {
               )}
             </li> */}
             <li className="mb-0">
-              <NavLink to="/" className="nav-link text-decoration-none d-flex align-items-center py-2 px-3">
+              <NavLink to="/" className="btn btn-primary btn-base rounded-2 border-0 d-flex align-items-center">
                 <span className="material-symbols-outlined fs-7 ms-3 me-3">exit_to_app</span>
                 <span>離開工作室</span>
               </NavLink>
@@ -93,7 +93,7 @@ export default function Sidebar() {
         </nav>
         <div className="container d-flex justify-content-between align-item-center d-lg-none p-2">
           <span className="fs-7 mb-0 align-bottom">提案工作室</span>
-          <button className="btn btn-primary btn-base rounded-3 border-0 fw-bolder dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <button className="btn btn-primary btn-base rounded-3 fw-bolder dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             個人資料管理
           </button>
           <ul className="dropdown-menu">
@@ -113,20 +113,20 @@ export default function Sidebar() {
               </NavLink>
               {project && (
                 <div className="d-flex">
-                  <div className="border-end border-primary-1 ms-6"></div>
-                  <ul className="list-unstyled">
-                    <li>
-                      <NavLink to={`/admin/${id}/intro`} className="btn btn-outline-light btn-base border-0 d-block py-2 px-8">
+                  <div className="border-end border-primary-1 ms-6 me-2"></div>
+                  <ul className="list-unstyled w-100 me-6">
+                    <li className="py-1">
+                      <NavLink to={`/admin/${id}/intro`} className="btn btn-outline-light btn-base border-0 w-100 text-start">
                         專案編輯
                       </NavLink>
                     </li>
-                    <li>
-                      <NavLink to={`/admin/${id}/adminAnsComment`} className="btn btn-outline-light btn-base border-0 d-block py-2 px-8">
+                    <li className="py-1">
+                      <NavLink to={`/admin/${id}/adminAnsComment`} className="btn btn-outline-light btn-base border-0 w-100 text-start">
                         回覆留言
                       </NavLink>
                     </li>
-                    <li>
-                      <NavLink to={`/admin/${id}/adminChart`} className="btn btn-outline-light btn-base border-0 d-block py-2 px-8">
+                    <li className="py-1">
+                      <NavLink to={`/admin/${id}/adminChart`} className="btn btn-outline-light btn-base border-0 w-100 text-start">
                         數據分析
                       </NavLink>
                     </li>
@@ -141,15 +141,15 @@ export default function Sidebar() {
               </button>
               {media && (
                 <div className="d-flex">
-                  <div className="border-end border-primary-1 ms-6"></div>
-                  <ul className="list-unstyled">
+                  <div className="border-end border-primary-1 ms-6 me-2"></div>
+                  <ul className="list-unstyled w-100 me-6">
                     <li>
-                      <NavLink to="/admin/adminMedia" className="btn btn-outline-light btn-base border-0 d-block py-2 px-8">
+                      <NavLink to="/admin/adminMedia" className="btn btn-outline-light btn-base border-0 w-100 text-start">
                         影音庫
                       </NavLink>
                     </li>
                     <li>
-                      <NavLink to="/admin/adminUpload" className="btn btn-outline-light btn-base border-0 d-block py-2 px-8">
+                      <NavLink to="/admin/adminUpload" className="btn btn-outline-light btn-base border-0 w-100 text-start">
                         上傳影音
                       </NavLink>
                     </li>
@@ -157,7 +157,7 @@ export default function Sidebar() {
                 </div>
               )}
             </li>
-            <li className="mb-3">
+            <li>
               <NavLink to="/" className="btn btn-outline-light btn-base border-0 d-flex align-items-center">
                 <span className="material-symbols-outlined fs-7 me-3">exit_to_app</span>
                 <span>離開工作室</span>
