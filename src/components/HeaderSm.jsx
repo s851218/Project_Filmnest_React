@@ -55,7 +55,7 @@ export default function HeaderSm() {
       <div className="py-3 d-flex justify-content-between container">
         <div>
           <Link className="me-3" onClick={(e)=>handleReturnPage(e)}>
-            <img src="close_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="close" style={{ width: "20px" }} />
+            <img src="close_white.png" alt="close" style={{ width: "20px" }} />
           </Link>
           <Link to="/">
             <img src="https://github.com/s851218/Project-FilmNest/blob/main/assets/images/logo.png?raw=true" alt="logo" />

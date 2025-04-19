@@ -98,15 +98,15 @@ export default function Login() {
               </div>
               <div className="mb-10">
                 <button type="button" className="btn btn-info text-light w-100 rounded-pill fw-bolder mb-5 py-2" style={{backgroundColor: "#1877F2"}}>
-                  <img src="46c3528958e7f331d055e6b735d0d032.png" alt="fb" className="me-2 " style={{ width: "24px", height: "24px" }} /> 
+                  <img src="Facebook.png" alt="fb" className="me-2 " style={{ width: "24px", height: "24px" }} /> 
                   使用 facebook 帳號繼續
                 </button>
                 <button type="button" className="btn btn-success w-100 rounded-pill fw-bolder mb-5 py-2" style={{backgroundColor: "#4CC764"}}>
-                  <img src="6c2c184012a38a8dbf129cae0d16b308.png" alt="Line" className="me-2 " style={{ width: "24px", height: "24px" }} />
+                  <img src="Line.png" alt="Line" className="me-2 " style={{ width: "24px", height: "24px" }} />
                   使用 Line 帳號繼續
                 </button>
                 <button type="button" className="btn btn-light w-100 rounded-pill fw-bolder mb-5 py-2" style={{backgroundColor: "#FFF"}}>
-                  <img src="a0b4a34ebb9bf63926751b620f06967d.png" alt="Google" className="me-2 " style={{ width: "24px", height: "24px" }} />
+                  <img src="Google.png" alt="Google" className="me-2 " style={{ width: "24px", height: "24px" }} />
                   使用 Google 帳號繼續
                 </button>
               </div>
