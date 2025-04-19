@@ -8,25 +8,13 @@ function ModalComponent({
   isModalOpen,
   setIsModalOpen,
   modalType,
-  totalPrice,
+  prices,
   handleBonusCheck,
   handleBonusReset,
   children,
 }) {
 
-  ModalComponent.propTypes = {
-    modalRef : PropTypes.shape({
-      current: PropTypes.any
-    }),
-    isModalOpen : PropTypes.bool,
-    setIsModalOpen : PropTypes.func,
-    modalType : PropTypes.string,
-    totalPrice : PropTypes.number,
-    handleBonusCheck : PropTypes.func,
-    handleBonusReset : PropTypes.func,
-    children : PropTypes.any,
-  }
-  
+ 
   useEffect(() => {    
     // 建立Modal實例
     new Modal(modalRef.current , {
@@ -88,7 +76,7 @@ function ModalComponent({
                 </div>
                 {children}
                 <div className="bg-primary-8 p-6 rounded-1">
-                  <p className="mb-0 text-center">總計：NT$ {totalPrice.toLocaleString()}</p>
+                  <p className="mb-0 text-center">總計：NT$ {(prices.originPrice + prices.bonus).toLocaleString()}</p>
                 </div>
               </>
             )}
@@ -112,3 +100,16 @@ function ModalComponent({
 }
 
 export default ModalComponent;
+
+ModalComponent.propTypes = {
+  modalRef : PropTypes.shape({
+    current: PropTypes.any
+  }),
+  isModalOpen : PropTypes.bool,
+  setIsModalOpen : PropTypes.func,
+  modalType : PropTypes.string,
+  prices : PropTypes.object,
+  handleBonusCheck : PropTypes.func,
+  handleBonusReset : PropTypes.func,
+  children : PropTypes.any,
+}

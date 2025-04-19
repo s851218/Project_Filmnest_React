@@ -2,7 +2,10 @@ import PropTypes from "prop-types"
 import { useImperativeHandle } from "react"
 import { useForm } from "react-hook-form"
 
-export default function BonusCalculator ({ bonus , setBonus , type , reference }) {
+export default function BonusCalculator ({ prices , setPrices , type , reference }) {
+  console.log(prices);
+  const { bonus } = prices
+  
   const { register , reset , handleSubmit } = useForm({defaultValues:{customized:""}})
 
   useImperativeHandle(reference,() => ({
@@ -11,21 +14,28 @@ export default function BonusCalculator ({ bonus , setBonus , type , reference }
 
   // 處理按鈕金額
   const handleAddBonus = (e) => {
-    const addBonus = Number(e.target.value)
-    const newBonus = bonus + addBonus
-    setBonus(newBonus)
+    const add = Number(e.target.value)
+    setPrices({
+      ...prices,
+      bonus: bonus + add,
+    })
   }
 
   // 處理重製
   const handleResetBonus = () => {
-    setBonus(0)
+    setPrices({
+      ...prices,
+      bonus: 0,
+    })
   }
   
   // 處理自訂金額
   const onsubmit = (data) => {
-    const addBonus = Number(data.customized)
-    const newBonus = bonus + addBonus
-    setBonus(newBonus)
+    const add = Number(data.customized)
+    setPrices({
+      ...prices,
+      bonus: bonus + add,
+    })
     reset()
   }
 
@@ -45,8 +55,8 @@ export default function BonusCalculator ({ bonus , setBonus , type , reference }
   )
 }
 BonusCalculator.propTypes = {
-  bonus: PropTypes.number, 
-  setBonus: PropTypes.func, 
+  prices: PropTypes.object, 
+  setPrices: PropTypes.func, 
   type: PropTypes.string, 
   reference: PropTypes.shape({ current: PropTypes.any }),
 };
