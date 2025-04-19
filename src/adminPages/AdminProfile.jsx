@@ -201,7 +201,7 @@ export default function AdminProfile() {
         </div>
       </div>
       <div className="container px-0 px-sm-3">
-        <div className="bg-white p-3 p-sm-10 rounded-0 rounded-sm-5 shadow">
+        <div className="bg-white p-3 p-sm-10 rounded-0 rounded-sm-2 shadow">
           <form className="row row-cols-md-2 row-cols-1">
             <div className="col-md-4 col mb-5">
               <img src={tempFormValue.studioImageUrl} alt={tempFormValue.groupName} />
