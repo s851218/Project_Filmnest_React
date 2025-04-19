@@ -3,10 +3,8 @@ import { useImperativeHandle } from "react"
 import { useForm } from "react-hook-form"
 
 export default function BonusCalculator ({ prices , setPrices , type , reference }) {
-  console.log(prices);
-  const { bonus } = prices
-  
   const { register , reset , handleSubmit } = useForm({defaultValues:{customized:""}})
+  const { bonus } = prices
 
   useImperativeHandle(reference,() => ({
     submit : handleSubmit(onsubmit),

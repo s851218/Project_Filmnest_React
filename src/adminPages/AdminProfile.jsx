@@ -46,7 +46,12 @@ export default function AdminProfile() {
         return defaultValues
 
       } catch (error) {
-        console.log(error)
+        if (error) {
+          Alert.fire({
+            icon: "error",
+            title: "取得資料失敗",
+          });
+        }
       }
     },
     mode: "onTouched"
@@ -78,7 +83,6 @@ export default function AdminProfile() {
   // 處理更換圖片
   const handleFileChange = (event) => {
     const file = event.target.files[0]; //取目標files的內容
-    console.log(file);
     
     if (file) {
       const reader = new FileReader();
