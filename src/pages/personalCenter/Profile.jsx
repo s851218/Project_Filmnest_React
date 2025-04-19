@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import PersonalCenterSidebar from "../../components/PersonalCenterSidebar";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -113,10 +112,7 @@ export default function Profile() {
               <span className="material-symbols-outlined align-bottom fs-7">check</span>
             </button>
           </div>
-          <div className="bg-primary-8 rounded-lg-4 d-flex flex-column flex-lg-row align-items-center p-3 p-lg-6 p-xl-10">
-            <div className="d-block d-lg-none w-100 mb-5">
-              <PersonalCenterSidebar />
-            </div>
+          <div className="bg-primary-8 rounded-lg-2 d-flex flex-column flex-lg-row align-items-center p-3 p-lg-6 p-xl-10">
             <div className="me-lg-5 me-xl-11">
               <div className="mb-3">
                 <div style={{ width: "280px", height: "280px" }} className="mb-5">

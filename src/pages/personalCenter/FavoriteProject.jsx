@@ -2,7 +2,6 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Card from "../../components/Card";
-import PersonalCenterSidebar from "../../components/PersonalCenterSidebar";
 import { Helmet } from "react-helmet-async";
 import GrayScreenLoading from "../../components/GrayScreenLoading";
 import { Alert } from "../../js/customSweetAlert";
@@ -46,9 +45,6 @@ export default function FavoriteProject() {
       </Helmet>
 
       <div className="container container-lg">
-        <div className="d-block d-lg-none w-100 mb-5 bg-primary-8">
-          <PersonalCenterSidebar />
-        </div>
         <div className="row row-lg">
           <h1 className="fs-6 mb-5">收藏專案</h1>
           <Card projects={favoriteProjects} isSwiper={false} isDelete={true} getData={getFavoriteProjects} />

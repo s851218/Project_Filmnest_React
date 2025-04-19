@@ -9,7 +9,8 @@ export default function PersonalCenterSidebar() {
 
   return (
     <>
-      <div className="d-none d-lg-block">
+    <div className="row">
+      <div className="col d-none d-lg-block bg-primary-8 rounded-2">
         <nav>
           <div className="d-flex justify-content-center align-items-center mb-8 mt-10">
             <img
@@ -23,7 +24,7 @@ export default function PersonalCenterSidebar() {
             <li className="mb-3">
               <NavLink
                 to="/personalCenter/profile"
-                className="btn btn-outline-light btn-main border-0 rounded-3 d-flex align-items-center"
+                className="btn btn-outline-light btn-main border-0 rounded-2 d-flex align-items-center"
               >
                 <span className="material-symbols-outlined fs-7 me-3">
                   manage_accounts
@@ -34,7 +35,7 @@ export default function PersonalCenterSidebar() {
             <li className="mb-3">
               <NavLink
                 to="/personalCenter/favoriteProject"
-                className="btn btn-outline-light btn-main border-0 rounded-3 d-flex align-items-center"
+                className="btn btn-outline-light btn-main border-0 rounded-2 d-flex align-items-center"
               >
                 <span className="material-symbols-outlined fs-7 me-3">
                   favorite
@@ -45,7 +46,7 @@ export default function PersonalCenterSidebar() {
             <li className="mb-3">
               <NavLink
                 to="/personalCenter/orderRecords/orderRecordsAll"
-                className="btn btn-outline-light btn-main border-0 rounded-3 d-flex align-items-center"
+                className="btn btn-outline-light btn-main border-0 rounded-2 d-flex align-items-center"
               >
                 <span className="material-symbols-outlined fs-7 me-3">
                   receipt_long
@@ -56,7 +57,7 @@ export default function PersonalCenterSidebar() {
             <li className="mb-3">
               <NavLink
                 to="/personalCenter/favoriteVideo"
-                className="btn btn-outline-light btn-main border-0 rounded-3 d-flex align-items-center"
+                className="btn btn-outline-light btn-main border-0 rounded-2 d-flex align-items-center"
               >
                 <span className="material-symbols-outlined fs-7 me-3">
                   movie
@@ -67,7 +68,7 @@ export default function PersonalCenterSidebar() {
             <li className="mb-3">
               <NavLink
                 to="/personalCenter/viewRecords"
-                className="btn btn-outline-light btn-main border-0 rounded-3 d-flex align-items-center"
+                className="btn btn-outline-light btn-main border-0 rounded-2 d-flex align-items-center"
               >
                 <span className="material-symbols-outlined fs-7 me-3">
                   subscriptions
@@ -78,7 +79,7 @@ export default function PersonalCenterSidebar() {
             <li className="mb-3">
               <NavLink
                 to="/"
-                className="btn btn-outline-light btn-main border-0 rounded-3 d-flex align-items-center"
+                className="btn btn-outline-light btn-main border-0 rounded-2 d-flex align-items-center"
               >
                 <span className="material-symbols-outlined fs-7 me-3">
                   exit_to_app
@@ -89,7 +90,7 @@ export default function PersonalCenterSidebar() {
           </ul>
         </nav>
       </div>
-      <div className="container d-lg-none py-3">
+      <div className="d-lg-none bg-primary-8 py-3">
         <div className="d-flex justify-content-between align-item-center d-lg-none">
           <span className="fs-7 mb-0 align-bottom">會員中心</span>
           <button
@@ -173,6 +174,7 @@ export default function PersonalCenterSidebar() {
           </ul>
         </div>
       </div>
+    </div>
     </>
   );
 }
