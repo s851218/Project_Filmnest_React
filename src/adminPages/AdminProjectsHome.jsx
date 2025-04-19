@@ -205,7 +205,7 @@ export default function AdminProjectsHome() {
                       <th scope="row">
                         <div className="row align-items-center">
                           <div className="col-md-4 col-5">
-                            <img src={project.projectImage} className="rounded-2" alt={project.projectTitle} />
+                            <img src={project.projectImage} className="rounded-1" alt={project.projectTitle} />
                           </div>
                           <div className="col-md-8 col-7 text-warp">
                             <h3 className="fs-xl-7 fs-base fw-bolder multiline-ellipsis mb-0 mb-md-2">{project.projectTitle}</h3>
