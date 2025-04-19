@@ -219,7 +219,7 @@ export default function AdminAnsComment() {
           <h1 className="fs-6 lh-2">回覆留言</h1>
           {/* 排序按鈕 */}
           <div className="d-flex justify-content-end mb-4">
-            <button className="btn btn-outline-secondary d-flex align-items-center gap-1" onClick={toggleSortOrder} disabled={loading}>
+            <button className="btn btn-outline-secondary btn-base d-flex align-items-center gap-1" onClick={toggleSortOrder} disabled={loading}>
               <i className={`bi bi-sort-${sortOrder === "desc" ? "down" : "up"}`}></i>
               {sortOrder === "desc" ? "由新到舊" : "由舊到新"}
             </button>

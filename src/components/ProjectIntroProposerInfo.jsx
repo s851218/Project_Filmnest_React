@@ -89,7 +89,7 @@ export default function ProjectIntroProposerInfo({ studioId }) {
                 </a>
               </li>
             </ul>
-            <Link to="aboutStudio" className="btn btn-secondary fs-sm ms-auto">
+            <Link to="aboutStudio" className="btn btn-secondary btn-base fs-sm ms-auto">
               聯絡我們
             </Link>
           </section>

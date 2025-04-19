@@ -21,16 +21,16 @@ export default function HeaderSmSearch() {
   };
   return (
     <>
-      <div className="mb-3 d-flex justify-content-between align-items-center">
+      <div className="py-3 d-flex justify-content-between align-items-center container">
         <div>
           <Link
-            className="p-0 me-3"
+            className="me-3"
             onClick={() => {
               handleSearchToggle();
               navigate(-1);
             }}
           >
-            <img src="close_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="logo" style={{ width: "20px" }} />
+            <img src="close_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="close" style={{ width: "20px" }} />
           </Link>
         </div>
         <div className="w-100">

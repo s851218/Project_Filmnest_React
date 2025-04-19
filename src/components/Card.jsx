@@ -64,7 +64,7 @@ export default function Card({ projects, isSwiper, isDelete, getData }) {
           {isDelete && (
             <button
               onClick={() => handleDelete(project.id, project.projectTitle)}
-              className="btn btn-danger fs-sm"
+              className="btn btn-danger btn-base fs-sm"
               style={{
                 position: "absolute",
                 top: "0",

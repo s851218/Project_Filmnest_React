@@ -163,7 +163,7 @@ export default function Faq() {
   return (
     <>
       {isAdd ? (
-        <form className="bg-white shadow p-5 rounded-3 mb-5">
+        <form className="bg-white shadow p-5 rounded-2 mb-5">
           <div className="mb-3">
             <label htmlFor="title" className="form-label">
               標題
@@ -199,10 +199,10 @@ export default function Faq() {
             <div className="invalid-feedback text-danger">{errors?.content?.message}</div>
           </div>
           <div className="d-flex justify-content-end">
-            <button type="button" className="btn btn-primary rounded px-4 py-2 me-3" onClick={() => handleCreate()}>
+            <button type="button" className="btn btn-primary btn-base rounded me-3" onClick={() => handleCreate()}>
               確認送出
             </button>
-            <button type="button" className="btn btn-primary rounded px-4 py-2" onClick={() => setIsAdd(false)}>
+            <button type="button" className="btn btn-primary btn-base rounded" onClick={() => setIsAdd(false)}>
               取消
             </button>
           </div>
@@ -220,7 +220,7 @@ export default function Faq() {
             <Helmet>
               <title>常見問題編輯</title>
             </Helmet>
-            <form className="bg-white shadow p-5 rounded-3 mb-5" key={faq.id}>
+            <form className="bg-white shadow p-5 rounded-2 mb-5" key={faq.id}>
               <div className="mb-3">
                 {!isEditIng && (
                   <div className="d-flex justify-content-between align-items-center">
@@ -272,10 +272,10 @@ export default function Faq() {
               <div className="d-flex justify-content-end">
                 {isEditIng ? (
                   <>
-                    <button type="submit" className="btn btn-primary rounded px-4 py-2 me-3" onClick={updateHandleSubmit((data) => onPutSubmit(data, faq.id))}>
+                    <button type="submit" className="btn btn-primary btn-base rounded me-3" onClick={updateHandleSubmit((data) => onPutSubmit(data, faq.id))}>
                       確認
                     </button>
-                    <button type="button" className="btn btn-primary rounded px-4 py-2" onClick={() => setIsEdit(null)}>
+                    <button type="button" className="btn btn-primary btn-base rounded" onClick={() => setIsEdit(null)}>
                       取消
                     </button>
                   </>
@@ -283,7 +283,7 @@ export default function Faq() {
                   <>
                     <button
                       type="button"
-                      className="btn btn-primary rounded px-4 py-2 me-3"
+                      className="btn btn-primary btn-base rounded me-3"
                       onClick={(e) => {
                         e.preventDefault();
                         setIsEdit(faq.id);
@@ -295,7 +295,7 @@ export default function Faq() {
                     >
                       編輯
                     </button>
-                    <button type="button" className="btn btn-primary rounded px-4 py-2" onClick={() => handleDelFaqData(faq.id)}>
+                    <button type="button" className="btn btn-primary btn-base rounded" onClick={() => handleDelFaqData(faq.id)}>
                       刪除
                     </button>
                   </>

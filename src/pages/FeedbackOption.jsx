@@ -245,7 +245,7 @@ export default function FeedbackOption() {
                   ))}
                 </tbody>
               </table>
-              <button type="button" className="btn btn-secondary align-self-end" onClick={() => handleOpenModal("change")}>
+              <button type="button" className="btn btn-secondary btn-base align-self-end" onClick={() => handleOpenModal("change")}>
                 更改方案
                 <span className="material-symbols-outlined ms-1 align-bottom">undo</span>
               </button>
@@ -326,7 +326,7 @@ export default function FeedbackOption() {
                   <p className="mb-1">總計金額</p>
                   <h4 className="fs-6 fw-bolder mb-1">NT$ {totalPrice.toLocaleString()}</h4>
                 </div>
-                <button type="button" className="btn btn-primary ms-auto w-100 rounded-1 fw-bolder p-3" onClick={handleSubmit(onSubmit)}>
+                <button type="button" className="btn btn-primary btn-main ms-auto w-100 rounded-1 fw-bolder" onClick={handleSubmit(onSubmit)}>
                   下一步
                 </button>
               </div>
@@ -343,10 +343,10 @@ export default function FeedbackOption() {
             <p className="total-amount fs-7 mb-0">NT$ {totalPrice.toLocaleString()}</p>
           </div>
           <div className="amount-confirm-mobile d-flex align-items-center gap-3">
-            <button type="button" className="btn btn-secondary align-self-end" onClick={() => handleOpenModal("bonus")}>
+            <button type="button" className="btn btn-secondary btn-base align-self-end" onClick={() => handleOpenModal("bonus")}>
               我要加碼
             </button>
-            <button type="button" className="btn btn-primary ms-auto" onClick={handleSubmit(onSubmit)}>
+            <button type="button" className="btn btn-primary btn-base ms-auto" onClick={handleSubmit(onSubmit)}>
               下一步
             </button>
           </div>

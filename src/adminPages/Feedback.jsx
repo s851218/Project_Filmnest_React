@@ -265,10 +265,10 @@ function AdminFeedbackForm() {
 
   return (
     <>
-      <div className="card shadow rounded-0 rounded-sm-3 py-4 px-3 p-sm-6 bg-white text-primary-8 border-0 mb-sm-6 mb-lg-0">
+      <div className="card shadow rounded-0 rounded-sm-2 py-4 px-3 p-sm-6 bg-white text-primary-8 border-0 mb-sm-6 mb-lg-0">
         <div className="card-header p-0 d-flex justify-content-between align-items-center border-0 mb-5">
           <h4 className="mb-0 fw-bold">回饋方案設定</h4>
-          <button type="button" className="btn btn-primary d-flex justify-content-center align-items-center" onClick={addNewChoice} disabled={!allFieldsValid}>
+          <button type="button" className="btn btn-primary btn-base d-flex justify-content-center align-items-center" onClick={addNewChoice} disabled={!allFieldsValid}>
             <i className="bi bi-plus-circle me-2"></i>
             新增回饋項目
           </button>
@@ -434,7 +434,7 @@ function AdminFeedbackForm() {
             {/* 表單操作按鈕區 */}
             <div className="d-flex justify-content-center align-items-center mt-4 pt-3 border-top">
               <div className="d-flex gap-2 w-lg-50 w-sm-75 w-100 justify-content-center">
-                <button type="button" className="btn btn-primary d-flex justify-content-center align-items-center w-lg-50 w-sm-75 w-100" onClick={addNewChoice} disabled={!allFieldsValid}>
+                <button type="button" className="btn btn-primary btn-main d-flex justify-content-center align-items-center w-lg-50 w-sm-75 w-100" onClick={addNewChoice} disabled={!allFieldsValid}>
                   <i className="bi bi-plus-circle me-2"></i>
                   新增回饋項目
                 </button>

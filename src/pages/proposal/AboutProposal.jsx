@@ -101,7 +101,7 @@ export default function AboutProposal() {
           </ul>
           <Link
             to="/termsOfUse"
-            className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto"
+            className="btn btn-primary btn-main fw-bolder w-100 w-md-auto"
           >
             我要提案
           </Link>

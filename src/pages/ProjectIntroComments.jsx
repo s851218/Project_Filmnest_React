@@ -231,7 +231,7 @@ export default function ProjectIntroComments() {
         <div className="row">
           <div className="col-lg-9 col-md-10 mx-auto">
             <div className="d-flex mb-4">
-              <button className="btn btn-secondary d-flex align-items-center gap-1" onClick={toggleSortOrder}>
+              <button className="btn btn-secondary btn-base d-flex align-items-center gap-1" onClick={toggleSortOrder}>
                 <i className={`bi bi-sort-${sortOrder === "desc" ? "down" : "up"}`}></i>
                 {sortOrder === "desc" ? "由新到舊" : "由舊到新"}
               </button>
@@ -347,7 +347,7 @@ export default function ProjectIntroComments() {
               <div className="d-flex justify-content-end p-4">
                 <button
                   title="我要留言"
-                  className={`btn btn-success floating-button ${showButton ? "show" : "hide"}`}
+                  className={`btn btn-success btn-base floating-button ${showButton ? "show" : "hide"}`}
                   // className="btn btn-success"
                   type="button"
                   onClick={() => {

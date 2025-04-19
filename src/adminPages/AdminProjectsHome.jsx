@@ -105,7 +105,7 @@ export default function AdminProjectsHome() {
 
       <div className="container pb-5">
         <h2 className="fs-6 mb-5">專案總覽</h2>
-        <div className="bg-white rounded-5 shadow p-4">
+        <div className="bg-white rounded-2 shadow p-4">
           {/* 舊版 */}
           {/* <div className="table-responsive">
             <table className="table align-middle border border-primary-9 mb-0  table-borderless">

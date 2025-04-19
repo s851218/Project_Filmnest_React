@@ -370,7 +370,7 @@ export default function CreatePropsal() {
           </div>
         </form>
 
-        <button type="button" className="btn btn-primary fw-bolder py-3 px-5 w-100 w-md-auto" onClick={handleSubmit(onSubmit)}>
+        <button type="button" className="btn btn-primary btn-main fw-bolder w-100 w-md-auto" onClick={handleSubmit(onSubmit)}>
           送出
         </button>
       </div>

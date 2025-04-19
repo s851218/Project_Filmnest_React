@@ -41,7 +41,7 @@ export default function PaymentAside ({
             </ul>
           </div>
           <div className="card-footer p-4">
-            <button type="button" className="btn btn-primary w-100 rounded-1 fw-bolder p-3" onClick={handleFormsSubmit}>確認付款</button>
+            <button type="button" className="btn btn-primary btn-main w-100 rounded-1 fw-bolder" onClick={handleFormsSubmit}>確認付款</button>
           </div>
         </div>
       </div>

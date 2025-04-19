@@ -108,7 +108,7 @@ export default function Profile() {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="justify-content-between align-items-center mb-7 d-none d-lg-flex">
             <h1 className="fs-6">編輯個人資料</h1>
-            <button className="d-flex align-items-center btn btn-primary py-3 px-4">
+            <button className="d-flex align-items-center btn btn-primary btn-main pe-4">
               <span className="fs-sm fw-bolder me-2">儲存</span>
               <span className="material-symbols-outlined align-bottom fs-7">check</span>
             </button>
@@ -123,7 +123,7 @@ export default function Profile() {
                   <img src={file} alt="" className="object-fit-cover h-100" />
                 </div>
                 <input type="file" id="inputFile" className="d-none" onChange={handleFileChange} />
-                <label htmlFor="inputFile" className="btn btn-primary-9 border d-flex justify-content-center align-items-center w-100">
+                <label htmlFor="inputFile" className="btn btn-primary-9 btn-base border d-flex justify-content-center align-items-center w-100">
                   <span>選擇檔案</span>
                   <span className="material-symbols-outlined ms-1 fs-7">folder</span>
                 </label>
@@ -196,7 +196,7 @@ export default function Profile() {
                   {errors?.bio?.message && <div className="invalid-feeback text-danger">{errors.bio.message}</div>}
                 </div>
                 <div className="col-12">
-                  <button type="submit" className="btn btn-primary py-3 px-4 d-block d-lg-none w-100 mt-4 rounded">
+                  <button type="submit" className="btn btn-primary btn-main pe-4 d-block d-lg-none w-100 mt-4 rounded">
                     <span className="fs-sm fw-bolder me-2">儲存</span>
                     <span className="material-symbols-outlined align-bottom fs-7">check</span>
                   </button>

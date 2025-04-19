@@ -134,8 +134,8 @@ export default function PaymentComplete () {
 
               {/* <!-- 按鈕區塊 --> */}
               <section className="w-lg-50 w-md-75 w-100 mx-auto mt-auto">
-                <Link to="/" className="btn btn-secondary w-100 mb-2">回到首頁<i className="bi bi-house-door ms-1" /></Link>
-                <Link to="/projectExplore" className="btn btn-primary w-100 mb-4">繼續探索<i className="bi bi-arrow-right-circle ms-1" /></Link>
+                <Link to="/" className="btn btn-secondary btn-base w-100 mb-2">回到首頁<i className="bi bi-house-door ms-1" /></Link>
+                <Link to="/projectExplore" className="btn btn-primary btn-base w-100 mb-4">繼續探索<i className="bi bi-arrow-right-circle ms-1" /></Link>
               </section>
             </div>
           </div>

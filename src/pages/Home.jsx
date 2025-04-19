@@ -219,7 +219,7 @@ export default function Home() {
                       加入我們，讓你的創意被發現，讓更多故事成為現實。
                     </p>
                     <div className="mt-auto">
-                      <Link to="/" className="btn btn-primary fw-bolder py-3 px-5">
+                      <Link to="/" className="btn btn-primary btn-main fw-bolder">
                         我想贊助
                       </Link>
                     </div>
@@ -239,7 +239,7 @@ export default function Home() {
                         <h1 className="fs-6 fs-lg-xxl mb-3 mb-lg-6 justify-content-center justify-content-lg-start">{project.projectTitle}</h1>
                         <p className="fs-sm fs-lg-7 mb-8 mb-lg-15">{project.summary}</p>
                         <div className="mt-auto">
-                          <Link to={`/projects/projectId=${project.id}`} className="btn btn-primary fw-bolder py-3 px-5">
+                          <Link to={`/projects/projectId=${project.id}`} className="btn btn-primary btn-main fw-bolder">
                             我想贊助
                           </Link>
                         </div>
@@ -392,7 +392,7 @@ export default function Home() {
                 <h3 className="fs-base fs-lg-6 mb-4 mb-lg-8 ps-3 ps-lg-4 border-start border-4 border-white">開心工作室</h3>
                 <p className="fs-sm fs-lg-base mb-4 mb-lg-5 p-3 p-lg-5 bg-primary-9 rounded-3">成功募資電影的經驗讓我深刻理解了市場調研的重要性。了解目標觀眾和投資者的需求，並根據他們的期望來調整計劃，能夠大大提高募資成功的機會。有效的推廣和積極的社交媒體策略也非常重要，它們能夠幫助..</p>
 
-                <button type="button" className="btn btn-secondary w-100 w-lg-auto py-4 px-5 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                <button type="button" className="btn btn-secondary btn-main py-4 w-100 w-lg-auto d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal">
                   <h4 className="fs-base mb-0 mx-auto d-flex align-items-center">
                     完整查看
                     <span className="material-symbols-outlined fs-7 ps-2">arrow_forward</span>
@@ -429,7 +429,7 @@ export default function Home() {
                 <h3 className="fs-base fs-lg-6 mb-4 mb-lg-8 ps-3 ps-lg-4 border-start border-4 border-white">張先生</h3>
                 <p className="fs-sm fs-lg-base mb-4 mb-lg-5 p-3 p-lg-5 bg-primary-9 rounded-3">在電影募資過程中，我學到了如何將想法具體化並與投資者建立信任。關鍵在於準備周全的計劃書和展示影片，讓投資者能夠清晰理解項目的潛力和回報。同時，透明的溝通和積極的互動也是成功募資，...</p>
 
-                <button type="button" className="btn btn-secondary w-100 w-lg-auto py-4 px-5 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal2">
+                <button type="button" className="btn btn-secondary btn-main py-4 w-100 w-lg-auto d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal2">
                   <h4 className="fs-base mb-0 mx-auto d-flex align-items-center">
                     完整查看
                     <span className="material-symbols-outlined fs-7 ps-2">arrow_forward</span>
@@ -466,7 +466,7 @@ export default function Home() {
                 <h3 className="fs-base fs-lg-6 mb-4 mb-lg-8 ps-3 ps-lg-4 border-start border-4 border-white">林先生</h3>
                 <p className="fs-sm fs-lg-base mb-4 mb-lg-5 p-3 p-lg-5 bg-primary-9 rounded-3">成功募資電影的經驗讓我深刻體會到創意與實踐的結合至關重要。精心策劃的影片提案和吸引人的預告片能夠有效地展示項目的魅力，而建立專業且有經驗的團隊則增強了投資者的信心。透過與投資者...</p>
 
-                <button type="button" className="btn btn-secondary w-100 w-lg-auto py-4 px-5 d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal3">
+                <button type="button" className="btn btn-secondary btn-main py-4 w-100 w-lg-auto d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#exampleModal3">
                   <h4 className="fs-base mb-0 mx-auto d-flex align-items-center">
                     完整查看
                     <span className="material-symbols-outlined fs-7 ps-2">arrow_forward</span>
@@ -516,7 +516,7 @@ export default function Home() {
             </div>
           </div>
           <div className="text-center position-relative z-1">
-            <Link to="/aboutProposal" className="btn btn-primary py-3 px-5 fw-bolder">
+            <Link to="/aboutProposal" className="btn btn-primary btn-main fw-bolder">
               我要提案
             </Link>
           </div>

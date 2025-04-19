@@ -96,13 +96,13 @@ function ModalComponent({
           </div>
           { modalType === "bonus" && (
             <div className="modal-footer">
-              <button type="button" className="btn btn-secondary" onClick={handleBonusReset}>取消</button>
-              <button type="button" className="btn btn-primary" onClick={handleBonusCheck}>確認加碼</button>
+              <button type="button" className="btn btn-secondary btn-base" onClick={handleBonusReset}>取消</button>
+              <button type="button" className="btn btn-primary btn-base" onClick={handleBonusCheck}>確認加碼</button>
             </div>
           )}
           { modalType === "check" && (
             <div className="modal-footer">
-              <button type="button" className="btn btn-primary w-100 rounded-1 fw-bolder p-3" onClick={() => setIsModalOpen(false)}>確認訂單</button>
+              <button type="button" className="btn btn-primary btn-main w-100 rounded-1 fw-bolder" onClick={() => setIsModalOpen(false)}>確認訂單</button>
             </div>
           )}
         </div>

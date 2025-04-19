@@ -133,7 +133,7 @@ export default function OrderRecordsAll() {
                 </th>
                 {/* <th scope="col" className="d-lg-none"></th> */}
                 <th scope="col" className="text-white">
-                  <button className="btn btn-light" onClick={() => setSortOrderData((prev) => !prev)}>
+                  <button className="btn btn-light btn-base" onClick={() => setSortOrderData((prev) => !prev)}>
                     {sortOrderData ? (
                       <>
                         <i className="bi bi-sort-up"></i>
@@ -169,11 +169,11 @@ export default function OrderRecordsAll() {
                   <td className="nowrap-table text-white">
                     <div className="d-flex flex-column">
                       {order.canCancel && (
-                        <button type="button" className="btn btn-danger mb-2" onClick={() => handleCancelOrder(order)}>
+                        <button type="button" className="btn btn-danger btn-base mb-2" onClick={() => handleCancelOrder(order)}>
                           訂單取消
                         </button>
                       )}
-                      <button type="button" className="btn btn-primary" onClick={() => navigate(`/personalCenter/orderRecords/${order.id}`)}>
+                      <button type="button" className="btn btn-primary btn-base" onClick={() => navigate(`/personalCenter/orderRecords/${order.id}`)}>
                         訂單詳細
                       </button>
                     </div>

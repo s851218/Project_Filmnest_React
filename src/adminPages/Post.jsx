@@ -174,7 +174,7 @@ export default function Post() {
         <title>最新消息編輯</title>
       </Helmet>
       {isAdd ? (
-        <form className="bg-white shadow p-5 rounded-3 mb-5" onSubmit={handleSubmit(onSubmit)}>
+        <form className="bg-white shadow p-5 rounded-2 mb-5" onSubmit={handleSubmit(onSubmit)}>
           <div className="mb-3">
             <label htmlFor="title" className="form-label">
               標題
@@ -237,10 +237,10 @@ export default function Post() {
             {errors.schedule && <div className="text-danger">{errors.schedule.message}</div>}
           </div>
           <div className="d-flex justify-content-end">
-            <button type="submit" className="btn btn-primary rounded px-4 py-2 me-3">
+            <button type="submit" className="btn btn-primary btn-base rounded me-3">
               確認送出
             </button>
-            <button type="button" className="btn btn-primary rounded px-4 py-2" onClick={() => setIsAdd(false)}>
+            <button type="button" className="btn btn-primary btn-base rounded" onClick={() => setIsAdd(false)}>
               取消
             </button>
           </div>
@@ -254,7 +254,7 @@ export default function Post() {
         const isEditIng = isEdit === post.id;
 
         return (
-          <form className="bg-white shadow p-5 rounded-3 mb-5" key={post.id}>
+          <form className="bg-white shadow p-5 rounded-2 mb-5" key={post.id}>
             <div className="mb-3">
               {!isEditIng && (
                 <div className="d-flex justify-content-between align-items-center">
@@ -305,10 +305,10 @@ export default function Post() {
             <div className="d-flex justify-content-end">
               {isEditIng ? (
                 <>
-                  <button type="submit" className="btn btn-primary rounded px-4 py-2 me-3" onClick={updateHandleSubmit((data) => onPutSubmit(data, post.id))}>
+                  <button type="submit" className="btn btn-primary btn-base rounded me-3" onClick={updateHandleSubmit((data) => onPutSubmit(data, post.id))}>
                     確認
                   </button>
-                  <button type="button" className="btn btn-primary rounded px-4 py-2" onClick={() => setIsEdit(null)}>
+                  <button type="button" className="btn btn-primary btn-base rounded" onClick={() => setIsEdit(null)}>
                     取消
                   </button>
                 </>
@@ -316,7 +316,7 @@ export default function Post() {
                 <>
                   <button
                     type="button"
-                    className="btn btn-primary rounded px-4 py-2 me-3"
+                    className="btn btn-primary btn-base rounded me-3"
                     onClick={(e) => {
                       e.preventDefault();
                       setIsEdit(post.id);
@@ -328,7 +328,7 @@ export default function Post() {
                   >
                     編輯
                   </button>
-                  <button type="button" className="btn btn-primary rounded px-4 py-2" onClick={() => handleDelPostData(post.id)}>
+                  <button type="button" className="btn btn-primary btn-base rounded" onClick={() => handleDelPostData(post.id)}>
                     刪除
                   </button>
                 </>

@@ -300,26 +300,26 @@ export default function OrderRecordsDetail() {
             {orderData.paymentStatus === 1 && <p className="mb-3">付款時間：{getTime(orderData.paymentTime)}</p>}
             {orderData.paymentStatus === 1 && <p className="mb-3">出貨狀態：{orderData.shippingStatus === 0 ? "未出貨" : orderData.shippingStatus === 1 ? "已出貨" : "已退貨"}</p>}
             <div className="d-flex flex-column flex-lg-row justify-content-between align-items-center">
-              <button type="button" className="btn btn-outline-light w-100 w-lg-auto mb-2 mb-lg-0" onClick={() => navigate(-1)}>
+              <button type="button" className="btn btn-outline-light btn-base w-100 w-lg-auto mb-2 mb-lg-0" onClick={() => navigate(-1)}>
                 返回
               </button>
               {orderData.canCancel ? (
                 <>
-                  <button type="button" className="btn btn-outline-light w-100 w-lg-auto mb-2 mb-lg-0" onClick={() => handleCancelOrder(orderData)}>
+                  <button type="button" className="btn btn-outline-light btn-base w-100 w-lg-auto mb-2 mb-lg-0" onClick={() => handleCancelOrder(orderData)}>
                     取消訂單
                   </button>
                   {orderData.orderStatus === 0 && (
-                    <button type="button" className="btn btn-outline-light w-100 w-lg-auto" onClick={() => navigate(`/paymentInfo/${orderData.orderId}`)}>
+                    <button type="button" className="btn btn-outline-light btn-base w-100 w-lg-auto" onClick={() => navigate(`/paymentInfo/${orderData.orderId}`)}>
                       前往付款
                     </button>
                   )}
                 </>
               ) : orderData.canRefund ? (
-                <button type="button" className="btn btn-outline-light w-100 w-lg-auto " onClick={() => handleRefund(orderData)}>
+                <button type="button" className="btn btn-outline-light btn-base w-100 w-lg-auto " onClick={() => handleRefund(orderData)}>
                   申請退款
                 </button>
               ) : orderData.canReturn ? (
-                <button type="button" className="btn btn-outline-light w-100 w-lg-auto " onClick={() => handleReturn(orderData)}>
+                <button type="button" className="btn btn-outline-light btn-base w-100 w-lg-auto " onClick={() => handleReturn(orderData)}>
                   申請退貨
                 </button>
               ) : (

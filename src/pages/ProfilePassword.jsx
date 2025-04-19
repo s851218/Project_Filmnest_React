@@ -50,8 +50,9 @@ export default function ProfilePassword() {
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div className="mb-5">
-                <label htmlFor="">輸入舊密碼</label>
+                <label className="mb-1" htmlFor="password">輸入舊密碼</label>
                 <input
+                  id="password"
                   className={`form-control ${errors.oldPassword && "is-invalid"}`}
                   type="password"
                   {...register("oldPassword", {
@@ -64,8 +65,9 @@ export default function ProfilePassword() {
                 {errors.oldPassword && <div className="invalid-feedback text-danger">{errors.oldPassword.message}</div>}
               </div>
               <div className="mb-5">
-                <label htmlFor="">輸入新密碼</label>
+                <label className="mb-1" htmlFor="newPassword">輸入新密碼</label>
                 <input
+                  id="newPassword"
                   className={`form-control ${errors.newPassword && "is-invalid"}`}
                   type="password"
                   placeholder="請輸入密碼(至少8個字元)"
@@ -83,8 +85,9 @@ export default function ProfilePassword() {
                 {errors.newPassword && <div className="invalid-feedback text-danger">{errors.newPassword.message}</div>}
               </div>
               <div className="mb-10">
-                <label htmlFor="">再次輸入新密碼</label>
+                <label className="mb-1" htmlFor="checkPassword">再次輸入新密碼</label>
                 <input
+                  id="checkPassword"
                   className={`form-control ${errors.checkPassword && "is-invalid"}`}
                   type="password"
                   {...register("checkPassword", {
@@ -98,8 +101,8 @@ export default function ProfilePassword() {
                 {errors.checkPassword && <div className="invalid-feedback text-danger">{errors.checkPassword.message}</div>}
               </div>
               <div>
-                <button className="btn btn-outline-light py-lg-3 mb-2 w-100 rounded-3">儲存</button>
-                <button type="button" className="btn btn-outline-light py-lg-3 w-100 rounded-3" onClick={() => navigate(-1)}>
+                <button className="btn btn-outline-light btn-main mb-2 w-100 rounded">儲存</button>
+                <button type="button" className="btn btn-outline-light btn-main w-100 rounded" onClick={() => navigate(-1)}>
                   返回
                 </button>
               </div>

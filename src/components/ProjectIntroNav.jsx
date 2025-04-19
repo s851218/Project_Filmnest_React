@@ -155,7 +155,7 @@ export default function ProjectIntroNav({ projectId }) {
               </button>
             </li>
             <li>
-              <Link to={`/feedbackPage/projectId=${projectId}`} className="btn btn-primary py-3 fw-bolder" style={{ width: 188 }}>
+              <Link to={`/feedbackPage/projectId=${projectId}`} className="btn btn-primary btn-main fw-bolder" style={{ width: 188 }}>
                 立即贊助
               </Link>
             </li>
@@ -217,7 +217,7 @@ export default function ProjectIntroNav({ projectId }) {
               </button>
             </li>
             <li>
-              <Link to={`/feedbackPage/projectId=${projectId}`} className="btn btn-primary py-3 fw-bolder" style={{ width: 291 }}>
+              <Link to={`/feedbackPage/projectId=${projectId}`} className="btn btn-primary btn-main fw-bolder" style={{ width: 291 }}>
                 立即贊助
               </Link>
             </li>

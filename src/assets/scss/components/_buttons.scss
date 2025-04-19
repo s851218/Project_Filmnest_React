@@ -26,3 +26,11 @@
 .btn-secondary {
   @include button-variant($background: $primary-1000, $border: $white, $color: $white, $hover-background: $white, $hover-border: $white, $hover-color: $primary-1000, $active-background: $white, $active-border: $white, $active-color: $primary-1000, $disabled-background: $primary-1000, $disabled-border: $primary-600, $disabled-color: $primary-600);
 }
+
+.btn-base {
+  padding: 6px 12px;
+}
+
+.btn-main {
+  padding: 12px 20px;
+}

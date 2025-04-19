@@ -296,7 +296,7 @@ function FeedbackSwiper() {
                         <div className="mb-0 mt-auto">
                           <Link
                             to={`/feedbackOption/projectId=${params.projectId}&productId=${feedback.id}`}
-                            className={`btn btn-primary py-2 fw-bold w-100 ${
+                            className={`btn btn-primary btn-main fw-bold w-100 ${
                               params.productId === feedback.id ? "disabled" : ""
                             }`}
                           >

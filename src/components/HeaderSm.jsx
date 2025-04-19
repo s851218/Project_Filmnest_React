@@ -45,42 +45,41 @@ export default function HeaderSm() {
     }
     dispatch(setIsSearchOpen(!isSearchOpen));
   };
+  // 返回上一頁有問題，需點擊兩次
   const handleReturnPage = (e) => {
     e.preventDefault();
     navigate(-1);
   };
   return (
     <>
-      <div className="mb-3 d-flex justify-content-between">
+      <div className="py-3 d-flex justify-content-between container">
         <div>
-          <Link className="p-0 me-3" onClick={handleReturnPage}>
-            <img src="close_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="logo" style={{ width: "20px" }} />
+          <Link className="me-3" onClick={(e)=>handleReturnPage(e)}>
+            <img src="close_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="close" style={{ width: "20px" }} />
           </Link>
-          <Link className="p-0 me-12" to="/">
+          <Link to="/">
             <img src="https://github.com/s851218/Project-FilmNest/blob/main/assets/images/logo.png?raw=true" alt="logo" />
           </Link>
         </div>
-        <div>
-          <div className="p-0 me-12 nav-item ">
-            <div className="search-container">
-              <button
-                className={`search-icon ${isSearchOpen ? "d-none" : ""}`}
-                type="button"
-                onClick={() => {
-                  handleSearchToggle();
-                  navigate("/headerSmSearch");
-                }}
-              >
-                <span className="fw-bolder me-2 text-white">搜尋</span>
-                <span className="material-symbols-outlined text-white">search</span>
-              </button>
-            </div>
+        <div className="nav-item">
+          <div className="search-container">
+            <button
+              className={`search-icon ${isSearchOpen ? "d-none" : ""}`}
+              type="button"
+              onClick={() => {
+                handleSearchToggle();
+                navigate("/headerSmSearch");
+              }}
+            >
+              <span className="fw-bolder me-2 text-white">搜尋</span>
+              <span className="material-symbols-outlined text-white">search</span>
+            </button>
           </div>
         </div>
       </div>
       <ul className="nav flex-column">
         {profile.token ? (
-          <Link to="/headerSmSec" className="d-flex justify-content-between align-items-center fw-bolder py-3 px-5 btn btn-primary-8 border-0 border-bottom">
+          <Link to="/headerSmSec" className="d-flex justify-content-between align-items-center fw-bolder btn btn-primary-8 btn-main border-0 border-bottom">
             <div>
               <img src={profile.imageUrl} className="rounded-circle object-fit-cover" style={{ width: "40px", height: "40px" }} alt="" />
               <span className="ms-2">{profile.userName}</span>
@@ -90,11 +89,11 @@ export default function HeaderSm() {
             </div>
           </Link>
         ) : (
-          <Link to="/login" className="btn btn-primary-8 border-0 border-bottom fw-bolder py-3">
+          <Link to="/login" className="btn btn-primary-8 btn-main border-0 border-bottom fw-bolder">
             登入 / 註冊
           </Link>
         )}
-        <Link className="nav-item py-3 px-5 border-bottom" onClick={() => handleIsExpand()}>
+        <Link className="nav-item btn-main border-bottom" onClick={() => handleIsExpand()}>
           探索
         </Link>
         {isExpand.category && (
@@ -118,12 +117,12 @@ export default function HeaderSm() {
           </>
         )}
         {profile.hasStudio && (
-          <Link to="/admin/adminProfile" className={`nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder ${!profile.token && "d-none"}`}>
+          <Link to="/admin/adminProfile" className={`nav-item mt-3 btn btn-primary btn-main border-0 fw-bolder ${!profile.token ? "d-none" : ""}`}>
             工作室
           </Link>
         )}
-        <Link className="nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder">我要提案</Link>
-        <Link className="nav-item py-3 mt-3 btn btn-primary border-0 fw-bolder" onClick={handleLogout}>
+        <Link className="nav-item mt-3 btn btn-primary btn-main border-0 fw-bolder">我要提案</Link>
+        <Link className="nav-item mt-3 btn btn-primary btn-main border-0 fw-bolder" onClick={handleLogout}>
           登出
         </Link>
       </ul>

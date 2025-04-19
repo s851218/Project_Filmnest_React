@@ -32,14 +32,14 @@ export default function BonusCalculator ({ bonus , setBonus , type , reference }
   return (
     <>
       <div className="btn-group w-100 mb-4">
-        <button className="btn btn-secondary w-100 add-amount rounded-start-1" value={100} onClick={(e) => handleAddBonus(e)}>+100</button>
-        <button className="btn btn-secondary w-100 add-amount" value={500} onClick={(e) => handleAddBonus(e)}>+500</button>
-        <button className="btn btn-secondary w-100 add-amount rounded-end-1" value={1000} onClick={(e) => handleAddBonus(e)}>+1,000</button>
+        <button className="btn btn-secondary btn-base w-100 add-amount rounded-start-1" value={100} onClick={(e) => handleAddBonus(e)}>+100</button>
+        <button className="btn btn-secondary btn-base w-100 add-amount" value={500} onClick={(e) => handleAddBonus(e)}>+500</button>
+        <button className="btn btn-secondary btn-base w-100 add-amount rounded-end-1" value={1000} onClick={(e) => handleAddBonus(e)}>+1,000</button>
       </div>
       <div className="input-group mb-4">
         <input type="text" name="customized" id="customized" placeholder="自訂金額" className="form-control rounded-start-1" {...register("customized")} />
-        { (type === "layout") && <button type="button" className="btn btn-primary border-white" id="addCustomAmount" onClick={handleSubmit(onsubmit)}>加碼</button> }
-        <button type="button" className="btn btn-secondary rounded-end-1" id="resetCustomAmount" onClick={handleResetBonus}>重設</button>
+        { (type === "layout") && <button type="button" className="btn btn-primary btn-base border-white" id="addCustomAmount" onClick={handleSubmit(onsubmit)}>加碼</button> }
+        <button type="button" className="btn btn-secondary btn-base rounded-end-1" id="resetCustomAmount" onClick={handleResetBonus}>重設</button>
       </div>
     </>
   )

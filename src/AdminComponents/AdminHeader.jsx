@@ -49,42 +49,42 @@ export default function AdminHeader() {
                 <>
                   <div className="collapse navbar-collapse text-white">
                     <div className="p-0 me-8 dropdown nav-item">
-                      <button className="btn btn-outline-secondary text-white border-0 fw-bolder" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <button className="btn btn-outline-secondary btn-base text-white border-0 fw-bolder" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <span className="me-2">{profile.userName}</span> <img src={profile.imageUrl} className="rounded-circle object-fit-cover" style={{ width: "40px", height: "40px" }} alt="" />
                       </button>
                       <ul className="dropdown-menu py-0">
                         <li>
-                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/profile">
+                          <Link className="btn btn-outline-secondary btn-base text-white border-0 d-flex align-items-center" to="/personalCenter/profile">
                             <span className="material-symbols-outlined fs-7 me-3">manage_accounts</span>
                             <span>個人資料</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/favoriteProject">
+                          <Link className="btn btn-outline-secondary btn-base text-white border-0 d-flex align-items-center" to="/personalCenter/favoriteProject">
                             <span className="material-symbols-outlined fs-7 me-3">favorite</span>
                             <span>收藏專案</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/orderRecords/orderRecordsAll">
+                          <Link className="btn btn-outline-secondary btn-base text-white border-0 d-flex align-items-center" to="/personalCenter/orderRecords/orderRecordsAll">
                             <span className="material-symbols-outlined fs-7 me-3">receipt_long</span>
                             <span>訂單紀錄</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/favoriteVideo">
+                          <Link className="btn btn-outline-secondary btn-base text-white border-0 d-flex align-items-center" to="/personalCenter/favoriteVideo">
                             <span className="material-symbols-outlined fs-7 me-3">movie</span>
                             <span>收藏影音</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" to="/personalCenter/viewRecords">
+                          <Link className="btn btn-outline-secondary btn-base text-white border-0 d-flex align-items-center" to="/personalCenter/viewRecords">
                             <span className="material-symbols-outlined fs-7 me-3">subscriptions</span>
                             <span>觀看紀錄</span>
                           </Link>
                         </li>
                         <li>
-                          <Link className="btn btn-outline-secondary text-white border-0 d-flex align-items-center" onClick={handleLogout}>
+                          <Link className="btn btn-outline-secondary btn-base text-white border-0 d-flex align-items-center" onClick={handleLogout}>
                             <span className="material-symbols-outlined fs-7 me-3">exit_to_app</span>
                             <span>登出</span>
                           </Link>
@@ -94,13 +94,13 @@ export default function AdminHeader() {
                   </div>
                 </>
               ) : (
-                <NavLink to="/login" className="btn btn-outline-light fw-bolder py-3 px-5 me-8">
+                <NavLink to="/login" className="btn btn-outline-light btn-base fw-bolder py-3 px-5 me-8">
                   登入 / 註冊
                 </NavLink>
               )}
               <div className="border-start border-white d-none d-lg-block mx-3" style={{ height: "20px" }}></div>
 
-              <NavLink to="/aboutProposal" className="btn btn-outline-light fw-bolder py-3 px-5 ms-8">
+              <NavLink to="/aboutProposal" className="btn btn-outline-light btn-base fw-bolder py-3 px-5 ms-8">
                 我要提案
               </NavLink>
             </div>

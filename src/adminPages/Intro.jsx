@@ -311,7 +311,7 @@ export default function Intro() {
         className="mb-3 mb-md-6 mb-lg-8"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <section className="p-4 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white shadow mb-3 mb-md-4 mb-lg-5 rounded-5">
+        <section className="p-4 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white shadow mb-3 mb-md-4 mb-lg-5 rounded-2">
           {/* 專案名稱 */}
           <div className="mb-5">
             <IntroInput
@@ -382,7 +382,7 @@ export default function Intro() {
           />
         </section>
         {/* 更換封面圖片 */}
-        <section className="p-4 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white shadow mb-3 mb-md-4 mb-lg-5 rounded-5">
+        <section className="p-4 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white shadow mb-3 mb-md-4 mb-lg-5 rounded-2">
           <div>
             <UploadProjectImage
               onUploadSuccess={(img) => setProjectImage(img)}
@@ -402,7 +402,7 @@ export default function Intro() {
           </div>
         </section>
         {/* 專案介紹頁劇照 */}
-        <section className="p-4 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white shadow mb-3 mb-md-4 mb-lg-5 rounded-5">
+        <section className="p-4 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white shadow mb-3 mb-md-4 mb-lg-5 rounded-2">
           <h2 className="fs-base fw-bolder">專案介紹頁劇照</h2>
           <div className="container">
             <ul className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-2 g-lg-3 list-unstyled">
@@ -475,7 +475,7 @@ export default function Intro() {
           </div>
         </section>
         {/* 專案介紹圖文 */}
-        <section className="p-4 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white shadow mb-3 mb-md-4 mb-lg-5 rounded-5">
+        <section className="p-4 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white shadow mb-3 mb-md-4 mb-lg-5 rounded-2">
           <h2 className="fs-base fw-bolder">專案介紹</h2>
           <ArticleEditor
             projectId={id}
@@ -484,7 +484,7 @@ export default function Intro() {
           />
         </section>
         {/* 製作團隊介紹 */}
-        <section className="p-3 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white shadow mb-3 mb-md-4 mb-lg-5 rounded-5">
+        <section className="p-3 py-md-5 py-lg-7 px-md-8 px-lg-10 bg-white shadow mb-3 mb-md-4 mb-lg-5 rounded-2">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h2 className="fs-base fw-bolder mb-0">製作團隊介紹</h2>
             <button
