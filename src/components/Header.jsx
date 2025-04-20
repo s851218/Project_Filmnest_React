@@ -149,8 +149,8 @@ export default function Header() {
               <ul className="dropdown-menu py-0">
                 <li>
                   <Link className="btn btn-outline-secondary btn-base text-white border-0 w-100 d-flex align-items-center" to="/projectExplore" onClick={() => dispatch(setCategory("all"))}>
-                    <img src="全部專案.png" alt="全部專案" className="me-2" style={{ width: "24px" }} />
-                    全部專案
+                    <img src="allProjectsIcon.png" alt="allProjectsIcon" className="me-2" style={{ width: "24px" }} />
+                    allProjectsIcon
                   </Link>
                 </li>
                 {categoryData.map((item, index) => {

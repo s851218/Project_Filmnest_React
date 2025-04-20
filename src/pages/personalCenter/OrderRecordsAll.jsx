@@ -187,7 +187,7 @@ export default function OrderRecordsAll() {
                   <td className="text-white">
                     <div className="row align-items-center">
                       <div className="col-4">
-                        <img src={order.project.projectImage} className="rounded-1" alt="專案數量" />
+                        <img src={order.project.projectImage} className="rounded-1" alt="projectsNumIcon" />
                       </div>
                       <div className="col-8">
                         <span className="badge text-bg-danger mb-1">{order.orderStatus === 2 ? "已取消" : order.paymentStatus === 2 ? "已退款" : order.shippingStatus === 2 ? "已退貨" : ""}</span>

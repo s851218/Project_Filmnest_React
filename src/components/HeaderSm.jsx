@@ -100,8 +100,8 @@ export default function HeaderSm() {
           <>
             <li>
               <Link className="dropdown-item py-2 px-5" to="/projectExplore" onClick={() => dispatch(setCategory("all"))} onMouseEnter={(e) => (e.target.style.backgroundColor = "rgba(255, 255, 255, 0.3)")} onMouseLeave={(e) => (e.target.style.backgroundColor = "transparent")}>
-                <img src="全部專案.png" alt="全部專案" className="me-2" style={{ width: "24px" }} />
-                全部專案
+                <img src="allProjectsIcon.png" alt="allProjectsIcon" className="me-2" style={{ width: "24px" }} />
+                allProjectsIcon
               </Link>
             </li>
             {categoryData.map((item, index) => {

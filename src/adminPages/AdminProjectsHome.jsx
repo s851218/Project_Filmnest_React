@@ -138,7 +138,7 @@ export default function AdminProjectsHome() {
                       <td className="d-none d-lg-block">
                         <div className="row align-items-center">
                           <div className="col-4">
-                            <img src={project.projectImage} className="rounded-2" alt="專案數量" />
+                            <img src={project.projectImage} className="rounded-2" alt="projectsNumIcon" />
                           </div>
                           <div className="col-8">
                             <h3 className="fs-6 fw-bolder">{project.projectTitle}</h3>
@@ -147,7 +147,7 @@ export default function AdminProjectsHome() {
                         </div>
                       </td>
                       <td colSpan="8" className="nowrap-table d-lg-none p-1">
-                        <img src={project.projectImage} className="rounded-2" alt="專案數量" />
+                        <img src={project.projectImage} className="rounded-2" alt="projectsNumIcon" />
                       </td>
                       <td className="nowrap-table d-lg-none">
                         <h3 className="fs-7 fw-bolder">{project.projectTitle}</h3>

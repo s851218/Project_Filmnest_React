@@ -459,7 +459,7 @@ export default function Intro() {
                   >
                     <img
                       className="img-fluid object-cover rounded"
-                      src="假圖.jpg"
+                      src="sampleImg.jpg"
                     />
                   </label>
                   <input
@@ -537,7 +537,7 @@ export default function Intro() {
                           style={{ cursor: "pointer" }}
                         >
                           <img
-                            src={member.photo || "假圖.jpg"}
+                            src={member.photo || "sampleImg.jpg"}
                             className="img-fluid object-fit-cover rounded"
                             alt={`團隊人員 #${index + 1}`}
                           />

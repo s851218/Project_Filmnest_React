@@ -25,7 +25,7 @@ export default function ProjectIntroContent() {
                       <img
                         className="object-fit-cover rounded-1 mb-4"
                         style={{ maxWidth: 200, height: 200 }}
-                        src={member.photo || "假圖.jpg"}
+                        src={member.photo || "sampleImg.jpg"}
                         alt={`${member.name} 照片`}
                       />
                       <h6 className="mb-2 mb-lg-3 fs-sm fs-lg-base">{`${member.jobTitle}：${member.name}`}</h6>
@@ -58,7 +58,7 @@ export default function ProjectIntroContent() {
                     <img
                       className="object-fit-cover rounded-1 mb-4"
                       style={{ maxWidth: 200, height: 200 }}
-                      src={member.photo || "假圖.jpg"}
+                      src={member.photo || "sampleImg.jpg"}
                       alt={`${member.name} 照片`}
                     />
                     <h6 className="mb-2 mb-lg-3 fs-sm fs-lg-base">{`${member.jobTitle}：${member.name}`}</h6>

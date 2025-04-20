@@ -310,7 +310,7 @@ export default function Home() {
             <div className="swiper-wrapper">
               <div className="swiper-slide">
                 <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
-                  <img src="喜劇.png" className="indexCategory-img" alt="喜劇" />
+                  <img src="comedyIcon.png" className="indexCategory-img" alt="comedyIcon" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("喜劇"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">喜劇</h3>
                   </Link>
@@ -318,7 +318,7 @@ export default function Home() {
               </div>
               <div className="swiper-slide">
                 <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
-                  <img src="愛情.png" className="indexCategory-img" alt="愛情" />
+                  <img src="romanceIcon.png" className="indexCategory-img" alt="romanceIcon" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("愛情"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">愛情</h3>
                   </Link>
@@ -326,7 +326,7 @@ export default function Home() {
               </div>
               <div className="swiper-slide">
                 <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
-                  <img src="恐怖.png" className="indexCategory-img" alt="恐怖" />
+                  <img src="horrorIcon.png" className="indexCategory-img" alt="horrorIcon" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("恐怖"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">恐怖</h3>
                   </Link>
@@ -334,7 +334,7 @@ export default function Home() {
               </div>
               <div className="swiper-slide">
                 <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
-                  <img src="懸疑.png" className="indexCategory-img" alt="懸疑" />
+                  <img src="suspendIcon.png" className="indexCategory-img" alt="suspendIcon" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("懸疑"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">懸疑</h3>
                   </Link>
@@ -342,7 +342,7 @@ export default function Home() {
               </div>
               <div className="swiper-slide">
                 <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
-                  <img src="科幻.png" className="indexCategory-img" alt="科幻" />
+                  <img src="sciFiIcon.png" className="indexCategory-img" alt="sciFiIcon" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("科幻"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">科幻</h3>
                   </Link>
@@ -350,7 +350,7 @@ export default function Home() {
               </div>
               <div className="swiper-slide">
                 <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
-                  <img src="紀錄片.png" className="indexCategory-img" alt="紀錄片" />
+                  <img src="documentalIcon.png" className="indexCategory-img" alt="documentalIcon" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("紀錄片"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">紀錄片</h3>
                   </Link>
@@ -358,7 +358,7 @@ export default function Home() {
               </div>
               <div className="swiper-slide">
                 <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
-                  <img src="動畫.png" className="indexCategory-img" alt="動畫" />
+                  <img src="animeIcon.png" className="indexCategory-img" alt="animeIcon" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("動畫"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">動畫</h3>
                   </Link>
@@ -366,7 +366,7 @@ export default function Home() {
               </div>
               <div className="swiper-slide">
                 <div className="d-flex align-items-center justify-content-center py-4 py-lg-6 bg-primary-9 rounded indexCategory-card">
-                  <img src="實驗電影.png" className="indexCategory-img" alt="實驗電影" />
+                  <img src="experimentalFilmIcon.png" className="indexCategory-img" alt="experimentalFilmIcon" />
                   <Link to="/projectExplore" onClick={() => dispatch(setCategory("實驗電影"))} className="stretched-link">
                     <h3 className="fs-base fs-lg-7 ms-3 ms-lg-5 mb-0">實驗電影</h3>
                   </Link>
