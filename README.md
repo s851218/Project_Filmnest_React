@@ -19,7 +19,7 @@
 ### 目錄
 
 <details>
-<summary>Click me</summary>
+<summary>標題</summary>
   
  - [🎞️ 專案簡介](#-專案簡介)
  - [👀 Live demo](#-live-demo)
@@ -42,7 +42,7 @@
 
 <div align="center">
   
-![_demo-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/efc1bcac-1c2f-4628-816e-50e0913df242)
+![首頁](https://github.com/user-attachments/assets/496e5031-89e4-4287-9691-b59a48b4166c)
 
 </div>
 
@@ -50,6 +50,7 @@
 👉 [https://xianglllllll.github.io/Project_Filmnest_React/](https://xianglllllll.github.io/Project_Filmnest_React/)
 
 ## ⚙️ 使用技術與第三方套件
+
 
 #### 前端 Front-end
 
@@ -75,6 +76,101 @@
 
 ## ✨ 專案 demo
 
+### 前台 (支持者)
+
+#### 專案探索
+
+訪客與支持者，可以從專案探索頁面尋找喜歡的專案
+
+<div align="center">
+
+![專案探索](https://github.com/user-attachments/assets/a874f644-8261-47cd-8767-00ca03f627ff)
+
+</div>
+
+#### 專案介紹
+
+專案介紹頁面可以瀏覽專案詳細資訊
+
+<div align="center">
+
+![專案介紹](https://github.com/user-attachments/assets/855aa3b1-767b-4ff6-b1cb-cecf09f6ed7e)
+
+</div>
+
+#### 專案收藏
+
+收藏喜歡專案或取消收藏
+
+<div align="center">
+
+![收藏toggle](https://github.com/user-attachments/assets/b3f1e502-d5ad-4ff2-b7b7-185849923de3)
+
+</div>
+
+#### 贊助專案
+
+選擇回饋項目贊助專案
+
+<div align="center">
+
+![贊助流程](https://github.com/user-attachments/assets/34b6b282-b392-4c4f-93ba-c362b8359b86)
+
+</div>
+
+#### 留言功能
+
+與提案者留言互動
+
+<div align="center">
+
+![留言功能](https://github.com/user-attachments/assets/3d1e0035-05fe-4820-b4be-99259a4e6a38)
+
+</div>
+
+### 前台 (提案者)
+
+#### 發起提案
+
+提案者發起募資提案
+
+<div align="center">
+
+![發起提案](https://github.com/user-attachments/assets/79f1cfd5-65ef-4f1f-93fd-c0cf8cb8c31f)
+
+</div>
+
+### 後台 (提案者)
+
+#### 提案者工作室
+
+提案者工作室首頁，可以看到此提案者的提案的相關數據，與編輯提案者個人資料
+
+<div align="center">
+
+![提案者工作室](https://github.com/user-attachments/assets/4d3e0548-b415-40bc-8a8c-62118a55506c)
+
+</div>
+
+#### 專案介紹編輯
+
+專案介紹頁面的編輯，專案資訊、封面、劇照，以及製作團隊介紹
+
+<div align="center">
+
+![專案編輯](https://github.com/user-attachments/assets/1c7ae103-53b9-4957-8413-ebf0c435b41e)
+
+</div>
+
+#### 贊助回饋項目編輯
+
+<div align="center">
+
+![回饋項目編輯](https://github.com/user-attachments/assets/9b5b1783-75be-436b-a87c-f90eca152090)
+
+
+</div>
+
 ## 💻 使用者角色
 |測試帳號|密碼|權限|
 |---|---|---|
@@ -89,12 +185,12 @@
   $ git clone ""
   ```
 
-  2.  安裝所需套件
+  2. 安裝所需套件
   ```bash
   $ npm install
   ```
 
-  3..  啟動專案
+  3. 啟動專案
   ```bash
   $ npm run dev
   ```
