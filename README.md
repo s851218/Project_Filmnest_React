@@ -17,21 +17,18 @@
 </div>
 
 ### 目錄
-
-<details>
-<summary>標題</summary>
   
- - [🎞️ 專案簡介](#-專案簡介)
- - [👀 Live demo](#-live-demo)
- - [⚙️ 使用技術與第三方套件](#-使用技術與第三方套件)
- - [✨ 專案 demo](#-專案-demo)
- - [💻 使用者角色](#-使用者角色)
- - [🚀 如何在本地端執行？](#-如何在本地端執行？)
- - [🌳 專案資料結構](#-專案資料結構)
+ - [專案簡介](#專案簡介)
+ - [Live demo](#live-demo)
+ - [使用技術與第三方套件](#使用技術與第三方套件)
+ - [專案 demo](#專案-demo)
+ - [使用者角色](#使用者角色)
+ - [在本地端執行](#在本地端執行)
+ - [專案資料結構](#專案資料結構)
 
-</details>
+<br>
 
-## 🎞️ 專案簡介
+## 專案簡介
 拍攝電影是一項極具風險的投資，其中募資對創作者來說正好是降低風險的一個好方法。不過現今的募資平台，所募資的項目，雖然也有關於電影、戲劇的募資項目，但大多比較熱門的項目都跟生活、科技有關，也因為這樣來到募資網站的使用者，他們的注意力可能會被分散。因此，我們想要為影視的創作者們，打造一個**專屬於影視創作者的募資網站**
 
 <h3 align="center">
@@ -46,11 +43,14 @@
 
 </div>
 
-## 👀 Live demo
+<br>
+
+## Live demo
 👉 [https://xianglllllll.github.io/Project_Filmnest_React/](https://xianglllllll.github.io/Project_Filmnest_React/)
 
-## ⚙️ 使用技術與第三方套件
+<br>
 
+## 使用技術與第三方套件
 
 #### 前端 Front-end
 
@@ -74,7 +74,9 @@
 - [json-server-auth](https://www.npmjs.com/package/json-server-auth) - 基於 json-server 的權限驗證擴充套件，可以在 json-server 建立的假資料 API，使用註冊、登入、JWT 驗證等功能，方便前端模擬實際 API 登入與保護資料的流程。
 - [Vercel](https://vercel.com/) - json-server 的 db.json 模擬 API 資料，部屬至 Vercel (操作網站更改的資料一段時間後會重置，不會永久更新，所以 db.json 都是預設資料)
 
-## ✨ 專案 demo
+<br>
+
+## 專案 demo
 
 ### 前台 (支持者)
 
@@ -168,21 +170,24 @@
 
 ![回饋項目編輯](https://github.com/user-attachments/assets/9b5b1783-75be-436b-a87c-f90eca152090)
 
-
 </div>
 
-## 💻 使用者角色
+<br>
+
+## 使用者角色
 |測試帳號|密碼|權限|
 |---|---|---|
 |test@gmail.com|123123123|支持者|
 |example@gmail.com|123123123|提案者|
 
-## 🚀 如何在本地端執行？
+<br>
+
+## 在本地端執行
 
   1. Clone 本專案至本地端
 
   ```bash
-  $ git clone ""
+  $ git clone "https://github.com/s851218/Project_Filmnest_React.git"
   ```
 
   2. 安裝所需套件
@@ -195,7 +200,9 @@
   $ npm run dev
   ```
 
-## 🌳 專案資料結構
+<br>
+
+## 專案資料結構
 
   ```shell
   src
