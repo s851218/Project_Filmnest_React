@@ -6,6 +6,24 @@ import PropTypes from "prop-types"; // prop validation
 export default function ProjectIntroInfo({ projectInfo }) {
   const [currentMoneyPercentage, setCurrentMoneyPercentage] = useState(0);
 
+  // 定義募資結束狀態，來判斷募資是否結束
+  const [isEnded, setIsEnded] = useState(false);
+
+  // 募資時間倒數
+  const [countDown, setCountDown] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  // 募資狀態標籤
+  const getFundingStatus = () => {
+    if (isEnded) return "已結束";
+    if (countDown.days < 7 && countDown.days > 0) return "即將結束";
+    return "進行中";
+  };
+
   // 計算募資進度
   useEffect(() => {
     const calcMoneyPercentage = () => {
@@ -23,13 +41,6 @@ export default function ProjectIntroInfo({ projectInfo }) {
   }, [projectInfo]);
 
   // 募資倒數時間
-  const [countDown, setCountDown] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
-
   useEffect(() => {
     if (!projectInfo.endAt) return;
 
@@ -38,13 +49,16 @@ export default function ProjectIntroInfo({ projectInfo }) {
       const end = new Date(projectInfo.endAt);
       const diff = end - now;
 
+      // 如果結束與開始時間相差為負值，判斷為募資已結束，並將時間設為 0
       if (diff <= 0) {
+        setIsEnded(true);
         setCountDown({
           days: 0,
           hours: 0,
           minutes: 0,
           seconds: 0,
         });
+        return;
       }
 
       const days = Math.floor(diff / (1000 * 60 * 60 * 24));
@@ -86,7 +100,7 @@ export default function ProjectIntroInfo({ projectInfo }) {
           </Link>
           <Link to="/projectExplore">
             <span className="py-1 px-2 bg-primary-6 rounded tag-hover-status fs-sm fs-md-base">
-              {countDown.days < 7 && countDown.days > 0 ? "即將結束" : "進行中"}
+              {getFundingStatus()}
             </span>
           </Link>
         </div>
@@ -128,10 +142,12 @@ export default function ProjectIntroInfo({ projectInfo }) {
             </div>
             <div className="text-end">
               <p className="fs-md-7 mb-1 mb-md-2">
-                {`募資倒數 ${countDown.days} 天 ${countDown.hours} 小時 ${countDown.minutes} 分 ${countDown.seconds} 秒`}
+                {isEnded
+                  ? "募資已結束！"
+                  : `募資倒數 ${countDown.days} 天 ${countDown.hours} 時 ${countDown.minutes} 分 ${countDown.seconds} 秒`}
               </p>
               <p className="fs-sm fs-md-base text-primary-4 mb-0">
-                {`募資期間 ${formattedStartDate} - ${formattedEndDate} `}
+                {`募資期間 ${formattedStartDate} - ${formattedEndDate}`}
               </p>
             </div>
           </section>
