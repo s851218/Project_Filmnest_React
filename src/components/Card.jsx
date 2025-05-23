@@ -126,7 +126,9 @@ export default function Card({ projects, isSwiper, isDelete, getData }) {
                 </p>
               </div>
               <p className="text-white mb-0 fs-sm fs-lg-base">
-                倒數<span className="fw-bolder">{remainDays}</span>天
+                <span className="fw-bolder">
+                  {remainDays <= 0 ? "募資已結束" : `倒數 ${remainDays} 天`}
+                </span>
               </p>
             </div>
             <div
