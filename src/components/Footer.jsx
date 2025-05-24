@@ -57,8 +57,8 @@ export default function Footer() {
                     <Link to="/projectExplore">專案瀏覽</Link>
                   </li>
                   <li className="d-flex flex-column gap-3">
-                    <Link to="/">我想贊助</Link>
-                    <Link to="/">我要提案</Link>
+                    <Link to="/projectExplore">我想贊助</Link>
+                    <Link to="/aboutProposal">我要提案</Link>
                     <Link to="/">會員中心</Link>
                   </li>
                   <li className="d-flex flex-column gap-3">
