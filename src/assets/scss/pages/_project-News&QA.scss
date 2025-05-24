@@ -1,0 +1,19 @@
+// 手風琴展開與非展開套用的背景顏色
+.accordion-button.bg-primary-10 {
+  background-color: $primary-1000;
+}
+
+.accordion-button.bg-primary-8 {
+  background-color: $primary-800;
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: var(--bs-accordion-btn-icon);
+  // 原本是 background-image: var(--bs-accordion-btn-active-icon);
+}
+
+// accordion 下拉後 box-shadow
+button:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: 2px 2px 20px 2px #ffffff33;
+}
