@@ -111,8 +111,8 @@ export default function ProjectIntroNews() {
                       onClick={() => handleCollapse(post.id)}
                     >
                       <div className="d-md-flex justify-content-md-between align-items-center w-100">
-                        <h3 className="fs-base">{post.title}</h3>
-                        <time className="fs-xs fs-md-sm text-primary-5 me-3">
+                        <h3 className="fs-base mb-md-0">{post.title}</h3>
+                        <time className="fs-xs fs-md-sm text-primary-5 me-md-3">
                           {getNewTime(post.date)}
                         </time>
                       </div>
