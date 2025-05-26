@@ -5,7 +5,6 @@ import { Helmet } from "react-helmet-async";
 import { useParams } from "react-router";
 import { Toast } from "../../js/customSweetAlert";
 import GrayScreenLoading from "../../components/GrayScreenLoading";
-import getNewTime from "../../helpers/getNewTime";
 const apiBase = import.meta.env.VITE_API_BASE;
 
 export default function ProjectIntroQA() {
@@ -30,7 +29,6 @@ export default function ProjectIntroQA() {
     }
   }, [id]);
 
-
   useLayoutEffect(() => {
     if (params.projectId) {
       (async () => {
@@ -49,7 +47,7 @@ export default function ProjectIntroQA() {
           if (error) {
             Toast.fire({
               icon: "error",
-              title: "最新消息取得失敗",
+              title: "常見問題取得失敗",
             });
           }
         } finally {
@@ -77,7 +75,12 @@ export default function ProjectIntroQA() {
     });
 
     const index = projectFaqs.findIndex((item) => item.id === id);
-    faqsCollapseInstances.current[index].toggle();
+
+    if (faqsCollapseInstances.current[index]) {
+      faqsCollapseInstances.current[index].toggle();
+    } else {
+      console.warn(`Collapse instance for FAQ id ${id} 未建立，操作中斷`);
+    }
   };
 
   return (
@@ -86,53 +89,48 @@ export default function ProjectIntroQA() {
         <title>常見問題</title>
       </Helmet>
       <div className="container pt-8 pb-10 py-md-15">
-        {projectFaqs.map((item, index) => {
-          return (
-            <div className="row mb-5" key={item.id}>
-              <div className="col-10 mx-auto">
-                <div className="border border-0 border-primary-5 rounded box-shadow">
-                  <button
-                    className={`text-white py-3 px-4 w-100 fs-5 d-flex flex-column flex-lg-row justify-content-start justify-content-lg-between border-1 ${
-                      faqsIsOpen[index].isOpen
-                        ? "bg-primary-6"
-                        : "bg-primary-10"
-                    }`}
-                    type="button"
-                    onClick={() => handleCollapse(item.id)}
-                  >
-                    <span className="d-flex justify-content-between">
-                      <span className="fs-base">
-                        Q{index + 1}:
-                        <span className="fs-base ms-lg-3">{item.title}</span>
-                      </span>
-                      {faqsIsOpen[index].isOpen ? (
-                        <i className="bi bi-chevron-up fs-sm d-lg-none"></i>
-                      ) : (
-                        <i className="bi bi-chevron-down fs-sm d-lg-none"></i>
-                      )}
-                    </span>
-                    <span className="d-flex align-self-start align-items-center">
-                      <span className="fs-sm text-primary-5 me-2">
-                        {getNewTime(item.date)}
-                      </span>
-                      {faqsIsOpen[index].isOpen ? (
-                        <i className="bi bi-chevron-up fs-7 d-none d-lg-block"></i>
-                      ) : (
-                        <i className="bi bi-chevron-down fs-7 d-none d-lg-block"></i>
-                      )}
-                    </span>
-                  </button>
+        <div className="row">
+          <div className="col-lg-10 mx-auto">
+            <div className="accordion" id="accordionPanelsStayOpenQA">
+              {projectFaqs.map((faq, index) => (
+                <div
+                  className="accordion-item border border-primary-5 rounded mb-5"
+                  key={faq.id}
+                >
+                  <h4 className="accordion-header" id={`heading-${faq.id}`}>
+                    <button
+                      className={`accordion-button rounded ${
+                        faqsIsOpen[index]?.isOpen ? "" : "collapsed"
+                      } ${
+                        faqsIsOpen[index]?.isOpen
+                          ? "bg-primary-8 text-white"
+                          : "bg-primary-10 text-white"
+                      }`}
+                      type="button"
+                      aria-expanded="false"
+                      aria-controls={`collapse-${faq.id}`}
+                      onClick={() => handleCollapse(faq.id)}
+                    >
+                      <span className="me-4 fw-bolder">Q{index + 1}</span>
+                      <span>{faq.title}</span>
+                    </button>
+                  </h4>
                   <div
-                    className="collapse "
+                    id={`collapse-${faq.id}`}
+                    className="accordion-collapse collapse"
+                    aria-labelledby={`heading-${faq.id}`}
+                    data-bs-parent="#accordionPanelsStayOpenQA"
                     ref={(el) => (faqsCollapseRef.current[index] = el)}
                   >
-                    <div className="card card-body">{item.content}</div>
+                    <div className="accordion-body fs-sm fs-md-base">
+                      {faq.content}
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
-          );
-        })}
+          </div>
+        </div>
       </div>
       <GrayScreenLoading isLoading={isLoading} />
     </>

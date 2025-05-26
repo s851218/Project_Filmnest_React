@@ -1,8 +1,10 @@
-// accordion 下拉後標題背景顏色
-.accordion-button:not(.collapsed) {
-  color: $white;
-  background: $primary-800;
-  box-shadow: none;
+// 手風琴展開與非展開套用的背景顏色
+.accordion-button.bg-primary-10 {
+  background-color: $primary-1000;
+}
+
+.accordion-button.bg-primary-8 {
+  background-color: $primary-800;
 }
 
 .accordion-button:not(.collapsed)::after {

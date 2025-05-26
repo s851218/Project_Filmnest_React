@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { Link, NavLink, useLocation, useNavigate } from "react-router";
+import { NavLink, useLocation, useNavigate } from "react-router";
 import { Alert, Toast } from "../../js/customSweetAlert";
 import PropTypes from "prop-types";
 
@@ -12,12 +12,15 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 const API_BASE = import.meta.env.VITE_API_BASE;
 
-export default function ProjectIntroNav({ projectId }) {
+export default function ProjectIntroNav({ projectId, projectInfo }) {
   const { userId, token } = useSelector((state) => state.user.profile);
 
   const [isFavorited, setIsFavorited] = useState(false);
   const [favoriteId, setFavoriteId] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+
+  // 定義募資結束狀態，來判斷募資是否結束
+  const [isEnded, setIsEnded] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -108,6 +111,41 @@ export default function ProjectIntroNav({ projectId }) {
     }
   };
 
+  // 計算募資是否結束、每分鐘檢查募資是否結束
+  useEffect(() => {
+    if (!projectInfo.endAt) return;
+
+    // 確認是否結束
+    const checkEnded = () => {
+      const now = new Date();
+      const end = new Date(projectInfo.endAt);
+      const diff = end - now;
+
+      if (diff <= 0) {
+        setIsEnded(true);
+      }
+    };
+
+    checkEnded(); // 初次執行，後面每 60 秒檢查一次
+
+    const timer = setInterval(checkEnded, 1000 * 60);
+
+    return () => clearInterval(timer);
+  }, [projectInfo.endAt]);
+
+  // 募資結束不會進到贊助頁面
+  const handleSponsorClick = (e) => {
+    e.preventDefault();
+    if (isEnded) {
+      Alert.fire({
+        icon: "error",
+        title: "該專案募資已結束，無法贊助！",
+      });
+    } else {
+      navigate(`/feedbackPage/projectId=${projectId}`);
+    }
+  };
+
   return (
     <>
       <section
@@ -183,7 +221,7 @@ export default function ProjectIntroNav({ projectId }) {
               <button
                 className="p-3 border border-primary-4 rounded-circle heart-hover"
                 onClick={toggleFavorite}
-                disabled={isLoading}
+                disabled={isLoading || !projectId}
               >
                 <span
                   className="material-symbols-outlined text-white align-bottom"
@@ -198,13 +236,13 @@ export default function ProjectIntroNav({ projectId }) {
               </button>
             </li>
             <li>
-              <Link
-                to={`/feedbackPage/projectId=${projectId}`}
+              <button
                 className="btn btn-primary btn-main fw-bolder"
                 style={{ width: 188 }}
+                onClick={handleSponsorClick}
               >
                 立即贊助
-              </Link>
+              </button>
             </li>
           </ul>
         </div>
@@ -301,7 +339,7 @@ export default function ProjectIntroNav({ projectId }) {
                 type="button"
                 className="p-3 border border-primary-4 rounded-circle heart-hover"
                 onClick={toggleFavorite}
-                disabled={isLoading}
+                disabled={isLoading || !projectId}
               >
                 <span
                   className="material-symbols-outlined text-white align-bottom"
@@ -316,13 +354,13 @@ export default function ProjectIntroNav({ projectId }) {
               </button>
             </li>
             <li>
-              <Link
-                to={`/feedbackPage/projectId=${projectId}`}
+              <button
                 className="btn btn-primary btn-main fw-bolder"
                 style={{ width: 291 }}
+                onClick={handleSponsorClick}
               >
                 立即贊助
-              </Link>
+              </button>
             </li>
           </ul>
         </div>
@@ -333,4 +371,7 @@ export default function ProjectIntroNav({ projectId }) {
 
 ProjectIntroNav.propTypes = {
   projectId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  projectInfo: PropTypes.shape({
+    endAt: PropTypes.string,
+  }),
 };

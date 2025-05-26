@@ -17,7 +17,6 @@ export default function ProjectIntroNews() {
   const [params, setParams] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-
   //處理params
   useLayoutEffect(() => {
     if (id) {
@@ -89,51 +88,52 @@ export default function ProjectIntroNews() {
         <title>最新消息</title>
       </Helmet>
       <div className="container pt-8 pb-10 py-md-15">
-        {projectPosts.map((item, index) => {
-          return (
-            <div className="row mb-5" key={item.id}>
-              <div className="col-10 mx-auto">
-                <div className="border border-0 border-primary-5 rounded box-shadow">
-                  <button
-                    className={`text-white py-3 px-4 w-100 fs-5 d-flex flex-column flex-lg-row justify-content-start justify-content-lg-between border-1 ${
-                      postsIsOpen[index].isOpen
-                        ? "bg-primary-6"
-                        : "bg-primary-10"
-                    }`}
-                    type="button"
-                    onClick={() => handleCollapse(item.id)}
-                  >
-                    <span className="fs-base d-flex justify-content-between">
-                      {item.title}
-                      {postsIsOpen[index].isOpen ? (
-                        <i className="bi bi-chevron-up fs-sm d-lg-none"></i>
-                      ) : (
-                        <i className="bi bi-chevron-down fs-sm d-lg-none"></i>
-                      )}
-                    </span>
-
-                    <span className="d-flex align-self-start align-items-center">
-                      <time className="fs-xs fs-md-sm text-primary-5 me-2">
-                        {getNewTime(item.date)}
-                      </time>
-                      {postsIsOpen[index].isOpen ? (
-                        <i className="bi bi-chevron-up fs-7 d-none d-lg-block"></i>
-                      ) : (
-                        <i className="bi bi-chevron-down fs-7 d-none d-lg-block"></i>
-                      )}
-                    </span>
-                  </button>
+        <div className="row">
+          <div className="col-lg-10 mx-auto">
+            <div className="accordion" id="accordionPanelsStayOpenQA">
+              {projectPosts.map((post, index) => (
+                <div
+                  className="accordion-item border border-primary-5 rounded mb-5"
+                  key={post.id}
+                >
+                  <h4 className="accordion-header" id={`heading-${post.id}`}>
+                    <button
+                      className={`accordion-button rounded ${
+                        postsIsOpen[index]?.isOpen ? "" : "collapsed"
+                      } ${
+                        postsIsOpen[index]?.isOpen
+                          ? "bg-primary-8 text-white"
+                          : "bg-primary-10 text-white"
+                      }`}
+                      type="button"
+                      aria-expanded="false"
+                      aria-controls={`collapse-${post.id}`}
+                      onClick={() => handleCollapse(post.id)}
+                    >
+                      <div className="d-md-flex justify-content-md-between align-items-center w-100">
+                        <h3 className="fs-base mb-md-0">{post.title}</h3>
+                        <time className="fs-xs fs-md-sm text-primary-5 me-md-3">
+                          {getNewTime(post.date)}
+                        </time>
+                      </div>
+                    </button>
+                  </h4>
                   <div
-                    className="collapse "
+                    id={`collapse-${post.id}`}
+                    className="accordion-collapse collapse"
+                    aria-labelledby={`heading-${post.id}`}
+                    data-bs-parent="#accordionPanelsStayOpenQA"
                     ref={(el) => (newsCollapseRef.current[index] = el)}
                   >
-                    <div className="card card-body">{item.content}</div>
+                    <div className="accordion-body fs-sm fs-md-base">
+                      {post.content}
+                    </div>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
-          );
-        })}
+          </div>
+        </div>
       </div>
       <GrayScreenLoading isLoading={isLoading} />
     </>

@@ -7,9 +7,14 @@ import { Alert } from "../../js/customSweetAlert";
 const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default function ProjectIntroSimpleInfo({ projectInfo, studioId }) {
+  // 募資時間倒數
   const [countDown, setCountDown] = useState({
     days: 0,
   });
+
+  // 定義募資結束狀態，來判斷募資是否結束
+  const [isEnded, setIsEnded] = useState(false);
+
   const [proposerData, setProposerData] = useState({});
 
   // 取得提案人資料
@@ -41,6 +46,7 @@ export default function ProjectIntroSimpleInfo({ projectInfo, studioId }) {
       const diff = end - now;
 
       if (diff <= 0) {
+        setIsEnded(true);
         setCountDown({
           days: 0,
         });
@@ -53,6 +59,13 @@ export default function ProjectIntroSimpleInfo({ projectInfo, studioId }) {
 
     updateCountDown();
   }, [projectInfo.endAt]);
+
+  // 募資狀態標籤
+  const getFundingStatus = () => {
+    if (isEnded) return "已結束";
+    if (countDown.days < 7 && countDown.days > 0) return "即將結束";
+    return "進行中";
+  };
 
   return (
     <>
@@ -74,9 +87,7 @@ export default function ProjectIntroSimpleInfo({ projectInfo, studioId }) {
               </Link>
               <Link to="/projectExplore">
                 <span className="py-1 px-2 bg-primary-6 rounded tag-hover-status fs-xs fs-md-base">
-                  {countDown.days < 7 && countDown.days > 0
-                    ? "即將結束"
-                    : "進行中"}
+                  {getFundingStatus()}
                 </span>
               </Link>
             </div>

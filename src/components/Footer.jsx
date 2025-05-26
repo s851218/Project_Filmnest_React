@@ -13,15 +13,40 @@ export default function Footer() {
                 <ul className="list-unstyled d-flex flex-md-column justify-content-between h-100">
                   <li>
                     <Link>
-                      <img src="https://s851218.github.io/Project-FilmNest/assets/logo-lg-d75594b8.png" alt="" />
+                      <img src="FilmNest_Logo.svg" alt="FilmNest Logo" />
                     </Link>
                   </li>
-                  <li className="d-flex me-4" style={{ gap: "12px" }}>
-                    <i className="bi bi-facebook"></i>
-                    <i className="bi bi-twitter-x"></i>
-                    <i className="bi bi-instagram"></i>
-                    <i className="bi bi-youtube"></i>
-                    <i className="bi bi-line"></i>
+                  <li className="d-flex" style={{ gap: "12px" }}>
+                    <a href="#">
+                      <i
+                        className="bi bi-facebook"
+                        style={{ fontSize: "24px" }}
+                      ></i>
+                    </a>
+                    <a href="#">
+                      <i
+                        className="bi bi-twitter-x"
+                        style={{ fontSize: "24px" }}
+                      ></i>
+                    </a>
+                    <a href="#">
+                      <i
+                        className="bi bi-instagram"
+                        style={{ fontSize: "24px" }}
+                      ></i>
+                    </a>
+                    <a href="#">
+                      <i
+                        className="bi bi-youtube"
+                        style={{ fontSize: "24px" }}
+                      ></i>
+                    </a>
+                    <a href="#">
+                      <i
+                        className="bi bi-line"
+                        style={{ fontSize: "24px" }}
+                      ></i>
+                    </a>
                   </li>
                 </ul>
               </li>
@@ -29,11 +54,11 @@ export default function Footer() {
                 <ul className="list-unstyled d-flex justify-content-between">
                   <li className="d-flex flex-column gap-3">
                     <Link to="/">精選專案</Link>
-                    <Link to="/">專案瀏覽</Link>
+                    <Link to="/projectExplore">專案瀏覽</Link>
                   </li>
                   <li className="d-flex flex-column gap-3">
-                    <Link to="/">我想贊助</Link>
-                    <Link to="/">我要提案</Link>
+                    <Link to="/projectExplore">我想贊助</Link>
+                    <Link to="/aboutProposal">我要提案</Link>
                     <Link to="/">會員中心</Link>
                   </li>
                   <li className="d-flex flex-column gap-3">
@@ -50,13 +75,17 @@ export default function Footer() {
                 </ul>
               </li>
             </ul>
-            <p className="text-end mt-10 mt-md-20 mb-0 fs-copyright">Copyright ©2024 by 影巢影視募資平台小組 僅供作品集使用</p>
+            <p className="text-end mt-10 mt-md-20 mb-0 fs-copyright">
+              Copyright ©2024 by 影巢影視募資平台小組 僅供作品集使用
+            </p>
           </div>
         </footer>
       ) : (
         <footer className="footer-bg py-8">
           <div className="container">
-            <p className="text-center fs-copyright">Copyright ©2024 by 影巢影視募資平台小組 僅供作品集使用</p>
+            <p className="text-center fs-copyright">
+              Copyright ©2024 by 影巢影視募資平台小組 僅供作品集使用
+            </p>
           </div>
         </footer>
       )}
