@@ -13,21 +13,21 @@ const data = {
         stepName: "準備與計畫",
         content: "定義項目目標和預算，選擇募資平台並設計募資策略。",
         image:
-          "https://s851218.github.io/Project-FilmNest/assets/image53-4f27863e.png",
+          "https://github.com/s851218/Project-FilmNest/blob/main/assets/images/image53.png?raw=true",
       },
       {
         id: "02",
         name: "發布與推廣",
         content: "在平台上發布項目，並進行推廣以吸引支持者。",
         image:
-          "https://s851218.github.io/Project-FilmNest/assets/image54-efbe69a5.png",
+          "https://github.com/s851218/Project-FilmNest/blob/main/assets/images/image54.png?raw=true",
       },
       {
         id: "03",
         name: "實施與回報",
         content: "監控募資進度，執行項目並向支持者提供回報。",
         image:
-          "https://s851218.github.io/Project-FilmNest/assets/image55-b70e3ee9.png",
+          "https://github.com/s851218/Project-FilmNest/blob/main/assets/images/image55.png?raw=true",
       },
     ],
   },
