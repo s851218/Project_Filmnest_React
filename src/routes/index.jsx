@@ -33,7 +33,9 @@ import FeedbackOption from "../pages/FeedbackOption";
 import AdminFeedbackForm from "../adminPages/Feedback";
 // aboutStudioPage
 import AboutStudio from "../pages/aboutStudio/AboutStudio";
-import AboutContent from "../pages/aboutStudio/AboutContent";
+import AboutStudioInProgress from "../pages/aboutStudio/AboutStudioInProgress";
+import AboutStudioFinished from "../pages/aboutStudio/AboutStudioFinished";
+import AboutStudioOthers from "../pages/aboutStudio/AboutStudioOthers";
 // PersonalCenter
 import ViewRecords from "../pages/personalCenter/ViewRecords";
 import FavoriteVideo from "../pages/personalCenter/FavoriteVideo";
@@ -179,16 +181,16 @@ const routes = [
             element: <AboutStudio />,
             children: [
               {
-                path: "aboutStudioOngoing",
-                element: <AboutContent />,
+                index: true,
+                element: <AboutStudioInProgress />,
               },
               {
-                path: "aboutStudioFin",
-                element: <AboutContent />,
+                path: "aboutStudioFinished",
+                element: <AboutStudioFinished />,
               },
               {
                 path: "aboutStudioOthers",
-                element: <AboutContent />,
+                element: <AboutStudioOthers />,
               },
             ],
           },
