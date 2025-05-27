@@ -1,5 +1,5 @@
 .aboutProposal-banner-bg {
-  background: url(image48.png);
+  background: url(/image48.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center 0;
@@ -10,7 +10,11 @@
   &::after {
     position: absolute;
     content: "";
-    background: linear-gradient(0.18deg, #040404 0.18%, rgba(0, 0, 0, 0) 99.87%);
+    background: linear-gradient(
+      0.18deg,
+      #040404 0.18%,
+      rgba(0, 0, 0, 0) 99.87%
+    );
     top: 406px;
     left: 0;
     width: 100%;
@@ -58,11 +62,11 @@
   &::after {
     position: absolute;
     content: "";
-    background-image: url(Line9.png);
+    background-image: url(/Line9.png);
     height: 60px;
     width: 2px;
     @media (min-width: 992px) {
-      background-image: url(Line10.png);
+      background-image: url(/Line10.png);
       height: 174px;
       width: 1px;
     }
@@ -83,13 +87,13 @@
 
 .process-bg {
   &-1 {
-    background-image: url(image53.png);
+    background-image: url(/image53.png);
   }
   &-2 {
-    background-image: url(image54.png);
+    background-image: url(/image54.png);
   }
   &-3 {
-    background-image: url(image55.png);
+    background-image: url(/image55.png);
   }
   &-1,
   &-2,
@@ -105,11 +109,11 @@
   @media (min-width: 768px) {
     padding-top: 69px;
   }
-  background-image: url(image49-2.png);
+  background-image: url(/image49-2.png);
   background-repeat: no-repeat;
   background-position: center 0;
   @media (min-width: 375px) {
-    background-image: url(image49-1.png);
+    background-image: url(/image49-1.png);
     background-size: cover;
   }
 }
