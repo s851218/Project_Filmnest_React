@@ -20,14 +20,14 @@ const data = {
         name: "發布與推廣",
         content: "在平台上發布項目，並進行推廣以吸引支持者。",
         image:
-          "https://s851218.github.io/Project-FilmNest/assets/image53-18246aa8.png",
+          "https://s851218.github.io/Project-FilmNest/assets/image54-b49c9fe6.png",
       },
       {
         id: "03",
         name: "實施與回報",
         content: "監控募資進度，執行項目並向支持者提供回報。",
         image:
-          "https://s851218.github.io/Project-FilmNest/assets/image53-18246aa8.png",
+          "https://s851218.github.io/Project-FilmNest/assets/image55-4dd11409.png",
       },
     ],
   },
