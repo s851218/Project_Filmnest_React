@@ -591,7 +591,7 @@ export default function Intro() {
                             htmlFor={`team-jobTitle-${index}`}
                             className="form-label fw-bolder fs-base"
                           >
-                            名稱
+                            職稱
                           </label>
                           <input
                             type="text"
