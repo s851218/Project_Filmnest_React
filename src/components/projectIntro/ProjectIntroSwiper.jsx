@@ -73,7 +73,7 @@ export default function ProjectIntroSwiper({ projectInfo }) {
               key={image.id}
               className="project-intro-main-swiper-slide"
             >
-              <img className="rounded" src={image.imageUrl} alt="外送員" />
+              <img className="rounded" src={image.imageUrl} alt="" />
             </SwiperSlide>
           ))}
           <button
@@ -105,7 +105,7 @@ export default function ProjectIntroSwiper({ projectInfo }) {
               <img
                 className="rounded small-slide-image"
                 src={image.imageUrl}
-                alt="外送員"
+                alt=""
               />
             </SwiperSlide>
           ))}
