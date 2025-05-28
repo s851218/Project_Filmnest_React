@@ -274,7 +274,7 @@ export default function Header() {
                   <div className="collapse navbar-collapse text-white">
                     <div className="p-0 me-8 dropdown nav-item">
                       <button
-                        className="btn btn-outline-secondary btn-base text-white border-0 fw-bolder"
+                        className="btn btn-outline-light btn-base border-0 fw-bolder"
                         type="button"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
