@@ -34,45 +34,84 @@ export default function OrderRecordsAll() {
   // 取得訂單
   const getOrderData = useCallback(async () => {
     setIsLoading(true);
-    const pathName = location.pathname.split("/").at(-1)
+    const pathName = location.pathname.split("/").at(-1);
 
     try {
-      const response = await axios.get(`${apiBase}/orders?_expand=project&_expand=product&userId=${userId}`);
-      if(pathName === "orderRecordsAll"){
+      const response = await axios.get(
+        `${apiBase}/orders?_expand=project&_expand=product&userId=${userId}`
+      );
+      if (pathName === "orderRecordsAll") {
         if (sortOrderData) {
-        const orderData = response.data.sort((a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt));
-        setOrdersData(orderData);
-      } else {
-        const orderData = response.data.sort((a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt));
-        setOrdersData(orderData);
-      }}else if(pathName === "orderRecordsSuccess"){
-        if (sortOrderData) {
-          const orderData = response.data.filter((item) => item.paymentStatus === 1 && (item.canReturn || item.canRefund));
-          orderData.sort((a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt));
+          const orderData = response.data.sort(
+            (a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt)
+          );
           setOrdersData(orderData);
         } else {
-          const orderData = response.data.filter((item) => item.paymentStatus === 1 && (item.canReturn || item.canRefund));
-          orderData.sort((a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt));
+          const orderData = response.data.sort(
+            (a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt)
+          );
           setOrdersData(orderData);
         }
-      }else if(pathName === "orderRecordsFailed"){
+      } else if (pathName === "orderRecordsSuccess") {
         if (sortOrderData) {
-          const orderData = response.data.filter((item) => item.paymentStatus === 2 || item.orderStatus === 2 || item.shippingStatus === 2);
-          orderData.sort((a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt));
+          const orderData = response.data.filter(
+            (item) =>
+              item.paymentStatus === 1 && (item.canReturn || item.canRefund)
+          );
+          orderData.sort(
+            (a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt)
+          );
           setOrdersData(orderData);
         } else {
-          const orderData = response.data.filter((item) => item.paymentStatus === 2 || item.orderStatus === 2 || item.shippingStatus === 2);
-          orderData.sort((a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt));
+          const orderData = response.data.filter(
+            (item) =>
+              item.paymentStatus === 1 && (item.canReturn || item.canRefund)
+          );
+          orderData.sort(
+            (a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt)
+          );
           setOrdersData(orderData);
         }
-      }else if(pathName === "orderRecordsUnpaid"){
+      } else if (pathName === "orderRecordsFailed") {
         if (sortOrderData) {
-          const orderData = response.data.filter((item) => item.paymentStatus === 0 && item.orderStatus !== 2);
-          orderData.sort((a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt));
+          const orderData = response.data.filter(
+            (item) =>
+              item.paymentStatus === 2 ||
+              item.orderStatus === 2 ||
+              item.shippingStatus === 2
+          );
+          orderData.sort(
+            (a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt)
+          );
           setOrdersData(orderData);
         } else {
-          const orderData = response.data.filter((item) => item.paymentStatus === 0 && item.orderStatus !== 2);
-          orderData.sort((a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt));
+          const orderData = response.data.filter(
+            (item) =>
+              item.paymentStatus === 2 ||
+              item.orderStatus === 2 ||
+              item.shippingStatus === 2
+          );
+          orderData.sort(
+            (a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt)
+          );
+          setOrdersData(orderData);
+        }
+      } else if (pathName === "orderRecordsUnpaid") {
+        if (sortOrderData) {
+          const orderData = response.data.filter(
+            (item) => item.paymentStatus === 0 && item.orderStatus !== 2
+          );
+          orderData.sort(
+            (a, b) => getSortTime(a.createdAt) - getSortTime(b.createdAt)
+          );
+          setOrdersData(orderData);
+        } else {
+          const orderData = response.data.filter(
+            (item) => item.paymentStatus === 0 && item.orderStatus !== 2
+          );
+          orderData.sort(
+            (a, b) => getSortTime(b.createdAt) - getSortTime(a.createdAt)
+          );
           setOrdersData(orderData);
         }
       }
@@ -86,7 +125,7 @@ export default function OrderRecordsAll() {
     } finally {
       setIsLoading(false);
     }
-  }, [sortOrderData, userId ,location.pathname]);
+  }, [sortOrderData, userId, location.pathname]);
   useEffect(() => {
     getOrderData();
   }, [sortOrderData, getOrderData]);
@@ -113,7 +152,9 @@ export default function OrderRecordsAll() {
                   <img src=${order.project?.projectImage} alt="" />
                 </div>
                 <div class="col-5">
-                  <h2 class="fs-base text-balance">${order.project?.projectTitle}</h2>
+                  <h2 class="fs-base text-balance">${
+                    order.project?.projectTitle
+                  }</h2>
                 </div>
             </div>
           
@@ -125,7 +166,9 @@ export default function OrderRecordsAll() {
               <div class="mb-6">
                 <h3 class="fs-base">本方案包含：</h3>
                 <ol>
-                ${order.product?.contents?.map((item) => `<li>${item.item}</li>`).join("")}
+                ${order.product?.contents
+                  ?.map((item) => `<li>${item.item}</li>`)
+                  .join("")}
                 </ol>
               </div>
             </div>
@@ -142,7 +185,11 @@ export default function OrderRecordsAll() {
       if (result.isConfirmed) {
         const reason = result.value;
         try {
-          await axios.patch(`${apiBase}/orders/${order.id}`, { canCancel: false, reason: reason, orderStatus: 2 });
+          await axios.patch(`${apiBase}/orders/${order.id}`, {
+            canCancel: false,
+            reason: reason,
+            orderStatus: 2,
+          });
           CheckModal.fire("取消申請成功", "我們將儘快處理您的申請", "success");
           getOrderData();
         } catch (error) {
@@ -166,7 +213,10 @@ export default function OrderRecordsAll() {
                 </th>
                 {/* <th scope="col" className="d-lg-none"></th> */}
                 <th scope="col" className="text-white">
-                  <button className="btn btn-light btn-base" onClick={() => setSortOrderData((prev) => !prev)}>
+                  <button
+                    className="btn btn-light btn-base"
+                    onClick={() => setSortOrderData((prev) => !prev)}
+                  >
                     {sortOrderData ? (
                       <>
                         <i className="bi bi-sort-up"></i>
@@ -187,27 +237,56 @@ export default function OrderRecordsAll() {
                   <td className="text-white">
                     <div className="row align-items-center">
                       <div className="col-4">
-                        <img src={order.project.projectImage} className="rounded-1" alt="projectsNumIcon" />
+                        <img
+                          src={order.project.projectImage}
+                          className="rounded-1"
+                          alt="projectsNumIcon"
+                        />
                       </div>
                       <div className="col-8">
-                        <span className="badge text-bg-danger mb-1">{order.orderStatus === 2 ? "已取消" : order.paymentStatus === 2 ? "已退款" : order.shippingStatus === 2 ? "已退貨" : ""}</span>
-                        <p className="fs-sm fs-lg-base text-secondary">訂單建立時間：{getTime(order.createdAt)}</p>
-                        <h3 className="fs-base fs-lg-6 fw-bolder text-truncate" title={order.project.projectTitle}>
+                        <span className="badge text-bg-danger mb-1">
+                          {order.orderStatus === 2
+                            ? "已取消"
+                            : order.paymentStatus === 2
+                            ? "已退款"
+                            : order.shippingStatus === 2
+                            ? "已退貨"
+                            : ""}
+                        </span>
+                        <p className="fs-sm fs-lg-base text-secondary">
+                          訂單建立時間：{getTime(order.createdAt)}
+                        </p>
+                        <h3
+                          className="fs-base fs-lg-6 fw-bolder text-truncate"
+                          title={order.project.projectTitle}
+                        >
                           {order.project.projectTitle}
                         </h3>
-                        <p className="fs-sm fs-lg-base">購買回饋方案項目：{order.product.title}</p>
+                        <p className="fs-sm fs-lg-base">
+                          購買回饋方案項目：{order.product.title}
+                        </p>
                       </div>
                     </div>
                   </td>
                   <td className="nowrap-table text-white">
                     <div className="d-flex flex-column">
                       {order.canCancel && (
-                        <button type="button" className="btn btn-danger btn-base mb-2" onClick={() => handleCancelOrder(order)}>
-                          訂單取消
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-base mb-2"
+                          onClick={() => handleCancelOrder(order)}
+                        >
+                          取消訂單
                         </button>
                       )}
-                      <button type="button" className="btn btn-primary btn-base" onClick={() => navigate(`/personalCenter/orderRecords/${order.id}`)}>
-                        訂單詳細
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-base"
+                        onClick={() =>
+                          navigate(`/personalCenter/orderRecords/${order.id}`)
+                        }
+                      >
+                        詳細訂單
                       </button>
                     </div>
                   </td>
