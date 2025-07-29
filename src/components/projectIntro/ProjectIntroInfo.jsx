@@ -3,6 +3,38 @@ import ProjectIntroProposerInfo from "./ProjectIntroProposerInfo";
 import { Link } from "react-router";
 import PropTypes from "prop-types"; // prop validation
 
+// 計算募資剩餘時間
+function getRemainingTime(endTime) {
+  if (!endTime) {
+    return {
+      timeLeft: { days: 0, hours: 0, minutes: 0, seconds: 0 },
+    };
+  }
+
+  const now = new Date();
+  const end = new Date(endTime);
+  const diff = end - now;
+
+  // 如果結束與開始時間相差為負值，判斷為募資已結束，並將時間設為 0
+  if (diff <= 0) {
+    return {
+      isEnded: true,
+      timeLeft: { days: 0, hours: 0, minutes: 0, seconds: 0 },
+    };
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  return {
+    isEnded: false,
+    timeLeft: { days, hours, minutes, seconds },
+  };
+}
+
+// ProjectIntroInfo component
 export default function ProjectIntroInfo({ projectInfo }) {
   const [currentMoneyPercentage, setCurrentMoneyPercentage] = useState(0);
 
@@ -10,12 +42,9 @@ export default function ProjectIntroInfo({ projectInfo }) {
   const [isEnded, setIsEnded] = useState(false);
 
   // 募資時間倒數
-  const [countDown, setCountDown] = useState({
-    days: 0,
-    hours: 0,
-    minutes: 0,
-    seconds: 0,
-  });
+  const [countDown, setCountDown] = useState(
+    () => getRemainingTime(projectInfo.endAt).timeLeft
+  );
 
   // 募資狀態標籤
   const getFundingStatus = () => {
@@ -40,37 +69,15 @@ export default function ProjectIntroInfo({ projectInfo }) {
     calcMoneyPercentage();
   }, [projectInfo]);
 
-  // 募資倒數時間
   useEffect(() => {
     if (!projectInfo.endAt) return;
-
+    // 更新募資狀態與倒數時間
     const updateCountDown = () => {
-      const now = new Date();
-      const end = new Date(projectInfo.endAt);
-      const diff = end - now;
-
-      // 如果結束與開始時間相差為負值，判斷為募資已結束，並將時間設為 0
-      if (diff <= 0) {
-        setIsEnded(true);
-        setCountDown({
-          days: 0,
-          hours: 0,
-          minutes: 0,
-          seconds: 0,
-        });
-        return;
-      }
-
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      setCountDown({ days, hours, minutes, seconds });
+      const { isEnded, timeLeft } = getRemainingTime(projectInfo.endAt);
+      setIsEnded(isEnded);
+      setCountDown(timeLeft);
     };
-
-    updateCountDown();
-
+    // 建立倒數時間器
     const timer = setInterval(updateCountDown, 1000);
     return () => clearInterval(timer);
   }, [projectInfo.endAt]);
